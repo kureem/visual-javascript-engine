@@ -1,0 +1,130 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.wikiot</groupId>
+	<artifactId>parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<properties>
+		<boot.version>1.4.0.RELEASE</boot.version>
+		<java.version>1.8</java.version>
+		<wikiot.version>0.0.1-SNAPSHOT</wikiot.version>
+	</properties>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.0.RELEASE</version>
+	</parent>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.wikiot</groupId>
+				<artifactId>common</artifactId>
+				<version>${wikiot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.wikiot</groupId>
+				<artifactId>server</artifactId>
+				<version>${wikiot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.wikiot</groupId>
+				<artifactId>ui</artifactId>
+				<version>${wikiot.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>org.wikiot</groupId>
+				<artifactId>device</artifactId>
+				<version>${wikiot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.wikiot</groupId>
+				<artifactId>device.common</artifactId>
+				<version>${wikiot.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.wikiot</groupId>
+				<artifactId>device.mic</artifactId>
+				<version>${wikiot.version}</version>
+			</dependency>
+
+
+		</dependencies>
+	</dependencyManagement>
+
+	<distributionManagement>
+		<repository>
+			<id>wikiot-releases</id>
+			<name>releases</name>
+			<url>git:releases://git@github.com:kureem/wikiot-maven.git</url>
+		</repository>
+
+		<snapshotRepository>
+			<id>wikiot-snapshots</id>
+			<name>snapshots</name>
+			<url>git:snapshots://git@github.com:kureem/wikiot-maven.git</url>
+		</snapshotRepository>
+
+		<site>
+			<id>wikiot-sites</id>
+			<url>git:sites://git@github.com:kureem/wikiot-maven.git</url>
+		</site>
+
+	</distributionManagement>
+	
+
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>wikiot-snapshots</id>
+			<name>snapshot</name>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<url>https://github.com/kureem/wikiot-maven.git/snapshots</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<url>http://repo.spring.io/snapshot</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<url>http://repo.spring.io/milestone</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>synergian-repo</id>
+			<url>https://raw.github.com/synergian/wagon-git/releases</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<build>
+		<extensions>
+			<extension>
+				<groupId>ar.com.synergian</groupId>
+				<artifactId>wagon-git</artifactId>
+				<version>0.2.5</version>
+			</extension>
+		</extensions>
+	</build>
+
+</project>
