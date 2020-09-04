@@ -1,8 +1,8 @@
-# JSweet fisica candy
+# JSweet visual-javascript candy
 
 ## Description
 
-This project is a Java bridge to the fisica library, so that fisica can be used from Java (thanks to the JSweet transpiler).
+This project is a Java bridge to the visual javascript library, so that visual-javascript can be used from Java (thanks to the JSweet transpiler).
 
 This candy is used for compilation (typing and API checking) but does not contain any implementation, similarly to a C/C++ header file or to a TypeScript definition file. 
 
@@ -29,7 +29,7 @@ Add the following dependency to the ``pom.xml``:
 ```xml
 <dependency>
 	<groupId>org.jsweet.candies.ext</groupId>
-	<artifactId>fisica</artifactId>
+	<artifactId>visual-javascript</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
