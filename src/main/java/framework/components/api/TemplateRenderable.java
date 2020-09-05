@@ -33,16 +33,5 @@ public interface TemplateRenderable extends Renderable{
 	 */
 	public abstract void render(HTMLElement parent);
 	
-	/**
-	 * Sets the component as already compiled
-	 * @param compiled Whether the component is compiled or not
-	 */
-	public void setCompiled(boolean compiled) ;
-	
-	/**
-	 * Indicates if the component is compiled or not
-	 * @return Indicates if the component is compiled or not
-	 */
-	public boolean isCompiled() ; 
 
 }

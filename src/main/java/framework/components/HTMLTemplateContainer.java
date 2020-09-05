@@ -42,38 +42,25 @@ import jsweet.lang.Object;
  */
 public class HTMLTemplateContainer extends JSContainer implements TemplateRenderable {
 
-	//public final static Object GLOBAL_TEMPLATES = new Object();
+	// public final static Object GLOBAL_TEMPLATES = new Object();
 
 	/**
 	 * A context that contains variables exposed to the html template. This can be
 	 * used by javascript to transmit data from the framework to the template
 	 */
 	public Object context = new Object();
-	
-	private boolean compiled = false;
-	
+
 	private String template;
 
 	/**
 	 * Constructs an instance of this component
 	 * 
-	 * @param name
-	 *            The name of the component
-	 * @param template
-	 *            The html template of this component
+	 * @param name     The name of the component
+	 * @param template The html template of this component
 	 */
 	public HTMLTemplateContainer(String name, String template) {
 		super(name, "div");
 		setTemplate(template);
-	}
-	
-	public void setCompiled(boolean compiled) {
-		this.compiled = compiled;
-		setRendered(false);
-	}
-	
-	public boolean isCompiled() {
-		return compiled;
 	}
 
 	/**
@@ -81,14 +68,13 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 	 * @return The template of the component
 	 */
 	public String getTemplate() {
-		return this.template;//getAttribute("template");
+		return this.template;// getAttribute("template");
 	}
 
 	/**
 	 * Sets the template of this component
 	 * 
-	 * @param template
-	 *            The template of this component
+	 * @param template The template of this component
 	 */
 	public void setTemplate(String template) {
 		this.template = template;
@@ -103,8 +89,6 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 		return context;
 	}
 
-
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -114,28 +98,28 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 	public void render(HTMLElement parent) {
 
 		if (!isRendered()) {
-			//String attr = getTemplate();
+			// String attr = getTemplate();
 			// String html = $(getTemplate()).html();
-			//String html = (String) GLOBAL_TEMPLATES.$get(attr.replace("#", ""));
-			//if(compiled) {
-				//html = attr;
-			//}
+			// String html = (String) GLOBAL_TEMPLATES.$get(attr.replace("#", ""));
+			// if(compiled) {
+			// html = attr;
+			// }
 			String html = getTemplate();
 			if (html != null) {
 				Object cxt = context;
 				String rendered = compile(html, cxt);
-				
+
 				HTMLElement tmp = document.createElement("div");
 				tmp.innerHTML = rendered;
 				Element tm = tmp.firstElementChild;
-				
+
 				rendered = tm.innerHTML;
 				String tag = tm.tagName;
 				setTag(tag);
 				NamedNodeMap attrs = tm.attributes;
-				for(Attr att : attrs) {
+				for (Attr att : attrs) {
 					setAttribute(att.name, att.value);
-				}				
+				}
 				setHtml(rendered);
 			} else {
 				setHtml("Cannot load template:" + getTemplate());
@@ -144,15 +128,16 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 		}
 		super.render(parent);
 	}
-	
+
 	public String compile(String html, Object ctx) {
 		return html;
 	}
 
-	public static java.lang.Object invokeFunction(jsweet.lang.Object target, String function, java.lang.Object...args){
-		if(target.hasOwnProperty(function)){
-			return ((Function)target.$get(function)).call(target, args);
-		}else{
+	public static java.lang.Object invokeFunction(jsweet.lang.Object target, String function,
+			java.lang.Object... args) {
+		if (target.hasOwnProperty(function)) {
+			return ((Function) target.$get(function)).call(target, args);
+		} else {
 			throw new Error(target + " does not contain function:" + function);
 		}
 	}

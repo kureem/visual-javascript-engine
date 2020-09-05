@@ -34,7 +34,6 @@ public class JSUpload extends HTMLTemplateContainer implements EventListener, In
 	 */
 	public JSUpload(String name,String template, String url) {
 		super(name,template);
-		setCompiled(true);
 		
 		addChild(label);
 		input.setAttribute("type", "file").setAttribute("accept", "*");
