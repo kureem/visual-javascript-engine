@@ -1,11 +1,11 @@
 package framework.components.input;
 
-import framework.components.JSTemplateContainer;
+import framework.components.HTMLTemplateContainer;
 import framework.components.api.InputField;
 import framework.components.api.ValidationException;
 import jsweet.lang.Object;
 
-public class JSAddressInput extends JSTemplateContainer implements InputField<Object>{
+public class JSAddressInput extends HTMLTemplateContainer implements InputField<Object>{
 
 	
 

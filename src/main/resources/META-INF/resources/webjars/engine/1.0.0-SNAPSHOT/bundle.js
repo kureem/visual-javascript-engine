@@ -294,7 +294,7 @@ var api;
     ValidationException.stepMismatch = 5;
     /**
      * Is a <code>Numeric</code> indicating the value exceeds the specified
-     * <code>maxlength</code> for {@link JSStringInput}
+     * <code>maxlength</code> for {@link JSTextInput}
      * component.
      * <em><strong>Note:</strong> This will never be <code>true</code> in Gecko,
      * because elements' values are prevented from being longer than
@@ -1712,6 +1712,116 @@ ExternalStylesheet.MEDIA_PRINT = "print";
 ExternalStylesheet.MEDIA_SPEECH = "speech";
 ExternalStylesheet["__class"] = "framework.components.ExternalStylesheet";
 ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "framework.components.api.Renderer"];
+/**
+ * Constructs an instance of this component
+ *
+ * @param {string} name
+ * The name of the component
+ * @param {string} template
+ * The html template of this component
+ * @class
+ * @extends JSContainer
+ * @author Rossaye Abdool Kureem
+ */
+class HTMLTemplateContainer extends JSContainer {
+    constructor(name, template) {
+        super(name, "div");
+        /**
+         * A context that contains variables exposed to the html template. This can be
+         * used by javascript to transmit data from the framework to the template
+         */
+        this.context = new Object();
+        /*private*/ this.compiled = false;
+        if (this.template === undefined)
+            this.template = null;
+        this.setTemplate(template);
+    }
+    setCompiled(compiled) {
+        this.compiled = compiled;
+        this.setRendered(false);
+    }
+    isCompiled() {
+        return this.compiled;
+    }
+    /**
+     *
+     * @return {string} The template of the component
+     */
+    getTemplate() {
+        return this.template;
+    }
+    /**
+     * Sets the template of this component
+     *
+     * @param {string} template
+     * The template of this component
+     */
+    setTemplate(template) {
+        this.template = template;
+        this.setRendered(false);
+    }
+    /**
+     *
+     * @return {Object} The variable context of this component
+     */
+    getContext() {
+        return this.context;
+    }
+    render$jsweet_dom_HTMLElement(parent) {
+        if (!this.isRendered()) {
+            let html = this.getTemplate();
+            if (html != null) {
+                let cxt = this.context;
+                let rendered = this.compile(html, cxt);
+                let tmp = document.createElement("div");
+                tmp.innerHTML = rendered;
+                let tm = tmp.firstElementChild;
+                rendered = tm.innerHTML;
+                let tag = tm.tagName;
+                this.setTag(tag);
+                let attrs = tm.attributes;
+                for (let index229 = 0; index229 < attrs.length; index229++) {
+                    let att = attrs[index229];
+                    {
+                        this.setAttribute(att.name, att.value);
+                    }
+                }
+                this.setHtml(rendered);
+            }
+            else {
+                this.setHtml("Cannot load template:" + this.getTemplate());
+            }
+        }
+        super.render$jsweet_dom_HTMLElement(parent);
+    }
+    /**
+     *
+     * @param {HTMLElement} parent
+     */
+    render(parent) {
+        if (((parent != null && parent instanceof HTMLElement) || parent === null)) {
+            return this.render$jsweet_dom_HTMLElement(parent);
+        }
+        else if (parent === undefined) {
+            return this.render$();
+        }
+        else
+            throw new Error('invalid overload');
+    }
+    compile(html, ctx) {
+        return html;
+    }
+    static invokeFunction(target, __function, ...args) {
+        if (target.hasOwnProperty(__function)) {
+            return (o => o.call.apply(o, [target].concat(args)))(target[__function]);
+        }
+        else {
+            throw new Error(target + " does not contain function:" + __function);
+        }
+    }
+}
+HTMLTemplateContainer["__class"] = "framework.components.HTMLTemplateContainer";
+HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", "framework.components.api.TemplateRenderable"];
 (function (input) {
     class AbstractJSInput extends JSContainer {
         constructor(name) {
@@ -1883,8 +1993,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index229 = 0; index229 < this.validators.length; index229++) {
-                let v = this.validators[index229];
+            for (let index230 = 0; index230 < this.validators.length; index230++) {
+                let v = this.validators[index230];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -2052,7 +2162,7 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             }
         }
         Form.Form$0 = Form$0;
-        Form$0["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$0["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
         class Form$1 {
             constructor(__parent) {
                 this.__parent = __parent;
@@ -2078,7 +2188,7 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             }
         }
         Form.Form$1 = Form$1;
-        Form$1["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$1["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
         class Form$2 {
             constructor(__parent, data) {
                 this.data = data;
@@ -2122,7 +2232,7 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             }
         }
         Form.Form$2 = Form$2;
-        Form$2["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
         class Form$3 {
             constructor(__parent, data) {
                 this.data = data;
@@ -2144,7 +2254,7 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             }
         }
         Form.Form$3 = Form$3;
-        Form$3["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
     })(Form = input.Form || (input.Form = {}));
 })(input || (input = {}));
 (function (input) {
@@ -2239,8 +2349,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
         validate() {
             let valid = true;
             let e = new api.ValidationException();
-            for (let index230 = 0; index230 < this.validators.length; index230++) {
-                let v = this.validators[index230];
+            for (let index231 = 0; index231 < this.validators.length; index231++) {
+                let v = this.validators[index231];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -2394,8 +2504,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
         }
         setOptions$java_lang_String(options) {
             let opts = options.split("\n");
-            for (let index231 = 0; index231 < opts.length; index231++) {
-                let opt = opts[index231];
+            for (let index232 = 0; index232 < opts.length; index232++) {
+                let opt = opts[index232];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -2516,8 +2626,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             if (ele != null) {
                 if (ele.multiple) {
                     let result = (new Array());
-                    for (let index232 = 0; index232 < ele.children.length; index232++) {
-                        let e = ele.children[index232];
+                    for (let index233 = 0; index233 < ele.children.length; index233++) {
+                        let e = ele.children[index233];
                         {
                             let opt = e;
                             if (opt.selected)
@@ -2533,9 +2643,9 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             else {
                 let val = this.getAttribute("value");
                 {
-                    let array234 = this.getChildren();
-                    for (let index233 = 0; index233 < array234.length; index233++) {
-                        let opt = array234[index233];
+                    let array235 = this.getChildren();
+                    for (let index234 = 0; index234 < array235.length; index234++) {
+                        let opt = array235[index234];
                         {
                             if (((o1, o2) => { if (o1 && o1.equals) {
                                 return o1.equals(o2);
@@ -2578,13 +2688,13 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array236 = this.getChildren();
-                    for (let index235 = 0; index235 < array236.length; index235++) {
-                        let opt = array236[index235];
+                    let array237 = this.getChildren();
+                    for (let index236 = 0; index236 < array237.length; index236++) {
+                        let opt = array237[index236];
                         {
                             opt.setSelected(false);
-                            for (let index237 = 0; index237 < arrVal.length; index237++) {
-                                let val = arrVal[index237];
+                            for (let index238 = 0; index238 < arrVal.length; index238++) {
+                                let val = arrVal[index238];
                                 {
                                     if (((o1, o2) => { if (o1 && o1.equals) {
                                         return o1.equals(o2);
@@ -2602,9 +2712,9 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             }
             else {
                 {
-                    let array239 = this.getChildren();
-                    for (let index238 = 0; index238 < array239.length; index238++) {
-                        let opt = array239[index238];
+                    let array240 = this.getChildren();
+                    for (let index239 = 0; index239 < array240.length; index239++) {
+                        let opt = array240[index239];
                         {
                             opt.setSelected(false);
                         }
@@ -2634,8 +2744,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index240 = 0; index240 < this.validators.length; index240++) {
-                let v = this.validators[index240];
+            for (let index241 = 0; index241 < this.validators.length; index241++) {
+                let v = this.validators[index241];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -2666,8 +2776,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
         setData(data_) {
             this.clearChildren();
             this.setRendered(false);
-            for (let index241 = 0; index241 < data_.length; index241++) {
-                let o = data_[index241];
+            for (let index242 = 0; index242 < data_.length; index242++) {
+                let o = data_[index242];
                 {
                     if (o.hasOwnProperty("value")) {
                         let value = o["value"];
@@ -2690,9 +2800,9 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
             let result = (new Array());
             if (this.isMultiple()) {
                 {
-                    let array243 = obj;
-                    for (let index242 = 0; index242 < array243.length; index242++) {
-                        let o = array243[index242];
+                    let array244 = obj;
+                    for (let index243 = 0; index243 < array244.length; index243++) {
+                        let o = array244[index243];
                         {
                             let item = this.findItem(o);
                             if (item != null) {
@@ -2717,8 +2827,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
         }
         findItem(value) {
             if (this.data != null) {
-                for (let index244 = 0; index244 < this.data.length; index244++) {
-                    let o = this.data[index244];
+                for (let index245 = 0; index245 < this.data.length; index245++) {
+                    let o = this.data[index245];
                     {
                         let val = o["value"];
                         val = val + "";
@@ -2820,8 +2930,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index245 = 0; index245 < this.validators.length; index245++) {
-                let v = this.validators[index245];
+            for (let index246 = 0; index246 < this.validators.length; index246++) {
+                let v = this.validators[index246];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -2872,127 +2982,6 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
     JSTextArea["__class"] = "framework.components.input.JSTextArea";
     JSTextArea["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
-/**
- * Constructs an instance of this component
- *
- * @param {string} name
- * The name of the component
- * @param {string} template
- * The html template of this component
- * @class
- * @extends JSContainer
- * @author Rossaye Abdool Kureem
- */
-class JSTemplateContainer extends JSContainer {
-    constructor(name, template) {
-        super(name, "div");
-        /**
-         * A context that contains variables exposed to the html template. This can be
-         * used by javascript to transmit data from the framework to the template
-         */
-        this.context = new Object();
-        /*private*/ this.compiled = false;
-        if (this.template === undefined)
-            this.template = null;
-        this.setTemplate(template);
-    }
-    static GLOBAL_TEMPLATES_$LI$() { if (JSTemplateContainer.GLOBAL_TEMPLATES == null)
-        JSTemplateContainer.GLOBAL_TEMPLATES = new Object(); return JSTemplateContainer.GLOBAL_TEMPLATES; }
-    ;
-    setCompiled(compiled) {
-        this.compiled = compiled;
-        this.setRendered(false);
-    }
-    isCompiled() {
-        return this.compiled;
-    }
-    /**
-     *
-     * @return {string} The template of the component
-     */
-    getTemplate() {
-        return this.template;
-    }
-    /**
-     * Sets the template of this component
-     *
-     * @param {string} template
-     * The template of this component
-     */
-    setTemplate(template) {
-        this.template = template;
-        this.setRendered(false);
-    }
-    /**
-     *
-     * @return {Object} The variable context of this component
-     */
-    getContext() {
-        return this.context;
-    }
-    render$jsweet_dom_HTMLElement(parent) {
-        if (!this.isRendered()) {
-            let attr = this.getTemplate();
-            let html = JSTemplateContainer.GLOBAL_TEMPLATES_$LI$()[attr.split("#").join("")];
-            if (this.compiled) {
-                html = attr;
-            }
-            if (html != null) {
-                let cxt = this.context;
-                let rendered = "";
-                let mustache = window["Mustache"];
-                if (mustache != null) {
-                    rendered = JSTemplateContainer.invokeFunction(mustache, "render", html, cxt);
-                }
-                else {
-                    rendered = html;
-                }
-                let tmp = document.createElement("div");
-                tmp.innerHTML = rendered;
-                let tm = tmp.firstElementChild;
-                rendered = tm.innerHTML;
-                let tag = tm.tagName;
-                this.setTag(tag);
-                let attrs = tm.attributes;
-                for (let index246 = 0; index246 < attrs.length; index246++) {
-                    let att = attrs[index246];
-                    {
-                        this.setAttribute(att.name, att.value);
-                    }
-                }
-                this.setHtml(rendered);
-            }
-            else {
-                this.setHtml("Cannot load template:" + this.getTemplate());
-            }
-        }
-        super.render$jsweet_dom_HTMLElement(parent);
-    }
-    /**
-     *
-     * @param {HTMLElement} parent
-     */
-    render(parent) {
-        if (((parent != null && parent instanceof HTMLElement) || parent === null)) {
-            return this.render$jsweet_dom_HTMLElement(parent);
-        }
-        else if (parent === undefined) {
-            return this.render$();
-        }
-        else
-            throw new Error('invalid overload');
-    }
-    static invokeFunction(target, __function, ...args) {
-        if (target.hasOwnProperty(__function)) {
-            return (o => o.call.apply(o, [target].concat(args)))(target[__function]);
-        }
-        else {
-            throw new Error(target + " does not contain function:" + __function);
-        }
-    }
-}
-JSTemplateContainer["__class"] = "framework.components.JSTemplateContainer";
-JSTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", "framework.components.api.TemplateRenderable"];
 class RestWebservice extends JSContainer {
     constructor(name) {
         if (((typeof name === 'string') || name === null)) {
@@ -3252,342 +3241,15 @@ class Row extends JSContainer {
 Row["__class"] = "framework.components.Row";
 Row["__interfaces"] = ["framework.components.api.Renderable"];
 (function (input) {
-    class JSCheckBox extends input.AbstractJSInput {
-        constructor(name) {
-            super(name);
-            this.setAttribute("type", "checkbox");
-            this.setAttribute("identifier", "html:checkbox");
-        }
-        /**
-         *
-         * @return {boolean}
-         */
-        getValue() {
-            let el = this.getNative();
-            if (el != null) {
-                return el.checked;
-            }
-            if (this.getAttribute("value") != null && ((o1, o2) => o1.toUpperCase() === (o2 === null ? o2 : o2.toUpperCase()))("true", this.getAttribute("value"))) {
-                return true;
-            }
-            return false;
-        }
-        setValue$java_lang_Boolean(b) {
-            if (b) {
-                this.setAttribute("value", "true");
-                this.setAttribute("checked", "true");
-            }
-            else {
-                this.setAttribute("value", "false");
-                this.setAttribute("checked", null);
-            }
-            let el = this.getNative();
-            if (el != null) {
-                el.checked = b;
-            }
-        }
-        /**
-         *
-         * @param {boolean} b
-         */
-        setValue(b) {
-            if (((typeof b === 'boolean') || b === null)) {
-                return this.setValue$java_lang_Boolean(b);
-            }
-            else
-                throw new Error('invalid overload');
-        }
-        isChecked() {
-            return this.getValue();
-        }
-        setChecked(b) {
-            this.setValue$java_lang_Boolean(b);
-        }
-    }
-    input.JSCheckBox = JSCheckBox;
-    JSCheckBox["__class"] = "framework.components.input.JSCheckBox";
-    JSCheckBox["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
-})(input || (input = {}));
-(function (input) {
-    class JSDateInput extends input.AbstractJSInput {
-        constructor(name) {
-            super(name);
-            this.setAttribute("identifier", "html:date-input");
-            this.setType(input.DateInputTypes.date);
-            this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
-        }
-        setType(type) {
-            this.setAttribute("type", type);
-            return this;
-        }
-        /**
-         *
-         * @return {Date}
-         */
-        getValue() {
-            return this.getDateValue();
-        }
-        setValue$jsweet_lang_Date(val) {
-            this.setDateValue(val);
-        }
-        /**
-         *
-         * @param {Date} val
-         */
-        setValue(val) {
-            if (((val != null && val instanceof Date) || val === null)) {
-                return this.setValue$jsweet_lang_Date(val);
-            }
-            else
-                throw new Error('invalid overload');
-        }
-        setMin(min) {
-            this.setAttribute("min", this.toHtmlDateString(min));
-        }
-        setMax(max) {
-            this.setAttribute("max", this.toHtmlDateString(max));
-        }
-    }
-    input.JSDateInput = JSDateInput;
-    JSDateInput["__class"] = "framework.components.input.JSDateInput";
-    JSDateInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
-    (function (JSDateInput) {
-        class JSDateInput$0 {
-            constructor(__parent) {
-                this.__parent = __parent;
-            }
-            /**
-             *
-             * @param {*} source
-             * @param {Event} evt
-             */
-            performAction(source, evt) {
-                this.__parent.setValue(this.__parent.getValue());
-            }
-        }
-        JSDateInput.JSDateInput$0 = JSDateInput$0;
-        JSDateInput$0["__interfaces"] = ["framework.components.api.EventListener"];
-    })(JSDateInput = input.JSDateInput || (input.JSDateInput = {}));
-})(input || (input = {}));
-(function (input) {
-    class JSNumericInput extends input.AbstractJSInput {
-        constructor(name) {
-            super(name);
-            this.setAttribute("type", "number");
-            this.setAttribute("identifier", "html:numeric-input");
-        }
-        setType(type) {
-            this.setAttribute("type", type);
-            return this;
-        }
-        setStep(step) {
-            this.setAttribute("step", step + "");
-        }
-        getStep() {
-            return parseInt(this.getAttribute("step"));
-        }
-        /**
-         *
-         * @return {number}
-         */
-        getValue() {
-            return this.getDoubleValue();
-        }
-        setValue$java_lang_Double(val) {
-            this.setDoubleValue(val);
-        }
-        /**
-         *
-         * @param {number} val
-         */
-        setValue(val) {
-            if (((typeof val === 'number') || val === null)) {
-                return this.setValue$java_lang_Double(val);
-            }
-            else
-                throw new Error('invalid overload');
-        }
-        setMin(min) {
-            this.setAttribute("min", min + "");
-        }
-        setMax(max) {
-            this.setAttribute("max", "" + max);
-        }
-    }
-    input.JSNumericInput = JSNumericInput;
-    JSNumericInput["__class"] = "framework.components.input.JSNumericInput";
-    JSNumericInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
-})(input || (input = {}));
-(function (input) {
-    class JSStringInput extends input.AbstractJSInput {
-        constructor(name) {
-            super(name);
-            this.setType(api.StringInputTypes.text);
-            this.setAttribute("identifier", "html:input");
-            this.addRenderer(this);
-        }
-        setMaxLength(length) {
-            this.setAttribute("maxlength", length + "");
-        }
-        setType(type) {
-            this.setAttribute("type", type);
-            return this;
-        }
-        /**
-         *
-         * @return {string}
-         */
-        getValue() {
-            return this.getStringValue();
-        }
-        setValue$java_lang_String(val) {
-            this.setStringValue(val);
-        }
-        /**
-         *
-         * @param {string} val
-         */
-        setValue(val) {
-            if (((typeof val === 'string') || val === null)) {
-                return this.setValue$java_lang_String(val);
-            }
-            else
-                throw new Error('invalid overload');
-        }
-        getMask() {
-            return this.getAttribute("mask");
-        }
-        setMask(mask) {
-            this.setAttribute("mask", mask);
-            this.setRendered(false);
-        }
-        doRender$framework_components_input_JSStringInput$jsweet_dom_HTMLElement(c, root) {
-            let mask = this.getMask();
-            if (mask != null && mask.trim().length > 0) {
-                let elem = this.getNative();
-                let jq = $(elem);
-                $(elem)["inputmask"].call(jq, mask);
-                eval("");
-            }
-        }
-        /**
-         *
-         * @param {input.JSStringInput} c
-         * @param {HTMLElement} root
-         */
-        doRender(c, root) {
-            if (((c != null && c instanceof input.JSStringInput) || c === null) && ((root != null && root instanceof HTMLElement) || root === null)) {
-                return this.doRender$framework_components_input_JSStringInput$jsweet_dom_HTMLElement(c, root);
-            }
-            else
-                throw new Error('invalid overload');
-        }
-    }
-    input.JSStringInput = JSStringInput;
-    JSStringInput["__class"] = "framework.components.input.JSStringInput";
-    JSStringInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable", "framework.components.api.Renderer"];
-})(input || (input = {}));
-(function (input) {
-    class JSTimeInput extends input.AbstractJSInput {
-        constructor(name) {
-            super(name);
-            /*private*/ this.savedDate = new Date();
-            this.setAttribute("type", "time");
-            this.setAttribute("identifier", "html:time-input");
-        }
-        /**
-         *
-         * @return {Date}
-         */
-        getValue() {
-            let time = this.getStringValue();
-            let d = this.savedDate;
-            if (time != null && (time.indexOf(":") != -1)) {
-                let htmn = time.split(":");
-                d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
-            }
-            return d;
-        }
-        setValue$jsweet_lang_Date(val) {
-            if (val != null) {
-                this.savedDate = val;
-                let mins = val.getMinutes() + "";
-                if (mins.length === 1) {
-                    mins = "0" + mins;
-                }
-                let hrs = val.getHours() + "";
-                if (hrs.length === 1) {
-                    hrs = "0" + hrs;
-                }
-                this.setStringValue(hrs + ":" + mins);
-            }
-        }
-        /**
-         *
-         * @param {Date} val
-         */
-        setValue(val) {
-            if (((val != null && val instanceof Date) || val === null)) {
-                return this.setValue$jsweet_lang_Date(val);
-            }
-            else
-                throw new Error('invalid overload');
-        }
-    }
-    input.JSTimeInput = JSTimeInput;
-    JSTimeInput["__class"] = "framework.components.input.JSTimeInput";
-    JSTimeInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
-})(input || (input = {}));
-(function (input) {
-    class RichTextEditor extends input.JSTextArea {
-        constructor(name) {
-            super(name);
-            /*private*/ this.editor = null;
-            this.setAttribute("identifier", "html:richtext");
-            this.addRenderer(this);
-        }
-        doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root) {
-            if (this.editor == null) {
-                eval("this.editor = new Simditor({textarea: $(\'#" + this.getId() + "\')});");
-            }
-        }
-        /**
-         *
-         * @param {input.RichTextEditor} c
-         * @param {HTMLElement} root
-         */
-        doRender(c, root) {
-            if (((c != null && c instanceof input.RichTextEditor) || c === null) && ((root != null && root instanceof HTMLElement) || root === null)) {
-                return this.doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root);
-            }
-            else
-                throw new Error('invalid overload');
-        }
-        /**
-         *
-         * @return {string}
-         */
-        getValue() {
-            if (this.editor != null) {
-                this.editor["saveContent"].call(this.editor);
-            }
-            return super.getValue();
-        }
-    }
-    input.RichTextEditor = RichTextEditor;
-    RichTextEditor["__class"] = "framework.components.input.RichTextEditor";
-    RichTextEditor["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable", "framework.components.api.Renderer"];
-})(input || (input = {}));
-(function (input) {
-    class JSAddressInput extends JSTemplateContainer {
+    class JSAddressInput extends HTMLTemplateContainer {
         constructor(name) {
             super(name, "");
             /*private*/ this.address = new Object();
             /*private*/ this.country = new input.JSSelect("country");
-            /*private*/ this.city = new input.JSStringInput("city");
-            /*private*/ this.postalCode = new input.JSStringInput("postalCode");
-            /*private*/ this.state = new input.JSStringInput("state");
-            /*private*/ this.street = new input.JSStringInput("street");
+            /*private*/ this.city = new input.JSTextInput("city");
+            /*private*/ this.postalCode = new input.JSTextInput("postalCode");
+            /*private*/ this.state = new input.JSTextInput("state");
+            /*private*/ this.street = new input.JSTextInput("street");
             this.addChild$framework_components_api_Renderable(this.country);
             this.addChild$framework_components_api_Renderable(this.city);
             this.addChild$framework_components_api_Renderable(this.postalCode);
@@ -3683,10 +3345,10 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
  * @param {string} url The url where to submit uploaded file
  * @param {string} template
  * @class
- * @extends JSTemplateContainer
+ * @extends HTMLTemplateContainer
  * @author Rossaye Abdool Kureem
  */
-class JSUpload extends JSTemplateContainer {
+class JSUpload extends HTMLTemplateContainer {
     constructor(name, template, url) {
         if (((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && ((typeof url === 'string') || url === null)) {
             let __args = arguments;
@@ -3849,6 +3511,330 @@ class JSUpload extends JSTemplateContainer {
 JSUpload["__class"] = "framework.components.JSUpload";
 JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework.components.api.InputField", "framework.components.api.Renderable", "framework.components.api.TemplateRenderable"];
 (function (input) {
+    class JSCheckBox extends input.AbstractJSInput {
+        constructor(name) {
+            super(name);
+            this.setAttribute("type", "checkbox");
+        }
+        /**
+         *
+         * @return {boolean}
+         */
+        getValue() {
+            let el = this.getNative();
+            if (el != null) {
+                return el.checked;
+            }
+            if (this.getAttribute("value") != null && ((o1, o2) => o1.toUpperCase() === (o2 === null ? o2 : o2.toUpperCase()))("true", this.getAttribute("value"))) {
+                return true;
+            }
+            return false;
+        }
+        setValue$java_lang_Boolean(b) {
+            if (b) {
+                this.setAttribute("value", "true");
+                this.setAttribute("checked", "true");
+            }
+            else {
+                this.setAttribute("value", "false");
+                this.setAttribute("checked", null);
+            }
+            let el = this.getNative();
+            if (el != null) {
+                el.checked = b;
+            }
+        }
+        /**
+         *
+         * @param {boolean} b
+         */
+        setValue(b) {
+            if (((typeof b === 'boolean') || b === null)) {
+                return this.setValue$java_lang_Boolean(b);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        isChecked() {
+            return this.getValue();
+        }
+        setChecked(b) {
+            this.setValue$java_lang_Boolean(b);
+        }
+    }
+    input.JSCheckBox = JSCheckBox;
+    JSCheckBox["__class"] = "framework.components.input.JSCheckBox";
+    JSCheckBox["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
+})(input || (input = {}));
+(function (input) {
+    class JSDateInput extends input.AbstractJSInput {
+        constructor(name) {
+            super(name);
+            this.setType(input.DateInputTypes.date);
+            this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
+        }
+        setType(type) {
+            this.setAttribute("type", type);
+            return this;
+        }
+        /**
+         *
+         * @return {Date}
+         */
+        getValue() {
+            return this.getDateValue();
+        }
+        setValue$jsweet_lang_Date(val) {
+            this.setDateValue(val);
+        }
+        /**
+         *
+         * @param {Date} val
+         */
+        setValue(val) {
+            if (((val != null && val instanceof Date) || val === null)) {
+                return this.setValue$jsweet_lang_Date(val);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        setMin(min) {
+            this.setAttribute("min", this.toHtmlDateString(min));
+        }
+        setMax(max) {
+            this.setAttribute("max", this.toHtmlDateString(max));
+        }
+    }
+    input.JSDateInput = JSDateInput;
+    JSDateInput["__class"] = "framework.components.input.JSDateInput";
+    JSDateInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
+    (function (JSDateInput) {
+        class JSDateInput$0 {
+            constructor(__parent) {
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source, evt) {
+                this.__parent.setValue(this.__parent.getValue());
+            }
+        }
+        JSDateInput.JSDateInput$0 = JSDateInput$0;
+        JSDateInput$0["__interfaces"] = ["framework.components.api.EventListener"];
+    })(JSDateInput = input.JSDateInput || (input.JSDateInput = {}));
+})(input || (input = {}));
+(function (input) {
+    class JSNumberInput extends input.AbstractJSInput {
+        constructor(name) {
+            super(name);
+            this.setAttribute("type", "number");
+        }
+        setType(type) {
+            this.setAttribute("type", type);
+            return this;
+        }
+        setStep(step) {
+            this.setAttribute("step", step + "");
+        }
+        getStep() {
+            return parseInt(this.getAttribute("step"));
+        }
+        /**
+         *
+         * @return {number}
+         */
+        getValue() {
+            return this.getDoubleValue();
+        }
+        setValue$java_lang_Double(val) {
+            this.setDoubleValue(val);
+        }
+        /**
+         *
+         * @param {number} val
+         */
+        setValue(val) {
+            if (((typeof val === 'number') || val === null)) {
+                return this.setValue$java_lang_Double(val);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        setMin(min) {
+            this.setAttribute("min", min + "");
+        }
+        setMax(max) {
+            this.setAttribute("max", "" + max);
+        }
+    }
+    input.JSNumberInput = JSNumberInput;
+    JSNumberInput["__class"] = "framework.components.input.JSNumberInput";
+    JSNumberInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
+})(input || (input = {}));
+(function (input) {
+    class JSTextInput extends input.AbstractJSInput {
+        constructor(name) {
+            super(name);
+            this.setType(api.StringInputTypes.text);
+            this.setAttribute("identifier", "html:input");
+            this.addRenderer(this);
+        }
+        setMaxLength(length) {
+            this.setAttribute("maxlength", length + "");
+        }
+        setType(type) {
+            this.setAttribute("type", type);
+            return this;
+        }
+        /**
+         *
+         * @return {string}
+         */
+        getValue() {
+            return this.getStringValue();
+        }
+        setValue$java_lang_String(val) {
+            this.setStringValue(val);
+        }
+        /**
+         *
+         * @param {string} val
+         */
+        setValue(val) {
+            if (((typeof val === 'string') || val === null)) {
+                return this.setValue$java_lang_String(val);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        getMask() {
+            return this.getAttribute("mask");
+        }
+        setMask(mask) {
+            this.setAttribute("mask", mask);
+            this.setRendered(false);
+        }
+        doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c, root) {
+            let mask = this.getMask();
+            if (mask != null && mask.trim().length > 0) {
+                let elem = this.getNative();
+                let jq = $(elem);
+                $(elem)["inputmask"].call(jq, mask);
+                eval("");
+            }
+        }
+        /**
+         *
+         * @param {input.JSTextInput} c
+         * @param {HTMLElement} root
+         */
+        doRender(c, root) {
+            if (((c != null && c instanceof input.JSTextInput) || c === null) && ((root != null && root instanceof HTMLElement) || root === null)) {
+                return this.doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c, root);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+    }
+    input.JSTextInput = JSTextInput;
+    JSTextInput["__class"] = "framework.components.input.JSTextInput";
+    JSTextInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable", "framework.components.api.Renderer"];
+})(input || (input = {}));
+(function (input) {
+    class JSTimeInput extends input.AbstractJSInput {
+        constructor(name) {
+            super(name);
+            /*private*/ this.savedDate = new Date();
+            this.setAttribute("type", "time");
+            this.setAttribute("identifier", "html:time-input");
+        }
+        /**
+         *
+         * @return {Date}
+         */
+        getValue() {
+            let time = this.getStringValue();
+            let d = this.savedDate;
+            if (time != null && (time.indexOf(":") != -1)) {
+                let htmn = time.split(":");
+                d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
+            }
+            return d;
+        }
+        setValue$jsweet_lang_Date(val) {
+            if (val != null) {
+                this.savedDate = val;
+                let mins = val.getMinutes() + "";
+                if (mins.length === 1) {
+                    mins = "0" + mins;
+                }
+                let hrs = val.getHours() + "";
+                if (hrs.length === 1) {
+                    hrs = "0" + hrs;
+                }
+                this.setStringValue(hrs + ":" + mins);
+            }
+        }
+        /**
+         *
+         * @param {Date} val
+         */
+        setValue(val) {
+            if (((val != null && val instanceof Date) || val === null)) {
+                return this.setValue$jsweet_lang_Date(val);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+    }
+    input.JSTimeInput = JSTimeInput;
+    JSTimeInput["__class"] = "framework.components.input.JSTimeInput";
+    JSTimeInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
+})(input || (input = {}));
+(function (input) {
+    class RichTextEditor extends input.JSTextArea {
+        constructor(name) {
+            super(name);
+            /*private*/ this.editor = null;
+            this.setAttribute("identifier", "html:richtext");
+            this.addRenderer(this);
+        }
+        doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root) {
+            if (this.editor == null) {
+                eval("this.editor = new Simditor({textarea: $(\'#" + this.getId() + "\')});");
+            }
+        }
+        /**
+         *
+         * @param {input.RichTextEditor} c
+         * @param {HTMLElement} root
+         */
+        doRender(c, root) {
+            if (((c != null && c instanceof input.RichTextEditor) || c === null) && ((root != null && root instanceof HTMLElement) || root === null)) {
+                return this.doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        /**
+         *
+         * @return {string}
+         */
+        getValue() {
+            if (this.editor != null) {
+                this.editor["saveContent"].call(this.editor);
+            }
+            return super.getValue();
+        }
+    }
+    input.RichTextEditor = RichTextEditor;
+    RichTextEditor["__class"] = "framework.components.input.RichTextEditor";
+    RichTextEditor["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable", "framework.components.api.Renderer"];
+})(input || (input = {}));
+(function (input) {
     class JSRadio extends input.JSCheckBox {
         constructor(name) {
             super(name);
@@ -3859,7 +3845,6 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework
     JSRadio["__class"] = "framework.components.input.JSRadio";
     JSRadio["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
-JSTemplateContainer.GLOBAL_TEMPLATES_$LI$();
 JSContainer.defaultRenderer_$LI$();
 input.NumericInputTypes.types_$LI$();
 input.DateInputTypes.types_$LI$();

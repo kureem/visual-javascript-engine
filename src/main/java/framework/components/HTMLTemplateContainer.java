@@ -40,9 +40,9 @@ import jsweet.lang.Object;
  * @author Rossaye Abdool Kureem
  *
  */
-public class JSTemplateContainer extends JSContainer implements TemplateRenderable {
+public class HTMLTemplateContainer extends JSContainer implements TemplateRenderable {
 
-	public final static Object GLOBAL_TEMPLATES = new Object();
+	//public final static Object GLOBAL_TEMPLATES = new Object();
 
 	/**
 	 * A context that contains variables exposed to the html template. This can be
@@ -62,7 +62,7 @@ public class JSTemplateContainer extends JSContainer implements TemplateRenderab
 	 * @param template
 	 *            The html template of this component
 	 */
-	public JSTemplateContainer(String name, String template) {
+	public HTMLTemplateContainer(String name, String template) {
 		super(name, "div");
 		setTemplate(template);
 	}
@@ -114,21 +114,16 @@ public class JSTemplateContainer extends JSContainer implements TemplateRenderab
 	public void render(HTMLElement parent) {
 
 		if (!isRendered()) {
-			String attr = getTemplate();
+			//String attr = getTemplate();
 			// String html = $(getTemplate()).html();
-			String html = (String) GLOBAL_TEMPLATES.$get(attr.replace("#", ""));
-			if(compiled) {
-				html = attr;
-			}
+			//String html = (String) GLOBAL_TEMPLATES.$get(attr.replace("#", ""));
+			//if(compiled) {
+				//html = attr;
+			//}
+			String html = getTemplate();
 			if (html != null) {
 				Object cxt = context;
-				String rendered = "";
-				Object mustache = (Object) window.$get("Mustache");
-				if (mustache != null) {
-					rendered = (String) invokeFunction(mustache, "render", html, cxt);
-				} else {
-					rendered = html;
-				}
+				String rendered = compile(html, cxt);
 				
 				HTMLElement tmp = document.createElement("div");
 				tmp.innerHTML = rendered;
@@ -148,6 +143,10 @@ public class JSTemplateContainer extends JSContainer implements TemplateRenderab
 
 		}
 		super.render(parent);
+	}
+	
+	public String compile(String html, Object ctx) {
+		return html;
 	}
 
 	public static java.lang.Object invokeFunction(jsweet.lang.Object target, String function, java.lang.Object...args){

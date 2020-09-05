@@ -195,17 +195,51 @@ namespace api {
     }
 }
 namespace api {
+    /**
+     * All components which allows a user to input a value implements this interface.<br>
+     * This interface defines methods that allows setting and retrieving values
+     * @author Kureem Rossaye
+     * 
+     * @param <T>
+     * @class
+     */
     export interface InputField<T> extends api.Renderable {
+        /**
+         * Returns the value entered
+         * @return {*} The value entered
+         */
         getValue() : T;
 
+        /**
+         * Sets the value to the component
+         * @param {*} val The value to set
+         */
         setValue(val : T);
 
+        /**
+         * Validates the value entered
+         * @throws ValidationException Exception throws if the value is not valid
+         */
         validate();
 
+        /**
+         * This returns a key to which the value can be bound.
+         * @return {string} The binding key
+         */
         getBinding() : string;
 
+        /**
+         * Sets the binding key to which the value can be bound
+         * @param {string} binding The binding key
+         * @return {*} The new state of this component
+         */
         setBinding(binding : string) : InputField<T>;
 
+        /**
+         * Makes the field required or not
+         * @param {boolean} b required or not
+         * @return {*} The new state of this component
+         */
         setRequired(b : boolean) : InputField<T>;
     }
 }
@@ -630,7 +664,19 @@ namespace api {
     }
 }
 namespace api {
+    /**
+     * Interface to implemented by renderer of components
+     * @author Kureem Rossaye
+     * 
+     * @param <T>
+     * @class
+     */
     export interface Renderer<T extends api.Renderable> {
+        /**
+         * Render the specified component and attach it to the specified parent
+         * @param {*} renderable The component to render
+         * @param {HTMLElement} parent The parent to which the component is attached
+         */
         doRender(renderable : T, parent : HTMLElement);
     }
 }
@@ -656,17 +702,46 @@ namespace api {
 
 }
 namespace api {
+    /**
+     * More specific component that is rendered based on a specified template instead of a simple tag
+     * @author Kureem Rossaye
+     * @class
+     */
     export interface TemplateRenderable extends api.Renderable {
+        /**
+         * Returns the html template of the component
+         * @return {string} The html template of the component
+         */
         getTemplate() : string;
 
+        /**
+         * Sets the template for this component
+         * @param {string} template The template for the component
+         */
         setTemplate(template : string);
 
+        /**
+         * data injected to the component that can be used by the compiler to compile the template
+         * @return {Object} Data injected to the component
+         */
         getContext() : Object;
 
+        /**
+         * Render the component and attach it to the specified parent
+         * @param {HTMLElement} parent
+         */
         render(parent? : any) : any;
 
+        /**
+         * Sets the component as already compiled
+         * @param {boolean} compiled Whether the component is compiled or not
+         */
         setCompiled(compiled : boolean);
 
+        /**
+         * Indicates if the component is compiled or not
+         * @return {boolean} Indicates if the component is compiled or not
+         */
         isCompiled() : boolean;
     }
 }
@@ -724,7 +799,7 @@ namespace api {
 
         /**
          * Is a <code>Numeric</code> indicating the value exceeds the specified
-         * <code>maxlength</code> for {@link JSStringInput}
+         * <code>maxlength</code> for {@link JSTextInput}
          * component.
          * <em><strong>Note:</strong> This will never be <code>true</code> in Gecko,
          * because elements' values are prevented from being longer than
@@ -828,7 +903,7 @@ namespace input {
 }
 namespace util {
     export class ComponentUtil {
-        public static visit(designable : api.Renderable, visitor : ComponentUtil.DesignableVisitor) {
+        public static visit(designable : api.Renderable, visitor : ComponentUtil.ComponentVisitor) {
             visitor.doVisit(designable);
             {
                 let array196 = designable.getChildren();
@@ -861,7 +936,7 @@ namespace util {
 
     export namespace ComponentUtil {
 
-        export interface DesignableVisitor {
+        export interface ComponentVisitor {
             doVisit(designable : api.Renderable);
         }
     }
@@ -2222,6 +2297,126 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable","fra
 
 
 
+/**
+ * Constructs an instance of this component
+ * 
+ * @param {string} name
+ * The name of the component
+ * @param {string} template
+ * The html template of this component
+ * @class
+ * @extends JSContainer
+ * @author Rossaye Abdool Kureem
+ */
+class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderable {
+    /**
+     * A context that contains variables exposed to the html template. This can be
+     * used by javascript to transmit data from the framework to the template
+     */
+    public context : Object = <Object>new Object();
+
+    /*private*/ compiled : boolean = false;
+
+    /*private*/ template : string;
+
+    public constructor(name : string, template : string) {
+        super(name, "div");
+        if(this.template===undefined) this.template = null;
+        this.setTemplate(template);
+    }
+
+    public setCompiled(compiled : boolean) {
+        this.compiled = compiled;
+        this.setRendered(false);
+    }
+
+    public isCompiled() : boolean {
+        return this.compiled;
+    }
+
+    /**
+     * 
+     * @return {string} The template of the component
+     */
+    public getTemplate() : string {
+        return this.template;
+    }
+
+    /**
+     * Sets the template of this component
+     * 
+     * @param {string} template
+     * The template of this component
+     */
+    public setTemplate(template : string) {
+        this.template = template;
+        this.setRendered(false);
+    }
+
+    /**
+     * 
+     * @return {Object} The variable context of this component
+     */
+    public getContext() : Object {
+        return this.context;
+    }
+
+    public render$jsweet_dom_HTMLElement(parent : HTMLElement) {
+        if(!this.isRendered()) {
+            let html : string = this.getTemplate();
+            if(html != null) {
+                let cxt : Object = this.context;
+                let rendered : string = this.compile(html, cxt);
+                let tmp : HTMLElement = document.createElement("div");
+                tmp.innerHTML = rendered;
+                let tm : Element = tmp.firstElementChild;
+                rendered = tm.innerHTML;
+                let tag : string = tm.tagName;
+                this.setTag(tag);
+                let attrs : NamedNodeMap = tm.attributes;
+                for(let index229=0; index229 < attrs.length; index229++) {
+                    let att = attrs[index229];
+                    {
+                        this.setAttribute(att.name, att.value);
+                    }
+                }
+                this.setHtml(rendered);
+            } else {
+                this.setHtml("Cannot load template:" + this.getTemplate());
+            }
+        }
+        super.render$jsweet_dom_HTMLElement(parent);
+    }
+
+    /**
+     * 
+     * @param {HTMLElement} parent
+     */
+    public render(parent? : any) : any {
+        if(((parent != null && parent instanceof <any>HTMLElement) || parent === null)) {
+            return <any>this.render$jsweet_dom_HTMLElement(parent);
+        } else if(parent === undefined) {
+            return <any>this.render$();
+        } else throw new Error('invalid overload');
+    }
+
+    public compile(html : string, ctx : Object) : string {
+        return html;
+    }
+
+    public static invokeFunction(target : Object, __function : string, ...args : any[]) : any {
+        if(target.hasOwnProperty(__function)) {
+            return (o => o.call.apply(o, [target].concat(<any[]>args)))((<Function>target[__function]));
+        } else {
+            throw new Error(target + " does not contain function:" + __function);
+        }
+    }
+}
+HTMLTemplateContainer["__class"] = "framework.components.HTMLTemplateContainer";
+HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable","framework.components.api.TemplateRenderable"];
+
+
+
 namespace input {
     export abstract class AbstractJSInput<T> extends JSContainer implements api.InputField<T> {
         /*private*/ validators : Array<api.Validator<T>> = <any>(new Array<api.Validator<T>>());
@@ -2397,8 +2592,8 @@ namespace input {
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index229=0; index229 < this.validators.length; index229++) {
-                let v = this.validators[index229];
+            for(let index230=0; index230 < this.validators.length; index230++) {
+                let v = this.validators[index230];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -2554,7 +2749,7 @@ namespace input {
 
     export namespace Form {
 
-        export class Form$0 implements util.ComponentUtil.DesignableVisitor {
+        export class Form$0 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -2581,11 +2776,11 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$0["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$0["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
 
-        export class Form$1 implements util.ComponentUtil.DesignableVisitor {
+        export class Form$1 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -2609,11 +2804,11 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$1["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$1["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
 
-        export class Form$2 implements util.ComponentUtil.DesignableVisitor {
+        export class Form$2 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -2651,11 +2846,11 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$2["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
 
-        export class Form$3 implements util.ComponentUtil.DesignableVisitor {
+        export class Form$3 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -2676,7 +2871,7 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$3["__interfaces"] = ["framework.components.util.ComponentUtil.DesignableVisitor"];
+        Form$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
     }
@@ -2781,8 +2976,8 @@ namespace input {
         public validate() {
             let valid : boolean = true;
             let e : api.ValidationException = new api.ValidationException();
-            for(let index230=0; index230 < this.validators.length; index230++) {
-                let v = this.validators[index230];
+            for(let index231=0; index231 < this.validators.length; index231++) {
+                let v = this.validators[index231];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -2962,8 +3157,8 @@ namespace input {
 
         public setOptions$java_lang_String(options : string) : JSSelect {
             let opts : string[] = options.split("\n");
-            for(let index231=0; index231 < opts.length; index231++) {
-                let opt = opts[index231];
+            for(let index232=0; index232 < opts.length; index232++) {
+                let opt = opts[index232];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3082,8 +3277,8 @@ namespace input {
             if(ele != null) {
                 if(ele.multiple) {
                     let result : Array<string> = <any>(new Array<string>());
-                    for(let index232=0; index232 < ele.children.length; index232++) {
-                        let e = ele.children[index232];
+                    for(let index233=0; index233 < ele.children.length; index233++) {
+                        let e = ele.children[index233];
                         {
                             let opt : HTMLOptionElement = <HTMLOptionElement>e;
                             if(opt.selected) result.push(opt.value);
@@ -3096,9 +3291,9 @@ namespace input {
             } else {
                 let val : string = this.getAttribute("value");
                 {
-                    let array234 = this.getChildren();
-                    for(let index233=0; index233 < array234.length; index233++) {
-                        let opt = array234[index233];
+                    let array235 = this.getChildren();
+                    for(let index234=0; index234 < array235.length; index234++) {
+                        let opt = array235[index234];
                         {
                             if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(opt.getAttribute("value"),val))) {
                                 return (<input.JSOption><any>opt).getValue();
@@ -3135,13 +3330,13 @@ namespace input {
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array236 = this.getChildren();
-                    for(let index235=0; index235 < array236.length; index235++) {
-                        let opt = array236[index235];
+                    let array237 = this.getChildren();
+                    for(let index236=0; index236 < array237.length; index236++) {
+                        let opt = array237[index236];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
-                            for(let index237=0; index237 < arrVal.length; index237++) {
-                                let val = arrVal[index237];
+                            for(let index238=0; index238 < arrVal.length; index238++) {
+                                let val = arrVal[index238];
                                 {
                                     if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(opt.getAttribute("value"),val))) {
                                         (<input.JSOption><any>opt).setSelected(true);
@@ -3153,9 +3348,9 @@ namespace input {
                 }
             } else {
                 {
-                    let array239 = this.getChildren();
-                    for(let index238=0; index238 < array239.length; index238++) {
-                        let opt = array239[index238];
+                    let array240 = this.getChildren();
+                    for(let index239=0; index239 < array240.length; index239++) {
+                        let opt = array240[index239];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
                         }
@@ -3187,8 +3382,8 @@ namespace input {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index240=0; index240 < this.validators.length; index240++) {
-                let v = this.validators[index240];
+            for(let index241=0; index241 < this.validators.length; index241++) {
+                let v = this.validators[index241];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -3222,8 +3417,8 @@ namespace input {
         public setData(data_ : Array<Object>) {
             this.clearChildren();
             this.setRendered(false);
-            for(let index241=0; index241 < data_.length; index241++) {
-                let o = data_[index241];
+            for(let index242=0; index242 < data_.length; index242++) {
+                let o = data_[index242];
                 {
                     if(o.hasOwnProperty("value")) {
                         let value : string = <string>o["value"];
@@ -3247,9 +3442,9 @@ namespace input {
             let result : Array<Object> = <any>(new Array<Object>());
             if(this.isMultiple()) {
                 {
-                    let array243 = <Array<string>>obj;
-                    for(let index242=0; index242 < array243.length; index242++) {
-                        let o = array243[index242];
+                    let array244 = <Array<string>>obj;
+                    for(let index243=0; index243 < array244.length; index243++) {
+                        let o = array244[index243];
                         {
                             let item : Object = this.findItem(o);
                             if(item != null) {
@@ -3275,8 +3470,8 @@ namespace input {
 
         public findItem(value : string) : Object {
             if(this.data != null) {
-                for(let index244=0; index244 < this.data.length; index244++) {
-                    let o = this.data[index244];
+                for(let index245=0; index245 < this.data.length; index245++) {
+                    let o = this.data[index245];
                     {
                         let val : string = <string>o["value"];
                         val = val + "";
@@ -3378,8 +3573,8 @@ namespace input {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index245=0; index245 < this.validators.length; index245++) {
-                let v = this.validators[index245];
+            for(let index246=0; index246 < this.validators.length; index246++) {
+                let v = this.validators[index246];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -3434,134 +3629,6 @@ namespace input {
 
 
 }
-/**
- * Constructs an instance of this component
- * 
- * @param {string} name
- * The name of the component
- * @param {string} template
- * The html template of this component
- * @class
- * @extends JSContainer
- * @author Rossaye Abdool Kureem
- */
-class JSTemplateContainer extends JSContainer implements api.TemplateRenderable {
-    public static GLOBAL_TEMPLATES : Object; public static GLOBAL_TEMPLATES_$LI$() : Object { if(JSTemplateContainer.GLOBAL_TEMPLATES == null) JSTemplateContainer.GLOBAL_TEMPLATES = <Object>new Object(); return JSTemplateContainer.GLOBAL_TEMPLATES; };
-
-    /**
-     * A context that contains variables exposed to the html template. This can be
-     * used by javascript to transmit data from the framework to the template
-     */
-    public context : Object = <Object>new Object();
-
-    /*private*/ compiled : boolean = false;
-
-    /*private*/ template : string;
-
-    public constructor(name : string, template : string) {
-        super(name, "div");
-        if(this.template===undefined) this.template = null;
-        this.setTemplate(template);
-    }
-
-    public setCompiled(compiled : boolean) {
-        this.compiled = compiled;
-        this.setRendered(false);
-    }
-
-    public isCompiled() : boolean {
-        return this.compiled;
-    }
-
-    /**
-     * 
-     * @return {string} The template of the component
-     */
-    public getTemplate() : string {
-        return this.template;
-    }
-
-    /**
-     * Sets the template of this component
-     * 
-     * @param {string} template
-     * The template of this component
-     */
-    public setTemplate(template : string) {
-        this.template = template;
-        this.setRendered(false);
-    }
-
-    /**
-     * 
-     * @return {Object} The variable context of this component
-     */
-    public getContext() : Object {
-        return this.context;
-    }
-
-    public render$jsweet_dom_HTMLElement(parent : HTMLElement) {
-        if(!this.isRendered()) {
-            let attr : string = this.getTemplate();
-            let html : string = <string>JSTemplateContainer.GLOBAL_TEMPLATES_$LI$()[/* replace */attr.split("#").join("")];
-            if(this.compiled) {
-                html = attr;
-            }
-            if(html != null) {
-                let cxt : Object = this.context;
-                let rendered : string = "";
-                let mustache : Object = <Object>window["Mustache"];
-                if(mustache != null) {
-                    rendered = <string>JSTemplateContainer.invokeFunction(mustache, "render", html, cxt);
-                } else {
-                    rendered = html;
-                }
-                let tmp : HTMLElement = document.createElement("div");
-                tmp.innerHTML = rendered;
-                let tm : Element = tmp.firstElementChild;
-                rendered = tm.innerHTML;
-                let tag : string = tm.tagName;
-                this.setTag(tag);
-                let attrs : NamedNodeMap = tm.attributes;
-                for(let index246=0; index246 < attrs.length; index246++) {
-                    let att = attrs[index246];
-                    {
-                        this.setAttribute(att.name, att.value);
-                    }
-                }
-                this.setHtml(rendered);
-            } else {
-                this.setHtml("Cannot load template:" + this.getTemplate());
-            }
-        }
-        super.render$jsweet_dom_HTMLElement(parent);
-    }
-
-    /**
-     * 
-     * @param {HTMLElement} parent
-     */
-    public render(parent? : any) : any {
-        if(((parent != null && parent instanceof <any>HTMLElement) || parent === null)) {
-            return <any>this.render$jsweet_dom_HTMLElement(parent);
-        } else if(parent === undefined) {
-            return <any>this.render$();
-        } else throw new Error('invalid overload');
-    }
-
-    public static invokeFunction(target : Object, __function : string, ...args : any[]) : any {
-        if(target.hasOwnProperty(__function)) {
-            return (o => o.call.apply(o, [target].concat(<any[]>args)))((<Function>target[__function]));
-        } else {
-            throw new Error(target + " does not contain function:" + __function);
-        }
-    }
-}
-JSTemplateContainer["__class"] = "framework.components.JSTemplateContainer";
-JSTemplateContainer["__interfaces"] = ["framework.components.api.Renderable","framework.components.api.TemplateRenderable"];
-
-
-
 class RestWebservice extends JSContainer {
     public constructor(name? : any) {
         if(((typeof name === 'string') || name === null)) {
@@ -3836,378 +3903,18 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 namespace input {
-    export class JSCheckBox extends input.AbstractJSInput<boolean> {
-        public constructor(name : string) {
-            super(name);
-            this.setAttribute("type", "checkbox");
-            this.setAttribute("identifier", "html:checkbox");
-        }
-
-        /**
-         * 
-         * @return {boolean}
-         */
-        public getValue() : boolean {
-            let el : HTMLInputElement = <HTMLInputElement>this.getNative();
-            if(el != null) {
-                return el.checked;
-            }
-            if(this.getAttribute("value") != null && /* equalsIgnoreCase */((o1, o2) => o1.toUpperCase() === (o2===null?o2:o2.toUpperCase()))("true", this.getAttribute("value"))) {
-                return true;
-            }
-            return false;
-        }
-
-        public setValue$java_lang_Boolean(b : boolean) {
-            if(b) {
-                this.setAttribute("value", "true");
-                this.setAttribute("checked", "true");
-            } else {
-                this.setAttribute("value", "false");
-                this.setAttribute("checked", null);
-            }
-            let el : HTMLInputElement = <HTMLInputElement>this.getNative();
-            if(el != null) {
-                el.checked = b;
-            }
-        }
-
-        /**
-         * 
-         * @param {boolean} b
-         */
-        public setValue(b? : any) : any {
-            if(((typeof b === 'boolean') || b === null)) {
-                return <any>this.setValue$java_lang_Boolean(b);
-            } else throw new Error('invalid overload');
-        }
-
-        public isChecked() : boolean {
-            return this.getValue();
-        }
-
-        public setChecked(b : boolean) {
-            this.setValue$java_lang_Boolean(b);
-        }
-    }
-    JSCheckBox["__class"] = "framework.components.input.JSCheckBox";
-    JSCheckBox["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    export class JSDateInput extends input.AbstractJSInput<Date> {
-        public constructor(name : string) {
-            super(name);
-            this.setAttribute("identifier", "html:date-input");
-            this.setType(input.DateInputTypes.date);
-            this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
-        }
-
-        public setType(type : string) : JSDateInput {
-            this.setAttribute("type", type);
-            return this;
-        }
-
-        /**
-         * 
-         * @return {Date}
-         */
-        public getValue() : Date {
-            return this.getDateValue();
-        }
-
-        public setValue$jsweet_lang_Date(val : Date) {
-            this.setDateValue(val);
-        }
-
-        /**
-         * 
-         * @param {Date} val
-         */
-        public setValue(val? : any) : any {
-            if(((val != null && val instanceof <any>Date) || val === null)) {
-                return <any>this.setValue$jsweet_lang_Date(val);
-            } else throw new Error('invalid overload');
-        }
-
-        public setMin(min : Date) {
-            this.setAttribute("min", this.toHtmlDateString(min));
-        }
-
-        public setMax(max : Date) {
-            this.setAttribute("max", this.toHtmlDateString(max));
-        }
-    }
-    JSDateInput["__class"] = "framework.components.input.JSDateInput";
-    JSDateInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-
-    export namespace JSDateInput {
-
-        export class JSDateInput$0 implements api.EventListener {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} source
-             * @param {Event} evt
-             */
-            public performAction(source : api.Renderable, evt : Event) {
-                this.__parent.setValue(this.__parent.getValue());
-            }
-
-            constructor(__parent: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSDateInput$0["__interfaces"] = ["framework.components.api.EventListener"];
-
-
-    }
-
-}
-namespace input {
-    export class JSNumericInput extends input.AbstractJSInput<number> {
-        public constructor(name : string) {
-            super(name);
-            this.setAttribute("type", "number");
-            this.setAttribute("identifier", "html:numeric-input");
-        }
-
-        public setType(type : string) : JSNumericInput {
-            this.setAttribute("type", type);
-            return this;
-        }
-
-        public setStep(step : number) {
-            this.setAttribute("step", step + "");
-        }
-
-        public getStep() : number {
-            return parseInt(this.getAttribute("step"));
-        }
-
-        /**
-         * 
-         * @return {number}
-         */
-        public getValue() : number {
-            return this.getDoubleValue();
-        }
-
-        public setValue$java_lang_Double(val : number) {
-            this.setDoubleValue(val);
-        }
-
-        /**
-         * 
-         * @param {number} val
-         */
-        public setValue(val? : any) : any {
-            if(((typeof val === 'number') || val === null)) {
-                return <any>this.setValue$java_lang_Double(val);
-            } else throw new Error('invalid overload');
-        }
-
-        public setMin(min : number) {
-            this.setAttribute("min", min + "");
-        }
-
-        public setMax(max : number) {
-            this.setAttribute("max", "" + max);
-        }
-    }
-    JSNumericInput["__class"] = "framework.components.input.JSNumericInput";
-    JSNumericInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    export class JSStringInput extends input.AbstractJSInput<string> implements api.Renderer<JSStringInput> {
-        public constructor(name : string) {
-            super(name);
-            this.setType(api.StringInputTypes.text);
-            this.setAttribute("identifier", "html:input");
-            this.addRenderer(this);
-        }
-
-        public setMaxLength(length : number) {
-            this.setAttribute("maxlength", length + "");
-        }
-
-        public setType(type : string) : JSStringInput {
-            this.setAttribute("type", type);
-            return this;
-        }
-
-        /**
-         * 
-         * @return {string}
-         */
-        public getValue() : string {
-            return this.getStringValue();
-        }
-
-        public setValue$java_lang_String(val : string) {
-            this.setStringValue(val);
-        }
-
-        /**
-         * 
-         * @param {string} val
-         */
-        public setValue(val? : any) : any {
-            if(((typeof val === 'string') || val === null)) {
-                return <any>this.setValue$java_lang_String(val);
-            } else throw new Error('invalid overload');
-        }
-
-        public getMask() : string {
-            return this.getAttribute("mask");
-        }
-
-        public setMask(mask : string) {
-            this.setAttribute("mask", mask);
-            this.setRendered(false);
-        }
-
-        public doRender$framework_components_input_JSStringInput$jsweet_dom_HTMLElement(c : JSStringInput, root : HTMLElement) {
-            let mask : string = this.getMask();
-            if(mask != null && mask.trim().length > 0) {
-                let elem : HTMLElement = this.getNative();
-                let jq : JQuery = $(elem);
-                (<Function>$(elem)["inputmask"]).call(jq, mask);
-                eval("");
-            }
-        }
-
-        /**
-         * 
-         * @param {input.JSStringInput} c
-         * @param {HTMLElement} root
-         */
-        public doRender(c? : any, root? : any) : any {
-            if(((c != null && c instanceof <any>input.JSStringInput) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
-                return <any>this.doRender$framework_components_input_JSStringInput$jsweet_dom_HTMLElement(c, root);
-            } else throw new Error('invalid overload');
-        }
-    }
-    JSStringInput["__class"] = "framework.components.input.JSStringInput";
-    JSStringInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.Renderer"];
-
-
-}
-namespace input {
-    export class JSTimeInput extends input.AbstractJSInput<Date> {
-        /*private*/ savedDate : Date = new Date();
-
-        public constructor(name : string) {
-            super(name);
-            this.setAttribute("type", "time");
-            this.setAttribute("identifier", "html:time-input");
-        }
-
-        /**
-         * 
-         * @return {Date}
-         */
-        public getValue() : Date {
-            let time : string = this.getStringValue();
-            let d : Date = this.savedDate;
-            if(time != null && /* contains */(time.indexOf(":") != -1)) {
-                let htmn : string[] = time.split(":");
-                d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
-            }
-            return d;
-        }
-
-        public setValue$jsweet_lang_Date(val : Date) {
-            if(val != null) {
-                this.savedDate = val;
-                let mins : string = val.getMinutes() + "";
-                if(mins.length === 1) {
-                    mins = "0" + mins;
-                }
-                let hrs : string = val.getHours() + "";
-                if(hrs.length === 1) {
-                    hrs = "0" + hrs;
-                }
-                this.setStringValue(hrs + ":" + mins);
-            }
-        }
-
-        /**
-         * 
-         * @param {Date} val
-         */
-        public setValue(val? : any) : any {
-            if(((val != null && val instanceof <any>Date) || val === null)) {
-                return <any>this.setValue$jsweet_lang_Date(val);
-            } else throw new Error('invalid overload');
-        }
-    }
-    JSTimeInput["__class"] = "framework.components.input.JSTimeInput";
-    JSTimeInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    export class RichTextEditor extends input.JSTextArea implements api.Renderer<RichTextEditor> {
-        /*private*/ editor : Object = null;
-
-        public constructor(name : string) {
-            super(name);
-            this.setAttribute("identifier", "html:richtext");
-            this.addRenderer(this);
-        }
-
-        public doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c : RichTextEditor, root : HTMLElement) {
-            if(this.editor == null) {
-                eval("this.editor = new Simditor({textarea: $(\'#" + this.getId() + "\')});");
-            }
-        }
-
-        /**
-         * 
-         * @param {input.RichTextEditor} c
-         * @param {HTMLElement} root
-         */
-        public doRender(c? : any, root? : any) : any {
-            if(((c != null && c instanceof <any>input.RichTextEditor) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
-                return <any>this.doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root);
-            } else throw new Error('invalid overload');
-        }
-
-        /**
-         * 
-         * @return {string}
-         */
-        public getValue() : string {
-            if(this.editor != null) {
-                (<Function>this.editor["saveContent"]).call(this.editor);
-            }
-            return super.getValue();
-        }
-    }
-    RichTextEditor["__class"] = "framework.components.input.RichTextEditor";
-    RichTextEditor["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.Renderer"];
-
-
-}
-namespace input {
-    export class JSAddressInput extends JSTemplateContainer implements api.InputField<Object> {
+    export class JSAddressInput extends HTMLTemplateContainer implements api.InputField<Object> {
         /*private*/ address : Object = <Object>new Object();
 
         /*private*/ country : input.JSSelect = new input.JSSelect("country");
 
-        /*private*/ city : input.JSStringInput = new input.JSStringInput("city");
+        /*private*/ city : input.JSTextInput = new input.JSTextInput("city");
 
-        /*private*/ postalCode : input.JSStringInput = new input.JSStringInput("postalCode");
+        /*private*/ postalCode : input.JSTextInput = new input.JSTextInput("postalCode");
 
-        /*private*/ state : input.JSStringInput = new input.JSStringInput("state");
+        /*private*/ state : input.JSTextInput = new input.JSTextInput("state");
 
-        /*private*/ street : input.JSStringInput = new input.JSStringInput("street");
+        /*private*/ street : input.JSTextInput = new input.JSTextInput("street");
 
         public constructor(name : string) {
             super(name, "");
@@ -4313,10 +4020,10 @@ namespace input {
  * @param {string} url The url where to submit uploaded file
  * @param {string} template
  * @class
- * @extends JSTemplateContainer
+ * @extends HTMLTemplateContainer
  * @author Rossaye Abdool Kureem
  */
-class JSUpload extends JSTemplateContainer implements api.EventListener, api.InputField<Object> {
+class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.InputField<Object> {
     /*private*/ label : JSContainer;
 
     /*private*/ input : JSContainer;
@@ -4504,6 +4211,363 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener","framework.
 
 
 namespace input {
+    export class JSCheckBox extends input.AbstractJSInput<boolean> {
+        public constructor(name : string) {
+            super(name);
+            this.setAttribute("type", "checkbox");
+        }
+
+        /**
+         * 
+         * @return {boolean}
+         */
+        public getValue() : boolean {
+            let el : HTMLInputElement = <HTMLInputElement>this.getNative();
+            if(el != null) {
+                return el.checked;
+            }
+            if(this.getAttribute("value") != null && /* equalsIgnoreCase */((o1, o2) => o1.toUpperCase() === (o2===null?o2:o2.toUpperCase()))("true", this.getAttribute("value"))) {
+                return true;
+            }
+            return false;
+        }
+
+        public setValue$java_lang_Boolean(b : boolean) {
+            if(b) {
+                this.setAttribute("value", "true");
+                this.setAttribute("checked", "true");
+            } else {
+                this.setAttribute("value", "false");
+                this.setAttribute("checked", null);
+            }
+            let el : HTMLInputElement = <HTMLInputElement>this.getNative();
+            if(el != null) {
+                el.checked = b;
+            }
+        }
+
+        /**
+         * 
+         * @param {boolean} b
+         */
+        public setValue(b? : any) : any {
+            if(((typeof b === 'boolean') || b === null)) {
+                return <any>this.setValue$java_lang_Boolean(b);
+            } else throw new Error('invalid overload');
+        }
+
+        public isChecked() : boolean {
+            return this.getValue();
+        }
+
+        public setChecked(b : boolean) {
+            this.setValue$java_lang_Boolean(b);
+        }
+    }
+    JSCheckBox["__class"] = "framework.components.input.JSCheckBox";
+    JSCheckBox["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    export class JSDateInput extends input.AbstractJSInput<Date> {
+        public constructor(name : string) {
+            super(name);
+            this.setType(input.DateInputTypes.date);
+            this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
+        }
+
+        public setType(type : string) : JSDateInput {
+            this.setAttribute("type", type);
+            return this;
+        }
+
+        /**
+         * 
+         * @return {Date}
+         */
+        public getValue() : Date {
+            return this.getDateValue();
+        }
+
+        public setValue$jsweet_lang_Date(val : Date) {
+            this.setDateValue(val);
+        }
+
+        /**
+         * 
+         * @param {Date} val
+         */
+        public setValue(val? : any) : any {
+            if(((val != null && val instanceof <any>Date) || val === null)) {
+                return <any>this.setValue$jsweet_lang_Date(val);
+            } else throw new Error('invalid overload');
+        }
+
+        public setMin(min : Date) {
+            this.setAttribute("min", this.toHtmlDateString(min));
+        }
+
+        public setMax(max : Date) {
+            this.setAttribute("max", this.toHtmlDateString(max));
+        }
+    }
+    JSDateInput["__class"] = "framework.components.input.JSDateInput";
+    JSDateInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+
+    export namespace JSDateInput {
+
+        export class JSDateInput$0 implements api.EventListener {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} source
+             * @param {Event} evt
+             */
+            public performAction(source : api.Renderable, evt : Event) {
+                this.__parent.setValue(this.__parent.getValue());
+            }
+
+            constructor(__parent: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSDateInput$0["__interfaces"] = ["framework.components.api.EventListener"];
+
+
+    }
+
+}
+namespace input {
+    export class JSNumberInput extends input.AbstractJSInput<number> {
+        public constructor(name : string) {
+            super(name);
+            this.setAttribute("type", "number");
+        }
+
+        public setType(type : string) : JSNumberInput {
+            this.setAttribute("type", type);
+            return this;
+        }
+
+        public setStep(step : number) {
+            this.setAttribute("step", step + "");
+        }
+
+        public getStep() : number {
+            return parseInt(this.getAttribute("step"));
+        }
+
+        /**
+         * 
+         * @return {number}
+         */
+        public getValue() : number {
+            return this.getDoubleValue();
+        }
+
+        public setValue$java_lang_Double(val : number) {
+            this.setDoubleValue(val);
+        }
+
+        /**
+         * 
+         * @param {number} val
+         */
+        public setValue(val? : any) : any {
+            if(((typeof val === 'number') || val === null)) {
+                return <any>this.setValue$java_lang_Double(val);
+            } else throw new Error('invalid overload');
+        }
+
+        public setMin(min : number) {
+            this.setAttribute("min", min + "");
+        }
+
+        public setMax(max : number) {
+            this.setAttribute("max", "" + max);
+        }
+    }
+    JSNumberInput["__class"] = "framework.components.input.JSNumberInput";
+    JSNumberInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    export class JSTextInput extends input.AbstractJSInput<string> implements api.Renderer<JSTextInput> {
+        public constructor(name : string) {
+            super(name);
+            this.setType(api.StringInputTypes.text);
+            this.setAttribute("identifier", "html:input");
+            this.addRenderer(this);
+        }
+
+        public setMaxLength(length : number) {
+            this.setAttribute("maxlength", length + "");
+        }
+
+        public setType(type : string) : JSTextInput {
+            this.setAttribute("type", type);
+            return this;
+        }
+
+        /**
+         * 
+         * @return {string}
+         */
+        public getValue() : string {
+            return this.getStringValue();
+        }
+
+        public setValue$java_lang_String(val : string) {
+            this.setStringValue(val);
+        }
+
+        /**
+         * 
+         * @param {string} val
+         */
+        public setValue(val? : any) : any {
+            if(((typeof val === 'string') || val === null)) {
+                return <any>this.setValue$java_lang_String(val);
+            } else throw new Error('invalid overload');
+        }
+
+        public getMask() : string {
+            return this.getAttribute("mask");
+        }
+
+        public setMask(mask : string) {
+            this.setAttribute("mask", mask);
+            this.setRendered(false);
+        }
+
+        public doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c : JSTextInput, root : HTMLElement) {
+            let mask : string = this.getMask();
+            if(mask != null && mask.trim().length > 0) {
+                let elem : HTMLElement = this.getNative();
+                let jq : JQuery = $(elem);
+                (<Function>$(elem)["inputmask"]).call(jq, mask);
+                eval("");
+            }
+        }
+
+        /**
+         * 
+         * @param {input.JSTextInput} c
+         * @param {HTMLElement} root
+         */
+        public doRender(c? : any, root? : any) : any {
+            if(((c != null && c instanceof <any>input.JSTextInput) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
+                return <any>this.doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c, root);
+            } else throw new Error('invalid overload');
+        }
+    }
+    JSTextInput["__class"] = "framework.components.input.JSTextInput";
+    JSTextInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.Renderer"];
+
+
+}
+namespace input {
+    export class JSTimeInput extends input.AbstractJSInput<Date> {
+        /*private*/ savedDate : Date = new Date();
+
+        public constructor(name : string) {
+            super(name);
+            this.setAttribute("type", "time");
+            this.setAttribute("identifier", "html:time-input");
+        }
+
+        /**
+         * 
+         * @return {Date}
+         */
+        public getValue() : Date {
+            let time : string = this.getStringValue();
+            let d : Date = this.savedDate;
+            if(time != null && /* contains */(time.indexOf(":") != -1)) {
+                let htmn : string[] = time.split(":");
+                d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
+            }
+            return d;
+        }
+
+        public setValue$jsweet_lang_Date(val : Date) {
+            if(val != null) {
+                this.savedDate = val;
+                let mins : string = val.getMinutes() + "";
+                if(mins.length === 1) {
+                    mins = "0" + mins;
+                }
+                let hrs : string = val.getHours() + "";
+                if(hrs.length === 1) {
+                    hrs = "0" + hrs;
+                }
+                this.setStringValue(hrs + ":" + mins);
+            }
+        }
+
+        /**
+         * 
+         * @param {Date} val
+         */
+        public setValue(val? : any) : any {
+            if(((val != null && val instanceof <any>Date) || val === null)) {
+                return <any>this.setValue$jsweet_lang_Date(val);
+            } else throw new Error('invalid overload');
+        }
+    }
+    JSTimeInput["__class"] = "framework.components.input.JSTimeInput";
+    JSTimeInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    export class RichTextEditor extends input.JSTextArea implements api.Renderer<RichTextEditor> {
+        /*private*/ editor : Object = null;
+
+        public constructor(name : string) {
+            super(name);
+            this.setAttribute("identifier", "html:richtext");
+            this.addRenderer(this);
+        }
+
+        public doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c : RichTextEditor, root : HTMLElement) {
+            if(this.editor == null) {
+                eval("this.editor = new Simditor({textarea: $(\'#" + this.getId() + "\')});");
+            }
+        }
+
+        /**
+         * 
+         * @param {input.RichTextEditor} c
+         * @param {HTMLElement} root
+         */
+        public doRender(c? : any, root? : any) : any {
+            if(((c != null && c instanceof <any>input.RichTextEditor) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
+                return <any>this.doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root);
+            } else throw new Error('invalid overload');
+        }
+
+        /**
+         * 
+         * @return {string}
+         */
+        public getValue() : string {
+            if(this.editor != null) {
+                (<Function>this.editor["saveContent"]).call(this.editor);
+            }
+            return super.getValue();
+        }
+    }
+    RichTextEditor["__class"] = "framework.components.input.RichTextEditor";
+    RichTextEditor["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.Renderer"];
+
+
+}
+namespace input {
     export class JSRadio extends input.JSCheckBox {
         public constructor(name : string) {
             super(name);
@@ -4516,8 +4580,6 @@ namespace input {
 
 }
 
-
-JSTemplateContainer.GLOBAL_TEMPLATES_$LI$();
 
 JSContainer.defaultRenderer_$LI$();
 

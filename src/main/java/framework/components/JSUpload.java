@@ -4,10 +4,7 @@ import framework.components.api.EventListener;
 import framework.components.api.InputField;
 import framework.components.api.Renderable;
 import framework.components.api.ValidationException;
-import jsweet.dom.CustomEvent;
 import jsweet.dom.Event;
-import jsweet.dom.FormData;
-import jsweet.dom.HTMLFormElement;
 import jsweet.lang.Object;
 
 /**
@@ -16,7 +13,7 @@ import jsweet.lang.Object;
  * @author Rossaye Abdool Kureem
  *
  */
-public class JSUpload extends JSTemplateContainer implements EventListener, InputField<jsweet.lang.Object> {
+public class JSUpload extends HTMLTemplateContainer implements EventListener, InputField<jsweet.lang.Object> {
 
 	
 	private JSContainer label = new JSContainer("label","label");
