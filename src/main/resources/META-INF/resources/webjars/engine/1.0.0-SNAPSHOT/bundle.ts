@@ -731,18 +731,6 @@ namespace api {
          * @param {HTMLElement} parent
          */
         render(parent? : any) : any;
-
-        /**
-         * Sets the component as already compiled
-         * @param {boolean} compiled Whether the component is compiled or not
-         */
-        setCompiled(compiled : boolean);
-
-        /**
-         * Indicates if the component is compiled or not
-         * @return {boolean} Indicates if the component is compiled or not
-         */
-        isCompiled() : boolean;
     }
 }
 namespace api {
@@ -2300,10 +2288,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable","fra
 /**
  * Constructs an instance of this component
  * 
- * @param {string} name
- * The name of the component
- * @param {string} template
- * The html template of this component
+ * @param {string} name     The name of the component
+ * @param {string} template The html template of this component
  * @class
  * @extends JSContainer
  * @author Rossaye Abdool Kureem
@@ -2315,23 +2301,12 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
      */
     public context : Object = <Object>new Object();
 
-    /*private*/ compiled : boolean = false;
-
     /*private*/ template : string;
 
     public constructor(name : string, template : string) {
         super(name, "div");
         if(this.template===undefined) this.template = null;
         this.setTemplate(template);
-    }
-
-    public setCompiled(compiled : boolean) {
-        this.compiled = compiled;
-        this.setRendered(false);
-    }
-
-    public isCompiled() : boolean {
-        return this.compiled;
     }
 
     /**
@@ -2345,8 +2320,7 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
     /**
      * Sets the template of this component
      * 
-     * @param {string} template
-     * The template of this component
+     * @param {string} template The template of this component
      */
     public setTemplate(template : string) {
         this.template = template;
@@ -4041,7 +4015,6 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
             this.uploader = new FileUploader();
             this.required = false;
             (() => {
-                this.setCompiled(true);
                 this.addChild$framework_components_api_Renderable(this.label);
                 this.input.setAttribute("type", "file").setAttribute("accept", "*");
                 this.label.setHtml("Upload File:");
@@ -4062,7 +4035,6 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
                 this.uploader = new FileUploader();
                 this.required = false;
                 (() => {
-                    this.setCompiled(true);
                     this.addChild$framework_components_api_Renderable(this.label);
                     this.input.setAttribute("type", "file").setAttribute("accept", "*");
                     this.label.setHtml("Upload File:");

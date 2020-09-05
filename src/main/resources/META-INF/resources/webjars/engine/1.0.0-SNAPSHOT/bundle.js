@@ -1715,10 +1715,8 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
 /**
  * Constructs an instance of this component
  *
- * @param {string} name
- * The name of the component
- * @param {string} template
- * The html template of this component
+ * @param {string} name     The name of the component
+ * @param {string} template The html template of this component
  * @class
  * @extends JSContainer
  * @author Rossaye Abdool Kureem
@@ -1731,17 +1729,9 @@ class HTMLTemplateContainer extends JSContainer {
          * used by javascript to transmit data from the framework to the template
          */
         this.context = new Object();
-        /*private*/ this.compiled = false;
         if (this.template === undefined)
             this.template = null;
         this.setTemplate(template);
-    }
-    setCompiled(compiled) {
-        this.compiled = compiled;
-        this.setRendered(false);
-    }
-    isCompiled() {
-        return this.compiled;
     }
     /**
      *
@@ -1753,8 +1743,7 @@ class HTMLTemplateContainer extends JSContainer {
     /**
      * Sets the template of this component
      *
-     * @param {string} template
-     * The template of this component
+     * @param {string} template The template of this component
      */
     setTemplate(template) {
         this.template = template;
@@ -3358,7 +3347,6 @@ class JSUpload extends HTMLTemplateContainer {
             this.uploader = new FileUploader();
             this.required = false;
             (() => {
-                this.setCompiled(true);
                 this.addChild$framework_components_api_Renderable(this.label);
                 this.input.setAttribute("type", "file").setAttribute("accept", "*");
                 this.label.setHtml("Upload File:");
@@ -3380,7 +3368,6 @@ class JSUpload extends HTMLTemplateContainer {
                 this.uploader = new FileUploader();
                 this.required = false;
                 (() => {
-                    this.setCompiled(true);
                     this.addChild$framework_components_api_Renderable(this.label);
                     this.input.setAttribute("type", "file").setAttribute("accept", "*");
                     this.label.setHtml("Upload File:");
