@@ -69,14 +69,14 @@ namespace api {
 
         renderEvents(njq : HTMLElement, c : api.Renderable) {
             let keys : string[] = Object.keys(c.getListeners());
-            for(let index184=0; index184 < keys.length; index184++) {
-                let key = keys[index184];
+            for(let index121=0; index121 < keys.length; index121++) {
+                let key = keys[index121];
                 {
                     let listeners : Array<api.EventListener> = <Array<api.EventListener>>c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for(let index185=0; index185 < listeners.length; index185++) {
-                                let l = listeners[index185];
+                            for(let index122=0; index122 < listeners.length; index122++) {
+                                let l = listeners[index122];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -91,9 +91,9 @@ namespace api {
         renderAttributes(njq : HTMLElement, c : api.Renderable, changed : boolean) {
             if(changed) {
                 {
-                    let array187 = c.getChangedAttributes();
-                    for(let index186=0; index186 < array187.length; index186++) {
-                        let key = array187[index186];
+                    let array124 = c.getChangedAttributes();
+                    for(let index123=0; index123 < array124.length; index123++) {
+                        let key = array124[index123];
                         {
                             let attr : string = c.getAttribute(key);
                             if(attr == null) {
@@ -106,9 +106,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array189 = c.getAttributeNames();
-                    for(let index188=0; index188 < array189.length; index188++) {
-                        let key = array189[index188];
+                    let array126 = c.getAttributeNames();
+                    for(let index125=0; index125 < array126.length; index125++) {
+                        let key = array126[index125];
                         {
                             let attr : string = c.getAttribute(key);
                             if(attr != null) ContainerRenderer.setAttribute(njq, key, attr);
@@ -132,9 +132,9 @@ namespace api {
         renderStyles(njq : HTMLElement, c : api.Renderable, changed : boolean) {
             if(changed) {
                 {
-                    let array191 = c.getChangedStyles();
-                    for(let index190=0; index190 < array191.length; index190++) {
-                        let key = array191[index190];
+                    let array128 = c.getChangedStyles();
+                    for(let index127=0; index127 < array128.length; index127++) {
+                        let key = array128[index127];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -142,9 +142,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array193 = c.getStyleNames();
-                    for(let index192=0; index192 < array193.length; index192++) {
-                        let key = array193[index192];
+                    let array130 = c.getStyleNames();
+                    for(let index129=0; index129 < array130.length; index129++) {
+                        let key = array130[index129];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -168,8 +168,8 @@ namespace api {
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 let sheet : CSSStyleSheet = <CSSStyleSheet>styleelem.sheet;
-                for(let index194=0; index194 < rules.length; index194++) {
-                    let rule = rules[index194];
+                for(let index131=0; index131 < rules.length; index131++) {
+                    let rule = rules[index131];
                     sheet.insertRule(rule)
                 }
             }
@@ -889,14 +889,526 @@ namespace input {
     NumericInputTypes["__class"] = "framework.components.input.NumericInputTypes";
 
 }
+namespace table {
+    export interface TableCellRenderer {
+        renderComponent(table : table.Table, container : api.Renderable, value : any, isSelected : boolean, hasFocus : boolean, row : number, column : number);
+    }
+}
+namespace table {
+    export class TableColumn {
+        /**
+         * The index of the column in the model which is to be displayed by this
+         * <code>TableColumn</code>. As columns are moved around in the view
+         * <code>modelIndex</code> remains constant.
+         */
+        modelIndex : number;
+
+        /**
+         * This object is not used internally by the drawing machinery of the
+         * <code>JTable</code>; identifiers may be set in the <code>TableColumn</code>
+         * as as an optional way to tag and locate table columns. The table package does
+         * not modify or invoke any methods in these identifier objects other than the
+         * <code>equals</code> method which is used in the <code>getColumnIndex()</code>
+         * method in the <code>DefaultTableColumnModel</code>.
+         */
+        identifier : any;
+
+        /**
+         * The width of the column.
+         */
+        width : number;
+
+        /**
+         * The minimum width of the column.
+         */
+        minWidth : number;
+
+        /**
+         * The maximum width of the column.
+         */
+        maxWidth : number;
+
+        /**
+         * The renderer used to draw the header of the column.
+         */
+        headerRenderer : table.TableCellRenderer;
+
+        /**
+         * The header value of the column.
+         */
+        headerValue : any;
+
+        /**
+         * The renderer used to draw the data cells of the column.
+         */
+        cellRenderer : table.TableCellRenderer;
+
+        /**
+         * If true, the user is allowed to resize the column; the default is true.
+         */
+        resizable : boolean;
+
+        public getModelIndex() : number {
+            return this.modelIndex;
+        }
+
+        public setModelIndex(modelIndex : number) {
+            this.modelIndex = modelIndex;
+        }
+
+        public getIdentifier() : any {
+            return this.identifier;
+        }
+
+        public setIdentifier(identifier : any) {
+            this.identifier = identifier;
+        }
+
+        public getWidth() : number {
+            return this.width;
+        }
+
+        public setWidth(width : number) {
+            this.width = width;
+        }
+
+        public getMinWidth() : number {
+            return this.minWidth;
+        }
+
+        public setMinWidth(minWidth : number) {
+            this.minWidth = minWidth;
+        }
+
+        public getMaxWidth() : number {
+            return this.maxWidth;
+        }
+
+        public setMaxWidth(maxWidth : number) {
+            this.maxWidth = maxWidth;
+        }
+
+        public getHeaderRenderer() : table.TableCellRenderer {
+            return this.headerRenderer;
+        }
+
+        public setHeaderRenderer(headerRenderer : table.TableCellRenderer) {
+            this.headerRenderer = headerRenderer;
+        }
+
+        public getHeaderValue() : any {
+            return this.headerValue;
+        }
+
+        public setHeaderValue(headerValue : any) {
+            this.headerValue = headerValue;
+        }
+
+        public getCellRenderer() : table.TableCellRenderer {
+            return this.cellRenderer;
+        }
+
+        public setCellRenderer(cellRenderer : table.TableCellRenderer) {
+            this.cellRenderer = cellRenderer;
+        }
+
+        public isResizable() : boolean {
+            return this.resizable;
+        }
+
+        public setResizable(resizable : boolean) {
+            this.resizable = resizable;
+        }
+
+        constructor() {
+            if(this.modelIndex===undefined) this.modelIndex = 0;
+            if(this.identifier===undefined) this.identifier = null;
+            if(this.width===undefined) this.width = 0;
+            if(this.minWidth===undefined) this.minWidth = 0;
+            if(this.maxWidth===undefined) this.maxWidth = 0;
+            if(this.headerRenderer===undefined) this.headerRenderer = null;
+            if(this.headerValue===undefined) this.headerValue = null;
+            if(this.cellRenderer===undefined) this.cellRenderer = null;
+            if(this.resizable===undefined) this.resizable = false;
+        }
+    }
+    TableColumn["__class"] = "framework.components.table.TableColumn";
+
+}
+namespace table {
+    export interface TableColumnModel {
+        /**
+         * Appends <code>aColumn</code> to the end of the
+         * <code>tableColumns</code> array.
+         * This method posts a <code>columnAdded</code>
+         * event to its listeners.
+         * 
+         * @param   {table.TableColumn} aColumn         the <code>TableColumn</code> to be added
+         * @see     #removeColumn
+         */
+        addColumn(aColumn : table.TableColumn);
+
+        /**
+         * Deletes the <code>TableColumn</code> <code>column</code> from the
+         * <code>tableColumns</code> array.  This method will do nothing if
+         * <code>column</code> is not in the table's column list.
+         * This method posts a <code>columnRemoved</code>
+         * event to its listeners.
+         * 
+         * @param   {table.TableColumn} column          the <code>TableColumn</code> to be removed
+         * @see     #addColumn
+         */
+        removeColumn(column : table.TableColumn);
+
+        /**
+         * Returns the number of columns in the model.
+         * @return {number} the number of columns in the model
+         */
+        getColumnCount() : number;
+
+        /**
+         * Returns an <code>Enumeration</code> of all the columns in the model.
+         * @return {*} an <code>Enumeration</code> of all the columns in the model
+         */
+        getColumns() : any;
+
+        /**
+         * Returns the index of the first column in the table
+         * whose identifier is equal to <code>identifier</code>,
+         * when compared using <code>equals</code>.
+         * 
+         * @param           {*} columnIdentifier        the identifier object
+         * @return          {number} the index of the first table column
+         * whose identifier is equal to <code>identifier</code>
+         * @exception IllegalArgumentException      if <code>identifier</code>
+         * is <code>null</code>, or no
+         * <code>TableColumn</code> has this
+         * <code>identifier</code>
+         * @see             #getColumn
+         */
+        getColumnIndex(columnIdentifier : any) : number;
+
+        /**
+         * Returns the <code>TableColumn</code> object for the column at
+         * <code>columnIndex</code>.
+         * 
+         * @param   {number} columnIndex     the index of the desired column
+         * @return  {table.TableColumn} the <code>TableColumn</code> object for
+         * the column at <code>columnIndex</code>
+         */
+        getColumn(columnIndex : number) : table.TableColumn;
+    }
+}
+namespace table {
+    export interface TableModel {
+        /**
+         * Returns the number of rows in the model. A
+         * <code>Table</code> uses this method to determine how many rows it
+         * should display.  This method should be quick, as it
+         * is called frequently during rendering.
+         * 
+         * @return {number} the number of rows in the model
+         * @see #getColumnCount
+         */
+        getRowCount() : number;
+
+        /**
+         * Returns the number of columns in the model. A
+         * <code>Table</code> uses this method to determine how many columns it
+         * should create and display by default.
+         * 
+         * @return {number} the number of columns in the model
+         * @see #getRowCount
+         */
+        getColumnCount() : number;
+
+        /**
+         * Returns the name of the column at <code>columnIndex</code>.  This is used
+         * to initialize the table's column header name.  Note: this name does
+         * not need to be unique; two columns in a table can have the same name.
+         * 
+         * @param   {number} columnIndex     the index of the column
+         * @return  {string} the name of the column
+         */
+        getColumnName(columnIndex : number) : string;
+
+        /**
+         * Returns true if the cell at <code>rowIndex</code> and
+         * <code>columnIndex</code>
+         * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
+         * change the value of that cell.
+         * 
+         * @param   {number} rowIndex        the row whose value to be queried
+         * @param   {number} columnIndex     the column whose value to be queried
+         * @return  {boolean} true if the cell is editable
+         * @see #setValueAt
+         */
+        isCellEditable(rowIndex : number, columnIndex : number) : boolean;
+
+        /**
+         * Returns the value for the cell at <code>columnIndex</code> and
+         * <code>rowIndex</code>.
+         * 
+         * @param   {number} rowIndex        the row whose value is to be queried
+         * @param   {number} columnIndex     the column whose value is to be queried
+         * @return  {*} the value Object at the specified cell
+         */
+        getValueAt(rowIndex : number, columnIndex : number) : any;
+
+        /**
+         * Sets the value in the cell at <code>columnIndex</code> and
+         * <code>rowIndex</code> to <code>aValue</code>.
+         * 
+         * @param   {*} aValue           the new value
+         * @param   {number} rowIndex         the row whose value is to be changed
+         * @param   {number} columnIndex      the column whose value is to be changed
+         * @see #getValueAt
+         * @see #isCellEditable
+         */
+        setValueAt(aValue : any, rowIndex : number, columnIndex : number);
+
+        /**
+         * Adds a listener to the list that is notified each time a change
+         * to the data model occurs.
+         * 
+         * @param   {*} l               the TableModelListener
+         */
+        addTableModelListener(l : table.TableModelListener);
+
+        /**
+         * Removes a listener from the list that is notified each time a
+         * change to the data model occurs.
+         * 
+         * @param   {*} l               the TableModelListener
+         */
+        removeTableModelListener(l : table.TableModelListener);
+    }
+}
+namespace table {
+    /**
+     * The cells from (firstRow, column) to (lastRow, column) have been changed.
+     * The <I>column</I> refers to the column index of the cell in the model's
+     * co-ordinate system. When <I>column</I> is ALL_COLUMNS, all cells in the
+     * specified range of rows are considered changed.
+     * <p>
+     * The <I>type</I> should be one of: INSERT, UPDATE and DELETE.
+     * @param {*} source
+     * @param {number} firstRow
+     * @param {number} lastRow
+     * @param {number} column
+     * @param {number} type
+     * @class
+     */
+    export class TableModelEvent {
+        /**
+         * Identifies the addition of new rows or columns.
+         */
+        public static INSERT : number = 1;
+
+        /**
+         * Identifies a change to existing data.
+         */
+        public static UPDATE : number = 0;
+
+        /**
+         * Identifies the removal of rows or columns.
+         */
+        public static DELETE : number = -1;
+
+        /**
+         * Identifies the header row.
+         */
+        public static HEADER_ROW : number = -1;
+
+        /**
+         * Specifies all columns in a row or rows.
+         */
+        public static ALL_COLUMNS : number = -1;
+
+        type : number;
+
+        firstRow : number;
+
+        lastRow : number;
+
+        column : number;
+
+        source : table.TableModel;
+
+        public constructor(source? : any, firstRow? : any, lastRow? : any, column? : any, type? : any) {
+            if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && ((typeof type === 'number') || type === null)) {
+                let __args = arguments;
+                if(this.type===undefined) this.type = 0;
+                if(this.firstRow===undefined) this.firstRow = 0;
+                if(this.lastRow===undefined) this.lastRow = 0;
+                if(this.column===undefined) this.column = 0;
+                if(this.source===undefined) this.source = null;
+                if(this.type===undefined) this.type = 0;
+                if(this.firstRow===undefined) this.firstRow = 0;
+                if(this.lastRow===undefined) this.lastRow = 0;
+                if(this.column===undefined) this.column = 0;
+                if(this.source===undefined) this.source = null;
+                (() => {
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
+                })();
+            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let type : any = TableModelEvent.UPDATE;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let column : any = TableModelEvent.ALL_COLUMNS;
+                    let type : any = TableModelEvent.UPDATE;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && lastRow === undefined && column === undefined && type === undefined) {
+                let __args = arguments;
+                let row : any = __args[1];
+                {
+                    let __args = arguments;
+                    let firstRow : any = row;
+                    let lastRow : any = row;
+                    let column : any = TableModelEvent.ALL_COLUMNS;
+                    let type : any = TableModelEvent.UPDATE;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let firstRow : any = 0;
+                    let lastRow : any = 2147483647;
+                    let column : any = TableModelEvent.ALL_COLUMNS;
+                    let type : any = TableModelEvent.UPDATE;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    if(this.type===undefined) this.type = 0;
+                    if(this.firstRow===undefined) this.firstRow = 0;
+                    if(this.lastRow===undefined) this.lastRow = 0;
+                    if(this.column===undefined) this.column = 0;
+                    if(this.source===undefined) this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            } else throw new Error('invalid overload');
+        }
+
+        /**
+         * Returns the first row that changed.  HEADER_ROW means the meta data,
+         * ie. names, types and order of the columns.
+         * @return {number}
+         */
+        public getFirstRow() : number {
+            return this.firstRow;
+        }
+
+        /**
+         * Returns the last row that changed.
+         * @return {number}
+         */
+        public getLastRow() : number {
+            return this.lastRow;
+        }
+
+        /**
+         * Returns the column for the event.  If the return
+         * value is ALL_COLUMNS; it means every column in the specified
+         * rows changed.
+         * @return {number}
+         */
+        public getColumn() : number {
+            return this.column;
+        }
+
+        /**
+         * Returns the type of event - one of: INSERT, UPDATE and DELETE.
+         * @return {number}
+         */
+        public getType() : number {
+            return this.type;
+        }
+    }
+    TableModelEvent["__class"] = "framework.components.table.TableModelEvent";
+
+}
+namespace table {
+    export interface TableModelListener {
+        tableChanged(e : table.TableModelEvent);
+    }
+}
 namespace util {
     export class ComponentUtil {
         public static visit(designable : api.Renderable, visitor : ComponentUtil.ComponentVisitor) {
             visitor.doVisit(designable);
             {
-                let array196 = designable.getChildren();
-                for(let index195=0; index195 < array196.length; index195++) {
-                    let child = array196[index195];
+                let array133 = designable.getChildren();
+                for(let index132=0; index132 < array133.length; index132++) {
+                    let child = array133[index132];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -907,8 +1419,8 @@ namespace util {
         public static getTags(type : string) : Array<Object> {
             let html5tags : Array<Object> = <any>(window["html5tags"]);
             let result : Array<Object> = <any>(new Array<Object>());
-            for(let index197=0; index197 < html5tags.length; index197++) {
-                let html5tag = html5tags[index197];
+            for(let index134=0; index134 < html5tags.length; index134++) {
+                let html5tag = html5tags[index134];
                 {
                     let stype : string = <string>html5tag["type"];
                     if(stype === type || type === "*") {
@@ -943,8 +1455,8 @@ namespace util {
             if(/* contains */(property.indexOf(".") != -1)) {
                 let parts : string[] = property.split(".");
                 let tmp : Object = obj;
-                for(let index198=0; index198 < parts.length; index198++) {
-                    let part = parts[index198];
+                for(let index135=0; index135 < parts.length; index135++) {
+                    let part = parts[index135];
                     {
                         tmp = PropertyUtil.getValue(tmp, part);
                     }
@@ -1008,8 +1520,8 @@ namespace util {
             let result : Object = <Object>new Object();
             if(/* contains */(hash.indexOf("?") != -1)) {
                 let kvs : string[] = hash.split("?")[1].split("&");
-                for(let index199=0; index199 < kvs.length; index199++) {
-                    let kv = kvs[index199];
+                for(let index136=0; index136 < kvs.length; index136++) {
+                    let kv = kvs[index136];
                     {
                         let akv : string[] = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1092,8 +1604,8 @@ class JSContainer implements api.Renderable {
         console.log("firing:" + key + " on " + this.getName());
         let listeners : Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
         if(listeners != null && listeners.length > 0) {
-            for(let index200=0; index200 < listeners.length; index200++) {
-                let l = listeners[index200];
+            for(let index137=0; index137 < listeners.length; index137++) {
+                let l = listeners[index137];
                 {
                     l.performAction(this, evt);
                 }
@@ -1121,9 +1633,9 @@ class JSContainer implements api.Renderable {
 
     public getChild(name : string) : api.Renderable {
         {
-            let array202 = this.getChildren();
-            for(let index201=0; index201 < array202.length; index201++) {
-                let child = array202[index201];
+            let array139 = this.getChildren();
+            for(let index138=0; index138 < array139.length; index138++) {
+                let child = array139[index138];
                 {
                     if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(child.getName(),name))) {
                         return child;
@@ -1298,14 +1810,14 @@ class JSContainer implements api.Renderable {
         let aStyles : string[] = styles.split(" ");
         let toAdds : string[] = styleClass.split(" ");
         let res : string = "";
-        for(let index203=0; index203 < toAdds.length; index203++) {
-            let toAdd = toAdds[index203];
+        for(let index140=0; index140 < toAdds.length; index140++) {
+            let toAdd = toAdds[index140];
             {
                 toAdd = toAdd.trim();
                 if(toAdd.length > 0) {
                     let add : boolean = true;
-                    for(let index204=0; index204 < aStyles.length; index204++) {
-                        let style = aStyles[index204];
+                    for(let index141=0; index141 < aStyles.length; index141++) {
+                        let style = aStyles[index141];
                         {
                             style = style.trim();
                             if(style.length > 0) {
@@ -1342,8 +1854,8 @@ class JSContainer implements api.Renderable {
             return false;
         }
         let aStyles : string[] = styles.split(" ");
-        for(let index205=0; index205 < aStyles.length; index205++) {
-            let style = aStyles[index205];
+        for(let index142=0; index142 < aStyles.length; index142++) {
+            let style = aStyles[index142];
             {
                 style = style.trim();
                 if(style !== "") {
@@ -1373,8 +1885,8 @@ class JSContainer implements api.Renderable {
     public removeClass(cls : string) : JSContainer {
         if(cls != null && cls.trim() !== "") {
             let toremove : string[] = cls.split(" ");
-            for(let index206=0; index206 < toremove.length; index206++) {
-                let s = toremove[index206];
+            for(let index143=0; index143 < toremove.length; index143++) {
+                let s = toremove[index143];
                 {
                     this.removeSingleClass(s);
                 }
@@ -1388,8 +1900,8 @@ class JSContainer implements api.Renderable {
         if(cl != null && cl.length > 0) {
             let classes : string[] = cl.split(" ");
             let result : string = "";
-            for(let index207=0; index207 < classes.length; index207++) {
-                let scl = classes[index207];
+            for(let index144=0; index144 < classes.length; index144++) {
+                let scl = classes[index144];
                 {
                     if(scl !== cls) {
                         if(result === "") {
@@ -1457,9 +1969,9 @@ class JSContainer implements api.Renderable {
         let i : number = 0;
         let added : boolean = false;
         {
-            let array209 = this.getChildren();
-            for(let index208=0; index208 < array209.length; index208++) {
-                let c = array209[index208];
+            let array146 = this.getChildren();
+            for(let index145=0; index145 < array146.length; index145++) {
+                let c = array146[index145];
                 {
                     if(i === index) {
                         children.push(child);
@@ -1706,9 +2218,9 @@ class JSContainer implements api.Renderable {
         this.d["rendered"] = b;
         if(!b) {
             {
-                let array211 = this.getChildren();
-                for(let index210=0; index210 < array211.length; index210++) {
-                    let child = array211[index210];
+                let array148 = this.getChildren();
+                for(let index147=0; index147 < array148.length; index147++) {
+                    let child = array148[index147];
                     {
                         child.setRendered(b);
                     }
@@ -1759,8 +2271,8 @@ class JSContainer implements api.Renderable {
      * @return {boolean} Whether is present or not
      */
     contains(lst : Array<any>, o : any) : boolean {
-        for(let index212=0; index212 < lst.length; index212++) {
-            let oo = lst[index212];
+        for(let index149=0; index149 < lst.length; index149++) {
+            let oo = lst[index149];
             {
                 if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(oo,o))) {
                     return true;
@@ -1778,22 +2290,22 @@ class JSContainer implements api.Renderable {
         if(!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
             let tmp : Array<api.Renderer<any>> = <any>(new Array<api.Renderer<any>>());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for(let index213=0; index213 < renderers.length; index213++) {
-                let r = renderers[index213];
+            for(let index150=0; index150 < renderers.length; index150++) {
+                let r = renderers[index150];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for(let index214=0; index214 < renderers.length; index214++) {
-            let renderer = renderers[index214];
+        for(let index151=0; index151 < renderers.length; index151++) {
+            let renderer = renderers[index151];
             renderer.doRender(this, parent)
         }
         {
-            let array216 = this.getChildren();
-            for(let index215=0; index215 < array216.length; index215++) {
-                let child = array216[index215];
+            let array153 = this.getChildren();
+            for(let index152=0; index152 < array153.length; index152++) {
+                let child = array153[index152];
                 {
                     child.render();
                 }
@@ -1830,8 +2342,8 @@ class JSContainer implements api.Renderable {
         let previous : Object = <Object>this.d["data"];
         if(previous != null && previous instanceof <any>Array) {
             let arData : Array<Object> = <Array<Object>>previous;
-            for(let index217=0; index217 < arData.length; index217++) {
-                let line = arData[index217];
+            for(let index154=0; index154 < arData.length; index154++) {
+                let line = arData[index154];
                 {
                     let value : string = <string>line["value"];
                     this.setAttribute(value, null);
@@ -1840,9 +2352,9 @@ class JSContainer implements api.Renderable {
         } else {
             if(previous != null) {
                 {
-                    let array219 = Object.keys(previous);
-                    for(let index218=0; index218 < array219.length; index218++) {
-                        let key = array219[index218];
+                    let array156 = Object.keys(previous);
+                    for(let index155=0; index155 < array156.length; index155++) {
+                        let key = array156[index155];
                         {
                             this.setAttribute(key, null);
                         }
@@ -1854,8 +2366,8 @@ class JSContainer implements api.Renderable {
         if(data != null) {
             if(data != null && data instanceof <any>Array) {
                 let arData : Array<Object> = <Array<Object>>data;
-                for(let index220=0; index220 < arData.length; index220++) {
-                    let line = arData[index220];
+                for(let index157=0; index157 < arData.length; index157++) {
+                    let line = arData[index157];
                     {
                         let text : string = <string>line["text"];
                         let value : string = <string>line["value"];
@@ -1864,9 +2376,9 @@ class JSContainer implements api.Renderable {
                 }
             } else {
                 {
-                    let array222 = Object.keys(data);
-                    for(let index221=0; index221 < array222.length; index221++) {
-                        let key = array222[index221];
+                    let array159 = Object.keys(data);
+                    for(let index158=0; index158 < array159.length; index158++) {
+                        let key = array159[index158];
                         {
                             this.setAttribute(key, <string>(<Object>data)[key]);
                         }
@@ -1891,9 +2403,9 @@ class JSContainer implements api.Renderable {
         let clsss : string = parent.getAttribute("class");
         if(clsss != null) {
             {
-                let array224 = parent.getAttribute("class").split(" ");
-                for(let index223=0; index223 < array224.length; index223++) {
-                    let s = array224[index223];
+                let array161 = parent.getAttribute("class").split(" ");
+                for(let index160=0; index160 < array161.length; index160++) {
+                    let s = array161[index160];
                     {
                         if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(s.trim(),cls))) return <T><any>parent;
                     }
@@ -2028,9 +2540,9 @@ class CardLayout extends JSContainer {
     public getIndex(name : string) : number {
         let index : number = 0;
         {
-            let array226 = this.getChildren();
-            for(let index225=0; index225 < array226.length; index225++) {
-                let child = array226[index225];
+            let array163 = this.getChildren();
+            for(let index162=0; index162 < array163.length; index162++) {
+                let child = array163[index162];
                 {
                     if(child.getName() === name) {
                         return index;
@@ -2141,9 +2653,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array228 = this.getChildren();
-            for(let index227=0; index227 < array228.length; index227++) {
-                let child = array228[index227];
+            let array165 = this.getChildren();
+            for(let index164=0; index164 < array165.length; index164++) {
+                let child = array165[index164];
                 {
                     if(child.getName() === name) {
                         let evt : CustomEvent = new CustomEvent("activate");
@@ -2348,8 +2860,8 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
                 let tag : string = tm.tagName;
                 this.setTag(tag);
                 let attrs : NamedNodeMap = tm.attributes;
-                for(let index229=0; index229 < attrs.length; index229++) {
-                    let att = attrs[index229];
+                for(let index166=0; index166 < attrs.length; index166++) {
+                    let att = attrs[index166];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -2566,8 +3078,8 @@ namespace input {
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index230=0; index230 < this.validators.length; index230++) {
-                let v = this.validators[index230];
+            for(let index167=0; index167 < this.validators.length; index167++) {
+                let v = this.validators[index167];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -2950,8 +3462,8 @@ namespace input {
         public validate() {
             let valid : boolean = true;
             let e : api.ValidationException = new api.ValidationException();
-            for(let index231=0; index231 < this.validators.length; index231++) {
-                let v = this.validators[index231];
+            for(let index168=0; index168 < this.validators.length; index168++) {
+                let v = this.validators[index168];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -3131,8 +3643,8 @@ namespace input {
 
         public setOptions$java_lang_String(options : string) : JSSelect {
             let opts : string[] = options.split("\n");
-            for(let index232=0; index232 < opts.length; index232++) {
-                let opt = opts[index232];
+            for(let index169=0; index169 < opts.length; index169++) {
+                let opt = opts[index169];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3251,8 +3763,8 @@ namespace input {
             if(ele != null) {
                 if(ele.multiple) {
                     let result : Array<string> = <any>(new Array<string>());
-                    for(let index233=0; index233 < ele.children.length; index233++) {
-                        let e = ele.children[index233];
+                    for(let index170=0; index170 < ele.children.length; index170++) {
+                        let e = ele.children[index170];
                         {
                             let opt : HTMLOptionElement = <HTMLOptionElement>e;
                             if(opt.selected) result.push(opt.value);
@@ -3265,9 +3777,9 @@ namespace input {
             } else {
                 let val : string = this.getAttribute("value");
                 {
-                    let array235 = this.getChildren();
-                    for(let index234=0; index234 < array235.length; index234++) {
-                        let opt = array235[index234];
+                    let array172 = this.getChildren();
+                    for(let index171=0; index171 < array172.length; index171++) {
+                        let opt = array172[index171];
                         {
                             if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(opt.getAttribute("value"),val))) {
                                 return (<input.JSOption><any>opt).getValue();
@@ -3304,13 +3816,13 @@ namespace input {
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array237 = this.getChildren();
-                    for(let index236=0; index236 < array237.length; index236++) {
-                        let opt = array237[index236];
+                    let array174 = this.getChildren();
+                    for(let index173=0; index173 < array174.length; index173++) {
+                        let opt = array174[index173];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
-                            for(let index238=0; index238 < arrVal.length; index238++) {
-                                let val = arrVal[index238];
+                            for(let index175=0; index175 < arrVal.length; index175++) {
+                                let val = arrVal[index175];
                                 {
                                     if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(opt.getAttribute("value"),val))) {
                                         (<input.JSOption><any>opt).setSelected(true);
@@ -3322,9 +3834,9 @@ namespace input {
                 }
             } else {
                 {
-                    let array240 = this.getChildren();
-                    for(let index239=0; index239 < array240.length; index239++) {
-                        let opt = array240[index239];
+                    let array177 = this.getChildren();
+                    for(let index176=0; index176 < array177.length; index176++) {
+                        let opt = array177[index176];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
                         }
@@ -3356,8 +3868,8 @@ namespace input {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index241=0; index241 < this.validators.length; index241++) {
-                let v = this.validators[index241];
+            for(let index178=0; index178 < this.validators.length; index178++) {
+                let v = this.validators[index178];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -3391,8 +3903,8 @@ namespace input {
         public setData(data_ : Array<Object>) {
             this.clearChildren();
             this.setRendered(false);
-            for(let index242=0; index242 < data_.length; index242++) {
-                let o = data_[index242];
+            for(let index179=0; index179 < data_.length; index179++) {
+                let o = data_[index179];
                 {
                     if(o.hasOwnProperty("value")) {
                         let value : string = <string>o["value"];
@@ -3416,9 +3928,9 @@ namespace input {
             let result : Array<Object> = <any>(new Array<Object>());
             if(this.isMultiple()) {
                 {
-                    let array244 = <Array<string>>obj;
-                    for(let index243=0; index243 < array244.length; index243++) {
-                        let o = array244[index243];
+                    let array181 = <Array<string>>obj;
+                    for(let index180=0; index180 < array181.length; index180++) {
+                        let o = array181[index180];
                         {
                             let item : Object = this.findItem(o);
                             if(item != null) {
@@ -3444,8 +3956,8 @@ namespace input {
 
         public findItem(value : string) : Object {
             if(this.data != null) {
-                for(let index245=0; index245 < this.data.length; index245++) {
-                    let o = this.data[index245];
+                for(let index182=0; index182 < this.data.length; index182++) {
+                    let o = this.data[index182];
                     {
                         let val : string = <string>o["value"];
                         val = val + "";
@@ -3547,8 +4059,8 @@ namespace input {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index246=0; index246 < this.validators.length; index246++) {
-                let v = this.validators[index246];
+            for(let index183=0; index183 < this.validators.length; index183++) {
+                let v = this.validators[index183];
                 {
                     let b : boolean = v.validate(this);
                     if(!b) {
@@ -3876,6 +4388,89 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 
+namespace table {
+    export class Table extends JSContainer {
+        /*private*/ head : JSContainer = new JSContainer("head", "thead");
+
+        /*private*/ body : JSContainer = new JSContainer("body", "tbody");
+
+        dataModel : table.TableModel;
+
+        columnModel : table.TableColumnModel;
+
+        public constructor(name : string) {
+            super(name, "table");
+            if(this.dataModel===undefined) this.dataModel = null;
+            if(this.columnModel===undefined) this.columnModel = null;
+            this.addChild$framework_components_api_Renderable(this.head);
+            this.addChild$framework_components_api_Renderable(this.body);
+        }
+
+        public getHead() : JSContainer {
+            return this.head;
+        }
+
+        public getBody() : JSContainer {
+            return this.body;
+        }
+
+        public getDataModel() : table.TableModel {
+            return this.dataModel;
+        }
+
+        public setDataModel(dataModel : table.TableModel) {
+            this.dataModel = dataModel;
+        }
+
+        public getColumnModel() : table.TableColumnModel {
+            return this.columnModel;
+        }
+
+        public setColumnModel(columnModel : table.TableColumnModel) {
+            this.columnModel = columnModel;
+        }
+
+        public refresh() {
+            this.head.clearChildren();
+            this.body.clearChildren();
+            if(this.columnModel != null) {
+                let hrow : JSContainer = new JSContainer("headerRow", "tr");
+                this.head.addChild$framework_components_api_Renderable(hrow);
+                for(let i : number = 0; i < this.columnModel.getColumnCount(); i++) {{
+                    let column : table.TableColumn = this.columnModel.getColumn(i);
+                    let headerRenderer : table.TableCellRenderer = column.getHeaderRenderer();
+                    let th : JSContainer = new JSContainer("", "th").setAttribute("scope", "col");
+                    th.setStyle("width", column.getWidth() + "px");
+                    th.setStyle("max-width", column.getMaxWidth() + "px");
+                    th.setStyle("min-width", column.getMinWidth() + "px");
+                    hrow.addChild$framework_components_api_Renderable(th);
+                    headerRenderer.renderComponent(this, th, column.getHeaderValue(), false, false, 0, i);
+                };}
+            }
+            if(this.dataModel != null) {
+                for(let row : number = 0; row < this.dataModel.getRowCount(); row++) {{
+                    let r : JSContainer = new JSContainer("", "tr");
+                    this.body.addChild$framework_components_api_Renderable(r);
+                    for(let col : number = 0; col < this.dataModel.getColumnCount(); col++) {{
+                        let cell : JSContainer = new JSContainer("", "td");
+                        r.addChild$framework_components_api_Renderable(cell);
+                        let val : any = this.dataModel.getValueAt(row, col);
+                        if(this.columnModel != null) {
+                            let column : table.TableColumn = this.columnModel.getColumn(col);
+                            column.getCellRenderer().renderComponent(this, cell, val, false, false, row, col);
+                        } else {
+                            cell.setHtml(val != null?val.toString():"");
+                        }
+                    };}
+                };}
+            }
+        }
+    }
+    Table["__class"] = "framework.components.table.Table";
+    Table["__interfaces"] = ["framework.components.api.Renderable"];
+
+
+}
 namespace input {
     export class JSAddressInput extends HTMLTemplateContainer implements api.InputField<Object> {
         /*private*/ address : Object = <Object>new Object();

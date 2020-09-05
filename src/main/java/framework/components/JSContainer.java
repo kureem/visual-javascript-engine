@@ -360,6 +360,14 @@ public class JSContainer implements Renderable {
 		idCount++;
 		return idCount + "";
 	}
+	
+	protected void addOrRemoveClass(String cls, boolean b) {
+		if(b && !hasClass(cls)) {
+			addClass(cls);
+		}else if(!b && hasClass(cls)) {
+			removeClass(cls);
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -572,9 +580,11 @@ public class JSContainer implements Renderable {
 	@Override
 	public JSContainer setVisible(boolean b) {
 		if (!b) {
+			setStyle("display", "none");
 			addClass("slds-hidden");
 		} else {
 			removeClass("slds-hidden");
+			setStyle("display", null);
 		}
 		return this;
 	}

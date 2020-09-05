@@ -602,6 +602,286 @@ declare namespace input {
         static types_$LI$(): string[];
     }
 }
+declare namespace table {
+    interface TableCellRenderer {
+        renderComponent(table: table.Table, container: api.Renderable, value: any, isSelected: boolean, hasFocus: boolean, row: number, column: number): any;
+    }
+}
+declare namespace table {
+    class TableColumn {
+        /**
+         * The index of the column in the model which is to be displayed by this
+         * <code>TableColumn</code>. As columns are moved around in the view
+         * <code>modelIndex</code> remains constant.
+         */
+        modelIndex: number;
+        /**
+         * This object is not used internally by the drawing machinery of the
+         * <code>JTable</code>; identifiers may be set in the <code>TableColumn</code>
+         * as as an optional way to tag and locate table columns. The table package does
+         * not modify or invoke any methods in these identifier objects other than the
+         * <code>equals</code> method which is used in the <code>getColumnIndex()</code>
+         * method in the <code>DefaultTableColumnModel</code>.
+         */
+        identifier: any;
+        /**
+         * The width of the column.
+         */
+        width: number;
+        /**
+         * The minimum width of the column.
+         */
+        minWidth: number;
+        /**
+         * The maximum width of the column.
+         */
+        maxWidth: number;
+        /**
+         * The renderer used to draw the header of the column.
+         */
+        headerRenderer: table.TableCellRenderer;
+        /**
+         * The header value of the column.
+         */
+        headerValue: any;
+        /**
+         * The renderer used to draw the data cells of the column.
+         */
+        cellRenderer: table.TableCellRenderer;
+        /**
+         * If true, the user is allowed to resize the column; the default is true.
+         */
+        resizable: boolean;
+        getModelIndex(): number;
+        setModelIndex(modelIndex: number): void;
+        getIdentifier(): any;
+        setIdentifier(identifier: any): void;
+        getWidth(): number;
+        setWidth(width: number): void;
+        getMinWidth(): number;
+        setMinWidth(minWidth: number): void;
+        getMaxWidth(): number;
+        setMaxWidth(maxWidth: number): void;
+        getHeaderRenderer(): table.TableCellRenderer;
+        setHeaderRenderer(headerRenderer: table.TableCellRenderer): void;
+        getHeaderValue(): any;
+        setHeaderValue(headerValue: any): void;
+        getCellRenderer(): table.TableCellRenderer;
+        setCellRenderer(cellRenderer: table.TableCellRenderer): void;
+        isResizable(): boolean;
+        setResizable(resizable: boolean): void;
+        constructor();
+    }
+}
+declare namespace table {
+    interface TableColumnModel {
+        /**
+         * Appends <code>aColumn</code> to the end of the
+         * <code>tableColumns</code> array.
+         * This method posts a <code>columnAdded</code>
+         * event to its listeners.
+         *
+         * @param   {table.TableColumn} aColumn         the <code>TableColumn</code> to be added
+         * @see     #removeColumn
+         */
+        addColumn(aColumn: table.TableColumn): any;
+        /**
+         * Deletes the <code>TableColumn</code> <code>column</code> from the
+         * <code>tableColumns</code> array.  This method will do nothing if
+         * <code>column</code> is not in the table's column list.
+         * This method posts a <code>columnRemoved</code>
+         * event to its listeners.
+         *
+         * @param   {table.TableColumn} column          the <code>TableColumn</code> to be removed
+         * @see     #addColumn
+         */
+        removeColumn(column: table.TableColumn): any;
+        /**
+         * Returns the number of columns in the model.
+         * @return {number} the number of columns in the model
+         */
+        getColumnCount(): number;
+        /**
+         * Returns an <code>Enumeration</code> of all the columns in the model.
+         * @return {*} an <code>Enumeration</code> of all the columns in the model
+         */
+        getColumns(): any;
+        /**
+         * Returns the index of the first column in the table
+         * whose identifier is equal to <code>identifier</code>,
+         * when compared using <code>equals</code>.
+         *
+         * @param           {*} columnIdentifier        the identifier object
+         * @return          {number} the index of the first table column
+         * whose identifier is equal to <code>identifier</code>
+         * @exception IllegalArgumentException      if <code>identifier</code>
+         * is <code>null</code>, or no
+         * <code>TableColumn</code> has this
+         * <code>identifier</code>
+         * @see             #getColumn
+         */
+        getColumnIndex(columnIdentifier: any): number;
+        /**
+         * Returns the <code>TableColumn</code> object for the column at
+         * <code>columnIndex</code>.
+         *
+         * @param   {number} columnIndex     the index of the desired column
+         * @return  {table.TableColumn} the <code>TableColumn</code> object for
+         * the column at <code>columnIndex</code>
+         */
+        getColumn(columnIndex: number): table.TableColumn;
+    }
+}
+declare namespace table {
+    interface TableModel {
+        /**
+         * Returns the number of rows in the model. A
+         * <code>Table</code> uses this method to determine how many rows it
+         * should display.  This method should be quick, as it
+         * is called frequently during rendering.
+         *
+         * @return {number} the number of rows in the model
+         * @see #getColumnCount
+         */
+        getRowCount(): number;
+        /**
+         * Returns the number of columns in the model. A
+         * <code>Table</code> uses this method to determine how many columns it
+         * should create and display by default.
+         *
+         * @return {number} the number of columns in the model
+         * @see #getRowCount
+         */
+        getColumnCount(): number;
+        /**
+         * Returns the name of the column at <code>columnIndex</code>.  This is used
+         * to initialize the table's column header name.  Note: this name does
+         * not need to be unique; two columns in a table can have the same name.
+         *
+         * @param   {number} columnIndex     the index of the column
+         * @return  {string} the name of the column
+         */
+        getColumnName(columnIndex: number): string;
+        /**
+         * Returns true if the cell at <code>rowIndex</code> and
+         * <code>columnIndex</code>
+         * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
+         * change the value of that cell.
+         *
+         * @param   {number} rowIndex        the row whose value to be queried
+         * @param   {number} columnIndex     the column whose value to be queried
+         * @return  {boolean} true if the cell is editable
+         * @see #setValueAt
+         */
+        isCellEditable(rowIndex: number, columnIndex: number): boolean;
+        /**
+         * Returns the value for the cell at <code>columnIndex</code> and
+         * <code>rowIndex</code>.
+         *
+         * @param   {number} rowIndex        the row whose value is to be queried
+         * @param   {number} columnIndex     the column whose value is to be queried
+         * @return  {*} the value Object at the specified cell
+         */
+        getValueAt(rowIndex: number, columnIndex: number): any;
+        /**
+         * Sets the value in the cell at <code>columnIndex</code> and
+         * <code>rowIndex</code> to <code>aValue</code>.
+         *
+         * @param   {*} aValue           the new value
+         * @param   {number} rowIndex         the row whose value is to be changed
+         * @param   {number} columnIndex      the column whose value is to be changed
+         * @see #getValueAt
+         * @see #isCellEditable
+         */
+        setValueAt(aValue: any, rowIndex: number, columnIndex: number): any;
+        /**
+         * Adds a listener to the list that is notified each time a change
+         * to the data model occurs.
+         *
+         * @param   {*} l               the TableModelListener
+         */
+        addTableModelListener(l: table.TableModelListener): any;
+        /**
+         * Removes a listener from the list that is notified each time a
+         * change to the data model occurs.
+         *
+         * @param   {*} l               the TableModelListener
+         */
+        removeTableModelListener(l: table.TableModelListener): any;
+    }
+}
+declare namespace table {
+    /**
+     * The cells from (firstRow, column) to (lastRow, column) have been changed.
+     * The <I>column</I> refers to the column index of the cell in the model's
+     * co-ordinate system. When <I>column</I> is ALL_COLUMNS, all cells in the
+     * specified range of rows are considered changed.
+     * <p>
+     * The <I>type</I> should be one of: INSERT, UPDATE and DELETE.
+     * @param {*} source
+     * @param {number} firstRow
+     * @param {number} lastRow
+     * @param {number} column
+     * @param {number} type
+     * @class
+     */
+    class TableModelEvent {
+        /**
+         * Identifies the addition of new rows or columns.
+         */
+        static INSERT: number;
+        /**
+         * Identifies a change to existing data.
+         */
+        static UPDATE: number;
+        /**
+         * Identifies the removal of rows or columns.
+         */
+        static DELETE: number;
+        /**
+         * Identifies the header row.
+         */
+        static HEADER_ROW: number;
+        /**
+         * Specifies all columns in a row or rows.
+         */
+        static ALL_COLUMNS: number;
+        type: number;
+        firstRow: number;
+        lastRow: number;
+        column: number;
+        source: table.TableModel;
+        constructor(source?: any, firstRow?: any, lastRow?: any, column?: any, type?: any);
+        /**
+         * Returns the first row that changed.  HEADER_ROW means the meta data,
+         * ie. names, types and order of the columns.
+         * @return {number}
+         */
+        getFirstRow(): number;
+        /**
+         * Returns the last row that changed.
+         * @return {number}
+         */
+        getLastRow(): number;
+        /**
+         * Returns the column for the event.  If the return
+         * value is ALL_COLUMNS; it means every column in the specified
+         * rows changed.
+         * @return {number}
+         */
+        getColumn(): number;
+        /**
+         * Returns the type of event - one of: INSERT, UPDATE and DELETE.
+         * @return {number}
+         */
+        getType(): number;
+    }
+}
+declare namespace table {
+    interface TableModelListener {
+        tableChanged(e: table.TableModelEvent): any;
+    }
+}
 declare namespace util {
     class ComponentUtil {
         static visit(designable: api.Renderable, visitor: ComponentUtil.ComponentVisitor): void;
@@ -1399,6 +1679,22 @@ declare class RestWebservice extends JSContainer {
 }
 declare class Row extends JSContainer {
     constructor(name: string);
+}
+declare namespace table {
+    class Table extends JSContainer {
+        head: JSContainer;
+        body: JSContainer;
+        dataModel: table.TableModel;
+        columnModel: table.TableColumnModel;
+        constructor(name: string);
+        getHead(): JSContainer;
+        getBody(): JSContainer;
+        getDataModel(): table.TableModel;
+        setDataModel(dataModel: table.TableModel): void;
+        getColumnModel(): table.TableColumnModel;
+        setColumnModel(columnModel: table.TableColumnModel): void;
+        refresh(): void;
+    }
 }
 declare namespace input {
     class JSAddressInput extends HTMLTemplateContainer implements api.InputField<Object> {

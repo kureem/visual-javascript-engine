@@ -77,14 +77,14 @@ var api;
         }
         renderEvents(njq, c) {
             let keys = Object.keys(c.getListeners());
-            for (let index184 = 0; index184 < keys.length; index184++) {
-                let key = keys[index184];
+            for (let index121 = 0; index121 < keys.length; index121++) {
+                let key = keys[index121];
                 {
                     let listeners = c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for (let index185 = 0; index185 < listeners.length; index185++) {
-                                let l = listeners[index185];
+                            for (let index122 = 0; index122 < listeners.length; index122++) {
+                                let l = listeners[index122];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -98,9 +98,9 @@ var api;
         renderAttributes(njq, c, changed) {
             if (changed) {
                 {
-                    let array187 = c.getChangedAttributes();
-                    for (let index186 = 0; index186 < array187.length; index186++) {
-                        let key = array187[index186];
+                    let array124 = c.getChangedAttributes();
+                    for (let index123 = 0; index123 < array124.length; index123++) {
+                        let key = array124[index123];
                         {
                             let attr = c.getAttribute(key);
                             if (attr == null) {
@@ -115,9 +115,9 @@ var api;
             }
             else {
                 {
-                    let array189 = c.getAttributeNames();
-                    for (let index188 = 0; index188 < array189.length; index188++) {
-                        let key = array189[index188];
+                    let array126 = c.getAttributeNames();
+                    for (let index125 = 0; index125 < array126.length; index125++) {
+                        let key = array126[index125];
                         {
                             let attr = c.getAttribute(key);
                             if (attr != null)
@@ -148,9 +148,9 @@ var api;
         renderStyles(njq, c, changed) {
             if (changed) {
                 {
-                    let array191 = c.getChangedStyles();
-                    for (let index190 = 0; index190 < array191.length; index190++) {
-                        let key = array191[index190];
+                    let array128 = c.getChangedStyles();
+                    for (let index127 = 0; index127 < array128.length; index127++) {
+                        let key = array128[index127];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -159,9 +159,9 @@ var api;
             }
             else {
                 {
-                    let array193 = c.getStyleNames();
-                    for (let index192 = 0; index192 < array193.length; index192++) {
-                        let key = array193[index192];
+                    let array130 = c.getStyleNames();
+                    for (let index129 = 0; index129 < array130.length; index129++) {
+                        let key = array130[index129];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -185,8 +185,8 @@ var api;
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 let sheet = styleelem.sheet;
-                for (let index194 = 0; index194 < rules.length; index194++) {
-                    let rule = rules[index194];
+                for (let index131 = 0; index131 < rules.length; index131++) {
+                    let rule = rules[index131];
                     sheet.insertRule(rule);
                 }
             }
@@ -347,15 +347,345 @@ var input;
     input.NumericInputTypes = NumericInputTypes;
     NumericInputTypes["__class"] = "framework.components.input.NumericInputTypes";
 })(input || (input = {}));
+var table;
+(function (table) {
+    class TableColumn {
+        constructor() {
+            if (this.modelIndex === undefined)
+                this.modelIndex = 0;
+            if (this.identifier === undefined)
+                this.identifier = null;
+            if (this.width === undefined)
+                this.width = 0;
+            if (this.minWidth === undefined)
+                this.minWidth = 0;
+            if (this.maxWidth === undefined)
+                this.maxWidth = 0;
+            if (this.headerRenderer === undefined)
+                this.headerRenderer = null;
+            if (this.headerValue === undefined)
+                this.headerValue = null;
+            if (this.cellRenderer === undefined)
+                this.cellRenderer = null;
+            if (this.resizable === undefined)
+                this.resizable = false;
+        }
+        getModelIndex() {
+            return this.modelIndex;
+        }
+        setModelIndex(modelIndex) {
+            this.modelIndex = modelIndex;
+        }
+        getIdentifier() {
+            return this.identifier;
+        }
+        setIdentifier(identifier) {
+            this.identifier = identifier;
+        }
+        getWidth() {
+            return this.width;
+        }
+        setWidth(width) {
+            this.width = width;
+        }
+        getMinWidth() {
+            return this.minWidth;
+        }
+        setMinWidth(minWidth) {
+            this.minWidth = minWidth;
+        }
+        getMaxWidth() {
+            return this.maxWidth;
+        }
+        setMaxWidth(maxWidth) {
+            this.maxWidth = maxWidth;
+        }
+        getHeaderRenderer() {
+            return this.headerRenderer;
+        }
+        setHeaderRenderer(headerRenderer) {
+            this.headerRenderer = headerRenderer;
+        }
+        getHeaderValue() {
+            return this.headerValue;
+        }
+        setHeaderValue(headerValue) {
+            this.headerValue = headerValue;
+        }
+        getCellRenderer() {
+            return this.cellRenderer;
+        }
+        setCellRenderer(cellRenderer) {
+            this.cellRenderer = cellRenderer;
+        }
+        isResizable() {
+            return this.resizable;
+        }
+        setResizable(resizable) {
+            this.resizable = resizable;
+        }
+    }
+    table.TableColumn = TableColumn;
+    TableColumn["__class"] = "framework.components.table.TableColumn";
+})(table || (table = {}));
+(function (table) {
+    /**
+     * The cells from (firstRow, column) to (lastRow, column) have been changed.
+     * The <I>column</I> refers to the column index of the cell in the model's
+     * co-ordinate system. When <I>column</I> is ALL_COLUMNS, all cells in the
+     * specified range of rows are considered changed.
+     * <p>
+     * The <I>type</I> should be one of: INSERT, UPDATE and DELETE.
+     * @param {*} source
+     * @param {number} firstRow
+     * @param {number} lastRow
+     * @param {number} column
+     * @param {number} type
+     * @class
+     */
+    class TableModelEvent {
+        constructor(source, firstRow, lastRow, column, type) {
+            if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && ((typeof type === 'number') || type === null)) {
+                let __args = arguments;
+                if (this.type === undefined)
+                    this.type = 0;
+                if (this.firstRow === undefined)
+                    this.firstRow = 0;
+                if (this.lastRow === undefined)
+                    this.lastRow = 0;
+                if (this.column === undefined)
+                    this.column = 0;
+                if (this.source === undefined)
+                    this.source = null;
+                if (this.type === undefined)
+                    this.type = 0;
+                if (this.firstRow === undefined)
+                    this.firstRow = 0;
+                if (this.lastRow === undefined)
+                    this.lastRow = 0;
+                if (this.column === undefined)
+                    this.column = 0;
+                if (this.source === undefined)
+                    this.source = null;
+                (() => {
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
+                })();
+            }
+            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let type = TableModelEvent.UPDATE;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            }
+            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let column = TableModelEvent.ALL_COLUMNS;
+                    let type = TableModelEvent.UPDATE;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            }
+            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && lastRow === undefined && column === undefined && type === undefined) {
+                let __args = arguments;
+                let row = __args[1];
+                {
+                    let __args = arguments;
+                    let firstRow = row;
+                    let lastRow = row;
+                    let column = TableModelEvent.ALL_COLUMNS;
+                    let type = TableModelEvent.UPDATE;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            }
+            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let firstRow = 0;
+                    let lastRow = 2147483647;
+                    let column = TableModelEvent.ALL_COLUMNS;
+                    let type = TableModelEvent.UPDATE;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    if (this.type === undefined)
+                        this.type = 0;
+                    if (this.firstRow === undefined)
+                        this.firstRow = 0;
+                    if (this.lastRow === undefined)
+                        this.lastRow = 0;
+                    if (this.column === undefined)
+                        this.column = 0;
+                    if (this.source === undefined)
+                        this.source = null;
+                    (() => {
+                        this.source = source;
+                        this.firstRow = firstRow;
+                        this.lastRow = lastRow;
+                        this.column = column;
+                        this.type = type;
+                    })();
+                }
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        /**
+         * Returns the first row that changed.  HEADER_ROW means the meta data,
+         * ie. names, types and order of the columns.
+         * @return {number}
+         */
+        getFirstRow() {
+            return this.firstRow;
+        }
+        /**
+         * Returns the last row that changed.
+         * @return {number}
+         */
+        getLastRow() {
+            return this.lastRow;
+        }
+        /**
+         * Returns the column for the event.  If the return
+         * value is ALL_COLUMNS; it means every column in the specified
+         * rows changed.
+         * @return {number}
+         */
+        getColumn() {
+            return this.column;
+        }
+        /**
+         * Returns the type of event - one of: INSERT, UPDATE and DELETE.
+         * @return {number}
+         */
+        getType() {
+            return this.type;
+        }
+    }
+    /**
+     * Identifies the addition of new rows or columns.
+     */
+    TableModelEvent.INSERT = 1;
+    /**
+     * Identifies a change to existing data.
+     */
+    TableModelEvent.UPDATE = 0;
+    /**
+     * Identifies the removal of rows or columns.
+     */
+    TableModelEvent.DELETE = -1;
+    /**
+     * Identifies the header row.
+     */
+    TableModelEvent.HEADER_ROW = -1;
+    /**
+     * Specifies all columns in a row or rows.
+     */
+    TableModelEvent.ALL_COLUMNS = -1;
+    table.TableModelEvent = TableModelEvent;
+    TableModelEvent["__class"] = "framework.components.table.TableModelEvent";
+})(table || (table = {}));
 var util;
 (function (util) {
     class ComponentUtil {
         static visit(designable, visitor) {
             visitor.doVisit(designable);
             {
-                let array196 = designable.getChildren();
-                for (let index195 = 0; index195 < array196.length; index195++) {
-                    let child = array196[index195];
+                let array133 = designable.getChildren();
+                for (let index132 = 0; index132 < array133.length; index132++) {
+                    let child = array133[index132];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -365,8 +695,8 @@ var util;
         static getTags(type) {
             let html5tags = (window["html5tags"]);
             let result = (new Array());
-            for (let index197 = 0; index197 < html5tags.length; index197++) {
-                let html5tag = html5tags[index197];
+            for (let index134 = 0; index134 < html5tags.length; index134++) {
+                let html5tag = html5tags[index134];
                 {
                     let stype = html5tag["type"];
                     if (stype === type || type === "*") {
@@ -389,8 +719,8 @@ var util;
             if ((property.indexOf(".") != -1)) {
                 let parts = property.split(".");
                 let tmp = obj;
-                for (let index198 = 0; index198 < parts.length; index198++) {
-                    let part = parts[index198];
+                for (let index135 = 0; index135 < parts.length; index135++) {
+                    let part = parts[index135];
                     {
                         tmp = PropertyUtil.getValue(tmp, part);
                     }
@@ -460,8 +790,8 @@ var util;
             let result = new Object();
             if ((hash.indexOf("?") != -1)) {
                 let kvs = hash.split("?")[1].split("&");
-                for (let index199 = 0; index199 < kvs.length; index199++) {
-                    let kv = kvs[index199];
+                for (let index136 = 0; index136 < kvs.length; index136++) {
+                    let kv = kvs[index136];
                     {
                         let akv = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -544,8 +874,8 @@ class JSContainer {
         console.log("firing:" + key + " on " + this.getName());
         let listeners = this.getListeners()[key];
         if (listeners != null && listeners.length > 0) {
-            for (let index200 = 0; index200 < listeners.length; index200++) {
-                let l = listeners[index200];
+            for (let index137 = 0; index137 < listeners.length; index137++) {
+                let l = listeners[index137];
                 {
                     l.performAction(this, evt);
                 }
@@ -571,9 +901,9 @@ class JSContainer {
     }
     getChild(name) {
         {
-            let array202 = this.getChildren();
-            for (let index201 = 0; index201 < array202.length; index201++) {
-                let child = array202[index201];
+            let array139 = this.getChildren();
+            for (let index138 = 0; index138 < array139.length; index138++) {
+                let child = array139[index138];
                 {
                     if (((o1, o2) => { if (o1 && o1.equals) {
                         return o1.equals(o2);
@@ -755,14 +1085,14 @@ class JSContainer {
         let aStyles = styles.split(" ");
         let toAdds = styleClass.split(" ");
         let res = "";
-        for (let index203 = 0; index203 < toAdds.length; index203++) {
-            let toAdd = toAdds[index203];
+        for (let index140 = 0; index140 < toAdds.length; index140++) {
+            let toAdd = toAdds[index140];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0) {
                     let add = true;
-                    for (let index204 = 0; index204 < aStyles.length; index204++) {
-                        let style = aStyles[index204];
+                    for (let index141 = 0; index141 < aStyles.length; index141++) {
+                        let style = aStyles[index141];
                         {
                             style = style.trim();
                             if (style.length > 0) {
@@ -803,8 +1133,8 @@ class JSContainer {
             return false;
         }
         let aStyles = styles.split(" ");
-        for (let index205 = 0; index205 < aStyles.length; index205++) {
-            let style = aStyles[index205];
+        for (let index142 = 0; index142 < aStyles.length; index142++) {
+            let style = aStyles[index142];
             {
                 style = style.trim();
                 if (style !== "") {
@@ -833,8 +1163,8 @@ class JSContainer {
     removeClass(cls) {
         if (cls != null && cls.trim() !== "") {
             let toremove = cls.split(" ");
-            for (let index206 = 0; index206 < toremove.length; index206++) {
-                let s = toremove[index206];
+            for (let index143 = 0; index143 < toremove.length; index143++) {
+                let s = toremove[index143];
                 {
                     this.removeSingleClass(s);
                 }
@@ -847,8 +1177,8 @@ class JSContainer {
         if (cl != null && cl.length > 0) {
             let classes = cl.split(" ");
             let result = "";
-            for (let index207 = 0; index207 < classes.length; index207++) {
-                let scl = classes[index207];
+            for (let index144 = 0; index144 < classes.length; index144++) {
+                let scl = classes[index144];
                 {
                     if (scl !== cls) {
                         if (result === "") {
@@ -916,9 +1246,9 @@ class JSContainer {
         let i = 0;
         let added = false;
         {
-            let array209 = this.getChildren();
-            for (let index208 = 0; index208 < array209.length; index208++) {
-                let c = array209[index208];
+            let array146 = this.getChildren();
+            for (let index145 = 0; index145 < array146.length; index145++) {
+                let c = array146[index145];
                 {
                     if (i === index) {
                         children.push(child);
@@ -1153,9 +1483,9 @@ class JSContainer {
         this.d["rendered"] = b;
         if (!b) {
             {
-                let array211 = this.getChildren();
-                for (let index210 = 0; index210 < array211.length; index210++) {
-                    let child = array211[index210];
+                let array148 = this.getChildren();
+                for (let index147 = 0; index147 < array148.length; index147++) {
+                    let child = array148[index147];
                     {
                         child.setRendered(b);
                     }
@@ -1205,8 +1535,8 @@ class JSContainer {
      * @return {boolean} Whether is present or not
      */
     contains(lst, o) {
-        for (let index212 = 0; index212 < lst.length; index212++) {
-            let oo = lst[index212];
+        for (let index149 = 0; index149 < lst.length; index149++) {
+            let oo = lst[index149];
             {
                 if (((o1, o2) => { if (o1 && o1.equals) {
                     return o1.equals(o2);
@@ -1228,22 +1558,22 @@ class JSContainer {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
             let tmp = (new Array());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for (let index213 = 0; index213 < renderers.length; index213++) {
-                let r = renderers[index213];
+            for (let index150 = 0; index150 < renderers.length; index150++) {
+                let r = renderers[index150];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for (let index214 = 0; index214 < renderers.length; index214++) {
-            let renderer = renderers[index214];
+        for (let index151 = 0; index151 < renderers.length; index151++) {
+            let renderer = renderers[index151];
             renderer.doRender(this, parent);
         }
         {
-            let array216 = this.getChildren();
-            for (let index215 = 0; index215 < array216.length; index215++) {
-                let child = array216[index215];
+            let array153 = this.getChildren();
+            for (let index152 = 0; index152 < array153.length; index152++) {
+                let child = array153[index152];
                 {
                     child.render();
                 }
@@ -1280,8 +1610,8 @@ class JSContainer {
         let previous = this.d["data"];
         if (previous != null && previous instanceof Array) {
             let arData = previous;
-            for (let index217 = 0; index217 < arData.length; index217++) {
-                let line = arData[index217];
+            for (let index154 = 0; index154 < arData.length; index154++) {
+                let line = arData[index154];
                 {
                     let value = line["value"];
                     this.setAttribute(value, null);
@@ -1291,9 +1621,9 @@ class JSContainer {
         else {
             if (previous != null) {
                 {
-                    let array219 = Object.keys(previous);
-                    for (let index218 = 0; index218 < array219.length; index218++) {
-                        let key = array219[index218];
+                    let array156 = Object.keys(previous);
+                    for (let index155 = 0; index155 < array156.length; index155++) {
+                        let key = array156[index155];
                         {
                             this.setAttribute(key, null);
                         }
@@ -1305,8 +1635,8 @@ class JSContainer {
         if (data != null) {
             if (data != null && data instanceof Array) {
                 let arData = data;
-                for (let index220 = 0; index220 < arData.length; index220++) {
-                    let line = arData[index220];
+                for (let index157 = 0; index157 < arData.length; index157++) {
+                    let line = arData[index157];
                     {
                         let text = line["text"];
                         let value = line["value"];
@@ -1316,9 +1646,9 @@ class JSContainer {
             }
             else {
                 {
-                    let array222 = Object.keys(data);
-                    for (let index221 = 0; index221 < array222.length; index221++) {
-                        let key = array222[index221];
+                    let array159 = Object.keys(data);
+                    for (let index158 = 0; index158 < array159.length; index158++) {
+                        let key = array159[index158];
                         {
                             this.setAttribute(key, data[key]);
                         }
@@ -1342,9 +1672,9 @@ class JSContainer {
         let clsss = parent.getAttribute("class");
         if (clsss != null) {
             {
-                let array224 = parent.getAttribute("class").split(" ");
-                for (let index223 = 0; index223 < array224.length; index223++) {
-                    let s = array224[index223];
+                let array161 = parent.getAttribute("class").split(" ");
+                for (let index160 = 0; index160 < array161.length; index160++) {
+                    let s = array161[index160];
                     {
                         if (((o1, o2) => { if (o1 && o1.equals) {
                             return o1.equals(o2);
@@ -1479,9 +1809,9 @@ class CardLayout extends JSContainer {
     getIndex(name) {
         let index = 0;
         {
-            let array226 = this.getChildren();
-            for (let index225 = 0; index225 < array226.length; index225++) {
-                let child = array226[index225];
+            let array163 = this.getChildren();
+            for (let index162 = 0; index162 < array163.length; index162++) {
+                let child = array163[index162];
                 {
                     if (child.getName() === name) {
                         return index;
@@ -1590,9 +1920,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array228 = this.getChildren();
-            for (let index227 = 0; index227 < array228.length; index227++) {
-                let child = array228[index227];
+            let array165 = this.getChildren();
+            for (let index164 = 0; index164 < array165.length; index164++) {
+                let child = array165[index164];
                 {
                     if (child.getName() === name) {
                         let evt = new CustomEvent("activate");
@@ -1769,8 +2099,8 @@ class HTMLTemplateContainer extends JSContainer {
                 let tag = tm.tagName;
                 this.setTag(tag);
                 let attrs = tm.attributes;
-                for (let index229 = 0; index229 < attrs.length; index229++) {
-                    let att = attrs[index229];
+                for (let index166 = 0; index166 < attrs.length; index166++) {
+                    let att = attrs[index166];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -1982,8 +2312,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index230 = 0; index230 < this.validators.length; index230++) {
-                let v = this.validators[index230];
+            for (let index167 = 0; index167 < this.validators.length; index167++) {
+                let v = this.validators[index167];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -2338,8 +2668,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         validate() {
             let valid = true;
             let e = new api.ValidationException();
-            for (let index231 = 0; index231 < this.validators.length; index231++) {
-                let v = this.validators[index231];
+            for (let index168 = 0; index168 < this.validators.length; index168++) {
+                let v = this.validators[index168];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -2493,8 +2823,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         setOptions$java_lang_String(options) {
             let opts = options.split("\n");
-            for (let index232 = 0; index232 < opts.length; index232++) {
-                let opt = opts[index232];
+            for (let index169 = 0; index169 < opts.length; index169++) {
+                let opt = opts[index169];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -2615,8 +2945,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             if (ele != null) {
                 if (ele.multiple) {
                     let result = (new Array());
-                    for (let index233 = 0; index233 < ele.children.length; index233++) {
-                        let e = ele.children[index233];
+                    for (let index170 = 0; index170 < ele.children.length; index170++) {
+                        let e = ele.children[index170];
                         {
                             let opt = e;
                             if (opt.selected)
@@ -2632,9 +2962,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             else {
                 let val = this.getAttribute("value");
                 {
-                    let array235 = this.getChildren();
-                    for (let index234 = 0; index234 < array235.length; index234++) {
-                        let opt = array235[index234];
+                    let array172 = this.getChildren();
+                    for (let index171 = 0; index171 < array172.length; index171++) {
+                        let opt = array172[index171];
                         {
                             if (((o1, o2) => { if (o1 && o1.equals) {
                                 return o1.equals(o2);
@@ -2677,13 +3007,13 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array237 = this.getChildren();
-                    for (let index236 = 0; index236 < array237.length; index236++) {
-                        let opt = array237[index236];
+                    let array174 = this.getChildren();
+                    for (let index173 = 0; index173 < array174.length; index173++) {
+                        let opt = array174[index173];
                         {
                             opt.setSelected(false);
-                            for (let index238 = 0; index238 < arrVal.length; index238++) {
-                                let val = arrVal[index238];
+                            for (let index175 = 0; index175 < arrVal.length; index175++) {
+                                let val = arrVal[index175];
                                 {
                                     if (((o1, o2) => { if (o1 && o1.equals) {
                                         return o1.equals(o2);
@@ -2701,9 +3031,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             }
             else {
                 {
-                    let array240 = this.getChildren();
-                    for (let index239 = 0; index239 < array240.length; index239++) {
-                        let opt = array240[index239];
+                    let array177 = this.getChildren();
+                    for (let index176 = 0; index176 < array177.length; index176++) {
+                        let opt = array177[index176];
                         {
                             opt.setSelected(false);
                         }
@@ -2733,8 +3063,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index241 = 0; index241 < this.validators.length; index241++) {
-                let v = this.validators[index241];
+            for (let index178 = 0; index178 < this.validators.length; index178++) {
+                let v = this.validators[index178];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -2765,8 +3095,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         setData(data_) {
             this.clearChildren();
             this.setRendered(false);
-            for (let index242 = 0; index242 < data_.length; index242++) {
-                let o = data_[index242];
+            for (let index179 = 0; index179 < data_.length; index179++) {
+                let o = data_[index179];
                 {
                     if (o.hasOwnProperty("value")) {
                         let value = o["value"];
@@ -2789,9 +3119,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             let result = (new Array());
             if (this.isMultiple()) {
                 {
-                    let array244 = obj;
-                    for (let index243 = 0; index243 < array244.length; index243++) {
-                        let o = array244[index243];
+                    let array181 = obj;
+                    for (let index180 = 0; index180 < array181.length; index180++) {
+                        let o = array181[index180];
                         {
                             let item = this.findItem(o);
                             if (item != null) {
@@ -2816,8 +3146,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         findItem(value) {
             if (this.data != null) {
-                for (let index245 = 0; index245 < this.data.length; index245++) {
-                    let o = this.data[index245];
+                for (let index182 = 0; index182 < this.data.length; index182++) {
+                    let o = this.data[index182];
                     {
                         let val = o["value"];
                         val = val + "";
@@ -2919,8 +3249,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index246 = 0; index246 < this.validators.length; index246++) {
-                let v = this.validators[index246];
+            for (let index183 = 0; index183 < this.validators.length; index183++) {
+                let v = this.validators[index183];
                 {
                     let b = v.validate(this);
                     if (!b) {
@@ -3229,6 +3559,87 @@ class Row extends JSContainer {
 }
 Row["__class"] = "framework.components.Row";
 Row["__interfaces"] = ["framework.components.api.Renderable"];
+(function (table) {
+    class Table extends JSContainer {
+        constructor(name) {
+            super(name, "table");
+            /*private*/ this.head = new JSContainer("head", "thead");
+            /*private*/ this.body = new JSContainer("body", "tbody");
+            if (this.dataModel === undefined)
+                this.dataModel = null;
+            if (this.columnModel === undefined)
+                this.columnModel = null;
+            this.addChild$framework_components_api_Renderable(this.head);
+            this.addChild$framework_components_api_Renderable(this.body);
+        }
+        getHead() {
+            return this.head;
+        }
+        getBody() {
+            return this.body;
+        }
+        getDataModel() {
+            return this.dataModel;
+        }
+        setDataModel(dataModel) {
+            this.dataModel = dataModel;
+        }
+        getColumnModel() {
+            return this.columnModel;
+        }
+        setColumnModel(columnModel) {
+            this.columnModel = columnModel;
+        }
+        refresh() {
+            this.head.clearChildren();
+            this.body.clearChildren();
+            if (this.columnModel != null) {
+                let hrow = new JSContainer("headerRow", "tr");
+                this.head.addChild$framework_components_api_Renderable(hrow);
+                for (let i = 0; i < this.columnModel.getColumnCount(); i++) {
+                    {
+                        let column = this.columnModel.getColumn(i);
+                        let headerRenderer = column.getHeaderRenderer();
+                        let th = new JSContainer("", "th").setAttribute("scope", "col");
+                        th.setStyle("width", column.getWidth() + "px");
+                        th.setStyle("max-width", column.getMaxWidth() + "px");
+                        th.setStyle("min-width", column.getMinWidth() + "px");
+                        hrow.addChild$framework_components_api_Renderable(th);
+                        headerRenderer.renderComponent(this, th, column.getHeaderValue(), false, false, 0, i);
+                    }
+                    ;
+                }
+            }
+            if (this.dataModel != null) {
+                for (let row = 0; row < this.dataModel.getRowCount(); row++) {
+                    {
+                        let r = new JSContainer("", "tr");
+                        this.body.addChild$framework_components_api_Renderable(r);
+                        for (let col = 0; col < this.dataModel.getColumnCount(); col++) {
+                            {
+                                let cell = new JSContainer("", "td");
+                                r.addChild$framework_components_api_Renderable(cell);
+                                let val = this.dataModel.getValueAt(row, col);
+                                if (this.columnModel != null) {
+                                    let column = this.columnModel.getColumn(col);
+                                    column.getCellRenderer().renderComponent(this, cell, val, false, false, row, col);
+                                }
+                                else {
+                                    cell.setHtml(val != null ? val.toString() : "");
+                                }
+                            }
+                            ;
+                        }
+                    }
+                    ;
+                }
+            }
+        }
+    }
+    table.Table = Table;
+    Table["__class"] = "framework.components.table.Table";
+    Table["__interfaces"] = ["framework.components.api.Renderable"];
+})(table || (table = {}));
 (function (input) {
     class JSAddressInput extends HTMLTemplateContainer {
         constructor(name) {
