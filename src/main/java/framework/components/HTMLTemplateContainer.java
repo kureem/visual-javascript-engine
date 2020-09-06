@@ -23,6 +23,7 @@ import jsweet.dom.Attr;
 import jsweet.dom.Element;
 import jsweet.dom.HTMLElement;
 import jsweet.dom.NamedNodeMap;
+import jsweet.dom.NodeList;
 import jsweet.lang.Error;
 import jsweet.lang.Function;
 import jsweet.lang.Object;
@@ -112,7 +113,10 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 				HTMLElement tmp = document.createElement("div");
 				tmp.innerHTML = rendered;
 				Element tm = tmp.firstElementChild;
-
+				NodeList children = tmp.childNodes;
+				if(children.length > 1 || tm == null) {
+					tm = tmp;
+				}
 				rendered = tm.innerHTML;
 				String tag = tm.tagName;
 				setTag(tag);
@@ -121,6 +125,7 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 					setAttribute(att.name, att.value);
 				}
 				setHtml(rendered);
+				
 			} else {
 				setHtml("Cannot load template:" + getTemplate());
 			}
