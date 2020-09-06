@@ -1018,6 +1018,7 @@ declare class JSContainer implements api.Renderable {
      * @return {string} A unique id
      */
     uid(): string;
+    addOrRemoveClass(cls: string, b: boolean): void;
     /**
      *
      * @param {string} styleClass
