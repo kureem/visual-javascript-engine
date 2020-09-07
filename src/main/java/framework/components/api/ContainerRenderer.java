@@ -7,11 +7,16 @@ import static jsweet.dom.Globals.document;
 import jsweet.dom.CSSStyleSheet;
 import jsweet.dom.Element;
 import jsweet.dom.HTMLElement;
+import jsweet.dom.HTMLScriptElement;
 import jsweet.dom.HTMLStyleElement;
 import jsweet.dom.NamedNodeMap;
 import jsweet.dom.Node;
+import jsweet.dom.NodeList;
+import jsweet.dom.NodeListOf;
 import jsweet.lang.Array;
+import jsweet.lang.Globals;
 import jsweet.lang.Object;
+import jsweet.util.StringTypes;
 
 public class ContainerRenderer implements Renderer<Renderable> {
 	
@@ -38,6 +43,13 @@ public class ContainerRenderer implements Renderer<Renderable> {
 				njq.setAttribute("name", name);
 			njq.setAttribute("id", c.getId());
 			njq.innerHTML = html;
+			NodeListOf<HTMLScriptElement> uiscripts =  njq.getElementsByTagName(StringTypes.script);
+			Array<String> scripts = new Array<String>();
+			for(double i =0; i < uiscripts.length;i++) {
+				HTMLScriptElement elem = (HTMLScriptElement)uiscripts.$get(i);
+				if(elem.innerText != null && elem.innerText.trim().length() > 0)
+					scripts.push( elem.innerText);
+			}
 			renderAttributes(njq, c, false);
 			renderStyles(njq, c, false);
 
@@ -77,6 +89,13 @@ public class ContainerRenderer implements Renderer<Renderable> {
 					}
 				}
 			}
+			
+			Renderable me = c;
+			Renderable component =me;
+			doNothing(component);
+			for(String scr : scripts) {
+				Globals.eval(scr);
+			}
 		//	List l =null;
 			renderEvents(njq, c);
 			processCSSRules(c, njq);
@@ -93,6 +112,10 @@ public class ContainerRenderer implements Renderer<Renderable> {
 			}
 
 		}
+	}
+	
+	private void doNothing(Renderable r) {
+		
 	}
 
 	protected void execCommands(HTMLElement njq, Renderable container) {

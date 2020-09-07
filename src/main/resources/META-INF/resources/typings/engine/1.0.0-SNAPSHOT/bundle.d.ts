@@ -2,6 +2,7 @@ declare namespace api {
     class ContainerRenderer implements api.Renderer<api.Renderable> {
         static timeSpent: number;
         doRender(c: api.Renderable, root: HTMLElement): void;
+        doNothing(r: api.Renderable): void;
         execCommands(njq: HTMLElement, container: api.Renderable): void;
         renderEvents(njq: HTMLElement, c: api.Renderable): void;
         renderAttributes(njq: HTMLElement, c: api.Renderable, changed: boolean): void;

@@ -108,6 +108,13 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 			String html = getTemplate();
 			if (html != null) {
 				Object cxt = context;
+				if(cxt == null) {
+					cxt = new Object();
+					
+				}
+				cxt.$set("component", this);
+				cxt.$set("me", this);
+				cxt.$set("$this", this);
 				String rendered = compile(html, cxt);
 
 				HTMLElement tmp = document.createElement("div");
