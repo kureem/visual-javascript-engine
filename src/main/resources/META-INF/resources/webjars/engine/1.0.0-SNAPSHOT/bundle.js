@@ -1,29 +1,29 @@
-/* Generated from Java with JSweet 2.3.0 - http://www.jsweet.org */
+/* Generated from Java with JSweet 3.0.0 - http://www.jsweet.org */
 var api;
 (function (api) {
     class ContainerRenderer {
         constructor() {
         }
         doRender(c, root) {
-            let jq = document.getElementById(c.getId());
-            let tag = c.getTag();
-            let rendered = c.isRendered();
-            let name = c.getName();
-            let html = c.getHtml();
-            let parent = c.getParent();
+            const jq = document.getElementById(c.getId());
+            const tag = c.getTag();
+            const rendered = c.isRendered();
+            const name = c.getName();
+            const html = c.getHtml();
+            const parent = c.getParent();
             if (!rendered) {
                 if (jq != null)
                     jq.remove();
-                let njq = document.createElement(tag);
+                const njq = document.createElement(tag);
                 if (name != null && name.length > 0)
                     njq.setAttribute("name", name);
                 njq.setAttribute("id", c.getId());
                 njq.innerHTML = html;
-                let uiscripts = njq.getElementsByTagName("script");
-                let scripts = (new Array());
+                const uiscripts = njq.querySelectorAll("script");
+                const scripts = (new Array());
                 for (let i = 0; i < uiscripts.length; i++) {
                     {
-                        let elem = uiscripts[i];
+                        const elem = uiscripts[i];
                         if (elem.innerText != null && elem.innerText.trim().length > 0)
                             scripts.push(elem.innerText);
                     }
@@ -33,7 +33,7 @@ var api;
                 this.renderStyles(njq, c, false);
                 if (parent == null) {
                     if (root == null) {
-                        let body = document.getElementsByTagName("body")[0];
+                        const body = document.getElementsByTagName("body")[0];
                         body.appendChild(njq);
                     }
                     else {
@@ -41,12 +41,12 @@ var api;
                     }
                 }
                 else {
-                    if (parent != null && (parent["__interfaces"] != null && parent["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0 || parent.constructor != null && parent.constructor["__interfaces"] != null && parent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)) {
-                        let elem = document.getElementById(parent.getId()).querySelector("[name=" + name + "]");
+                    if (parent != null && (parent.constructor != null && parent.constructor["__interfaces"] != null && parent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)) {
+                        const elem = document.getElementById(parent.getId()).querySelector("[name=" + name + "]");
                         elem.parentElement.replaceChild(njq, elem);
                     }
                     else {
-                        let index = parent.getChildren().indexOf(c);
+                        const index = parent.getChildren().indexOf(c);
                         let nextSib = null;
                         if (index < parent.getChildren().length - 1) {
                             nextSib = parent.getChildren()[index + 1];
@@ -55,7 +55,7 @@ var api;
                             }
                         }
                         if (nextSib != null) {
-                            let p = document.getElementById(parent.getId());
+                            const p = document.getElementById(parent.getId());
                             p.insertBefore(njq, document.getElementById(nextSib.getId()));
                         }
                         else {
@@ -65,15 +65,14 @@ var api;
                             catch (e) {
                                 console.error(e.message, e);
                             }
-                            ;
                         }
                     }
                 }
-                let me = c;
-                let component = me;
+                const me = c;
+                const component = me;
                 this.doNothing(component);
-                for (let index121 = 0; index121 < scripts.length; index121++) {
-                    let scr = scripts[index121];
+                for (let index186 = 0; index186 < scripts.length; index186++) {
+                    let scr = scripts[index186];
                     {
                         eval(scr);
                     }
@@ -97,20 +96,20 @@ var api;
         execCommands(njq, container) {
         }
         renderEvents(njq, c) {
-            let keys = Object.keys(c.getListeners());
-            for (let index122 = 0; index122 < keys.length; index122++) {
-                let key = keys[index122];
+            const keys = Object.keys(c.getListeners());
+            for (let index187 = 0; index187 < keys.length; index187++) {
+                let key = keys[index187];
                 {
-                    let listeners = c.getListeners()[key];
+                    const listeners = c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for (let index123 = 0; index123 < listeners.length; index123++) {
-                                let l = listeners[index123];
+                            for (let index188 = 0; index188 < listeners.length; index188++) {
+                                let l = listeners[index188];
                                 {
                                     l.performAction(c, evt);
                                 }
                             }
-                            c.getRoot().render();
+                            c.getRoot()['render$']();
                         };
                     })(listeners));
                 }
@@ -119,11 +118,11 @@ var api;
         renderAttributes(njq, c, changed) {
             if (changed) {
                 {
-                    let array125 = c.getChangedAttributes();
-                    for (let index124 = 0; index124 < array125.length; index124++) {
-                        let key = array125[index124];
+                    let array190 = c.getChangedAttributes();
+                    for (let index189 = 0; index189 < array190.length; index189++) {
+                        let key = array190[index189];
                         {
-                            let attr = c.getAttribute(key);
+                            const attr = c.getAttribute(key);
                             if (attr == null) {
                                 njq.removeAttribute(key);
                             }
@@ -136,11 +135,11 @@ var api;
             }
             else {
                 {
-                    let array127 = c.getAttributeNames();
-                    for (let index126 = 0; index126 < array127.length; index126++) {
-                        let key = array127[index126];
+                    let array192 = c.getAttributeNames();
+                    for (let index191 = 0; index191 < array192.length; index191++) {
+                        let key = array192[index191];
                         {
-                            let attr = c.getAttribute(key);
+                            const attr = c.getAttribute(key);
                             if (attr != null)
                                 ContainerRenderer.setAttribute(njq, key, attr);
                         }
@@ -149,15 +148,10 @@ var api;
             }
         }
         clearAttributes(elem) {
-            let attrs = elem.attributes;
+            const attrs = elem.attributes;
             for (let i = 0; i < attrs.length; i++) {
                 {
-                    if (!((o1, o2) => { if (o1 && o1.equals) {
-                        return o1.equals(o2);
-                    }
-                    else {
-                        return o1 === o2;
-                    } })(attrs[i].name, "id"))
+                    if (!(attrs[i].name === ("id")))
                         elem.removeAttribute(attrs[i].name);
                 }
                 ;
@@ -169,9 +163,9 @@ var api;
         renderStyles(njq, c, changed) {
             if (changed) {
                 {
-                    let array129 = c.getChangedStyles();
-                    for (let index128 = 0; index128 < array129.length; index128++) {
-                        let key = array129[index128];
+                    let array194 = c.getChangedStyles();
+                    for (let index193 = 0; index193 < array194.length; index193++) {
+                        let key = array194[index193];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -180,9 +174,9 @@ var api;
             }
             else {
                 {
-                    let array131 = c.getStyleNames();
-                    for (let index130 = 0; index130 < array131.length; index130++) {
-                        let key = array131[index130];
+                    let array196 = c.getStyleNames();
+                    for (let index195 = 0; index195 < array196.length; index195++) {
+                        let key = array196[index195];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -197,17 +191,16 @@ var api;
             catch (e) {
                 console.warn("Invalid attribute :" + attribute + " set to:" + element.toString());
             }
-            ;
         }
         static processCSSRules(renderable, nativeNode) {
-            let rules = renderable.getCSSRules();
+            const rules = renderable.getCSSRules();
             if (rules.length > 0) {
-                let styleelem = document.createElement("style");
+                const styleelem = document.createElement("style");
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
-                let sheet = styleelem.sheet;
-                for (let index132 = 0; index132 < rules.length; index132++) {
-                    let rule = rules[index132];
+                const sheet = styleelem.sheet;
+                for (let index197 = 0; index197 < rules.length; index197++) {
+                    let rule = rules[index197];
                     sheet.insertRule(rule);
                 }
             }
@@ -220,9 +213,9 @@ var api;
 })(api || (api = {}));
 (function (api) {
     class StringInputTypes {
-        static types_$LI$() { if (StringInputTypes.types == null)
-            StringInputTypes.types = [StringInputTypes.text, StringInputTypes.password, StringInputTypes.email, StringInputTypes.url, StringInputTypes.search, StringInputTypes.tel, StringInputTypes.color]; return StringInputTypes.types; }
-        ;
+        static types_$LI$() { if (StringInputTypes.types == null) {
+            StringInputTypes.types = [StringInputTypes.text, StringInputTypes.password, StringInputTypes.email, StringInputTypes.url, StringInputTypes.search, StringInputTypes.tel, StringInputTypes.color];
+        } return StringInputTypes.types; }
     }
     StringInputTypes.text = "text";
     StringInputTypes.password = "password";
@@ -253,26 +246,19 @@ var api;
                 let __args = arguments;
                 super("Validation Error");
                 this.errors = (new Array());
-                Object.setPrototypeOf(this, ValidationException.prototype);
-                (() => {
-                    ValidationException.addError(message, errorCode, this);
-                })();
+                ValidationException.addError(message, errorCode, this);
             }
             else if (((typeof message === 'number') || message === null) && errorCode === undefined) {
                 let __args = arguments;
                 let errorCode = __args[0];
                 super();
                 this.errors = (new Array());
-                Object.setPrototypeOf(this, ValidationException.prototype);
-                (() => {
-                    ValidationException.addError("", errorCode, this);
-                })();
+                ValidationException.addError("", errorCode, this);
             }
             else if (message === undefined && errorCode === undefined) {
                 let __args = arguments;
                 super();
                 this.errors = (new Array());
-                Object.setPrototypeOf(this, ValidationException.prototype);
             }
             else
                 throw new Error('invalid overload');
@@ -341,15 +327,20 @@ var api;
     ValidationException["__class"] = "framework.components.api.ValidationException";
     ValidationException["__interfaces"] = ["java.io.Serializable"];
 })(api || (api = {}));
+class Boot {
+    static main(args) {
+    }
+}
+Boot["__class"] = "framework.components.Boot";
 class FileUploader {
 }
 FileUploader["__class"] = "framework.components.FileUploader";
 var input;
 (function (input) {
     class DateInputTypes {
-        static types_$LI$() { if (DateInputTypes.types == null)
-            DateInputTypes.types = [DateInputTypes.date, DateInputTypes.month, DateInputTypes.week]; return DateInputTypes.types; }
-        ;
+        static types_$LI$() { if (DateInputTypes.types == null) {
+            DateInputTypes.types = [DateInputTypes.date, DateInputTypes.month, DateInputTypes.week];
+        } return DateInputTypes.types; }
     }
     DateInputTypes.date = "date";
     DateInputTypes.month = "month";
@@ -359,9 +350,9 @@ var input;
 })(input || (input = {}));
 (function (input) {
     class NumericInputTypes {
-        static types_$LI$() { if (NumericInputTypes.types == null)
-            NumericInputTypes.types = [NumericInputTypes.number, NumericInputTypes.range]; return NumericInputTypes.types; }
-        ;
+        static types_$LI$() { if (NumericInputTypes.types == null) {
+            NumericInputTypes.types = [NumericInputTypes.number, NumericInputTypes.range];
+        } return NumericInputTypes.types; }
     }
     NumericInputTypes.number = "number";
     NumericInputTypes.range = "range";
@@ -370,26 +361,218 @@ var input;
 })(input || (input = {}));
 var table;
 (function (table) {
+    class DefaulTableModel {
+        constructor() {
+            this.data = (new Array());
+        }
+        /**
+         *
+         * @return {number}
+         */
+        getRowCount() {
+            return (this.data.length | 0);
+        }
+        /**
+         *
+         * @return {number}
+         */
+        getColumnCount() {
+            return 0;
+        }
+        /**
+         *
+         * @param {number} columnIndex
+         * @return {string}
+         */
+        getColumnName(columnIndex) {
+            return null;
+        }
+        /**
+         *
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         * @return {boolean}
+         */
+        isCellEditable(rowIndex, columnIndex) {
+            return false;
+        }
+        /**
+         *
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         * @return {*}
+         */
+        getValueAt(rowIndex, columnIndex) {
+            return null;
+        }
+        /**
+         *
+         * @param {*} aValue
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         */
+        setValueAt(aValue, rowIndex, columnIndex) {
+        }
+        /**
+         *
+         * @param {*} l
+         */
+        addTableModelListener(l) {
+        }
+        /**
+         *
+         * @param {*} l
+         */
+        removeTableModelListener(l) {
+        }
+    }
+    table.DefaulTableModel = DefaulTableModel;
+    DefaulTableModel["__class"] = "framework.components.table.DefaulTableModel";
+    DefaulTableModel["__interfaces"] = ["framework.components.table.TableModel"];
+})(table || (table = {}));
+(function (table) {
+    class DefaultTableColumnModel {
+        constructor() {
+            this.columns = (new Array());
+            this.pointer = -1;
+        }
+        addColumn$framework_components_table_TableColumn(aColumn) {
+            this.columns.push(aColumn);
+            this.reset();
+        }
+        /**
+         *
+         * @param {table.TableColumn} aColumn
+         */
+        addColumn(aColumn) {
+            if (((aColumn != null && aColumn instanceof table.TableColumn) || aColumn === null)) {
+                return this.addColumn$framework_components_table_TableColumn(aColumn);
+            }
+            else if (((aColumn != null && aColumn instanceof Array && (aColumn.length == 0 || aColumn[0] == null || (aColumn[0] != null && aColumn[0] instanceof table.TableColumn))) || aColumn === null)) {
+                return this.addColumn$framework_components_table_TableColumn_A(...aColumn);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        /*private*/ reset() {
+            this.pointer = -1;
+        }
+        /**
+         *
+         * @param {table.TableColumn} column
+         */
+        removeColumn(column) {
+            this.columns.splice(this.columns.indexOf(column));
+            this.reset();
+        }
+        /**
+         *
+         * @return {number}
+         */
+        getColumnCount() {
+            return (this.columns.length | 0);
+        }
+        /**
+         *
+         * @return {*}
+         */
+        getColumns() {
+            return this;
+        }
+        /**
+         *
+         * @param {*} columnIdentifier
+         * @return {number}
+         */
+        getColumnIndex(columnIdentifier) {
+            for (let index198 = 0; index198 < this.columns.length; index198++) {
+                let col = this.columns[index198];
+                {
+                    if (col.identifier === columnIdentifier) {
+                        return (this.columns.indexOf(col) | 0);
+                    }
+                }
+            }
+            return -1;
+        }
+        addColumn$framework_components_table_TableColumn_A(...col) {
+            this.columns.push(...col);
+            this.reset();
+            return this;
+        }
+        addColumnAt(col, index) {
+            const tmp = (new Array());
+            for (let i = 0; i < this.columns.length; i++) {
+                {
+                    tmp.push(this.columns[i]);
+                    if (i === index) {
+                        tmp.push(col);
+                    }
+                }
+                ;
+            }
+            this.columns = tmp;
+            this.reset();
+            return this;
+        }
+        /**
+         *
+         * @param {number} columnIndex
+         * @return {table.TableColumn}
+         */
+        getColumn(columnIndex) {
+            return this.columns[columnIndex];
+        }
+        /**
+         *
+         * @return {boolean}
+         */
+        hasMoreElements() {
+            return ((this.pointer + 1) < this.columns.length);
+        }
+        /**
+         *
+         * @return {table.TableColumn}
+         */
+        nextElement() {
+            this.pointer = this.pointer + 1;
+            return this.columns[this.pointer];
+        }
+    }
+    table.DefaultTableColumnModel = DefaultTableColumnModel;
+    DefaultTableColumnModel["__class"] = "framework.components.table.DefaultTableColumnModel";
+    DefaultTableColumnModel["__interfaces"] = ["framework.components.table.TableColumnModel", "java.util.Enumeration"];
+})(table || (table = {}));
+(function (table) {
     class TableColumn {
         constructor() {
-            if (this.modelIndex === undefined)
+            if (this.modelIndex === undefined) {
                 this.modelIndex = 0;
-            if (this.identifier === undefined)
+            }
+            if (this.identifier === undefined) {
                 this.identifier = null;
-            if (this.width === undefined)
+            }
+            if (this.width === undefined) {
                 this.width = 0;
-            if (this.minWidth === undefined)
+            }
+            if (this.minWidth === undefined) {
                 this.minWidth = 0;
-            if (this.maxWidth === undefined)
+            }
+            if (this.maxWidth === undefined) {
                 this.maxWidth = 0;
-            if (this.headerRenderer === undefined)
+            }
+            if (this.headerRenderer === undefined) {
                 this.headerRenderer = null;
-            if (this.headerValue === undefined)
+            }
+            if (this.headerValue === undefined) {
                 this.headerValue = null;
-            if (this.cellRenderer === undefined)
+            }
+            if (this.cellRenderer === undefined) {
                 this.cellRenderer = null;
-            if (this.resizable === undefined)
+            }
+            if (this.resizable === undefined) {
                 this.resizable = false;
+            }
         }
         getModelIndex() {
             return this.modelIndex;
@@ -466,106 +649,115 @@ var table;
      */
     class TableModelEvent {
         constructor(source, firstRow, lastRow, column, type) {
-            if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && ((typeof type === 'number') || type === null)) {
+            if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && ((typeof type === 'number') || type === null)) {
                 let __args = arguments;
-                if (this.type === undefined)
+                if (this.type === undefined) {
                     this.type = 0;
-                if (this.firstRow === undefined)
+                }
+                if (this.firstRow === undefined) {
                     this.firstRow = 0;
-                if (this.lastRow === undefined)
+                }
+                if (this.lastRow === undefined) {
                     this.lastRow = 0;
-                if (this.column === undefined)
+                }
+                if (this.column === undefined) {
                     this.column = 0;
-                if (this.source === undefined)
+                }
+                if (this.source === undefined) {
                     this.source = null;
-                if (this.type === undefined)
-                    this.type = 0;
-                if (this.firstRow === undefined)
-                    this.firstRow = 0;
-                if (this.lastRow === undefined)
-                    this.lastRow = 0;
-                if (this.column === undefined)
-                    this.column = 0;
-                if (this.source === undefined)
-                    this.source = null;
-                (() => {
+                }
+                this.source = source;
+                this.firstRow = firstRow;
+                this.lastRow = lastRow;
+                this.column = column;
+                this.type = type;
+            }
+            else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let type = TableModelEvent.UPDATE;
+                    if (this.type === undefined) {
+                        this.type = 0;
+                    }
+                    if (this.firstRow === undefined) {
+                        this.firstRow = 0;
+                    }
+                    if (this.lastRow === undefined) {
+                        this.lastRow = 0;
+                    }
+                    if (this.column === undefined) {
+                        this.column = 0;
+                    }
+                    if (this.source === undefined) {
+                        this.source = null;
+                    }
                     this.source = source;
                     this.firstRow = firstRow;
                     this.lastRow = lastRow;
                     this.column = column;
                     this.type = type;
-                })();
-            }
-            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
-                let __args = arguments;
-                {
-                    let __args = arguments;
-                    let type = TableModelEvent.UPDATE;
-                    if (this.type === undefined)
-                        this.type = 0;
-                    if (this.firstRow === undefined)
-                        this.firstRow = 0;
-                    if (this.lastRow === undefined)
-                        this.lastRow = 0;
-                    if (this.column === undefined)
-                        this.column = 0;
-                    if (this.source === undefined)
-                        this.source = null;
-                    if (this.type === undefined)
-                        this.type = 0;
-                    if (this.firstRow === undefined)
-                        this.firstRow = 0;
-                    if (this.lastRow === undefined)
-                        this.lastRow = 0;
-                    if (this.column === undefined)
-                        this.column = 0;
-                    if (this.source === undefined)
-                        this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
+                }
+                if (this.type === undefined) {
+                    this.type = 0;
+                }
+                if (this.firstRow === undefined) {
+                    this.firstRow = 0;
+                }
+                if (this.lastRow === undefined) {
+                    this.lastRow = 0;
+                }
+                if (this.column === undefined) {
+                    this.column = 0;
+                }
+                if (this.source === undefined) {
+                    this.source = null;
                 }
             }
-            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
+            else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
                 let __args = arguments;
                 {
                     let __args = arguments;
                     let column = TableModelEvent.ALL_COLUMNS;
                     let type = TableModelEvent.UPDATE;
-                    if (this.type === undefined)
+                    if (this.type === undefined) {
                         this.type = 0;
-                    if (this.firstRow === undefined)
+                    }
+                    if (this.firstRow === undefined) {
                         this.firstRow = 0;
-                    if (this.lastRow === undefined)
+                    }
+                    if (this.lastRow === undefined) {
                         this.lastRow = 0;
-                    if (this.column === undefined)
+                    }
+                    if (this.column === undefined) {
                         this.column = 0;
-                    if (this.source === undefined)
+                    }
+                    if (this.source === undefined) {
                         this.source = null;
-                    if (this.type === undefined)
-                        this.type = 0;
-                    if (this.firstRow === undefined)
-                        this.firstRow = 0;
-                    if (this.lastRow === undefined)
-                        this.lastRow = 0;
-                    if (this.column === undefined)
-                        this.column = 0;
-                    if (this.source === undefined)
-                        this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
+                    }
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
+                }
+                if (this.type === undefined) {
+                    this.type = 0;
+                }
+                if (this.firstRow === undefined) {
+                    this.firstRow = 0;
+                }
+                if (this.lastRow === undefined) {
+                    this.lastRow = 0;
+                }
+                if (this.column === undefined) {
+                    this.column = 0;
+                }
+                if (this.source === undefined) {
+                    this.source = null;
                 }
             }
-            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && lastRow === undefined && column === undefined && type === undefined) {
+            else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && lastRow === undefined && column === undefined && type === undefined) {
                 let __args = arguments;
                 let row = __args[1];
                 {
@@ -574,36 +766,44 @@ var table;
                     let lastRow = row;
                     let column = TableModelEvent.ALL_COLUMNS;
                     let type = TableModelEvent.UPDATE;
-                    if (this.type === undefined)
+                    if (this.type === undefined) {
                         this.type = 0;
-                    if (this.firstRow === undefined)
+                    }
+                    if (this.firstRow === undefined) {
                         this.firstRow = 0;
-                    if (this.lastRow === undefined)
+                    }
+                    if (this.lastRow === undefined) {
                         this.lastRow = 0;
-                    if (this.column === undefined)
+                    }
+                    if (this.column === undefined) {
                         this.column = 0;
-                    if (this.source === undefined)
+                    }
+                    if (this.source === undefined) {
                         this.source = null;
-                    if (this.type === undefined)
-                        this.type = 0;
-                    if (this.firstRow === undefined)
-                        this.firstRow = 0;
-                    if (this.lastRow === undefined)
-                        this.lastRow = 0;
-                    if (this.column === undefined)
-                        this.column = 0;
-                    if (this.source === undefined)
-                        this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
+                    }
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
+                }
+                if (this.type === undefined) {
+                    this.type = 0;
+                }
+                if (this.firstRow === undefined) {
+                    this.firstRow = 0;
+                }
+                if (this.lastRow === undefined) {
+                    this.lastRow = 0;
+                }
+                if (this.column === undefined) {
+                    this.column = 0;
+                }
+                if (this.source === undefined) {
+                    this.source = null;
                 }
             }
-            else if (((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
+            else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
                 let __args = arguments;
                 {
                     let __args = arguments;
@@ -611,33 +811,41 @@ var table;
                     let lastRow = 2147483647;
                     let column = TableModelEvent.ALL_COLUMNS;
                     let type = TableModelEvent.UPDATE;
-                    if (this.type === undefined)
+                    if (this.type === undefined) {
                         this.type = 0;
-                    if (this.firstRow === undefined)
+                    }
+                    if (this.firstRow === undefined) {
                         this.firstRow = 0;
-                    if (this.lastRow === undefined)
+                    }
+                    if (this.lastRow === undefined) {
                         this.lastRow = 0;
-                    if (this.column === undefined)
+                    }
+                    if (this.column === undefined) {
                         this.column = 0;
-                    if (this.source === undefined)
+                    }
+                    if (this.source === undefined) {
                         this.source = null;
-                    if (this.type === undefined)
-                        this.type = 0;
-                    if (this.firstRow === undefined)
-                        this.firstRow = 0;
-                    if (this.lastRow === undefined)
-                        this.lastRow = 0;
-                    if (this.column === undefined)
-                        this.column = 0;
-                    if (this.source === undefined)
-                        this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
+                    }
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
+                }
+                if (this.type === undefined) {
+                    this.type = 0;
+                }
+                if (this.firstRow === undefined) {
+                    this.firstRow = 0;
+                }
+                if (this.lastRow === undefined) {
+                    this.lastRow = 0;
+                }
+                if (this.column === undefined) {
+                    this.column = 0;
+                }
+                if (this.source === undefined) {
+                    this.source = null;
                 }
             }
             else
@@ -704,9 +912,9 @@ var util;
         static visit(designable, visitor) {
             visitor.doVisit(designable);
             {
-                let array134 = designable.getChildren();
-                for (let index133 = 0; index133 < array134.length; index133++) {
-                    let child = array134[index133];
+                let array200 = designable.getChildren();
+                for (let index199 = 0; index199 < array200.length; index199++) {
+                    let child = array200[index199];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -714,12 +922,12 @@ var util;
             }
         }
         static getTags(type) {
-            let html5tags = (window["html5tags"]);
-            let result = (new Array());
-            for (let index135 = 0; index135 < html5tags.length; index135++) {
-                let html5tag = html5tags[index135];
+            const html5tags = (window["html5tags"]);
+            const result = (new Array());
+            for (let index201 = 0; index201 < html5tags.length; index201++) {
+                let html5tag = html5tags[index201];
                 {
-                    let stype = html5tag["type"];
+                    const stype = html5tag["type"];
                     if (stype === type || type === "*") {
                         result.push(html5tag);
                     }
@@ -737,11 +945,11 @@ var util;
             if (obj == null) {
                 return null;
             }
-            if ((property.indexOf(".") != -1)) {
-                let parts = property.split(".");
+            if ( /* contains */(property.indexOf(".") != -1)) {
+                const parts = property.split(".");
                 let tmp = obj;
-                for (let index136 = 0; index136 < parts.length; index136++) {
-                    let part = parts[index136];
+                for (let index202 = 0; index202 < parts.length; index202++) {
+                    let part = parts[index202];
                     {
                         tmp = PropertyUtil.getValue(tmp, part);
                     }
@@ -753,8 +961,8 @@ var util;
             }
         }
         static hasOwnProperty(obj, property) {
-            if ((property.indexOf(".") != -1)) {
-                let keys = property.split(".");
+            if ( /* contains */(property.indexOf(".") != -1)) {
+                const keys = property.split(".");
                 let tmp = obj;
                 for (let i = 0; i < keys.length - 1; i++) {
                     {
@@ -775,8 +983,8 @@ var util;
             if (obj == null) {
                 throw Object.defineProperty(new Error("cannot set  property " + property + " to undefined"), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.Error', 'java.lang.Object'] });
             }
-            if ((property.indexOf(".") != -1)) {
-                let keys = property.split(".");
+            if ( /* contains */(property.indexOf(".") != -1)) {
+                const keys = property.split(".");
                 let tmp = obj;
                 for (let i = 0; i < keys.length - 1; i++) {
                     {
@@ -808,13 +1016,13 @@ var util;
          * @return {Object} The object created based on query string
          */
         static getQuery(hash) {
-            let result = new Object();
-            if ((hash.indexOf("?") != -1)) {
-                let kvs = hash.split("?")[1].split("&");
-                for (let index137 = 0; index137 < kvs.length; index137++) {
-                    let kv = kvs[index137];
+            const result = new Object();
+            if ( /* contains */(hash.indexOf("?") != -1)) {
+                const kvs = hash.split("?")[1].split("&");
+                for (let index203 = 0; index203 < kvs.length; index203++) {
+                    let kv = kvs[index203];
                     {
-                        let akv = kv.split("=");
+                        const akv = kv.split("=");
                         result[akv[0]] = akv[1];
                     }
                 }
@@ -839,29 +1047,24 @@ var util;
  */
 class JSContainer {
     constructor(name, tag) {
-        /*private*/ this.d = new Object();
         if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null)) {
             let __args = arguments;
             this.d = new Object();
-            (() => {
-                this.setTag(tag);
-                this.setName(name);
-            })();
+            this.setTag(tag);
+            this.setName(name);
         }
         else if (((typeof name === 'string') || name === null) && tag === undefined) {
             let __args = arguments;
             let tag = __args[0];
             this.d = new Object();
-            (() => {
-                this.setTag(tag);
-            })();
+            this.setTag(tag);
         }
         else
             throw new Error('invalid overload');
     }
-    static defaultRenderer_$LI$() { if (JSContainer.defaultRenderer == null)
-        JSContainer.defaultRenderer = new api.ContainerRenderer(); return JSContainer.defaultRenderer; }
-    ;
+    static defaultRenderer_$LI$() { if (JSContainer.defaultRenderer == null) {
+        JSContainer.defaultRenderer = new api.ContainerRenderer();
+    } return JSContainer.defaultRenderer; }
     /**
      * Adds an event on the component
      *
@@ -875,7 +1078,7 @@ class JSContainer {
     }
     /**
      *
-     * @return {Array} An array of custom events supported by the component<br>
+     * @return {java.lang.String[]} An array of custom events supported by the component<br>
      * This method is overridden by more complex components to provide
      * more advanced events mechanisms.
      */
@@ -893,10 +1096,10 @@ class JSContainer {
      */
     fireListener(key, evt) {
         console.log("firing:" + key + " on " + this.getName());
-        let listeners = this.getListeners()[key];
+        const listeners = this.getListeners()[key];
         if (listeners != null && listeners.length > 0) {
-            for (let index138 = 0; index138 < listeners.length; index138++) {
-                let l = listeners[index138];
+            for (let index204 = 0; index204 < listeners.length; index204++) {
+                let l = listeners[index204];
                 {
                     l.performAction(this, evt);
                 }
@@ -904,7 +1107,7 @@ class JSContainer {
         }
     }
     hasListenerOfType(type) {
-        let listeners = this.getListeners()[type];
+        const listeners = this.getListeners()[type];
         if (listeners != null && listeners.length > 0) {
             return true;
         }
@@ -922,16 +1125,11 @@ class JSContainer {
     }
     getChild(name) {
         {
-            let array140 = this.getChildren();
-            for (let index139 = 0; index139 < array140.length; index139++) {
-                let child = array140[index139];
+            let array206 = this.getChildren();
+            for (let index205 = 0; index205 < array206.length; index205++) {
+                let child = array206[index205];
                 {
-                    if (((o1, o2) => { if (o1 && o1.equals) {
-                        return o1.equals(o2);
-                    }
-                    else {
-                        return o1 === o2;
-                    } })(child.getName(), name)) {
+                    if (child.getName() === name) {
                         return child;
                     }
                 }
@@ -940,7 +1138,7 @@ class JSContainer {
         return null;
     }
     removeChild(r) {
-        let children = this.getChildren();
+        const children = this.getChildren();
         this.d["children"] = children.filter((ctn, inde, lst) => {
             return !((o1, o2) => { if (o1 && o1.equals) {
                 return o1.equals(o2);
@@ -987,7 +1185,7 @@ class JSContainer {
      */
     getChangedAttributes() {
         if (this.d["changedAttributes"] != null) {
-            let changed = this.d["changedAttributes"];
+            const changed = this.d["changedAttributes"];
             return changed;
         }
         else {
@@ -996,7 +1194,7 @@ class JSContainer {
         }
     }
     getNative() {
-        let elem = document.getElementById(this.getId());
+        const elem = document.getElementById(this.getId());
         if (elem != null) {
             return elem;
         }
@@ -1010,7 +1208,7 @@ class JSContainer {
      */
     getChangedStyles() {
         if (this.d["changedStyles"] != null) {
-            let changed = this.d["changedStyles"];
+            const changed = this.d["changedStyles"];
             return changed;
         }
         else {
@@ -1028,12 +1226,7 @@ class JSContainer {
      * is a public exposed method
      */
     flush(s) {
-        if (((o1, o2) => { if (o1 && o1.equals) {
-            return o1.equals(o2);
-        }
-        else {
-            return o1 === o2;
-        } })(s, "a28n12l10")) {
+        if (s === ("a28n12l10")) {
             delete this.d["changedAttributes"];
             delete this.d["changedStyles"];
         }
@@ -1043,7 +1236,7 @@ class JSContainer {
      * @return {*[]}
      */
     getRenderers() {
-        let arr = this.d["renderers"];
+        const arr = this.d["renderers"];
         if (arr != null) {
             return arr;
         }
@@ -1071,7 +1264,7 @@ class JSContainer {
      * @return {string}
      */
     getId() {
-        let custom = this.getCustomProperties();
+        const custom = this.getCustomProperties();
         if (custom != null) {
             if (custom.hasOwnProperty("id")) {
                 return custom["id"];
@@ -1111,26 +1304,21 @@ class JSContainer {
         if (styles == null) {
             styles = "";
         }
-        let aStyles = styles.split(" ");
-        let toAdds = styleClass.split(" ");
+        const aStyles = styles.split(" ");
+        const toAdds = styleClass.split(" ");
         let res = "";
-        for (let index141 = 0; index141 < toAdds.length; index141++) {
-            let toAdd = toAdds[index141];
+        for (let index207 = 0; index207 < toAdds.length; index207++) {
+            let toAdd = toAdds[index207];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0) {
                     let add = true;
-                    for (let index142 = 0; index142 < aStyles.length; index142++) {
-                        let style = aStyles[index142];
+                    for (let index208 = 0; index208 < aStyles.length; index208++) {
+                        let style = aStyles[index208];
                         {
                             style = style.trim();
                             if (style.length > 0) {
-                                if (((o1, o2) => { if (o1 && o1.equals) {
-                                    return o1.equals(o2);
-                                }
-                                else {
-                                    return o1 === o2;
-                                } })(style.trim(), toAdd)) {
+                                if (style.trim() === toAdd) {
                                     add = false;
                                 }
                             }
@@ -1157,13 +1345,13 @@ class JSContainer {
         if (cls.indexOf(" ") >= 0) {
             throw new Error("Cannot check with multiple classes. You should probably check with each class one by one");
         }
-        let styles = this.getAttribute("class");
+        const styles = this.getAttribute("class");
         if (styles == null) {
             return false;
         }
-        let aStyles = styles.split(" ");
-        for (let index143 = 0; index143 < aStyles.length; index143++) {
-            let style = aStyles[index143];
+        const aStyles = styles.split(" ");
+        for (let index209 = 0; index209 < aStyles.length; index209++) {
+            let style = aStyles[index209];
             {
                 style = style.trim();
                 if (style !== "") {
@@ -1191,9 +1379,9 @@ class JSContainer {
      */
     removeClass(cls) {
         if (cls != null && cls.trim() !== "") {
-            let toremove = cls.split(" ");
-            for (let index144 = 0; index144 < toremove.length; index144++) {
-                let s = toremove[index144];
+            const toremove = cls.split(" ");
+            for (let index210 = 0; index210 < toremove.length; index210++) {
+                let s = toremove[index210];
                 {
                     this.removeSingleClass(s);
                 }
@@ -1202,12 +1390,12 @@ class JSContainer {
         return this;
     }
     removeSingleClass(cls) {
-        let cl = this.getAttribute("class");
+        const cl = this.getAttribute("class");
         if (cl != null && cl.length > 0) {
-            let classes = cl.split(" ");
+            const classes = cl.split(" ");
             let result = "";
-            for (let index145 = 0; index145 < classes.length; index145++) {
-                let scl = classes[index145];
+            for (let index211 = 0; index211 < classes.length; index211++) {
+                let scl = classes[index211];
                 {
                     if (scl !== cls) {
                         if (result === "") {
@@ -1237,12 +1425,12 @@ class JSContainer {
         return this;
     }
     addChild$java_lang_String$java_lang_String(name, tag) {
-        let child = new JSContainer(name, tag);
+        const child = new JSContainer(name, tag);
         this.addChild$framework_components_api_Renderable(child);
         return child;
     }
     addChild$java_lang_String$java_lang_String$java_lang_String(name, tag, cls) {
-        let child = new JSContainer(name, tag);
+        const child = new JSContainer(name, tag);
         child.addClass(cls);
         this.addChild$framework_components_api_Renderable(child);
         return child;
@@ -1254,7 +1442,7 @@ class JSContainer {
         else if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null) && cls === undefined) {
             return this.addChild$java_lang_String$java_lang_String(name, tag);
         }
-        else if (((name != null && (name["__interfaces"] != null && name["__interfaces"].indexOf("framework.components.api.Renderable") >= 0 || name.constructor != null && name.constructor["__interfaces"] != null && name.constructor["__interfaces"].indexOf("framework.components.api.Renderable") >= 0)) || name === null) && tag === undefined && cls === undefined) {
+        else if (((name != null && (name.constructor != null && name.constructor["__interfaces"] != null && name.constructor["__interfaces"].indexOf("framework.components.api.Renderable") >= 0)) || name === null) && tag === undefined && cls === undefined) {
             return this.addChild$framework_components_api_Renderable(name);
         }
         else
@@ -1271,13 +1459,13 @@ class JSContainer {
      */
     addChildAt(index, child) {
         child.d["parent"] = this;
-        let children = (new Array());
+        const children = (new Array());
         let i = 0;
         let added = false;
         {
-            let array147 = this.getChildren();
-            for (let index146 = 0; index146 < array147.length; index146++) {
-                let c = array147[index146];
+            let array213 = this.getChildren();
+            for (let index212 = 0; index212 < array213.length; index212++) {
+                let c = array213[index212];
                 {
                     if (i === index) {
                         children.push(child);
@@ -1326,7 +1514,7 @@ class JSContainer {
         if (!listeners.hasOwnProperty(type)) {
             listeners[type] = new Array();
         }
-        let current = listeners[type];
+        const current = listeners[type];
         if (current.lastIndexOf(listener) < 0) {
             listeners[type].push(listener);
         }
@@ -1421,7 +1609,7 @@ class JSContainer {
      * @return {string}
      */
     getName() {
-        let name = this.getAttribute("name");
+        const name = this.getAttribute("name");
         if (name == null) {
             return "";
         }
@@ -1446,7 +1634,7 @@ class JSContainer {
      * @return {*[]}
      */
     getChildren() {
-        let children = this.d["children"];
+        const children = this.d["children"];
         if (children != null) {
             return children;
         }
@@ -1457,10 +1645,10 @@ class JSContainer {
     }
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     getStyleNames() {
-        let styles = this.d["styles"];
+        const styles = this.d["styles"];
         if (styles != null) {
             return Object.keys(styles);
         }
@@ -1468,10 +1656,10 @@ class JSContainer {
     }
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     getAttributeNames() {
-        let styles = this.d["attributes"];
+        const styles = this.d["attributes"];
         if (styles != null) {
             return Object.keys(styles);
         }
@@ -1482,7 +1670,7 @@ class JSContainer {
      * @return {string}
      */
     getHtml() {
-        let html = this.getString("html");
+        const html = this.getString("html");
         if (html == null) {
             return "";
         }
@@ -1514,9 +1702,9 @@ class JSContainer {
         this.d["rendered"] = b;
         if (!b) {
             {
-                let array149 = this.getChildren();
-                for (let index148 = 0; index148 < array149.length; index148++) {
-                    let child = array149[index148];
+                let array215 = this.getChildren();
+                for (let index214 = 0; index214 < array215.length; index214++) {
+                    let child = array215[index214];
                     {
                         child.setRendered(b);
                     }
@@ -1530,7 +1718,7 @@ class JSContainer {
      * @return {Object}
      */
     getListeners() {
-        let l = this.d["listeners"];
+        const l = this.d["listeners"];
         if (l == null) {
             this.d["listeners"] = new Object();
             return this.getListeners();
@@ -1559,22 +1747,17 @@ class JSContainer {
      * Unitility method to check if the specified object is present in the
      * specified array
      *
-     * @param {Bound[]} lst
+     * @param {?[]} lst
      * The array to check if object is present
      * @param {*} o
      * The object to check if present
      * @return {boolean} Whether is present or not
      */
     contains(lst, o) {
-        for (let index150 = 0; index150 < lst.length; index150++) {
-            let oo = lst[index150];
+        for (let index216 = 0; index216 < lst.length; index216++) {
+            let oo = lst[index216];
             {
-                if (((o1, o2) => { if (o1 && o1.equals) {
-                    return o1.equals(o2);
-                }
-                else {
-                    return o1 === o2;
-                } })(oo, o)) {
+                if ( /* equals */((o1, o2) => o1 && o1.equals ? o1.equals(o2) : o1 === o2)(oo, o)) {
                     return true;
                 }
             }
@@ -1587,26 +1770,26 @@ class JSContainer {
             renderers.push(JSContainer.defaultRenderer_$LI$());
         }
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
-            let tmp = (new Array());
+            const tmp = (new Array());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for (let index151 = 0; index151 < renderers.length; index151++) {
-                let r = renderers[index151];
+            for (let index217 = 0; index217 < renderers.length; index217++) {
+                let r = renderers[index217];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for (let index152 = 0; index152 < renderers.length; index152++) {
-            let renderer = renderers[index152];
+        for (let index218 = 0; index218 < renderers.length; index218++) {
+            let renderer = renderers[index218];
             renderer.doRender(this, parent);
         }
         {
-            let array154 = this.getChildren();
-            for (let index153 = 0; index153 < array154.length; index153++) {
-                let child = array154[index153];
+            let array220 = this.getChildren();
+            for (let index219 = 0; index219 < array220.length; index219++) {
+                let child = array220[index219];
                 {
-                    child.render();
+                    child['render$']();
                 }
             }
         }
@@ -1638,13 +1821,13 @@ class JSContainer {
      * @param {*} data
      */
     setCustomProperties(data) {
-        let previous = this.d["data"];
+        const previous = this.d["data"];
         if (previous != null && previous instanceof Array) {
-            let arData = previous;
-            for (let index155 = 0; index155 < arData.length; index155++) {
-                let line = arData[index155];
+            const arData = previous;
+            for (let index221 = 0; index221 < arData.length; index221++) {
+                let line = arData[index221];
                 {
-                    let value = line["value"];
+                    const value = line["value"];
                     this.setAttribute(value, null);
                 }
             }
@@ -1652,9 +1835,9 @@ class JSContainer {
         else {
             if (previous != null) {
                 {
-                    let array157 = Object.keys(previous);
-                    for (let index156 = 0; index156 < array157.length; index156++) {
-                        let key = array157[index156];
+                    let array223 = Object.keys(previous);
+                    for (let index222 = 0; index222 < array223.length; index222++) {
+                        let key = array223[index222];
                         {
                             this.setAttribute(key, null);
                         }
@@ -1665,21 +1848,21 @@ class JSContainer {
         this.d["data"] = data;
         if (data != null) {
             if (data != null && data instanceof Array) {
-                let arData = data;
-                for (let index158 = 0; index158 < arData.length; index158++) {
-                    let line = arData[index158];
+                const arData = data;
+                for (let index224 = 0; index224 < arData.length; index224++) {
+                    let line = arData[index224];
                     {
-                        let text = line["text"];
-                        let value = line["value"];
+                        const text = line["text"];
+                        const value = line["value"];
                         this.setAttribute(value, text);
                     }
                 }
             }
             else {
                 {
-                    let array160 = Object.keys(data);
-                    for (let index159 = 0; index159 < array160.length; index159++) {
-                        let key = array160[index159];
+                    let array226 = Object.keys(data);
+                    for (let index225 = 0; index225 < array226.length; index225++) {
+                        let key = array226[index225];
                         {
                             this.setAttribute(key, data[key]);
                         }
@@ -1696,23 +1879,18 @@ class JSContainer {
      * @return {*} The ancestor that contains the specified class
      */
     getAncestorWithClass(cls) {
-        let parent = this.getParent();
+        const parent = this.getParent();
         if (parent == null) {
             return null;
         }
-        let clsss = parent.getAttribute("class");
+        const clsss = parent.getAttribute("class");
         if (clsss != null) {
             {
-                let array162 = parent.getAttribute("class").split(" ");
-                for (let index161 = 0; index161 < array162.length; index161++) {
-                    let s = array162[index161];
+                let array228 = parent.getAttribute("class").split(" ");
+                for (let index227 = 0; index227 < array228.length; index227++) {
+                    let s = array228[index227];
                     {
-                        if (((o1, o2) => { if (o1 && o1.equals) {
-                            return o1.equals(o2);
-                        }
-                        else {
-                            return o1 === o2;
-                        } })(s.trim(), cls))
+                        if (s.trim() === cls)
                             return parent;
                     }
                 }
@@ -1726,13 +1904,8 @@ class JSContainer {
      * @return {JSContainer}
      */
     getAncestorById(id) {
-        let parent = this.getParent();
-        if (((o1, o2) => { if (o1 && o1.equals) {
-            return o1.equals(o2);
-        }
-        else {
-            return o1 === o2;
-        } })(this.getId(), id))
+        const parent = this.getParent();
+        if (this.getId() === id)
             return this;
         if (parent == null) {
             return null;
@@ -1745,14 +1918,9 @@ class JSContainer {
      * @return {JSContainer}
      */
     getAncestorByName(name) {
-        if (((o1, o2) => { if (o1 && o1.equals) {
-            return o1.equals(o2);
-        }
-        else {
-            return o1 === o2;
-        } })(this.getName(), name))
+        if (this.getName() === name)
             return this;
-        let parent = this.getParent();
+        const parent = this.getParent();
         if (parent == null) {
             return null;
         }
@@ -1763,7 +1931,7 @@ class JSContainer {
      * @return {JSContainer}
      */
     getRoot() {
-        let parent = this.getParent();
+        const parent = this.getParent();
         if (parent == null) {
             return this;
         }
@@ -1819,8 +1987,8 @@ JSContainer["__interfaces"] = ["framework.components.api.Renderable"];
 class CardLayout extends JSContainer {
     constructor(name, tag) {
         super(name, tag);
-        /*private*/ this.currentActive = "";
-        /*private*/ this.currentIndex = 0;
+        this.currentActive = "";
+        this.currentIndex = 0;
     }
     addItem(item) {
         this.addChild$framework_components_api_Renderable(item);
@@ -1840,9 +2008,9 @@ class CardLayout extends JSContainer {
     getIndex(name) {
         let index = 0;
         {
-            let array164 = this.getChildren();
-            for (let index163 = 0; index163 < array164.length; index163++) {
-                let child = array164[index163];
+            let array230 = this.getChildren();
+            for (let index229 = 0; index229 < array230.length; index229++) {
+                let child = array230[index229];
                 {
                     if (child.getName() === name) {
                         return index;
@@ -1855,17 +2023,17 @@ class CardLayout extends JSContainer {
     }
     next(...params) {
         if (this.currentIndex < (this.getChildren().length - 1)) {
-            let current = this.getItem(this.currentIndex);
-            let validateEvent = new CustomEvent("validate");
+            const current = this.getItem(this.currentIndex);
+            const validateEvent = new CustomEvent("validate");
             validateEvent["source"] = current;
             validateEvent["valid"] = true;
             current.fireListener("validate", validateEvent);
-            let isValid = validateEvent["valid"];
+            const isValid = validateEvent["valid"];
             if (isValid) {
                 this.currentIndex++;
-                let item = this.getItem(this.currentIndex);
+                const item = this.getItem(this.currentIndex);
                 this.activate.apply(this, [item.getName()].concat(params));
-                let nextEvent = new CustomEvent("next");
+                const nextEvent = new CustomEvent("next");
                 nextEvent["from"] = current;
                 nextEvent["to"] = item;
                 nextEvent["source"] = current;
@@ -1883,11 +2051,11 @@ class CardLayout extends JSContainer {
     }
     previous(...params) {
         if (this.currentIndex > 0) {
-            let current = this.getItem(this.currentIndex);
+            const current = this.getItem(this.currentIndex);
             this.currentIndex--;
-            let item = this.getItem(this.currentIndex);
+            const item = this.getItem(this.currentIndex);
             this.activate.apply(this, [item.getName()].concat(params));
-            let previousEvent = new CustomEvent("previous");
+            const previousEvent = new CustomEvent("previous");
             previousEvent["from"] = current;
             previousEvent["to"] = item;
             previousEvent["source"] = current;
@@ -1904,12 +2072,12 @@ class CardLayout extends JSContainer {
     }
     first(...params) {
         if (this.currentIndex > 0) {
-            let current = this.getItem(this.currentIndex);
+            const current = this.getItem(this.currentIndex);
             this.currentIndex = 0;
-            let item = this.getItem(this.currentIndex);
+            const item = this.getItem(this.currentIndex);
             this.activate.apply(this, [item.getName()].concat(params));
             this.activate.apply(this, [item.getName()].concat(params));
-            let firstEvent = new CustomEvent("first");
+            const firstEvent = new CustomEvent("first");
             firstEvent["from"] = current;
             firstEvent["to"] = item;
             firstEvent["source"] = current;
@@ -1919,17 +2087,17 @@ class CardLayout extends JSContainer {
         }
         else {
             this.currentIndex = 0;
-            let item = this.getItem(this.currentIndex);
+            const item = this.getItem(this.currentIndex);
             return item;
         }
     }
     last(...params) {
         if (this.currentIndex < (this.getChildren().length - 1)) {
-            let current = this.getItem(this.currentIndex);
+            const current = this.getItem(this.currentIndex);
             this.currentIndex = this.getChildren().length - 1;
-            let item = this.getItem(this.currentIndex);
+            const item = this.getItem(this.currentIndex);
             this.activate.apply(this, [item.getName()].concat(params));
-            let lastEvent = new CustomEvent("last");
+            const lastEvent = new CustomEvent("last");
             lastEvent["from"] = current;
             lastEvent["to"] = item;
             lastEvent["source"] = current;
@@ -1939,7 +2107,7 @@ class CardLayout extends JSContainer {
         }
         else {
             this.currentIndex = this.getChildren().length - 1;
-            let item = this.getItem(this.currentIndex);
+            const item = this.getItem(this.currentIndex);
             return item;
         }
     }
@@ -1951,12 +2119,12 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array166 = this.getChildren();
-            for (let index165 = 0; index165 < array166.length; index165++) {
-                let child = array166[index165];
+            let array232 = this.getChildren();
+            for (let index231 = 0; index231 < array232.length; index231++) {
+                let child = array232[index231];
                 {
                     if (child.getName() === name) {
-                        let evt = new CustomEvent("activate");
+                        const evt = new CustomEvent("activate");
                         evt["data"] = child;
                         evt["source"] = this;
                         if (params != null) {
@@ -1972,7 +2140,7 @@ class CardLayout extends JSContainer {
                         child.setStyle("display", "block");
                     }
                     else if (child.getName() === this.currentActive) {
-                        let evt = new CustomEvent("deactivate");
+                        const evt = new CustomEvent("deactivate");
                         evt["data"] = child;
                         child.fireListener("deactivate", evt);
                         child.setStyle("display", "none");
@@ -1988,7 +2156,7 @@ class CardLayout extends JSContainer {
     }
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     advancedEventTypes() {
         return ["first", "previous", "next", "last"];
@@ -2002,7 +2170,7 @@ class CardLayoutItem extends JSContainer {
     }
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     advancedEventTypes() {
         return ["activate", "deactivate", "validate"];
@@ -2045,7 +2213,7 @@ class ExternalStylesheet extends JSContainer {
     }
     doRender$framework_components_ExternalStylesheet$jsweet_dom_HTMLElement(c, root) {
         if (c.getAncestorWithClass("builder") != null) {
-            let nati = c.getNative();
+            const nati = c.getNative();
             if (nati != null) {
                 nati.remove();
             }
@@ -2085,13 +2253,10 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable", "fr
 class HTMLTemplateContainer extends JSContainer {
     constructor(name, template) {
         super(name, "div");
-        /**
-         * A context that contains variables exposed to the html template. This can be
-         * used by javascript to transmit data from the framework to the template
-         */
         this.context = new Object();
-        if (this.template === undefined)
+        if (this.template === undefined) {
             this.template = null;
+        }
         this.setTemplate(template);
     }
     /**
@@ -2119,7 +2284,7 @@ class HTMLTemplateContainer extends JSContainer {
     }
     render$jsweet_dom_HTMLElement(parent) {
         if (!this.isRendered()) {
-            let html = this.getTemplate();
+            const html = this.getTemplate();
             if (html != null) {
                 let cxt = this.context;
                 if (cxt == null) {
@@ -2129,19 +2294,19 @@ class HTMLTemplateContainer extends JSContainer {
                 cxt["me"] = this;
                 cxt["$this"] = this;
                 let rendered = this.compile(html, cxt);
-                let tmp = document.createElement("div");
+                const tmp = document.createElement("div");
                 tmp.innerHTML = rendered;
                 let tm = tmp.firstElementChild;
-                let children = tmp.childNodes;
+                const children = tmp.childNodes;
                 if (children.length > 1 || tm == null) {
                     tm = tmp;
                 }
                 rendered = tm.innerHTML;
-                let tag = tm.tagName;
+                const tag = tm.tagName;
                 this.setTag(tag);
-                let attrs = tm.attributes;
-                for (let index167 = 0; index167 < attrs.length; index167++) {
-                    let att = attrs[index167];
+                const attrs = tm.attributes;
+                for (let index233 = 0; index233 < attrs.length; index233++) {
+                    let att = attrs[index233];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -2171,12 +2336,12 @@ class HTMLTemplateContainer extends JSContainer {
     compile(html, ctx) {
         return html;
     }
-    static invokeFunction(target, __function, ...args) {
-        if (target.hasOwnProperty(__function)) {
-            return (o => o.call.apply(o, [target].concat(args)))(target[__function]);
+    static invokeFunction(target, _function, ...args) {
+        if (target.hasOwnProperty(_function)) {
+            return (o => o.call.apply(o, [target].concat(args)))(target[_function]);
         }
         else {
-            throw new Error(target + " does not contain function:" + __function);
+            throw new Error(target + " does not contain function:" + _function);
         }
     }
 }
@@ -2186,7 +2351,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
     class AbstractJSInput extends JSContainer {
         constructor(name) {
             super(name, "input");
-            /*private*/ this.validators = (new Array());
+            this.validators = (new Array());
         }
         addValidator(validator) {
             this.validators.push(validator);
@@ -2235,53 +2400,53 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             return date.getFullYear() + "-" + month + "-" + sdate;
         }
         getDoubleValue() {
-            let nat = this.getNative();
+            const nat = this.getNative();
             if (nat != null) {
-                let el = nat;
+                const el = nat;
                 return el.valueAsNumber;
             }
             return parseFloat(this.getAttribute("value"));
         }
         getStringValue() {
-            let nat = this.getNative();
+            const nat = this.getNative();
             if (nat != null) {
-                let el = nat;
+                const el = nat;
                 return el.value;
             }
             return this.getAttribute("value");
         }
         getDateValue() {
-            let nat = this.getNative();
+            const nat = this.getNative();
             if (nat != null) {
-                let el = nat;
+                const el = nat;
                 return el.valueAsDate;
             }
             return new Date(this.getAttribute("value"));
         }
         getNativeInput() {
-            let nat = this.getNative();
+            const nat = this.getNative();
             if (nat != null) {
-                let el = nat;
+                const el = nat;
                 return el;
             }
             return null;
         }
         setDoubleValue(val) {
-            let el = this.getNativeInput();
+            const el = this.getNativeInput();
             if (el != null) {
                 el.valueAsNumber = val;
             }
             this.setAttribute("value", val + "");
         }
         setStringValue(s) {
-            let el = this.getNativeInput();
+            const el = this.getNativeInput();
             if (el != null) {
                 el.value = s;
             }
             this.setAttribute("value", s);
         }
         setDateValue(date) {
-            let el = this.getNativeInput();
+            const el = this.getNativeInput();
             if (el != null) {
                 el.valueAsDate = date;
             }
@@ -2344,26 +2509,26 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
          */
         validate() {
             let valid = true;
-            let e = new api.ValidationException();
-            let nat = this.getNative();
+            const e = new api.ValidationException();
+            const nat = this.getNative();
             if (nat != null) {
-                let el = nat;
+                const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index168 = 0; index168 < this.validators.length; index168++) {
-                let v = this.validators[index168];
+            for (let index234 = 0; index234 < this.validators.length; index234++) {
+                let v = this.validators[index234];
                 {
-                    let b = v.validate(this);
+                    const b = v.validate(this);
                     if (!b) {
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate = new CustomEvent("validate");
+            const validate = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
@@ -2374,7 +2539,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes() {
             return ["validate"];
@@ -2396,7 +2561,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes() {
             return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterSetData", "beforeSubmit", "afterSubmit", "submit"];
@@ -2405,7 +2570,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             return Object.keys(this.validationerrors).length <= 0;
         }
         hasErrors() {
-            let keys = Object.keys(this.validationerrors);
+            const keys = Object.keys(this.validationerrors);
             if (keys != null && keys.length > 0) {
                 return true;
             }
@@ -2420,7 +2585,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             return this.validationerrors;
         }
         getField(binding) {
-            let result = (new Array());
+            const result = (new Array());
             util.ComponentUtil.visit(this, new Form.Form$0(this, binding, result));
             if (result.length > 0) {
                 return result[0];
@@ -2428,19 +2593,19 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             return null;
         }
         validate() {
-            let evt = new CustomEvent("beforeValidate");
+            const evt = new CustomEvent("beforeValidate");
             evt["source"] = this;
             this.fireListener("beforeValidate", evt);
             this.validationerrors = new Object();
             util.ComponentUtil.visit(this, new Form.Form$1(this));
-            let evtAfter = new CustomEvent("afterValidate");
+            const evtAfter = new CustomEvent("afterValidate");
             evtAfter["source"] = this;
             evtAfter["data"] = this.validationerrors;
             evtAfter["errors"] = this.validationerrors;
             evtAfter["hasError"] = Object.keys(this.validationerrors).length > 0;
             this.fireListener("afterValidate", evtAfter);
             if (Object.keys(this.validationerrors).length > 0) {
-                let onError = new CustomEvent("onError");
+                const onError = new CustomEvent("onError");
                 onError["source"] = this;
                 onError["data"] = this.validationerrors;
                 onError["errors"] = this.validationerrors;
@@ -2450,40 +2615,40 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             return Object.keys(this.validationerrors).length <= 0;
         }
         setData(data) {
-            let evt = new CustomEvent("beforeSetData");
+            const evt = new CustomEvent("beforeSetData");
             evt["source"] = this;
             evt["data"] = data;
             this.fireListener("beforeSetData", evt);
             util.ComponentUtil.visit(this, new Form.Form$2(this, data));
-            let evtAfter = new CustomEvent("afterSetData");
+            const evtAfter = new CustomEvent("afterSetData");
             evtAfter["source"] = this;
             evtAfter["data"] = data;
             this.fireListener("afterSetData", evtAfter);
         }
         getData() {
-            let evt = new CustomEvent("beforeGetData");
+            const evt = new CustomEvent("beforeGetData");
             evt["source"] = this;
             this.fireListener("beforeGetData", evt);
-            let data = new Object();
+            const data = new Object();
             util.ComponentUtil.visit(this, new Form.Form$3(this, data));
-            let evtAfter = new CustomEvent("afterGetData");
+            const evtAfter = new CustomEvent("afterGetData");
             evtAfter["source"] = this;
             evtAfter["data"] = data;
             this.fireListener("afterGetData", evtAfter);
             return data;
         }
         submit() {
-            let evt = new CustomEvent("beforeSubmit");
+            const evt = new CustomEvent("beforeSubmit");
             evt["source"] = this;
             this.fireListener("beforeSubmit", evt);
             if (this.validate()) {
-                let data = this.getData();
-                let on = new CustomEvent("submit");
+                const data = this.getData();
+                const on = new CustomEvent("submit");
                 on["source"] = this;
                 on["data"] = data;
                 this.fireListener("submit", on);
             }
-            let evtAfter = new CustomEvent("afterSubmit");
+            const evtAfter = new CustomEvent("afterSubmit");
             evtAfter["source"] = this;
             this.fireListener("afterSubmit", evtAfter);
         }
@@ -2503,9 +2668,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
              * @param {*} designable
              */
             doVisit(designable) {
-                if (designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
                     try {
-                        let b = designable.getBinding();
+                        const b = designable.getBinding();
                         if (b === this.binding) {
                             this.result.push(designable);
                         }
@@ -2517,7 +2682,6 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                         }
                         this.__parent.validationerrors[binding] = e;
                     }
-                    ;
                 }
             }
         }
@@ -2532,7 +2696,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
              * @param {*} designable
              */
             doVisit(designable) {
-                if (designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
                     try {
                         designable.validate();
                     }
@@ -2543,7 +2707,6 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                         }
                         this.__parent.validationerrors[binding] = e;
                     }
-                    ;
                 }
             }
         }
@@ -2559,27 +2722,26 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
              * @param {*} designable
              */
             doVisit(designable) {
-                if (designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
                     let binding = designable.getBinding();
                     if (binding == null || binding.trim() === "") {
                         binding = designable.getName();
                     }
                     if (util.PropertyUtil.hasOwnProperty(this.data, binding)) {
-                        let obj = util.PropertyUtil.getValue(this.data, binding);
+                        const obj = util.PropertyUtil.getValue(this.data, binding);
                         if (designable != null && designable instanceof input.JSDateInput) {
                             try {
                                 if (obj != null && obj instanceof Date) {
                                     designable.setValue(obj);
                                 }
                                 else {
-                                    let date = new Date(/* parseLong */ parseInt(obj.toString()));
+                                    const date = new Date(/* parseLong */ parseInt(obj.toString()));
                                     designable.setValue(date);
                                 }
                             }
                             catch (e) {
                                 designable.setValue(obj);
                             }
-                            ;
                         }
                         else {
                             designable.setValue(obj);
@@ -2603,12 +2765,12 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
              * @param {*} designable
              */
             doVisit(designable) {
-                if (designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
                     let binding = designable.getBinding();
                     if (binding == null || binding.trim() === "") {
                         binding = designable.getName();
                     }
-                    let value = designable.getValue();
+                    const value = designable.getValue();
                     util.PropertyUtil.setValue(this.data, value, binding);
                 }
             }
@@ -2621,10 +2783,10 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
     class JSImageInput extends JSContainer {
         constructor(name) {
             super(name, "div");
-            /*private*/ this.image = new JSContainer("image", "img");
-            /*private*/ this.upload = new JSUpload("upload", util.PropertyUtil.REMOTESERVER + "/resources/upload");
-            /*private*/ this.imageContainer = new JSContainer("div");
-            /*private*/ this.validators = (new Array());
+            this.image = new JSContainer("image", "img");
+            this.upload = new JSUpload("upload", util.PropertyUtil.REMOTESERVER + "/resources/upload");
+            this.imageContainer = new JSContainer("div");
+            this.validators = (new Array());
             this.setAttribute("identifier", "lgt:image-input");
             this.addClass("slds-image-input");
             this.addChild$framework_components_api_Renderable(this.imageContainer);
@@ -2639,7 +2801,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         refreshUploadDir() {
             let dir = this.getAttribute("uploadDir");
-            let name = this.getName();
+            const name = this.getName();
             if (dir == null) {
                 dir = "default";
             }
@@ -2708,18 +2870,18 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
          */
         validate() {
             let valid = true;
-            let e = new api.ValidationException();
-            for (let index169 = 0; index169 < this.validators.length; index169++) {
-                let v = this.validators[index169];
+            const e = new api.ValidationException();
+            for (let index235 = 0; index235 < this.validators.length; index235++) {
+                let v = this.validators[index235];
                 {
-                    let b = v.validate(this);
+                    const b = v.validate(this);
                     if (!b) {
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate = new CustomEvent("validate");
+            const validate = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
@@ -2746,7 +2908,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes() {
             return ["success", "error"];
@@ -2770,9 +2932,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                     this.__parent.fireListener("success", evt);
                 }
                 else {
-                    let data = evt["data"];
+                    const data = evt["data"];
                     if (data != null && data.hasOwnProperty("url")) {
-                        let url = data["url"];
+                        const url = data["url"];
                         this.__parent.setValue(url);
                         this.__parent.render();
                     }
@@ -2852,20 +3014,22 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
     class JSSelect extends JSContainer {
         constructor(name) {
             super(name, "select");
-            /*private*/ this.validators = (new Array());
-            if (this.previousValue === undefined)
+            if (this.previousValue === undefined) {
                 this.previousValue = null;
-            if (this.data === undefined)
+            }
+            this.validators = (new Array());
+            if (this.data === undefined) {
                 this.data = null;
+            }
             this.setAttribute("identifier", "html:select");
         }
         addValidator(validator) {
             this.validators.push(validator);
         }
         setOptions$java_lang_String(options) {
-            let opts = options.split("\n");
-            for (let index170 = 0; index170 < opts.length; index170++) {
-                let opt = opts[index170];
+            const opts = options.split("\n");
+            for (let index236 = 0; index236 < opts.length; index236++) {
+                let opt = opts[index236];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -2887,7 +3051,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                 this.data = (new Array());
             }
             if (this.findItem(option.getValue()) == null) {
-                let opt = new Object();
+                const opt = new Object();
                 opt["text"] = option.getText();
                 opt["value"] = option.getValue();
                 this.data.push(opt);
@@ -2970,26 +3134,21 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             return this;
         }
         isMultiple() {
-            return ((o1, o2) => { if (o1 && o1.equals) {
-                return o1.equals(o2);
-            }
-            else {
-                return o1 === o2;
-            } })("true", this.getAttribute("multiple"));
+            return "true" === this.getAttribute("multiple");
         }
         /**
          *
          * @return {*}
          */
         getValue() {
-            let ele = this.getNative();
+            const ele = this.getNative();
             if (ele != null) {
                 if (ele.multiple) {
-                    let result = (new Array());
-                    for (let index171 = 0; index171 < ele.children.length; index171++) {
-                        let e = ele.children[index171];
+                    const result = (new Array());
+                    for (let index237 = 0; index237 < ele.children.length; index237++) {
+                        let e = ele.children[index237];
                         {
-                            let opt = e;
+                            const opt = e;
                             if (opt.selected)
                                 result.push(opt.value);
                         }
@@ -3001,18 +3160,13 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                 }
             }
             else {
-                let val = this.getAttribute("value");
+                const val = this.getAttribute("value");
                 {
-                    let array173 = this.getChildren();
-                    for (let index172 = 0; index172 < array173.length; index172++) {
-                        let opt = array173[index172];
+                    let array239 = this.getChildren();
+                    for (let index238 = 0; index238 < array239.length; index238++) {
+                        let opt = array239[index238];
                         {
-                            if (((o1, o2) => { if (o1 && o1.equals) {
-                                return o1.equals(o2);
-                            }
-                            else {
-                                return o1 === o2;
-                            } })(opt.getAttribute("value"), val)) {
+                            if (opt.getAttribute("value") === val) {
                                 return opt.getValue();
                             }
                         }
@@ -3028,7 +3182,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         setValue(values) {
             this.previousValue = this.getValue();
             if (values != null) {
-                let ele = this.getNative();
+                const ele = this.getNative();
                 let firstVal = values.toString();
                 let arrVal = (new Array());
                 if (values != null && values instanceof Array) {
@@ -3048,20 +3202,15 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array175 = this.getChildren();
-                    for (let index174 = 0; index174 < array175.length; index174++) {
-                        let opt = array175[index174];
+                    let array241 = this.getChildren();
+                    for (let index240 = 0; index240 < array241.length; index240++) {
+                        let opt = array241[index240];
                         {
                             opt.setSelected(false);
-                            for (let index176 = 0; index176 < arrVal.length; index176++) {
-                                let val = arrVal[index176];
+                            for (let index242 = 0; index242 < arrVal.length; index242++) {
+                                let val = arrVal[index242];
                                 {
-                                    if (((o1, o2) => { if (o1 && o1.equals) {
-                                        return o1.equals(o2);
-                                    }
-                                    else {
-                                        return o1 === o2;
-                                    } })(opt.getAttribute("value"), val)) {
+                                    if (opt.getAttribute("value") === val) {
                                         opt.setSelected(true);
                                     }
                                 }
@@ -3072,15 +3221,15 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             }
             else {
                 {
-                    let array178 = this.getChildren();
-                    for (let index177 = 0; index177 < array178.length; index177++) {
-                        let opt = array178[index177];
+                    let array244 = this.getChildren();
+                    for (let index243 = 0; index243 < array244.length; index243++) {
+                        let opt = array244[index243];
                         {
                             opt.setSelected(false);
                         }
                     }
                 }
-                let ele = this.getNative();
+                const ele = this.getNative();
                 if (ele != null) {
                     ele.value = "";
                 }
@@ -3095,26 +3244,26 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
          */
         validate() {
             let valid = true;
-            let e = new api.ValidationException();
-            let nat = this.getNative();
+            const e = new api.ValidationException();
+            const nat = this.getNative();
             if (nat != null) {
-                let el = nat;
+                const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index179 = 0; index179 < this.validators.length; index179++) {
-                let v = this.validators[index179];
+            for (let index245 = 0; index245 < this.validators.length; index245++) {
+                let v = this.validators[index245];
                 {
-                    let b = v.validate(this);
+                    const b = v.validate(this);
                     if (!b) {
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate = new CustomEvent("validate");
+            const validate = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
@@ -3125,7 +3274,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes() {
             return ["validate"];
@@ -3136,17 +3285,17 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         setData(data_) {
             this.clearChildren();
             this.setRendered(false);
-            for (let index180 = 0; index180 < data_.length; index180++) {
-                let o = data_[index180];
+            for (let index246 = 0; index246 < data_.length; index246++) {
+                let o = data_[index246];
                 {
                     if (o.hasOwnProperty("value")) {
-                        let value = o["value"];
-                        let text = o["text"];
+                        const value = o["value"];
+                        const text = o["text"];
                         this.addOption$framework_components_input_JSOption(new input.JSOption(text, value));
                     }
                     else {
-                        let value = o.toString();
-                        let text = o.toString();
+                        const value = o.toString();
+                        const text = o.toString();
                         this.addOption$framework_components_input_JSOption(new input.JSOption(text, value));
                     }
                 }
@@ -3156,15 +3305,15 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             this.setData(data_);
         }
         getSelectedItems() {
-            let obj = this.getValue();
-            let result = (new Array());
+            const obj = this.getValue();
+            const result = (new Array());
             if (this.isMultiple()) {
                 {
-                    let array182 = obj;
-                    for (let index181 = 0; index181 < array182.length; index181++) {
-                        let o = array182[index181];
+                    let array248 = obj;
+                    for (let index247 = 0; index247 < array248.length; index247++) {
+                        let o = array248[index247];
                         {
-                            let item = this.findItem(o);
+                            const item = this.findItem(o);
                             if (item != null) {
                                 result.push(item);
                             }
@@ -3174,7 +3323,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             }
             else {
                 if (obj != null) {
-                    let item = this.findItem(obj.toString());
+                    const item = this.findItem(obj.toString());
                     if (item != null) {
                         result.push(item);
                     }
@@ -3187,18 +3336,13 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         findItem(value) {
             if (this.data != null) {
-                for (let index183 = 0; index183 < this.data.length; index183++) {
-                    let o = this.data[index183];
+                for (let index249 = 0; index249 < this.data.length; index249++) {
+                    let o = this.data[index249];
                     {
                         let val = o["value"];
                         val = val + "";
-                        let comp = value + "";
-                        if (val != null && ((o1, o2) => { if (o1 && o1.equals) {
-                            return o1.equals(o2);
-                        }
-                        else {
-                            return o1 === o2;
-                        } })(val, comp)) {
+                        const comp = value + "";
+                        if (val != null && (val === comp)) {
                             return o;
                         }
                     }
@@ -3224,7 +3368,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
     class JSTextArea extends JSContainer {
         constructor(name) {
             super(name, "textarea");
-            /*private*/ this.validators = (new Array());
+            this.validators = (new Array());
             this.setAttribute("identifier", "html:textarea");
         }
         addValidator(validator) {
@@ -3252,14 +3396,14 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
          * @return {string}
          */
         getValue() {
-            let elem = this.getNative();
+            const elem = this.getNative();
             if (elem != null) {
                 return elem.value;
             }
             return this.getHtml();
         }
         setValue$java_lang_String(val) {
-            let elem = this.getNative();
+            const elem = this.getNative();
             if (elem != null) {
                 elem.value = val;
             }
@@ -3281,26 +3425,26 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
          */
         validate() {
             let valid = true;
-            let e = new api.ValidationException();
-            let nat = this.getNative();
+            const e = new api.ValidationException();
+            const nat = this.getNative();
             if (nat != null) {
-                let el = nat;
+                const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index184 = 0; index184 < this.validators.length; index184++) {
-                let v = this.validators[index184];
+            for (let index250 = 0; index250 < this.validators.length; index250++) {
+                let v = this.validators[index250];
                 {
-                    let b = v.validate(this);
+                    const b = v.validate(this);
                     if (!b) {
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate = new CustomEvent("validate");
+            const validate = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
@@ -3311,7 +3455,7 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes() {
             return ["validate"];
@@ -3347,10 +3491,7 @@ class RestWebservice extends JSContainer {
         if (((typeof name === 'string') || name === null)) {
             let __args = arguments;
             super(name);
-            (() => {
-                this.setAttribute("method", "GET");
-                this.setAsync(true);
-            })();
+            this.setAttribute("method", "GET");
         }
         else if (name === undefined) {
             let __args = arguments;
@@ -3358,235 +3499,11 @@ class RestWebservice extends JSContainer {
                 let __args = arguments;
                 let name = "rw";
                 super(name);
-                (() => {
-                    this.setAttribute("method", "GET");
-                    this.setAsync(true);
-                })();
+                this.setAttribute("method", "GET");
             }
         }
         else
             throw new Error('invalid overload');
-    }
-    /**
-     *
-     * @return {Array}
-     */
-    advancedEventTypes() {
-        return ["success", "error", "beforeSend", "complete"];
-    }
-    isSet(prop) {
-        if (this.getAttribute(prop) != null && this.getAttribute(prop).length > 0) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-    getAccepts() {
-        return this.getAttribute("accepts");
-    }
-    setAccepts(accepts) {
-        this.setAttribute("accepts", accepts);
-    }
-    setDataType(dataType) {
-        this.setAttribute("dataType", dataType);
-    }
-    getDataType() {
-        return this.getAttribute("dataType");
-    }
-    setContentType(contentType) {
-        this.setAttribute("contentType", contentType);
-    }
-    getContentType() {
-        return this.getAttribute("contentType");
-    }
-    getBoolean(prop) {
-        return ((o1, o2) => { if (o1 && o1.equals) {
-            return o1.equals(o2);
-        }
-        else {
-            return o1 === o2;
-        } })("true", this.getAttribute(prop));
-    }
-    setAsync(b) {
-        this.setAttribute("async", b ? "true" : "false");
-    }
-    getAsync() {
-        return this.getBoolean("async");
-    }
-    setCache(b) {
-        this.setAttribute("cache", b ? "true" : "false");
-    }
-    getCache() {
-        return this.getBoolean("cache");
-    }
-    setCrossDomain(b) {
-        this.setAttribute("crossDomain", b ? "true" : "false");
-    }
-    getCrossDomain() {
-        return this.getBoolean("crossDomain");
-    }
-    setIfModified(b) {
-        this.setAttribute("ifModified", b ? "true" : "false");
-    }
-    getIfModified() {
-        return this.getBoolean("ifModified");
-    }
-    setProcessData(b) {
-        this.setAttribute("processData", b ? "true" : "false");
-    }
-    getProcessData() {
-        return this.getBoolean("processData");
-    }
-    setScriptCharset(charset) {
-        this.setAttribute("scriptCharset", charset);
-    }
-    getScriptCharset() {
-        return this.getAttribute("scriptCharset");
-    }
-    setUsername(username) {
-        this.setAttribute("username", username);
-    }
-    getUsername() {
-        return this.getAttribute("username");
-    }
-    setMimeType(mimetype) {
-        this.setAttribute("mimeType", mimetype);
-    }
-    getMimeType() {
-        return this.getAttribute("mimeType");
-    }
-    setPassword(password) {
-        this.setAttribute("password", password);
-    }
-    getPassword() {
-        return this.getAttribute("password");
-    }
-    setTraditional(b) {
-        this.setAttribute("traditional", b ? "true" : "false");
-    }
-    getTraditional() {
-        return this.getBoolean("traditional");
-    }
-    setTimeout(timeout) {
-        this.setAttribute("timeout", timeout + "");
-    }
-    getTimeout() {
-        return parseFloat(this.getAttribute("timeout"));
-    }
-    setUrl(url) {
-        this.setAttribute("url", url);
-    }
-    getUrl() {
-        return this.getAttribute("url");
-    }
-    addHeader(key, value) {
-        let headers = this.getAttribute("headers");
-        let obj = JSON.parse(headers);
-        obj[key] = value;
-        this.setAttribute("headers", JSON.stringify(obj));
-    }
-    getHeaders() {
-        let headers = this.getAttribute("headers");
-        let obj = JSON.parse(headers);
-        return obj;
-    }
-    getData() {
-        return JSON.parse(this.getAttribute("data"));
-    }
-    setData(data) {
-        if (typeof data === 'string')
-            this.setAttribute("data", data);
-        else
-            this.setAttribute("data", JSON.stringify(data));
-    }
-    setMethod(method) {
-        this.setAttribute("method", method);
-    }
-    getMethod() {
-        return this.getAttribute("method");
-    }
-    execute() {
-        if (this.isSet("url")) {
-            let settings = Object.defineProperty({
-                error: (jqXHR, textStatus, errorThrown) => {
-                    let evt = new CustomEvent("error");
-                    evt["error"] = errorThrown;
-                    evt["source"] = this;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("error", evt);
-                    this.getRoot().render();
-                    return null;
-                },
-                success: (data, textStatus, jqXHR) => {
-                    let evt = new CustomEvent("success");
-                    evt["data"] = data;
-                    evt["status"] = textStatus;
-                    evt["source"] = this;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("success", evt);
-                    this.getRoot().render();
-                    return null;
-                },
-                complete: (jqXHR, textStatus) => {
-                    let evt = new CustomEvent("complete");
-                    evt["status"] = textStatus;
-                    evt["source"] = this;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("complete", evt);
-                    this.getRoot().render();
-                    return null;
-                },
-                beforeSend: (jqXHR, settings) => {
-                    let evt = new CustomEvent("beforeSend");
-                    evt["source"] = this;
-                    evt["settings"] = settings;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("beforeSend", evt);
-                    this.getRoot().render();
-                    return null;
-                }
-            }, '__interfaces', { configurable: true, value: ["def.jquery.JQueryAjaxSettings"] });
-            if (this.isSet("accepts"))
-                settings.accepts = this.getAccepts();
-            if (this.isSet("async"))
-                settings.async = this.getAsync();
-            if (this.isSet("cache"))
-                settings.cache = this.getCache();
-            if (this.isSet("contentType"))
-                settings.contentType = this.getContentType();
-            if (this.isSet("crossDomain"))
-                settings.crossDomain = this.getCrossDomain();
-            if (this.isSet("dataType"))
-                settings.dataType = this.getDataType();
-            if (this.isSet("ifModified"))
-                settings.ifModified = this.getIfModified();
-            if (this.isSet("method"))
-                settings.method = this.getMethod();
-            if (this.isSet("mimeType"))
-                settings.mimeType = this.getMimeType();
-            if (this.isSet("password"))
-                settings.password = this.getPassword();
-            if (this.isSet("processData"))
-                settings.processData = this.getProcessData();
-            if (this.isSet("scriptCharset"))
-                settings.scriptCharset = this.getScriptCharset();
-            if (this.isSet("timeout"))
-                settings.timeout = this.getTimeout();
-            if (this.isSet("traditional"))
-                settings.traditional = this.getTraditional();
-            if (this.isSet("type"))
-                settings.type = this.getMethod();
-            if (this.isSet("url"))
-                settings.url = this.getUrl();
-            if (this.isSet("username"))
-                settings.username = this.getUsername();
-            if (this.isSet("headers"))
-                settings.headers = this.getHeaders();
-            if (this.isSet("data"))
-                settings.data = this.getData();
-            $.ajax(settings);
-        }
     }
 }
 RestWebservice["__class"] = "framework.components.RestWebservice";
@@ -3604,12 +3521,14 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
     class Table extends JSContainer {
         constructor(name) {
             super(name, "table");
-            /*private*/ this.head = new JSContainer("head", "thead");
-            /*private*/ this.body = new JSContainer("body", "tbody");
-            if (this.dataModel === undefined)
+            this.head = new JSContainer("head", "thead");
+            this.body = new JSContainer("body", "tbody");
+            if (this.dataModel === undefined) {
                 this.dataModel = null;
-            if (this.columnModel === undefined)
+            }
+            if (this.columnModel === undefined) {
                 this.columnModel = null;
+            }
             this.addChild$framework_components_api_Renderable(this.head);
             this.addChild$framework_components_api_Renderable(this.body);
         }
@@ -3635,13 +3554,13 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
             this.head.clearChildren();
             this.body.clearChildren();
             if (this.columnModel != null) {
-                let hrow = new JSContainer("headerRow", "tr");
+                const hrow = new JSContainer("headerRow", "tr");
                 this.head.addChild$framework_components_api_Renderable(hrow);
                 for (let i = 0; i < this.columnModel.getColumnCount(); i++) {
                     {
-                        let column = this.columnModel.getColumn(i);
-                        let headerRenderer = column.getHeaderRenderer();
-                        let th = new JSContainer("", "th").setAttribute("scope", "col");
+                        const column = this.columnModel.getColumn(i);
+                        const headerRenderer = column.getHeaderRenderer();
+                        const th = new JSContainer("", "th").setAttribute("scope", "col");
                         th.setStyle("width", column.getWidth() + "px");
                         th.setStyle("max-width", column.getMaxWidth() + "px");
                         th.setStyle("min-width", column.getMinWidth() + "px");
@@ -3654,15 +3573,15 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
             if (this.dataModel != null) {
                 for (let row = 0; row < this.dataModel.getRowCount(); row++) {
                     {
-                        let r = new JSContainer("", "tr");
+                        const r = new JSContainer("", "tr");
                         this.body.addChild$framework_components_api_Renderable(r);
                         for (let col = 0; col < this.dataModel.getColumnCount(); col++) {
                             {
-                                let cell = new JSContainer("", "td");
+                                const cell = new JSContainer("", "td");
                                 r.addChild$framework_components_api_Renderable(cell);
-                                let val = this.dataModel.getValueAt(row, col);
+                                const val = this.dataModel.getValueAt(row, col);
                                 if (this.columnModel != null) {
-                                    let column = this.columnModel.getColumn(col);
+                                    const column = this.columnModel.getColumn(col);
                                     column.getCellRenderer().renderComponent(this, cell, val, false, false, row, col);
                                 }
                                 else {
@@ -3685,12 +3604,12 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
     class JSAddressInput extends HTMLTemplateContainer {
         constructor(name) {
             super(name, "");
-            /*private*/ this.address = new Object();
-            /*private*/ this.country = new input.JSSelect("country");
-            /*private*/ this.city = new input.JSTextInput("city");
-            /*private*/ this.postalCode = new input.JSTextInput("postalCode");
-            /*private*/ this.state = new input.JSTextInput("state");
-            /*private*/ this.street = new input.JSTextInput("street");
+            this.address = new Object();
+            this.country = new input.JSSelect("country");
+            this.city = new input.JSTextInput("city");
+            this.postalCode = new input.JSTextInput("postalCode");
+            this.state = new input.JSTextInput("state");
+            this.street = new input.JSTextInput("street");
             this.addChild$framework_components_api_Renderable(this.country);
             this.addChild$framework_components_api_Renderable(this.city);
             this.addChild$framework_components_api_Renderable(this.postalCode);
@@ -3798,15 +3717,13 @@ class JSUpload extends HTMLTemplateContainer {
             this.input = new JSContainer("uploadfile", "input");
             this.uploader = new FileUploader();
             this.required = false;
-            (() => {
-                this.addChild$framework_components_api_Renderable(this.label);
-                this.input.setAttribute("type", "file").setAttribute("accept", "*");
-                this.label.setHtml("Upload File:");
-                this.input.addEventListener(this, "change");
-                this.input.addClass("slds-input");
-                this.addChild$framework_components_api_Renderable(this.input);
-                this.setAttribute("url", url);
-            })();
+            this.addChild$framework_components_api_Renderable(this.label);
+            this.input.setAttribute("type", "file").setAttribute("accept", "*");
+            this.label.setHtml("Upload File:");
+            this.input.addEventListener(this, "change");
+            this.input.addClass("slds-input");
+            this.addChild$framework_components_api_Renderable(this.input);
+            this.setAttribute("url", url);
         }
         else if (((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && url === undefined) {
             let __args = arguments;
@@ -3819,16 +3736,18 @@ class JSUpload extends HTMLTemplateContainer {
                 this.input = new JSContainer("uploadfile", "input");
                 this.uploader = new FileUploader();
                 this.required = false;
-                (() => {
-                    this.addChild$framework_components_api_Renderable(this.label);
-                    this.input.setAttribute("type", "file").setAttribute("accept", "*");
-                    this.label.setHtml("Upload File:");
-                    this.input.addEventListener(this, "change");
-                    this.input.addClass("slds-input");
-                    this.addChild$framework_components_api_Renderable(this.input);
-                    this.setAttribute("url", url);
-                })();
+                this.addChild$framework_components_api_Renderable(this.label);
+                this.input.setAttribute("type", "file").setAttribute("accept", "*");
+                this.label.setHtml("Upload File:");
+                this.input.addEventListener(this, "change");
+                this.input.addClass("slds-input");
+                this.addChild$framework_components_api_Renderable(this.input);
+                this.setAttribute("url", url);
             }
+            this.label = new JSContainer("label", "label");
+            this.input = new JSContainer("uploadfile", "input");
+            this.uploader = new FileUploader();
+            this.required = false;
         }
         else
             throw new Error('invalid overload');
@@ -3841,7 +3760,7 @@ class JSUpload extends HTMLTemplateContainer {
     }
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     advancedEventTypes() {
         return ["success", "error"];
@@ -3960,11 +3879,11 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework
          * @return {boolean}
          */
         getValue() {
-            let el = this.getNative();
+            const el = this.getNative();
             if (el != null) {
                 return el.checked;
             }
-            if (this.getAttribute("value") != null && ((o1, o2) => o1.toUpperCase() === (o2 === null ? o2 : o2.toUpperCase()))("true", this.getAttribute("value"))) {
+            if (this.getAttribute("value") != null && /* equalsIgnoreCase */ ((o1, o2) => o1.toUpperCase() === (o2 === null ? o2 : o2.toUpperCase()))("true", this.getAttribute("value"))) {
                 return true;
             }
             return false;
@@ -3978,7 +3897,7 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework
                 this.setAttribute("value", "false");
                 this.setAttribute("checked", null);
             }
-            let el = this.getNative();
+            const el = this.getNative();
             if (el != null) {
                 el.checked = b;
             }
@@ -4118,8 +4037,6 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework
         constructor(name) {
             super(name);
             this.setType(api.StringInputTypes.text);
-            this.setAttribute("identifier", "html:input");
-            this.addRenderer(this);
         }
         setMaxLength(length) {
             this.setAttribute("maxlength", length + "");
@@ -4156,37 +4073,16 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework
             this.setAttribute("mask", mask);
             this.setRendered(false);
         }
-        doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c, root) {
-            let mask = this.getMask();
-            if (mask != null && mask.trim().length > 0) {
-                let elem = this.getNative();
-                let jq = $(elem);
-                $(elem)["inputmask"].call(jq, mask);
-                eval("");
-            }
-        }
-        /**
-         *
-         * @param {input.JSTextInput} c
-         * @param {HTMLElement} root
-         */
-        doRender(c, root) {
-            if (((c != null && c instanceof input.JSTextInput) || c === null) && ((root != null && root instanceof HTMLElement) || root === null)) {
-                return this.doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c, root);
-            }
-            else
-                throw new Error('invalid overload');
-        }
     }
     input.JSTextInput = JSTextInput;
     JSTextInput["__class"] = "framework.components.input.JSTextInput";
-    JSTextInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable", "framework.components.api.Renderer"];
+    JSTextInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
 (function (input) {
     class JSTimeInput extends input.AbstractJSInput {
         constructor(name) {
             super(name);
-            /*private*/ this.savedDate = new Date();
+            this.savedDate = new Date();
             this.setAttribute("type", "time");
             this.setAttribute("identifier", "html:time-input");
         }
@@ -4195,10 +4091,10 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework
          * @return {Date}
          */
         getValue() {
-            let time = this.getStringValue();
-            let d = this.savedDate;
-            if (time != null && (time.indexOf(":") != -1)) {
-                let htmn = time.split(":");
+            const time = this.getStringValue();
+            const d = this.savedDate;
+            if (time != null && /* contains */ (time.indexOf(":") != -1)) {
+                const htmn = time.split(":");
                 d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
             }
             return d;
@@ -4237,7 +4133,7 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener", "framework
     class RichTextEditor extends input.JSTextArea {
         constructor(name) {
             super(name);
-            /*private*/ this.editor = null;
+            this.editor = null;
             this.setAttribute("identifier", "html:richtext");
             this.addRenderer(this);
         }
@@ -4288,3 +4184,4 @@ JSContainer.defaultRenderer_$LI$();
 input.NumericInputTypes.types_$LI$();
 input.DateInputTypes.types_$LI$();
 api.StringInputTypes.types_$LI$();
+Boot.main(null);

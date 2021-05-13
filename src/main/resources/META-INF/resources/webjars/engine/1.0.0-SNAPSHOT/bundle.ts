@@ -1,66 +1,66 @@
-/* Generated from Java with JSweet 2.3.0 - http://www.jsweet.org */
+/* Generated from Java with JSweet 3.0.0 - http://www.jsweet.org */
 namespace api {
     export class ContainerRenderer implements api.Renderer<api.Renderable> {
-        public static timeSpent : number = 0;
+        public static timeSpent: number = 0;
 
-        public doRender(c : api.Renderable, root : HTMLElement) {
-            let jq : HTMLElement = document.getElementById(c.getId());
-            let tag : string = c.getTag();
-            let rendered : boolean = c.isRendered();
-            let name : string = c.getName();
-            let html : string = c.getHtml();
-            let parent : api.Renderable = c.getParent();
-            if(!rendered) {
-                if(jq != null) jq.remove();
-                let njq : HTMLElement = document.createElement(tag);
-                if(name != null && name.length > 0) njq.setAttribute("name", name);
+        public doRender(c: api.Renderable, root: HTMLElement) {
+            const jq: HTMLElement = document.getElementById(c.getId());
+            const tag: string = c.getTag();
+            const rendered: boolean = c.isRendered();
+            const name: string = c.getName();
+            const html: string = c.getHtml();
+            const parent: api.Renderable = c.getParent();
+            if (!rendered){
+                if (jq != null)jq.remove();
+                const njq: HTMLElement = document.createElement(tag);
+                if (name != null && name.length > 0)njq.setAttribute("name", name);
                 njq.setAttribute("id", c.getId());
                 njq.innerHTML = html;
-                let uiscripts : NodeListOf<HTMLScriptElement> = njq.getElementsByTagName("script");
-                let scripts : Array<string> = <any>(new Array<string>());
-                for(let i : number = 0; i < uiscripts.length; i++) {{
-                    let elem : HTMLScriptElement = <HTMLScriptElement>uiscripts[i];
-                    if(elem.innerText != null && elem.innerText.trim().length > 0) scripts.push(elem.innerText);
+                const uiscripts: NodeListOf<Element> = njq.querySelectorAll("script");
+                const scripts: Array<string> = <any>(new Array<string>());
+                for(let i: number = 0; i < uiscripts.length; i++) {{
+                    const elem: HTMLScriptElement = <HTMLScriptElement>uiscripts[i];
+                    if (elem.innerText != null && elem.innerText.trim().length > 0)scripts.push(elem.innerText);
                 };}
                 this.renderAttributes(njq, c, false);
                 this.renderStyles(njq, c, false);
-                if(parent == null) {
-                    if(root == null) {
-                        let body : Node = document.getElementsByTagName("body")[0];
+                if (parent == null){
+                    if (root == null){
+                        const body: Node = document.getElementsByTagName("body")[0];
                         body.appendChild(njq);
                     } else {
                         root.appendChild(njq);
                     }
                 } else {
-                    if(parent != null && (parent["__interfaces"] != null && parent["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0 || parent.constructor != null && parent.constructor["__interfaces"] != null && parent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)) {
-                        let elem : Element = document.getElementById(parent.getId()).querySelector("[name=" + name + "]");
+                    if (parent != null && (parent.constructor != null && parent.constructor["__interfaces"] != null && parent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)){
+                        const elem: Element = document.getElementById(parent.getId()).querySelector("[name=" + name + "]");
                         elem.parentElement.replaceChild(njq, elem);
                     } else {
-                        let index : number = parent.getChildren().indexOf(c);
-                        let nextSib : api.Renderable = null;
-                        if(index < parent.getChildren().length - 1) {
+                        const index: number = parent.getChildren().indexOf(c);
+                        let nextSib: api.Renderable = null;
+                        if (index < parent.getChildren().length - 1){
                             nextSib = parent.getChildren()[index + 1];
-                            if(!nextSib.isRendered()) {
+                            if (!nextSib.isRendered()){
                                 nextSib = null;
                             }
                         }
-                        if(nextSib != null) {
-                            let p : Node = document.getElementById(parent.getId());
+                        if (nextSib != null){
+                            const p: Node = document.getElementById(parent.getId());
                             p.insertBefore(njq, document.getElementById(nextSib.getId()));
                         } else {
                             try {
                                 document.getElementById(parent.getId()).appendChild(njq);
                             } catch(e) {
                                 console.error(e.message, e);
-                            };
+                            }
                         }
                     }
                 }
-                let me : api.Renderable = c;
-                let component : api.Renderable = me;
+                const me: api.Renderable = c;
+                const component: api.Renderable = me;
                 this.doNothing(component);
-                for(let index121=0; index121 < scripts.length; index121++) {
-                    let scr = scripts[index121];
+                for(let index186=0; index186 < scripts.length; index186++) {
+                    let scr = scripts[index186];
                     {
                         eval(scr);
                     }
@@ -70,7 +70,7 @@ namespace api {
                 this.execCommands(njq, c);
                 c.flush("a28n12l10");
             } else {
-                if(jq != null) {
+                if (jq != null){
                     this.renderAttributes(jq, c, true);
                     this.renderStyles(jq, c, true);
                     this.execCommands(jq, c);
@@ -79,42 +79,42 @@ namespace api {
             }
         }
 
-        /*private*/ doNothing(r : api.Renderable) {
+        /*private*/ doNothing(r: api.Renderable) {
         }
 
-        execCommands(njq : HTMLElement, container : api.Renderable) {
+        execCommands(njq: HTMLElement, container: api.Renderable) {
         }
 
-        renderEvents(njq : HTMLElement, c : api.Renderable) {
-            let keys : string[] = Object.keys(c.getListeners());
-            for(let index122=0; index122 < keys.length; index122++) {
-                let key = keys[index122];
+        renderEvents(njq: HTMLElement, c: api.Renderable) {
+            const keys: string[] = Object.keys(c.getListeners());
+            for(let index187=0; index187 < keys.length; index187++) {
+                let key = keys[index187];
                 {
-                    let listeners : Array<api.EventListener> = <Array<api.EventListener>>c.getListeners()[key];
+                    const listeners: Array<api.EventListener> = <Array<api.EventListener>>c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for(let index123=0; index123 < listeners.length; index123++) {
-                                let l = listeners[index123];
+                            for(let index188=0; index188 < listeners.length; index188++) {
+                                let l = listeners[index188];
                                 {
                                     l.performAction(c, evt);
                                 }
                             }
-                            c.getRoot().render();
+                            c.getRoot()['render$']();
                         }
                     })(listeners));
                 }
             }
         }
 
-        renderAttributes(njq : HTMLElement, c : api.Renderable, changed : boolean) {
-            if(changed) {
+        renderAttributes(njq: HTMLElement, c: api.Renderable, changed: boolean) {
+            if (changed){
                 {
-                    let array125 = c.getChangedAttributes();
-                    for(let index124=0; index124 < array125.length; index124++) {
-                        let key = array125[index124];
+                    let array190 = c.getChangedAttributes();
+                    for(let index189=0; index189 < array190.length; index189++) {
+                        let key = array190[index189];
                         {
-                            let attr : string = c.getAttribute(key);
-                            if(attr == null) {
+                            const attr: string = c.getAttribute(key);
+                            if (attr == null){
                                 njq.removeAttribute(key);
                             } else {
                                 ContainerRenderer.setAttribute(njq, key, attr);
@@ -124,35 +124,35 @@ namespace api {
                 }
             } else {
                 {
-                    let array127 = c.getAttributeNames();
-                    for(let index126=0; index126 < array127.length; index126++) {
-                        let key = array127[index126];
+                    let array192 = c.getAttributeNames();
+                    for(let index191=0; index191 < array192.length; index191++) {
+                        let key = array192[index191];
                         {
-                            let attr : string = c.getAttribute(key);
-                            if(attr != null) ContainerRenderer.setAttribute(njq, key, attr);
+                            const attr: string = c.getAttribute(key);
+                            if (attr != null)ContainerRenderer.setAttribute(njq, key, attr);
                         }
                     }
                 }
             }
         }
 
-        clearAttributes(elem : HTMLElement) {
-            let attrs : NamedNodeMap = elem.attributes;
-            for(let i : number = 0; i < attrs.length; i++) {{
-                if(!/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(attrs[i].name,"id"))) elem.removeAttribute(attrs[i].name);
+        clearAttributes(elem: HTMLElement) {
+            const attrs: NamedNodeMap = elem.attributes;
+            for(let i: number = 0; i < attrs.length; i++) {{
+                if (!(attrs[i].name === ("id")))elem.removeAttribute(attrs[i].name);
             };}
         }
 
-        clearStyles(jq : HTMLElement) {
+        clearStyles(jq: HTMLElement) {
             jq.removeAttribute("style");
         }
 
-        renderStyles(njq : HTMLElement, c : api.Renderable, changed : boolean) {
-            if(changed) {
+        renderStyles(njq: HTMLElement, c: api.Renderable, changed: boolean) {
+            if (changed){
                 {
-                    let array129 = c.getChangedStyles();
-                    for(let index128=0; index128 < array129.length; index128++) {
-                        let key = array129[index128];
+                    let array194 = c.getChangedStyles();
+                    for(let index193=0; index193 < array194.length; index193++) {
+                        let key = array194[index193];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -160,9 +160,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array131 = c.getStyleNames();
-                    for(let index130=0; index130 < array131.length; index130++) {
-                        let key = array131[index130];
+                    let array196 = c.getStyleNames();
+                    for(let index195=0; index195 < array196.length; index195++) {
+                        let key = array196[index195];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -171,23 +171,23 @@ namespace api {
             }
         }
 
-        public static setAttribute(element : HTMLElement, attribute : string, value : string) {
+        public static setAttribute(element: HTMLElement, attribute: string, value: string) {
             try {
                 element.setAttribute(attribute, value);
             } catch(e) {
                 console.warn("Invalid attribute :" + attribute + " set to:" + element.toString());
-            };
+            }
         }
 
-        public static processCSSRules(renderable : api.Renderable, nativeNode : HTMLElement) {
-            let rules : Array<string> = renderable.getCSSRules();
-            if(rules.length > 0) {
-                let styleelem : HTMLStyleElement = <HTMLStyleElement>document.createElement("style");
+        public static processCSSRules(renderable: api.Renderable, nativeNode: HTMLElement) {
+            const rules: Array<string> = renderable.getCSSRules();
+            if (rules.length > 0){
+                const styleelem: HTMLStyleElement = <HTMLStyleElement>document.createElement("style");
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
-                let sheet : CSSStyleSheet = <CSSStyleSheet>styleelem.sheet;
-                for(let index132=0; index132 < rules.length; index132++) {
-                    let rule = rules[index132];
+                const sheet: CSSStyleSheet = <CSSStyleSheet>styleelem.sheet;
+                for(let index197=0; index197 < rules.length; index197++) {
+                    let rule = rules[index197];
                     sheet.insertRule(rule)
                 }
             }
@@ -209,7 +209,7 @@ namespace api {
      * @class
      */
     export interface EventListener {
-        performAction(source : api.Renderable, evt : Event);
+        performAction(source: api.Renderable, evt: Event);
     }
 }
 namespace api {
@@ -226,13 +226,13 @@ namespace api {
          * Returns the value entered
          * @return {*} The value entered
          */
-        getValue() : T;
+        getValue(): T;
 
         /**
          * Sets the value to the component
          * @param {*} val The value to set
          */
-        setValue(val : T);
+        setValue(val: T);
 
         /**
          * Validates the value entered
@@ -244,21 +244,21 @@ namespace api {
          * This returns a key to which the value can be bound.
          * @return {string} The binding key
          */
-        getBinding() : string;
+        getBinding(): string;
 
         /**
          * Sets the binding key to which the value can be bound
          * @param {string} binding The binding key
          * @return {*} The new state of this component
          */
-        setBinding(binding : string) : InputField<T>;
+        setBinding(binding: string): InputField<T>;
 
         /**
          * Makes the field required or not
          * @param {boolean} b required or not
          * @return {*} The new state of this component
          */
-        setRequired(b : boolean) : InputField<T>;
+        setRequired(b: boolean): InputField<T>;
     }
 }
 namespace api {
@@ -275,7 +275,7 @@ namespace api {
          * @param {*} parent The parent to check if it can be added to
          * @return {boolean} is valid or not
          */
-        isValidParent(parent : Renderable) : boolean;
+        isValidParent(parent: Renderable): boolean;
 
         /**
          * return Array of attributes changed during any action<br>
@@ -285,7 +285,7 @@ namespace api {
          * @return {string[]} Array of attributes changed during any action<br>
          * 
          */
-        getChangedAttributes() : Array<string>;
+        getChangedAttributes(): Array<string>;
 
         /**
          * return Array of styles changed or removed during any action<br>
@@ -295,7 +295,7 @@ namespace api {
          * @return {string[]} Array of styles changed or removed during any action<br>
          * 
          */
-        getChangedStyles() : Array<string>;
+        getChangedStyles(): Array<string>;
 
         /**
          * return The native Html Node managed by this component.<br>
@@ -304,7 +304,7 @@ namespace api {
          * @return {HTMLElement} The native Html Node managed by this component.<br>
          * 
          */
-        getNative() : HTMLElement;
+        getNative(): HTMLElement;
 
         /**
          * return First child with the specified name
@@ -313,7 +313,7 @@ namespace api {
          * Name of the Renderable to find
          * @return {*} First child with the specified name
          */
-        getChild(name : string) : Renderable;
+        getChild(name: string): Renderable;
 
         /**
          * return The Renderable to remove
@@ -322,7 +322,7 @@ namespace api {
          * renderable to remove
          * @return {*} The Renderable to remove
          */
-        removeChild(r : Renderable) : Renderable;
+        removeChild(r: Renderable): Renderable;
 
         /**
          * Removes all children from this Rendereable<br>
@@ -332,14 +332,14 @@ namespace api {
          * 
          * @return {*} The current renderable with all children removed
          */
-        clearChildren() : Renderable;
+        clearChildren(): Renderable;
 
         /**
          * return List of Renders used to render this component
          * 
          * @return {*[]} List of Renders used to render this component
          */
-        getRenderers() : Array<api.Renderer<any>>;
+        getRenderers(): Array<api.Renderer<any>>;
 
         /**
          * Adds a rendered to the list of {@link Renderer} used to render this
@@ -349,7 +349,7 @@ namespace api {
          * {@link Renderer} to add to this component
          * @return {*} This current {@link Renderable}
          */
-        addRenderer(renderer : api.Renderer<any>) : Renderable;
+        addRenderer(renderer: api.Renderer<any>): Renderable;
 
         /**
          * return The id of the Renderable.<br>
@@ -360,7 +360,7 @@ namespace api {
          * @return {string} The id of the Renderable.
          * 
          */
-        getId() : string;
+        getId(): string;
 
         /**
          * Adds a style class to the {@link Renderable}
@@ -369,7 +369,7 @@ namespace api {
          * The style class to add
          * @return {*} The current {@link Renderable}
          */
-        addClass(styleClass : string) : Renderable;
+        addClass(styleClass: string): Renderable;
 
         /**
          * Checks if the specified style class is present on this component.<br>
@@ -387,7 +387,7 @@ namespace api {
          * @param {string} styleClass The class to check if present
          * @return {boolean} Whether the specified styleclass is present or not
          */
-        hasClass(styleClass : string) : boolean;
+        hasClass(styleClass: string): boolean;
 
         /**
          * Will toggle the specified class on the component. i.e. If the specified styleclass is present, it will remove it, and if it is not present, it will add it<br>
@@ -395,7 +395,7 @@ namespace api {
          * @param {string} styleClass The style class
          * @return {*} The update state of the current component
          */
-        toggleClass(styleClass : string) : Renderable;
+        toggleClass(styleClass: string): Renderable;
 
         /**
          * Removes the specified class from the component
@@ -404,7 +404,7 @@ namespace api {
          * The style class to remove
          * @return {*} The current {@link Renderable}
          */
-        removeClass(cls : string) : Renderable;
+        removeClass(cls: string): Renderable;
 
         /**
          * Adds a child to this {@link Renderable}
@@ -413,7 +413,7 @@ namespace api {
          * The {@link Renderable} to add
          * @return {*} The current {@link Renderable}
          */
-        addChild(container : Renderable) : Renderable;
+        addChild(container: Renderable): Renderable;
 
         /**
          * Adds a child {@link Renderable} at the specified position in the child list
@@ -424,7 +424,7 @@ namespace api {
          * the child to add
          * @return {*} The current {@link Renderable}
          */
-        addChildAt(index : number, child : Renderable) : Renderable;
+        addChildAt(index: number, child: Renderable): Renderable;
 
         /**
          * Show / hide the component
@@ -433,7 +433,7 @@ namespace api {
          * to show or hide the component
          * @return {*} The current {@link Renderable}
          */
-        setVisible(b : boolean) : Renderable;
+        setVisible(b: boolean): Renderable;
 
         /**
          * Adds an {@link EventListener} to this component
@@ -444,13 +444,13 @@ namespace api {
          * Type of event. e.g click, dblclick, keyup, keydown etc etc.
          * @return {*} The current {@link Renderable}
          */
-        addEventListener(listener : api.EventListener, type : string) : Renderable;
+        addEventListener(listener: api.EventListener, type: string): Renderable;
 
         /**
          * 
          * @return {string} The html tag of the renderable
          */
-        getTag() : string;
+        getTag(): string;
 
         /**
          * Sets the html tag of the {@link Renderable}
@@ -459,7 +459,7 @@ namespace api {
          * Sets the html tag of the {@link Renderable}
          * @return {*} The current {@link Renderable}
          */
-        setTag(tag : string) : Renderable;
+        setTag(tag: string): Renderable;
 
         /**
          * Sets a style to the {@link Renderable}
@@ -470,7 +470,7 @@ namespace api {
          * value of style
          * @return {*} The current {@link Renderable}
          */
-        setStyle(name : string, value : string) : Renderable;
+        setStyle(name: string, value: string): Renderable;
 
         /**
          * return The style for the specified name
@@ -479,7 +479,7 @@ namespace api {
          * the style name
          * @return {string} The style for the specified name
          */
-        getStyle(name : string) : string;
+        getStyle(name: string): string;
 
         /**
          * Sets an attribute to the {@link Renderable}
@@ -490,7 +490,7 @@ namespace api {
          * value of attribute
          * @return {*} The current {@link Renderable}
          */
-        setAttribute(name : string, value : string) : Renderable;
+        setAttribute(name: string, value: string): Renderable;
 
         /**
          * return The attribute value for the specified name
@@ -499,14 +499,14 @@ namespace api {
          * Name of the attribute
          * @return {string} The attribute value for the specified name
          */
-        getAttribute(name : string) : string;
+        getAttribute(name: string): string;
 
         /**
          * return Name of {@link Renderable}
          * 
          * @return {string} Name of {@link Renderable}
          */
-        getName() : string;
+        getName(): string;
 
         /**
          * Sets the name of the {@link Renderable}
@@ -514,7 +514,7 @@ namespace api {
          * @param {string} name
          * Name of {@link Renderable}
          */
-        setName(name : string);
+        setName(name: string);
 
         /**
          * return Parent of {@link Renderable}
@@ -524,35 +524,35 @@ namespace api {
          * e.g Will certainly return null of this method is called in the
          * constructor
          */
-        getParent() : Renderable;
+        getParent(): Renderable;
 
         /**
          * return Array of Children added to this {@link Renderable}
          * 
          * @return {*[]} Array of Children added to this {@link Renderable}
          */
-        getChildren() : Array<Renderable>;
+        getChildren(): Array<Renderable>;
 
         /**
          * return Array of style names set to this {@link Renderable}
          * 
-         * @return {Array} Array of style names set to this {@link Renderable}
+         * @return {java.lang.String[]} Array of style names set to this {@link Renderable}
          */
-        getStyleNames() : string[];
+        getStyleNames(): string[];
 
         /**
          * return Array of attributes set to this {@link Renderable}
          * 
-         * @return {Array} Array of attributes set to this {@link Renderable}
+         * @return {java.lang.String[]} Array of attributes set to this {@link Renderable}
          */
-        getAttributeNames() : string[];
+        getAttributeNames(): string[];
 
         /**
          * return Html set to this {@link Renderable}
          * 
          * @return {string} Html set to this {@link Renderable}
          */
-        getHtml() : string;
+        getHtml(): string;
 
         /**
          * Sets the html for this {@link Renderable}
@@ -561,14 +561,14 @@ namespace api {
          * Html to set to this {@link Renderable}
          * @return {*} The current {@link Renderable}
          */
-        setHtml(html : string) : Renderable;
+        setHtml(html: string): Renderable;
 
         /**
          * return Whether this {@link Renderable} has been rendered or not
          * 
          * @return {boolean} Whether this {@link Renderable} has been rendered or not
          */
-        isRendered() : boolean;
+        isRendered(): boolean;
 
         /**
          * Mark this {@link Renderable} as rendered
@@ -577,13 +577,13 @@ namespace api {
          * Boolean to specify if is rendered or not
          * @return {*} The current {@link Renderable}
          */
-        setRendered(b : boolean) : Renderable;
+        setRendered(b: boolean): Renderable;
 
         /**
          * 
          * @return {Object} {@link EventListener} added to this component
          */
-        getListeners() : Object;
+        getListeners(): Object;
 
         /**
          * Render this component by appending it to the specified html element
@@ -591,14 +591,14 @@ namespace api {
          * @param {HTMLElement} root
          * The html element to append the current {@link Renderable}
          */
-        render(root? : any) : any;
+        render(root?: any);
 
         /**
          * return User arbitrary data set to this {@link Renderable}
          * 
          * @return {*} User arbitrary data set to this {@link Renderable}
          */
-        getCustomProperties() : any;
+        getCustomProperties(): any;
 
         /**
          * Sets an arbitrary attributes to this {@link Renderable}
@@ -606,7 +606,7 @@ namespace api {
          * @param {*} data
          * The arbitrary data to set to this {@link Renderable}
          */
-        setCustomProperties(data : any);
+        setCustomProperties(data: any);
 
         /**
          * Sets an arbitrary attributes to this {@link Renderable}
@@ -615,13 +615,13 @@ namespace api {
          * The arbitrary data to set to this {@link Renderable}
          * @return {*} The current instance of {@link Renderable}
          */
-        setUserData(data : any) : Renderable;
+        setUserData(data: any): Renderable;
 
         /**
          * 
          * @return {*} The userdata of this component
          */
-        getUserData() : any;
+        getUserData(): any;
 
         /**
          * Search first ancestor with the specified class name
@@ -629,7 +629,7 @@ namespace api {
          * @param {string} cls The specified class name
          * @return {*} The first ancestor with the specified class name
          */
-        getAncestorWithClass<T extends Renderable>(cls : string) : T;
+        getAncestorWithClass<T extends Renderable>(cls: string): T;
 
         /**
          * Search for an ancestor {@link Renderable} with the specified id
@@ -638,7 +638,7 @@ namespace api {
          * the id to search
          * @return {*} Ancestor {@link Renderable} with the specified Id
          */
-        getAncestorById(id : string) : Renderable;
+        getAncestorById(id: string): Renderable;
 
         /**
          * return Ancestor {@link Renderable} with the specified name
@@ -647,14 +647,14 @@ namespace api {
          * The name of the ancestor to search for.
          * @return {*} Ancestor {@link Renderable} with the specified name
          */
-        getAncestorByName(name : string) : Renderable;
+        getAncestorByName(name: string): Renderable;
 
         /**
          * return The root {@link Renderable} for this application
          * 
          * @return {*} The root {@link Renderable} for this application
          */
-        getRoot() : Renderable;
+        getRoot(): Renderable;
 
         /**
          * Checks if this {@link Renderable} has a listener of the specified type
@@ -663,22 +663,22 @@ namespace api {
          * The type of listener to check
          * @return {boolean} whether or not has listener of this type
          */
-        hasListenerOfType(type : string) : boolean;
+        hasListenerOfType(type: string): boolean;
 
-        flush(secret : string);
+        flush(secret: string);
 
         /**
          * Add a stylesheet rule to be used with this component
          * @param {string} rule
          * @return {*} The current renderable
          */
-        addCSSRule(rule : string) : Renderable;
+        addCSSRule(rule: string): Renderable;
 
         /**
          * returns all stylesheet rules associated with this component
          * @return {string[]} All stylesheet rules
          */
-        getCSSRules() : Array<string>;
+        getCSSRules(): Array<string>;
     }
 }
 namespace api {
@@ -695,26 +695,26 @@ namespace api {
          * @param {*} renderable The component to render
          * @param {HTMLElement} parent The parent to which the component is attached
          */
-        doRender(renderable : T, parent : HTMLElement);
+        doRender(renderable: T, parent: HTMLElement);
     }
 }
 namespace api {
     export class StringInputTypes {
-        public static text : string = "text";
+        public static text: string = "text";
 
-        public static password : string = "password";
+        public static password: string = "password";
 
-        public static email : string = "email";
+        public static email: string = "email";
 
-        public static url : string = "url";
+        public static url: string = "url";
 
-        public static search : string = "search";
+        public static search: string = "search";
 
-        public static tel : string = "tel";
+        public static tel: string = "tel";
 
-        public static color : string = "color";
+        public static color: string = "color";
 
-        public static types : string[]; public static types_$LI$() : string[] { if(StringInputTypes.types == null) StringInputTypes.types = [StringInputTypes.text, StringInputTypes.password, StringInputTypes.email, StringInputTypes.url, StringInputTypes.search, StringInputTypes.tel, StringInputTypes.color]; return StringInputTypes.types; };
+        public static types: string[]; public static types_$LI$(): string[] { if (StringInputTypes.types == null) { StringInputTypes.types = [StringInputTypes.text, StringInputTypes.password, StringInputTypes.email, StringInputTypes.url, StringInputTypes.search, StringInputTypes.tel, StringInputTypes.color]; }  return StringInputTypes.types; }
     }
     StringInputTypes["__class"] = "framework.components.api.StringInputTypes";
 
@@ -730,25 +730,25 @@ namespace api {
          * Returns the html template of the component
          * @return {string} The html template of the component
          */
-        getTemplate() : string;
+        getTemplate(): string;
 
         /**
          * Sets the template for this component
          * @param {string} template The template for the component
          */
-        setTemplate(template : string);
+        setTemplate(template: string);
 
         /**
          * data injected to the component that can be used by the compiler to compile the template
          * @return {Object} Data injected to the component
          */
-        getContext() : Object;
+        getContext(): Object;
 
         /**
          * Render the component and attach it to the specified parent
          * @param {HTMLElement} parent
          */
-        render(parent? : any) : any;
+        render(parent?: any);
     }
 }
 namespace api {
@@ -769,39 +769,39 @@ namespace api {
          * Is a <code>Numeric</code> indicating the user has provided input that the
          * browser is unable to convert.
          */
-        public static badInput : number = 0;
+        public static badInput: number = 0;
 
         /**
          * Is a <code>Numeric</code> indicating the element's custom validity
          * message has been set to a non-empty string by calling the element's
          * <code>addValidator()</code> method.
          */
-        public static customError : number = 1;
+        public static customError: number = 1;
 
         /**
          * Is a <code>Numeric</code> indicating the value does not match the
          * specified <code>pattern</code>.
          */
-        public static patternMismatch : number = 2;
+        public static patternMismatch: number = 2;
 
         /**
          * Is a <code>Numeric</code> indicating the value is greater than the
          * maximum specified by the <code>max</code> attribute.
          */
-        public static rangeOverflow : number = 3;
+        public static rangeOverflow: number = 3;
 
         /**
          * Is a <code>Numeric</code> indicating the value is less than the minimum
          * specified by the <code>min</code> attribute.
          */
-        public static rangeUnderflow : number = 4;
+        public static rangeUnderflow: number = 4;
 
         /**
          * Is a <code>Numeric</code> indicating the value does not fit the rules
          * determined by the <code>step</code> attribute (that is, it's not evenly
          * divisible by the step value).
          */
-        public static stepMismatch : number = 5;
+        public static stepMismatch: number = 5;
 
         /**
          * Is a <code>Numeric</code> indicating the value exceeds the specified
@@ -811,55 +811,48 @@ namespace api {
          * because elements' values are prevented from being longer than
          * <code>maxlength</code>.</em>
          */
-        public static tooLong : number = 6;
+        public static tooLong: number = 6;
 
         /**
          * Is a <code>Numeric</code> indicating the value is not in the required
          * syntax (when <code>type</code> is <code>email</code> or <code>url</code>
          * ).
          */
-        public static typeMismatch : number = 7;
+        public static typeMismatch: number = 7;
 
         /**
          * Is a <code>Numeric</code> indicating the element has a
          * <code>required</code> attribute, but no value.
          */
-        public static valueMissing : number = 8;
+        public static valueMissing: number = 8;
 
         /**
          * 
          */
-        static serialVersionUID : number = 1;
+        static serialVersionUID: number = 1;
 
-        public errors : Array<Object>;
+        public errors: Array<Object>;
 
-        public constructor(message? : any, errorCode? : any) {
-            if(((typeof message === 'string') || message === null) && ((typeof errorCode === 'number') || errorCode === null)) {
+        public constructor(message?: any, errorCode?: any) {
+            if (((typeof message === 'string') || message === null) && ((typeof errorCode === 'number') || errorCode === null)) {
                 let __args = arguments;
                 super("Validation Error");
                 this.errors = <any>(new Array<Object>());
-                (<any>Object).setPrototypeOf(this, ValidationException.prototype);
-                (() => {
-                    ValidationException.addError(message, errorCode, this);
-                })();
-            } else if(((typeof message === 'number') || message === null) && errorCode === undefined) {
+                ValidationException.addError(message, errorCode, this);
+            } else if (((typeof message === 'number') || message === null) && errorCode === undefined) {
                 let __args = arguments;
-                let errorCode : any = __args[0];
+                let errorCode: any = __args[0];
                 super();
                 this.errors = <any>(new Array<Object>());
-                (<any>Object).setPrototypeOf(this, ValidationException.prototype);
-                (() => {
-                    ValidationException.addError("", errorCode, this);
-                })();
-            } else if(message === undefined && errorCode === undefined) {
+                ValidationException.addError("", errorCode, this);
+            } else if (message === undefined && errorCode === undefined) {
                 let __args = arguments;
                 super();
                 this.errors = <any>(new Array<Object>());
-                (<any>Object).setPrototypeOf(this, ValidationException.prototype);
             } else throw new Error('invalid overload');
         }
 
-        public static addError(msg : string, code : number, e : ValidationException) {
+        public static addError(msg: string, code: number, e: ValidationException) {
             eval("if(!e[\'errors\']){e[\'errors\'] = [];}e[\'errors\'].push({\'msg\':msg, \'code\':code});");
         }
     }
@@ -870,46 +863,258 @@ namespace api {
 }
 namespace api {
     export interface Validator<T> {
-        validate(source : api.InputField<T>) : boolean;
+        validate(source: api.InputField<T>): boolean;
 
-        getErrorMessage() : string;
+        getErrorMessage(): string;
 
-        getSuccessMessage() : string;
+        getSuccessMessage(): string;
 
-        supports(clazz : any);
+        supports(clazz: any);
     }
 }
+class Boot {
+    public static main(args: string[]) {
+    }
+}
+Boot["__class"] = "framework.components.Boot";
+
+
 class FileUploader {}
 FileUploader["__class"] = "framework.components.FileUploader";
 
 
 namespace input {
     export class DateInputTypes {
-        public static date : string = "date";
+        public static date: string = "date";
 
-        public static month : string = "month";
+        public static month: string = "month";
 
-        public static week : string = "week";
+        public static week: string = "week";
 
-        public static types : string[]; public static types_$LI$() : string[] { if(DateInputTypes.types == null) DateInputTypes.types = [DateInputTypes.date, DateInputTypes.month, DateInputTypes.week]; return DateInputTypes.types; };
+        public static types: string[]; public static types_$LI$(): string[] { if (DateInputTypes.types == null) { DateInputTypes.types = [DateInputTypes.date, DateInputTypes.month, DateInputTypes.week]; }  return DateInputTypes.types; }
     }
     DateInputTypes["__class"] = "framework.components.input.DateInputTypes";
 
 }
 namespace input {
     export class NumericInputTypes {
-        public static number : string = "number";
+        public static number: string = "number";
 
-        public static range : string = "range";
+        public static range: string = "range";
 
-        public static types : string[]; public static types_$LI$() : string[] { if(NumericInputTypes.types == null) NumericInputTypes.types = [NumericInputTypes.number, NumericInputTypes.range]; return NumericInputTypes.types; };
+        public static types: string[]; public static types_$LI$(): string[] { if (NumericInputTypes.types == null) { NumericInputTypes.types = [NumericInputTypes.number, NumericInputTypes.range]; }  return NumericInputTypes.types; }
     }
     NumericInputTypes["__class"] = "framework.components.input.NumericInputTypes";
 
 }
 namespace table {
+    export class DefaulTableModel implements table.TableModel {
+        /*private*/ data: Array<Object>;
+
+        /**
+         * 
+         * @return {number}
+         */
+        public getRowCount(): number {
+            return (<number>this.data.length|0);
+        }
+
+        /**
+         * 
+         * @return {number}
+         */
+        public getColumnCount(): number {
+            return 0;
+        }
+
+        /**
+         * 
+         * @param {number} columnIndex
+         * @return {string}
+         */
+        public getColumnName(columnIndex: number): string {
+            return null;
+        }
+
+        /**
+         * 
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         * @return {boolean}
+         */
+        public isCellEditable(rowIndex: number, columnIndex: number): boolean {
+            return false;
+        }
+
+        /**
+         * 
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         * @return {*}
+         */
+        public getValueAt(rowIndex: number, columnIndex: number): any {
+            return null;
+        }
+
+        /**
+         * 
+         * @param {*} aValue
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         */
+        public setValueAt(aValue: any, rowIndex: number, columnIndex: number) {
+        }
+
+        /**
+         * 
+         * @param {*} l
+         */
+        public addTableModelListener(l: table.TableModelListener) {
+        }
+
+        /**
+         * 
+         * @param {*} l
+         */
+        public removeTableModelListener(l: table.TableModelListener) {
+        }
+
+        constructor() {
+            this.data = <any>(new Array<Object>());
+        }
+    }
+    DefaulTableModel["__class"] = "framework.components.table.DefaulTableModel";
+    DefaulTableModel["__interfaces"] = ["framework.components.table.TableModel"];
+
+
+}
+namespace table {
+    export class DefaultTableColumnModel implements table.TableColumnModel {
+        /*private*/ columns: Array<table.TableColumn>;
+
+        /*private*/ pointer: number;
+
+        public addColumn$framework_components_table_TableColumn(aColumn: table.TableColumn) {
+            this.columns.push(aColumn);
+            this.reset();
+        }
+
+        /**
+         * 
+         * @param {table.TableColumn} aColumn
+         */
+        public addColumn(aColumn?: any) {
+            if (((aColumn != null && aColumn instanceof <any>table.TableColumn) || aColumn === null)) {
+                return <any>this.addColumn$framework_components_table_TableColumn(aColumn);
+            } else if (((aColumn != null && aColumn instanceof <any>Array && (aColumn.length == 0 || aColumn[0] == null ||(aColumn[0] != null && aColumn[0] instanceof <any>table.TableColumn))) || aColumn === null)) {
+                return <any>this.addColumn$framework_components_table_TableColumn_A(...aColumn);
+            } else throw new Error('invalid overload');
+        }
+
+        /*private*/ reset() {
+            this.pointer = -1;
+        }
+
+        /**
+         * 
+         * @param {table.TableColumn} column
+         */
+        public removeColumn(column: table.TableColumn) {
+            this.columns.splice(this.columns.indexOf(column));
+            this.reset();
+        }
+
+        /**
+         * 
+         * @return {number}
+         */
+        public getColumnCount(): number {
+            return (<number>this.columns.length|0);
+        }
+
+        /**
+         * 
+         * @return {*}
+         */
+        public getColumns(): any {
+            return this;
+        }
+
+        /**
+         * 
+         * @param {*} columnIdentifier
+         * @return {number}
+         */
+        public getColumnIndex(columnIdentifier: any): number {
+            for(let index198=0; index198 < this.columns.length; index198++) {
+                let col = this.columns[index198];
+                {
+                    if (col.identifier === columnIdentifier){
+                        return (<number>this.columns.indexOf(col)|0);
+                    }
+                }
+            }
+            return -1;
+        }
+
+        public addColumn$framework_components_table_TableColumn_A(...col: table.TableColumn[]): DefaultTableColumnModel {
+            this.columns.push(...col);
+            this.reset();
+            return this;
+        }
+
+        public addColumnAt(col: table.TableColumn, index: number): DefaultTableColumnModel {
+            const tmp: Array<table.TableColumn> = <any>(new Array<table.TableColumn>());
+            for(let i: number = 0; i < this.columns.length; i++) {{
+                tmp.push(this.columns[i]);
+                if (i === index){
+                    tmp.push(col);
+                }
+            };}
+            this.columns = tmp;
+            this.reset();
+            return this;
+        }
+
+        /**
+         * 
+         * @param {number} columnIndex
+         * @return {table.TableColumn}
+         */
+        public getColumn(columnIndex: number): table.TableColumn {
+            return this.columns[columnIndex];
+        }
+
+        /**
+         * 
+         * @return {boolean}
+         */
+        public hasMoreElements(): boolean {
+            return ((this.pointer + 1) < this.columns.length);
+        }
+
+        /**
+         * 
+         * @return {table.TableColumn}
+         */
+        public nextElement(): table.TableColumn {
+            this.pointer = this.pointer + 1;
+            return this.columns[this.pointer];
+        }
+
+        constructor() {
+            this.columns = <any>(new Array<table.TableColumn>());
+            this.pointer = -1;
+        }
+    }
+    DefaultTableColumnModel["__class"] = "framework.components.table.DefaultTableColumnModel";
+    DefaultTableColumnModel["__interfaces"] = ["framework.components.table.TableColumnModel","java.util.Enumeration"];
+
+
+}
+namespace table {
     export interface TableCellRenderer {
-        renderComponent(table : table.Table, container : api.Renderable, value : any, isSelected : boolean, hasFocus : boolean, row : number, column : number);
+        renderComponent(table: table.Table, container: api.Renderable, value: any, isSelected: boolean, hasFocus: boolean, row: number, column: number);
     }
 }
 namespace table {
@@ -919,135 +1124,136 @@ namespace table {
          * <code>TableColumn</code>. As columns are moved around in the view
          * <code>modelIndex</code> remains constant.
          */
-        modelIndex : number;
+        modelIndex: number;
 
         /**
+         * @author Kureem Rossaye<br>
          * This object is not used internally by the drawing machinery of the
-         * <code>JTable</code>; identifiers may be set in the <code>TableColumn</code>
+         * <code>Table</code>; identifiers may be set in the <code>TableColumn</code>
          * as as an optional way to tag and locate table columns. The table package does
          * not modify or invoke any methods in these identifier objects other than the
          * <code>equals</code> method which is used in the <code>getColumnIndex()</code>
          * method in the <code>DefaultTableColumnModel</code>.
          */
-        identifier : any;
+        identifier: any;
 
         /**
          * The width of the column.
          */
-        width : number;
+        width: number;
 
         /**
          * The minimum width of the column.
          */
-        minWidth : number;
+        minWidth: number;
 
         /**
          * The maximum width of the column.
          */
-        maxWidth : number;
+        maxWidth: number;
 
         /**
          * The renderer used to draw the header of the column.
          */
-        headerRenderer : table.TableCellRenderer;
+        headerRenderer: table.TableCellRenderer;
 
         /**
          * The header value of the column.
          */
-        headerValue : any;
+        headerValue: any;
 
         /**
          * The renderer used to draw the data cells of the column.
          */
-        cellRenderer : table.TableCellRenderer;
+        cellRenderer: table.TableCellRenderer;
 
         /**
          * If true, the user is allowed to resize the column; the default is true.
          */
-        resizable : boolean;
+        resizable: boolean;
 
-        public getModelIndex() : number {
+        public getModelIndex(): number {
             return this.modelIndex;
         }
 
-        public setModelIndex(modelIndex : number) {
+        public setModelIndex(modelIndex: number) {
             this.modelIndex = modelIndex;
         }
 
-        public getIdentifier() : any {
+        public getIdentifier(): any {
             return this.identifier;
         }
 
-        public setIdentifier(identifier : any) {
+        public setIdentifier(identifier: any) {
             this.identifier = identifier;
         }
 
-        public getWidth() : number {
+        public getWidth(): number {
             return this.width;
         }
 
-        public setWidth(width : number) {
+        public setWidth(width: number) {
             this.width = width;
         }
 
-        public getMinWidth() : number {
+        public getMinWidth(): number {
             return this.minWidth;
         }
 
-        public setMinWidth(minWidth : number) {
+        public setMinWidth(minWidth: number) {
             this.minWidth = minWidth;
         }
 
-        public getMaxWidth() : number {
+        public getMaxWidth(): number {
             return this.maxWidth;
         }
 
-        public setMaxWidth(maxWidth : number) {
+        public setMaxWidth(maxWidth: number) {
             this.maxWidth = maxWidth;
         }
 
-        public getHeaderRenderer() : table.TableCellRenderer {
+        public getHeaderRenderer(): table.TableCellRenderer {
             return this.headerRenderer;
         }
 
-        public setHeaderRenderer(headerRenderer : table.TableCellRenderer) {
+        public setHeaderRenderer(headerRenderer: table.TableCellRenderer) {
             this.headerRenderer = headerRenderer;
         }
 
-        public getHeaderValue() : any {
+        public getHeaderValue(): any {
             return this.headerValue;
         }
 
-        public setHeaderValue(headerValue : any) {
+        public setHeaderValue(headerValue: any) {
             this.headerValue = headerValue;
         }
 
-        public getCellRenderer() : table.TableCellRenderer {
+        public getCellRenderer(): table.TableCellRenderer {
             return this.cellRenderer;
         }
 
-        public setCellRenderer(cellRenderer : table.TableCellRenderer) {
+        public setCellRenderer(cellRenderer: table.TableCellRenderer) {
             this.cellRenderer = cellRenderer;
         }
 
-        public isResizable() : boolean {
+        public isResizable(): boolean {
             return this.resizable;
         }
 
-        public setResizable(resizable : boolean) {
+        public setResizable(resizable: boolean) {
             this.resizable = resizable;
         }
 
         constructor() {
-            if(this.modelIndex===undefined) this.modelIndex = 0;
-            if(this.identifier===undefined) this.identifier = null;
-            if(this.width===undefined) this.width = 0;
-            if(this.minWidth===undefined) this.minWidth = 0;
-            if(this.maxWidth===undefined) this.maxWidth = 0;
-            if(this.headerRenderer===undefined) this.headerRenderer = null;
-            if(this.headerValue===undefined) this.headerValue = null;
-            if(this.cellRenderer===undefined) this.cellRenderer = null;
-            if(this.resizable===undefined) this.resizable = false;
+            if (this.modelIndex === undefined) { this.modelIndex = 0; }
+            if (this.identifier === undefined) { this.identifier = null; }
+            if (this.width === undefined) { this.width = 0; }
+            if (this.minWidth === undefined) { this.minWidth = 0; }
+            if (this.maxWidth === undefined) { this.maxWidth = 0; }
+            if (this.headerRenderer === undefined) { this.headerRenderer = null; }
+            if (this.headerValue === undefined) { this.headerValue = null; }
+            if (this.cellRenderer === undefined) { this.cellRenderer = null; }
+            if (this.resizable === undefined) { this.resizable = false; }
         }
     }
     TableColumn["__class"] = "framework.components.table.TableColumn";
@@ -1064,7 +1270,7 @@ namespace table {
          * @param   {table.TableColumn} aColumn         the <code>TableColumn</code> to be added
          * @see     #removeColumn
          */
-        addColumn(aColumn : table.TableColumn);
+        addColumn(aColumn: table.TableColumn);
 
         /**
          * Deletes the <code>TableColumn</code> <code>column</code> from the
@@ -1076,19 +1282,19 @@ namespace table {
          * @param   {table.TableColumn} column          the <code>TableColumn</code> to be removed
          * @see     #addColumn
          */
-        removeColumn(column : table.TableColumn);
+        removeColumn(column: table.TableColumn);
 
         /**
          * Returns the number of columns in the model.
          * @return {number} the number of columns in the model
          */
-        getColumnCount() : number;
+        getColumnCount(): number;
 
         /**
          * Returns an <code>Enumeration</code> of all the columns in the model.
          * @return {*} an <code>Enumeration</code> of all the columns in the model
          */
-        getColumns() : any;
+        getColumns(): any;
 
         /**
          * Returns the index of the first column in the table
@@ -1104,7 +1310,7 @@ namespace table {
          * <code>identifier</code>
          * @see             #getColumn
          */
-        getColumnIndex(columnIdentifier : any) : number;
+        getColumnIndex(columnIdentifier: any): number;
 
         /**
          * Returns the <code>TableColumn</code> object for the column at
@@ -1114,7 +1320,7 @@ namespace table {
          * @return  {table.TableColumn} the <code>TableColumn</code> object for
          * the column at <code>columnIndex</code>
          */
-        getColumn(columnIndex : number) : table.TableColumn;
+        getColumn(columnIndex: number): table.TableColumn;
     }
 }
 namespace table {
@@ -1128,7 +1334,7 @@ namespace table {
          * @return {number} the number of rows in the model
          * @see #getColumnCount
          */
-        getRowCount() : number;
+        getRowCount(): number;
 
         /**
          * Returns the number of columns in the model. A
@@ -1138,7 +1344,7 @@ namespace table {
          * @return {number} the number of columns in the model
          * @see #getRowCount
          */
-        getColumnCount() : number;
+        getColumnCount(): number;
 
         /**
          * Returns the name of the column at <code>columnIndex</code>.  This is used
@@ -1148,7 +1354,7 @@ namespace table {
          * @param   {number} columnIndex     the index of the column
          * @return  {string} the name of the column
          */
-        getColumnName(columnIndex : number) : string;
+        getColumnName(columnIndex: number): string;
 
         /**
          * Returns true if the cell at <code>rowIndex</code> and
@@ -1161,7 +1367,7 @@ namespace table {
          * @return  {boolean} true if the cell is editable
          * @see #setValueAt
          */
-        isCellEditable(rowIndex : number, columnIndex : number) : boolean;
+        isCellEditable(rowIndex: number, columnIndex: number): boolean;
 
         /**
          * Returns the value for the cell at <code>columnIndex</code> and
@@ -1171,7 +1377,7 @@ namespace table {
          * @param   {number} columnIndex     the column whose value is to be queried
          * @return  {*} the value Object at the specified cell
          */
-        getValueAt(rowIndex : number, columnIndex : number) : any;
+        getValueAt(rowIndex: number, columnIndex: number): any;
 
         /**
          * Sets the value in the cell at <code>columnIndex</code> and
@@ -1183,7 +1389,7 @@ namespace table {
          * @see #getValueAt
          * @see #isCellEditable
          */
-        setValueAt(aValue : any, rowIndex : number, columnIndex : number);
+        setValueAt(aValue: any, rowIndex: number, columnIndex: number);
 
         /**
          * Adds a listener to the list that is notified each time a change
@@ -1191,7 +1397,7 @@ namespace table {
          * 
          * @param   {*} l               the TableModelListener
          */
-        addTableModelListener(l : table.TableModelListener);
+        addTableModelListener(l: table.TableModelListener);
 
         /**
          * Removes a listener from the list that is notified each time a
@@ -1199,7 +1405,7 @@ namespace table {
          * 
          * @param   {*} l               the TableModelListener
          */
-        removeTableModelListener(l : table.TableModelListener);
+        removeTableModelListener(l: table.TableModelListener);
     }
 }
 namespace table {
@@ -1221,158 +1427,143 @@ namespace table {
         /**
          * Identifies the addition of new rows or columns.
          */
-        public static INSERT : number = 1;
+        public static INSERT: number = 1;
 
         /**
          * Identifies a change to existing data.
          */
-        public static UPDATE : number = 0;
+        public static UPDATE: number = 0;
 
         /**
          * Identifies the removal of rows or columns.
          */
-        public static DELETE : number = -1;
+        public static DELETE: number = -1;
 
         /**
          * Identifies the header row.
          */
-        public static HEADER_ROW : number = -1;
+        public static HEADER_ROW: number = -1;
 
         /**
          * Specifies all columns in a row or rows.
          */
-        public static ALL_COLUMNS : number = -1;
+        public static ALL_COLUMNS: number = -1;
 
-        type : number;
+        type: number;
 
-        firstRow : number;
+        firstRow: number;
 
-        lastRow : number;
+        lastRow: number;
 
-        column : number;
+        column: number;
 
-        source : table.TableModel;
+        source: table.TableModel;
 
-        public constructor(source? : any, firstRow? : any, lastRow? : any, column? : any, type? : any) {
-            if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && ((typeof type === 'number') || type === null)) {
+        public constructor(source?: any, firstRow?: any, lastRow?: any, column?: any, type?: any) {
+            if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && ((typeof type === 'number') || type === null)) {
                 let __args = arguments;
-                if(this.type===undefined) this.type = 0;
-                if(this.firstRow===undefined) this.firstRow = 0;
-                if(this.lastRow===undefined) this.lastRow = 0;
-                if(this.column===undefined) this.column = 0;
-                if(this.source===undefined) this.source = null;
-                if(this.type===undefined) this.type = 0;
-                if(this.firstRow===undefined) this.firstRow = 0;
-                if(this.lastRow===undefined) this.lastRow = 0;
-                if(this.column===undefined) this.column = 0;
-                if(this.source===undefined) this.source = null;
-                (() => {
+                if (this.type === undefined) { this.type = 0; } 
+                if (this.firstRow === undefined) { this.firstRow = 0; } 
+                if (this.lastRow === undefined) { this.lastRow = 0; } 
+                if (this.column === undefined) { this.column = 0; } 
+                if (this.source === undefined) { this.source = null; } 
+                this.source = source;
+                this.firstRow = firstRow;
+                this.lastRow = lastRow;
+                this.column = column;
+                this.type = type;
+            } else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
+                let __args = arguments;
+                {
+                    let __args = arguments;
+                    let type: any = TableModelEvent.UPDATE;
+                    if (this.type === undefined) { this.type = 0; } 
+                    if (this.firstRow === undefined) { this.firstRow = 0; } 
+                    if (this.lastRow === undefined) { this.lastRow = 0; } 
+                    if (this.column === undefined) { this.column = 0; } 
+                    if (this.source === undefined) { this.source = null; } 
                     this.source = source;
                     this.firstRow = firstRow;
                     this.lastRow = lastRow;
                     this.column = column;
                     this.type = type;
-                })();
-            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && ((typeof column === 'number') || column === null) && type === undefined) {
+                }
+                if (this.type === undefined) { this.type = 0; } 
+                if (this.firstRow === undefined) { this.firstRow = 0; } 
+                if (this.lastRow === undefined) { this.lastRow = 0; } 
+                if (this.column === undefined) { this.column = 0; } 
+                if (this.source === undefined) { this.source = null; } 
+            } else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
                 let __args = arguments;
                 {
                     let __args = arguments;
-                    let type : any = TableModelEvent.UPDATE;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
+                    let column: any = TableModelEvent.ALL_COLUMNS;
+                    let type: any = TableModelEvent.UPDATE;
+                    if (this.type === undefined) { this.type = 0; } 
+                    if (this.firstRow === undefined) { this.firstRow = 0; } 
+                    if (this.lastRow === undefined) { this.lastRow = 0; } 
+                    if (this.column === undefined) { this.column = 0; } 
+                    if (this.source === undefined) { this.source = null; } 
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
                 }
-            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && ((typeof lastRow === 'number') || lastRow === null) && column === undefined && type === undefined) {
+                if (this.type === undefined) { this.type = 0; } 
+                if (this.firstRow === undefined) { this.firstRow = 0; } 
+                if (this.lastRow === undefined) { this.lastRow = 0; } 
+                if (this.column === undefined) { this.column = 0; } 
+                if (this.source === undefined) { this.source = null; } 
+            } else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && lastRow === undefined && column === undefined && type === undefined) {
+                let __args = arguments;
+                let row: any = __args[1];
+                {
+                    let __args = arguments;
+                    let firstRow: any = row;
+                    let lastRow: any = row;
+                    let column: any = TableModelEvent.ALL_COLUMNS;
+                    let type: any = TableModelEvent.UPDATE;
+                    if (this.type === undefined) { this.type = 0; } 
+                    if (this.firstRow === undefined) { this.firstRow = 0; } 
+                    if (this.lastRow === undefined) { this.lastRow = 0; } 
+                    if (this.column === undefined) { this.column = 0; } 
+                    if (this.source === undefined) { this.source = null; } 
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
+                }
+                if (this.type === undefined) { this.type = 0; } 
+                if (this.firstRow === undefined) { this.firstRow = 0; } 
+                if (this.lastRow === undefined) { this.lastRow = 0; } 
+                if (this.column === undefined) { this.column = 0; } 
+                if (this.source === undefined) { this.source = null; } 
+            } else if (((source != null && (source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
                 let __args = arguments;
                 {
                     let __args = arguments;
-                    let column : any = TableModelEvent.ALL_COLUMNS;
-                    let type : any = TableModelEvent.UPDATE;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
+                    let firstRow: any = 0;
+                    let lastRow: any = 2147483647;
+                    let column: any = TableModelEvent.ALL_COLUMNS;
+                    let type: any = TableModelEvent.UPDATE;
+                    if (this.type === undefined) { this.type = 0; } 
+                    if (this.firstRow === undefined) { this.firstRow = 0; } 
+                    if (this.lastRow === undefined) { this.lastRow = 0; } 
+                    if (this.column === undefined) { this.column = 0; } 
+                    if (this.source === undefined) { this.source = null; } 
+                    this.source = source;
+                    this.firstRow = firstRow;
+                    this.lastRow = lastRow;
+                    this.column = column;
+                    this.type = type;
                 }
-            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && ((typeof firstRow === 'number') || firstRow === null) && lastRow === undefined && column === undefined && type === undefined) {
-                let __args = arguments;
-                let row : any = __args[1];
-                {
-                    let __args = arguments;
-                    let firstRow : any = row;
-                    let lastRow : any = row;
-                    let column : any = TableModelEvent.ALL_COLUMNS;
-                    let type : any = TableModelEvent.UPDATE;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
-                }
-            } else if(((source != null && (source["__interfaces"] != null && source["__interfaces"].indexOf("framework.components.table.TableModel") >= 0 || source.constructor != null && source.constructor["__interfaces"] != null && source.constructor["__interfaces"].indexOf("framework.components.table.TableModel") >= 0)) || source === null) && firstRow === undefined && lastRow === undefined && column === undefined && type === undefined) {
-                let __args = arguments;
-                {
-                    let __args = arguments;
-                    let firstRow : any = 0;
-                    let lastRow : any = 2147483647;
-                    let column : any = TableModelEvent.ALL_COLUMNS;
-                    let type : any = TableModelEvent.UPDATE;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    if(this.type===undefined) this.type = 0;
-                    if(this.firstRow===undefined) this.firstRow = 0;
-                    if(this.lastRow===undefined) this.lastRow = 0;
-                    if(this.column===undefined) this.column = 0;
-                    if(this.source===undefined) this.source = null;
-                    (() => {
-                        this.source = source;
-                        this.firstRow = firstRow;
-                        this.lastRow = lastRow;
-                        this.column = column;
-                        this.type = type;
-                    })();
-                }
+                if (this.type === undefined) { this.type = 0; } 
+                if (this.firstRow === undefined) { this.firstRow = 0; } 
+                if (this.lastRow === undefined) { this.lastRow = 0; } 
+                if (this.column === undefined) { this.column = 0; } 
+                if (this.source === undefined) { this.source = null; } 
             } else throw new Error('invalid overload');
         }
 
@@ -1381,7 +1572,7 @@ namespace table {
          * ie. names, types and order of the columns.
          * @return {number}
          */
-        public getFirstRow() : number {
+        public getFirstRow(): number {
             return this.firstRow;
         }
 
@@ -1389,7 +1580,7 @@ namespace table {
          * Returns the last row that changed.
          * @return {number}
          */
-        public getLastRow() : number {
+        public getLastRow(): number {
             return this.lastRow;
         }
 
@@ -1399,7 +1590,7 @@ namespace table {
          * rows changed.
          * @return {number}
          */
-        public getColumn() : number {
+        public getColumn(): number {
             return this.column;
         }
 
@@ -1407,7 +1598,7 @@ namespace table {
          * Returns the type of event - one of: INSERT, UPDATE and DELETE.
          * @return {number}
          */
-        public getType() : number {
+        public getType(): number {
             return this.type;
         }
     }
@@ -1416,17 +1607,17 @@ namespace table {
 }
 namespace table {
     export interface TableModelListener {
-        tableChanged(e : table.TableModelEvent);
+        tableChanged(e: table.TableModelEvent);
     }
 }
 namespace util {
     export class ComponentUtil {
-        public static visit(designable : api.Renderable, visitor : ComponentUtil.ComponentVisitor) {
+        public static visit(designable: api.Renderable, visitor: ComponentUtil.ComponentVisitor) {
             visitor.doVisit(designable);
             {
-                let array134 = designable.getChildren();
-                for(let index133=0; index133 < array134.length; index133++) {
-                    let child = array134[index133];
+                let array200 = designable.getChildren();
+                for(let index199=0; index199 < array200.length; index199++) {
+                    let child = array200[index199];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -1434,14 +1625,14 @@ namespace util {
             }
         }
 
-        public static getTags(type : string) : Array<Object> {
-            let html5tags : Array<Object> = <any>(window["html5tags"]);
-            let result : Array<Object> = <any>(new Array<Object>());
-            for(let index135=0; index135 < html5tags.length; index135++) {
-                let html5tag = html5tags[index135];
+        public static getTags(type: string): Array<Object> {
+            const html5tags: Array<Object> = <any>(window["html5tags"]);
+            const result: Array<Object> = <any>(new Array<Object>());
+            for(let index201=0; index201 < html5tags.length; index201++) {
+                let html5tag = html5tags[index201];
                 {
-                    let stype : string = <string>html5tag["type"];
-                    if(stype === type || type === "*") {
+                    const stype: string = <string>html5tag["type"];
+                    if (stype === type || type === "*"){
                         result.push(html5tag);
                     }
                 }
@@ -1455,26 +1646,26 @@ namespace util {
     export namespace ComponentUtil {
 
         export interface ComponentVisitor {
-            doVisit(designable : api.Renderable);
+            doVisit(designable: api.Renderable);
         }
     }
 
 }
 namespace util {
     export class PropertyUtil {
-        public static DOCUMENT_STRCTURE_HIDE_CONTEXT_MENU_ADDED : boolean = false;
+        public static DOCUMENT_STRCTURE_HIDE_CONTEXT_MENU_ADDED: boolean = false;
 
-        public static REMOTESERVER : string = "";
+        public static REMOTESERVER: string = "";
 
-        public static getValue(obj : Object, property : string) : Object {
-            if(obj == null) {
+        public static getValue(obj: Object, property: string): Object {
+            if (obj == null){
                 return null;
             }
-            if(/* contains */(property.indexOf(".") != -1)) {
-                let parts : string[] = property.split(".");
-                let tmp : Object = obj;
-                for(let index136=0; index136 < parts.length; index136++) {
-                    let part = parts[index136];
+            if (/* contains */(property.indexOf(".") != -1)){
+                const parts: string[] = property.split(".");
+                let tmp: Object = obj;
+                for(let index202=0; index202 < parts.length; index202++) {
+                    let part = parts[index202];
                     {
                         tmp = PropertyUtil.getValue(tmp, part);
                     }
@@ -1485,12 +1676,12 @@ namespace util {
             }
         }
 
-        public static hasOwnProperty(obj : Object, property : string) : boolean {
-            if(/* contains */(property.indexOf(".") != -1)) {
-                let keys : string[] = property.split(".");
-                let tmp : Object = obj;
-                for(let i : number = 0; i < keys.length - 1; i++) {{
-                    if(!tmp.hasOwnProperty(keys[i])) {
+        public static hasOwnProperty(obj: Object, property: string): boolean {
+            if (/* contains */(property.indexOf(".") != -1)){
+                const keys: string[] = property.split(".");
+                let tmp: Object = obj;
+                for(let i: number = 0; i < keys.length - 1; i++) {{
+                    if (!tmp.hasOwnProperty(keys[i])){
                         return false;
                     }
                     tmp = <Object>tmp[keys[i]];
@@ -1501,15 +1692,15 @@ namespace util {
             }
         }
 
-        public static setValue(obj : Object, value : Object, property : string) {
-            if(obj == null) {
+        public static setValue(obj: Object, value: Object, property: string) {
+            if (obj == null){
                 throw Object.defineProperty(new Error("cannot set  property " + property + " to undefined"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Error','java.lang.Object'] });
             }
-            if(/* contains */(property.indexOf(".") != -1)) {
-                let keys : string[] = property.split(".");
-                let tmp : Object = obj;
-                for(let i : number = 0; i < keys.length - 1; i++) {{
-                    if(!tmp.hasOwnProperty(keys[i])) {
+            if (/* contains */(property.indexOf(".") != -1)){
+                const keys: string[] = property.split(".");
+                let tmp: Object = obj;
+                for(let i: number = 0; i < keys.length - 1; i++) {{
+                    if (!tmp.hasOwnProperty(keys[i])){
                         tmp[keys[i]] = <Object>new Object();
                     }
                     tmp = PropertyUtil.getValue(tmp, keys[i]);
@@ -1534,14 +1725,14 @@ namespace util {
          * @param {string} hash The query string to parse
          * @return {Object} The object created based on query string
          */
-        public static getQuery(hash : string) : Object {
-            let result : Object = <Object>new Object();
-            if(/* contains */(hash.indexOf("?") != -1)) {
-                let kvs : string[] = hash.split("?")[1].split("&");
-                for(let index137=0; index137 < kvs.length; index137++) {
-                    let kv = kvs[index137];
+        public static getQuery(hash: string): Object {
+            const result: Object = <Object>new Object();
+            if (/* contains */(hash.indexOf("?") != -1)){
+                const kvs: string[] = hash.split("?")[1].split("&");
+                for(let index203=0; index203 < kvs.length; index203++) {
+                    let kv = kvs[index203];
                     {
-                        let akv : string[] = kv.split("=");
+                        const akv: string[] = kv.split("=");
                         result[akv[0]] = akv[1];
                     }
                 }
@@ -1563,27 +1754,23 @@ namespace util {
  * @author Rossaye Abdool Kureem Apr 10, 2018
  */
 class JSContainer implements api.Renderable {
-    public static idCount : number = 0;
+    public static idCount: number = 0;
 
-    /*private*/ d : Object = <Object>new Object();
+    /*private*/ d: Object;
 
-    static defaultRenderer : api.ContainerRenderer; public static defaultRenderer_$LI$() : api.ContainerRenderer { if(JSContainer.defaultRenderer == null) JSContainer.defaultRenderer = new api.ContainerRenderer(); return JSContainer.defaultRenderer; };
+    static defaultRenderer: api.ContainerRenderer; public static defaultRenderer_$LI$(): api.ContainerRenderer { if (JSContainer.defaultRenderer == null) { JSContainer.defaultRenderer = new api.ContainerRenderer(); }  return JSContainer.defaultRenderer; }
 
-    public constructor(name? : any, tag? : any) {
-        if(((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null)) {
+    public constructor(name?: any, tag?: any) {
+        if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null)) {
             let __args = arguments;
             this.d = <Object>new Object();
-            (() => {
-                this.setTag(tag);
-                this.setName(name);
-            })();
-        } else if(((typeof name === 'string') || name === null) && tag === undefined) {
+            this.setTag(tag);
+            this.setName(name);
+        } else if (((typeof name === 'string') || name === null) && tag === undefined) {
             let __args = arguments;
-            let tag : any = __args[0];
+            let tag: any = __args[0];
             this.d = <Object>new Object();
-            (() => {
-                this.setTag(tag);
-            })();
+            this.setTag(tag);
         } else throw new Error('invalid overload');
     }
 
@@ -1595,17 +1782,17 @@ class JSContainer implements api.Renderable {
      * @param {*} listener
      * The javascript function to be called back
      */
-    public on(evt : string, listener : EventListener) {
+    public on(evt: string, listener: EventListener) {
         this.addEventListener(new JSContainer.JSContainer$0(this, listener), evt);
     }
 
     /**
      * 
-     * @return {Array} An array of custom events supported by the component<br>
+     * @return {java.lang.String[]} An array of custom events supported by the component<br>
      * This method is overridden by more complex components to provide
      * more advanced events mechanisms.
      */
-    public advancedEventTypes() : string[] {
+    public advancedEventTypes(): string[] {
         return [];
     }
 
@@ -1618,12 +1805,12 @@ class JSContainer implements api.Renderable {
      * @param {Event} evt
      * The payload to transmit when executing the event.
      */
-    public fireListener(key : string, evt : Event) {
+    public fireListener(key: string, evt: Event) {
         console.log("firing:" + key + " on " + this.getName());
-        let listeners : Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
-        if(listeners != null && listeners.length > 0) {
-            for(let index138=0; index138 < listeners.length; index138++) {
-                let l = listeners[index138];
+        const listeners: Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
+        if (listeners != null && listeners.length > 0){
+            for(let index204=0; index204 < listeners.length; index204++) {
+                let l = listeners[index204];
                 {
                     l.performAction(this, evt);
                 }
@@ -1631,9 +1818,9 @@ class JSContainer implements api.Renderable {
         }
     }
 
-    public hasListenerOfType(type : string) : boolean {
-        let listeners : Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[type];
-        if(listeners != null && listeners.length > 0) {
+    public hasListenerOfType(type: string): boolean {
+        const listeners: Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[type];
+        if (listeners != null && listeners.length > 0){
             return true;
         } else {
             return false;
@@ -1645,17 +1832,17 @@ class JSContainer implements api.Renderable {
      * @return {Object} An {@link jsweet.lang.Object} to provide a scope for this
      * environement
      */
-    public getScope() : Object {
+    public getScope(): Object {
         return null;
     }
 
-    public getChild(name : string) : api.Renderable {
+    public getChild(name: string): api.Renderable {
         {
-            let array140 = this.getChildren();
-            for(let index139=0; index139 < array140.length; index139++) {
-                let child = array140[index139];
+            let array206 = this.getChildren();
+            for(let index205=0; index205 < array206.length; index205++) {
+                let child = array206[index205];
                 {
-                    if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(child.getName(),name))) {
+                    if (child.getName() === name){
                         return child;
                     }
                 }
@@ -1664,22 +1851,22 @@ class JSContainer implements api.Renderable {
         return null;
     }
 
-    public removeChild(r : api.Renderable) : api.Renderable {
-        let children : Array<api.Renderable> = this.getChildren();
+    public removeChild(r: api.Renderable): api.Renderable {
+        const children: Array<api.Renderable> = this.getChildren();
         this.d["children"] = children.filter((ctn, inde, lst) => {
-            return !/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(ctn,r));
+            return !/* equals */(<any>((o1: any, o2: any) => { if (o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(ctn,r));
         });
         this.setRendered(false);
         return this;
     }
 
-    public addCSSRule(rule : string) : api.Renderable {
-        let rules : Array<string> = <Array<string>>this.d["rules"];
-        if(rules == null) {
+    public addCSSRule(rule: string): api.Renderable {
+        let rules: Array<string> = <Array<string>>this.d["rules"];
+        if (rules == null){
             rules = <any>(new Array<string>());
             this.d["rules"] = rules;
         }
-        if(rules.indexOf(rule) < 0) {
+        if (rules.indexOf(rule) < 0){
             rules.push(rule);
             this.d["rules"] = rules;
         }
@@ -1690,8 +1877,8 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string[]}
      */
-    public getCSSRules() : Array<string> {
-        if(this.d.hasOwnProperty("rules")) {
+    public getCSSRules(): Array<string> {
+        if (this.d.hasOwnProperty("rules")){
             return <Array<string>>this.d["rules"];
         } else {
             this.d["rules"] = new Array<any>();
@@ -1699,7 +1886,7 @@ class JSContainer implements api.Renderable {
         }
     }
 
-    public clearChildren() : api.Renderable {
+    public clearChildren(): api.Renderable {
         this.d["children"] = new Array<any>();
         return this;
     }
@@ -1708,9 +1895,9 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string[]}
      */
-    public getChangedAttributes() : Array<string> {
-        if(this.d["changedAttributes"] != null) {
-            let changed : Array<string> = <Array<string>>this.d["changedAttributes"];
+    public getChangedAttributes(): Array<string> {
+        if (this.d["changedAttributes"] != null){
+            const changed: Array<string> = <Array<string>>this.d["changedAttributes"];
             return changed;
         } else {
             this.d["changedAttributes"] = new Array<any>();
@@ -1718,9 +1905,9 @@ class JSContainer implements api.Renderable {
         }
     }
 
-    public getNative() : HTMLElement {
-        let elem : HTMLElement = document.getElementById(this.getId());
-        if(elem != null) {
+    public getNative(): HTMLElement {
+        const elem: HTMLElement = document.getElementById(this.getId());
+        if (elem != null){
             return elem;
         } else {
             return null;
@@ -1731,9 +1918,9 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string[]}
      */
-    public getChangedStyles() : Array<string> {
-        if(this.d["changedStyles"] != null) {
-            let changed : Array<string> = <Array<string>>this.d["changedStyles"];
+    public getChangedStyles(): Array<string> {
+        if (this.d["changedStyles"] != null){
+            const changed: Array<string> = <Array<string>>this.d["changedStyles"];
             return changed;
         } else {
             this.d["changedStyles"] = new Array<any>();
@@ -1750,8 +1937,8 @@ class JSContainer implements api.Renderable {
      * is to prevent any end user from invoking this method since it
      * is a public exposed method
      */
-    public flush(s : string) {
-        if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(s,"a28n12l10"))) {
+    public flush(s: string) {
+        if (s === ("a28n12l10")){
             delete this.d["changedAttributes"];
             delete this.d["changedStyles"];
         }
@@ -1761,9 +1948,9 @@ class JSContainer implements api.Renderable {
      * 
      * @return {*[]}
      */
-    public getRenderers() : Array<api.Renderer<any>> {
-        let arr : Array<api.Renderer<any>> = <Array<api.Renderer<any>>>this.d["renderers"];
-        if(arr != null) {
+    public getRenderers(): Array<api.Renderer<any>> {
+        const arr: Array<api.Renderer<any>> = <Array<api.Renderer<any>>>this.d["renderers"];
+        if (arr != null){
             return arr;
         } else {
             return <any>(new Array<api.Renderer<any>>());
@@ -1775,9 +1962,9 @@ class JSContainer implements api.Renderable {
      * @param {*} renderer
      * @return {JSContainer}
      */
-    public addRenderer(renderer : api.Renderer<any>) : JSContainer {
-        let arr : Array<api.Renderer<any>> = <Array<api.Renderer<any>>>this.d["renderers"];
-        if(arr == null) {
+    public addRenderer(renderer: api.Renderer<any>): JSContainer {
+        let arr: Array<api.Renderer<any>> = <Array<api.Renderer<any>>>this.d["renderers"];
+        if (arr == null){
             arr = <any>(new Array<api.Renderer<any>>());
             this.d["renderers"] = arr;
         }
@@ -1790,15 +1977,15 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string}
      */
-    public getId() : string {
-        let custom : Object = <Object>this.getCustomProperties();
-        if(custom != null) {
-            if(custom.hasOwnProperty("id")) {
+    public getId(): string {
+        const custom: Object = <Object>this.getCustomProperties();
+        if (custom != null){
+            if (custom.hasOwnProperty("id")){
                 return <string>custom["id"];
             }
         }
-        let id : string = <string>this.d["id"];
-        if(id == null) {
+        let id: string = <string>this.d["id"];
+        if (id == null){
             id = this.uid();
             this.d["id"] = id;
         }
@@ -1810,15 +1997,15 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string} A unique id
      */
-    uid() : string {
+    uid(): string {
         JSContainer.idCount++;
         return JSContainer.idCount + "";
     }
 
-    addOrRemoveClass(cls : string, b : boolean) {
-        if(b && !this.hasClass(cls)) {
+    addOrRemoveClass(cls: string, b: boolean) {
+        if (b && !this.hasClass(cls)){
             this.addClass(cls);
-        } else if(!b && this.hasClass(cls)) {
+        } else if (!b && this.hasClass(cls)){
             this.removeClass(cls);
         }
     }
@@ -1828,32 +2015,32 @@ class JSContainer implements api.Renderable {
      * @param {string} styleClass
      * @return {JSContainer}
      */
-    public addClass(styleClass : string) : JSContainer {
-        let styles : string = this.getAttribute("class");
-        if(styles == null) {
+    public addClass(styleClass: string): JSContainer {
+        let styles: string = this.getAttribute("class");
+        if (styles == null){
             styles = "";
         }
-        let aStyles : string[] = styles.split(" ");
-        let toAdds : string[] = styleClass.split(" ");
-        let res : string = "";
-        for(let index141=0; index141 < toAdds.length; index141++) {
-            let toAdd = toAdds[index141];
+        const aStyles: string[] = styles.split(" ");
+        const toAdds: string[] = styleClass.split(" ");
+        let res: string = "";
+        for(let index207=0; index207 < toAdds.length; index207++) {
+            let toAdd = toAdds[index207];
             {
                 toAdd = toAdd.trim();
-                if(toAdd.length > 0) {
-                    let add : boolean = true;
-                    for(let index142=0; index142 < aStyles.length; index142++) {
-                        let style = aStyles[index142];
+                if (toAdd.length > 0){
+                    let add: boolean = true;
+                    for(let index208=0; index208 < aStyles.length; index208++) {
+                        let style = aStyles[index208];
                         {
                             style = style.trim();
-                            if(style.length > 0) {
-                                if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(style.trim(),toAdd))) {
+                            if (style.length > 0){
+                                if (style.trim() === toAdd){
                                     add = false;
                                 }
                             }
                         }
                     }
-                    if(add) {
+                    if (add){
                         res = res + " " + toAdd;
                     }
                 }
@@ -1864,28 +2051,28 @@ class JSContainer implements api.Renderable {
         return this;
     }
 
-    public hasClass(cls : string) : boolean {
-        if(cls == null) {
+    public hasClass(cls: string): boolean {
+        if (cls == null){
             return false;
         }
         cls = cls.trim();
-        if(cls === "") {
+        if (cls === ""){
             return false;
         }
-        if(cls.indexOf(" ") >= 0) {
+        if (cls.indexOf(" ") >= 0){
             throw new Error("Cannot check with multiple classes. You should probably check with each class one by one");
         }
-        let styles : string = this.getAttribute("class");
-        if(styles == null) {
+        const styles: string = this.getAttribute("class");
+        if (styles == null){
             return false;
         }
-        let aStyles : string[] = styles.split(" ");
-        for(let index143=0; index143 < aStyles.length; index143++) {
-            let style = aStyles[index143];
+        const aStyles: string[] = styles.split(" ");
+        for(let index209=0; index209 < aStyles.length; index209++) {
+            let style = aStyles[index209];
             {
                 style = style.trim();
-                if(style !== "") {
-                    if(style === cls) {
+                if (style !== ""){
+                    if (style === cls){
                         return true;
                     }
                 }
@@ -1894,8 +2081,8 @@ class JSContainer implements api.Renderable {
         return false;
     }
 
-    public toggleClass(cls : string) : api.Renderable {
-        if(this.hasClass(cls)) {
+    public toggleClass(cls: string): api.Renderable {
+        if (this.hasClass(cls)){
             this.removeClass(cls);
         } else {
             this.addClass(cls);
@@ -1908,11 +2095,11 @@ class JSContainer implements api.Renderable {
      * @param {string} cls
      * @return {JSContainer}
      */
-    public removeClass(cls : string) : JSContainer {
-        if(cls != null && cls.trim() !== "") {
-            let toremove : string[] = cls.split(" ");
-            for(let index144=0; index144 < toremove.length; index144++) {
-                let s = toremove[index144];
+    public removeClass(cls: string): JSContainer {
+        if (cls != null && cls.trim() !== ""){
+            const toremove: string[] = cls.split(" ");
+            for(let index210=0; index210 < toremove.length; index210++) {
+                let s = toremove[index210];
                 {
                     this.removeSingleClass(s);
                 }
@@ -1921,16 +2108,16 @@ class JSContainer implements api.Renderable {
         return this;
     }
 
-    public removeSingleClass(cls : string) : JSContainer {
-        let cl : string = this.getAttribute("class");
-        if(cl != null && cl.length > 0) {
-            let classes : string[] = cl.split(" ");
-            let result : string = "";
-            for(let index145=0; index145 < classes.length; index145++) {
-                let scl = classes[index145];
+    public removeSingleClass(cls: string): JSContainer {
+        const cl: string = this.getAttribute("class");
+        if (cl != null && cl.length > 0){
+            const classes: string[] = cl.split(" ");
+            let result: string = "";
+            for(let index211=0; index211 < classes.length; index211++) {
+                let scl = classes[index211];
                 {
-                    if(scl !== cls) {
-                        if(result === "") {
+                    if (scl !== cls){
+                        if (result === ""){
                             result = scl;
                         } else {
                             result = result + " " + scl;
@@ -1943,11 +2130,11 @@ class JSContainer implements api.Renderable {
         return this;
     }
 
-    public addChild$framework_components_api_Renderable(container : api.Renderable) : api.Renderable {
-        if(container == null) {
+    public addChild$framework_components_api_Renderable(container: api.Renderable): api.Renderable {
+        if (container == null){
             throw new Error("addChild(null): Child component cannot be null.");
         }
-        if(container.isValidParent(this)) {
+        if (container.isValidParent(this)){
             (<JSContainer><any>container).d["parent"] = this;
             this.getChildren().push(container);
         } else {
@@ -1956,30 +2143,30 @@ class JSContainer implements api.Renderable {
         return this;
     }
 
-    public addChild$java_lang_String$java_lang_String(name : string, tag : string) : JSContainer {
-        let child : JSContainer = new JSContainer(name, tag);
+    public addChild$java_lang_String$java_lang_String(name: string, tag: string): JSContainer {
+        const child: JSContainer = new JSContainer(name, tag);
         this.addChild$framework_components_api_Renderable(child);
         return child;
     }
 
-    public addChild$java_lang_String$java_lang_String$java_lang_String(name : string, tag : string, cls : string) : JSContainer {
-        let child : JSContainer = new JSContainer(name, tag);
+    public addChild$java_lang_String$java_lang_String$java_lang_String(name: string, tag: string, cls: string): JSContainer {
+        const child: JSContainer = new JSContainer(name, tag);
         child.addClass(cls);
         this.addChild$framework_components_api_Renderable(child);
         return child;
     }
 
-    public addChild(name? : any, tag? : any, cls? : any) : any {
-        if(((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null) && ((typeof cls === 'string') || cls === null)) {
+    public addChild(name?: any, tag?: any, cls?: any): any {
+        if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null) && ((typeof cls === 'string') || cls === null)) {
             return <any>this.addChild$java_lang_String$java_lang_String$java_lang_String(name, tag, cls);
-        } else if(((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null) && cls === undefined) {
+        } else if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null) && cls === undefined) {
             return <any>this.addChild$java_lang_String$java_lang_String(name, tag);
-        } else if(((name != null && (name["__interfaces"] != null && name["__interfaces"].indexOf("framework.components.api.Renderable") >= 0 || name.constructor != null && name.constructor["__interfaces"] != null && name.constructor["__interfaces"].indexOf("framework.components.api.Renderable") >= 0)) || name === null) && tag === undefined && cls === undefined) {
+        } else if (((name != null && (name.constructor != null && name.constructor["__interfaces"] != null && name.constructor["__interfaces"].indexOf("framework.components.api.Renderable") >= 0)) || name === null) && tag === undefined && cls === undefined) {
             return <any>this.addChild$framework_components_api_Renderable(name);
         } else throw new Error('invalid overload');
     }
 
-    public isValidParent(parent : api.Renderable) : boolean {
+    public isValidParent(parent: api.Renderable): boolean {
         return true;
     }
 
@@ -1989,17 +2176,17 @@ class JSContainer implements api.Renderable {
      * @param {*} child
      * @return {*}
      */
-    public addChildAt(index : number, child : api.Renderable) : api.Renderable {
+    public addChildAt(index: number, child: api.Renderable): api.Renderable {
         (<JSContainer><any>child).d["parent"] = this;
-        let children : Array<api.Renderable> = <any>(new Array<api.Renderable>());
-        let i : number = 0;
-        let added : boolean = false;
+        const children: Array<api.Renderable> = <any>(new Array<api.Renderable>());
+        let i: number = 0;
+        let added: boolean = false;
         {
-            let array147 = this.getChildren();
-            for(let index146=0; index146 < array147.length; index146++) {
-                let c = array147[index146];
+            let array213 = this.getChildren();
+            for(let index212=0; index212 < array213.length; index212++) {
+                let c = array213[index212];
                 {
-                    if(i === index) {
+                    if (i === index){
                         children.push(child);
                         added = true;
                     }
@@ -2008,7 +2195,7 @@ class JSContainer implements api.Renderable {
                 }
             }
         }
-        if(!added) {
+        if (!added){
             children.push(child);
         }
         (<JSContainer><any>child).d["parent"] = this;
@@ -2021,8 +2208,8 @@ class JSContainer implements api.Renderable {
      * @param {boolean} b
      * @return {JSContainer}
      */
-    public setVisible(b : boolean) : JSContainer {
-        if(!b) {
+    public setVisible(b: boolean): JSContainer {
+        if (!b){
             this.setStyle("display", "none");
             this.addClass("slds-hidden");
         } else {
@@ -2038,17 +2225,17 @@ class JSContainer implements api.Renderable {
      * @param {string} type
      * @return {JSContainer}
      */
-    public addEventListener(listener : api.EventListener, type : string) : JSContainer {
-        let listeners : Object = this.getListeners();
-        if(listeners == null) {
+    public addEventListener(listener: api.EventListener, type: string): JSContainer {
+        let listeners: Object = this.getListeners();
+        if (listeners == null){
             listeners = <Object>new Object();
             this.d["listeners"] = listeners;
         }
-        if(!listeners.hasOwnProperty(type)) {
+        if (!listeners.hasOwnProperty(type)){
             listeners[type] = new Array<any>();
         }
-        let current : Array<api.EventListener> = <Array<api.EventListener>>listeners[type];
-        if(current.lastIndexOf(listener) < 0) {
+        const current: Array<api.EventListener> = <Array<api.EventListener>>listeners[type];
+        if (current.lastIndexOf(listener) < 0){
             (<Array<api.EventListener>>listeners[type]).push(listener);
         } else {
             console.log("trap  coq");
@@ -2060,7 +2247,7 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string}
      */
-    public getTag() : string {
+    public getTag(): string {
         return this.getString("tag");
     }
 
@@ -2069,7 +2256,7 @@ class JSContainer implements api.Renderable {
      * @param {string} tag
      * @return {JSContainer}
      */
-    public setTag(tag : string) : JSContainer {
+    public setTag(tag: string): JSContainer {
         this.setString("tag", tag);
         this.setRendered(false);
         return this;
@@ -2081,15 +2268,15 @@ class JSContainer implements api.Renderable {
      * @param {string} value
      * @return {JSContainer}
      */
-    public setStyle(key : string, value : string) : JSContainer {
+    public setStyle(key: string, value: string): JSContainer {
         this.getChangedStyles().push(key);
-        if(value != null) {
-            if(this.d["styles"] == null) {
+        if (value != null){
+            if (this.d["styles"] == null){
                 this.d["styles"] = <Object>new Object();
             }
             (<Object>this.d["styles"])[key] = value;
         } else {
-            if(this.d["styles"] != null) {
+            if (this.d["styles"] != null){
                 delete (<Object>this.d["styles"])[key];
                 this.setRendered(false);
             }
@@ -2102,8 +2289,8 @@ class JSContainer implements api.Renderable {
      * @param {string} key
      * @return {string}
      */
-    public getStyle(key : string) : string {
-        if(this.d["styles"] != null) {
+    public getStyle(key: string): string {
+        if (this.d["styles"] != null){
             return <string>(<Object>this.d["styles"])[key];
         }
         return null;
@@ -2115,15 +2302,15 @@ class JSContainer implements api.Renderable {
      * @param {string} value
      * @return {JSContainer}
      */
-    public setAttribute(key : string, value : string) : JSContainer {
+    public setAttribute(key: string, value: string): JSContainer {
         this.getChangedAttributes().push(key);
-        if(value != null) {
-            if(this.d["attributes"] == null) {
+        if (value != null){
+            if (this.d["attributes"] == null){
                 this.d["attributes"] = <Object>new Object();
             }
             (<Object>this.d["attributes"])[key] = value;
         } else {
-            if(this.d["attributes"] != null) delete (<Object>this.d["attributes"])[key];
+            if (this.d["attributes"] != null)delete (<Object>this.d["attributes"])[key];
         }
         return this;
     }
@@ -2133,8 +2320,8 @@ class JSContainer implements api.Renderable {
      * @param {string} key
      * @return {string}
      */
-    public getAttribute(key : string) : string {
-        if(this.d["attributes"] != null) {
+    public getAttribute(key: string): string {
+        if (this.d["attributes"] != null){
             return <string>(<Object>this.d["attributes"])[key];
         }
         return null;
@@ -2144,9 +2331,9 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string}
      */
-    public getName() : string {
-        let name : string = this.getAttribute("name");
-        if(name == null) {
+    public getName(): string {
+        const name: string = this.getAttribute("name");
+        if (name == null){
             return "";
         }
         return name;
@@ -2156,7 +2343,7 @@ class JSContainer implements api.Renderable {
      * 
      * @param {string} name
      */
-    public setName(name : string) {
+    public setName(name: string) {
         this.setAttribute("name", name);
     }
 
@@ -2164,7 +2351,7 @@ class JSContainer implements api.Renderable {
      * 
      * @return {JSContainer}
      */
-    public getParent() : JSContainer {
+    public getParent(): JSContainer {
         return <JSContainer>this.d["parent"];
     }
 
@@ -2172,9 +2359,9 @@ class JSContainer implements api.Renderable {
      * 
      * @return {*[]}
      */
-    public getChildren() : Array<api.Renderable> {
-        let children : Array<api.Renderable> = <Array<api.Renderable>>this.d["children"];
-        if(children != null) {
+    public getChildren(): Array<api.Renderable> {
+        const children: Array<api.Renderable> = <Array<api.Renderable>>this.d["children"];
+        if (children != null){
             return <Array<api.Renderable>>children;
         } else {
             this.d["children"] = new Array<any>();
@@ -2184,11 +2371,11 @@ class JSContainer implements api.Renderable {
 
     /**
      * 
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
-    public getStyleNames() : string[] {
-        let styles : Object = <Object>this.d["styles"];
-        if(styles != null) {
+    public getStyleNames(): string[] {
+        const styles: Object = <Object>this.d["styles"];
+        if (styles != null){
             return Object.keys(styles);
         }
         return [];
@@ -2196,11 +2383,11 @@ class JSContainer implements api.Renderable {
 
     /**
      * 
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
-    public getAttributeNames() : string[] {
-        let styles : Object = <Object>this.d["attributes"];
-        if(styles != null) {
+    public getAttributeNames(): string[] {
+        const styles: Object = <Object>this.d["attributes"];
+        if (styles != null){
             return Object.keys(styles);
         }
         return [];
@@ -2210,9 +2397,9 @@ class JSContainer implements api.Renderable {
      * 
      * @return {string}
      */
-    public getHtml() : string {
-        let html : string = this.getString("html");
-        if(html == null) {
+    public getHtml(): string {
+        const html: string = this.getString("html");
+        if (html == null){
             return "";
         }
         return html;
@@ -2223,7 +2410,7 @@ class JSContainer implements api.Renderable {
      * @param {string} h
      * @return {JSContainer}
      */
-    public setHtml(h : string) : JSContainer {
+    public setHtml(h: string): JSContainer {
         this.setString("html", h);
         this.setRendered(false);
         return this;
@@ -2233,7 +2420,7 @@ class JSContainer implements api.Renderable {
      * 
      * @return {boolean}
      */
-    public isRendered() : boolean {
+    public isRendered(): boolean {
         return <boolean>this.d["rendered"];
     }
 
@@ -2242,13 +2429,13 @@ class JSContainer implements api.Renderable {
      * @param {boolean} b
      * @return {*}
      */
-    public setRendered(b : boolean) : api.Renderable {
+    public setRendered(b: boolean): api.Renderable {
         this.d["rendered"] = b;
-        if(!b) {
+        if (!b){
             {
-                let array149 = this.getChildren();
-                for(let index148=0; index148 < array149.length; index148++) {
-                    let child = array149[index148];
+                let array215 = this.getChildren();
+                for(let index214=0; index214 < array215.length; index214++) {
+                    let child = array215[index214];
                     {
                         child.setRendered(b);
                     }
@@ -2262,9 +2449,9 @@ class JSContainer implements api.Renderable {
      * 
      * @return {Object}
      */
-    public getListeners() : Object {
-        let l : Object = <Object>this.d["listeners"];
-        if(l == null) {
+    public getListeners(): Object {
+        const l: Object = <Object>this.d["listeners"];
+        if (l == null){
             this.d["listeners"] = <Object>new Object();
             return this.getListeners();
         }
@@ -2272,7 +2459,7 @@ class JSContainer implements api.Renderable {
     }
 
     public render$() {
-        if(this.getParent() == null) this.render$jsweet_dom_HTMLElement(null); else this.render$jsweet_dom_HTMLElement(document.getElementById(this.getParent().getId()));
+        if (this.getParent() == null)this.render$jsweet_dom_HTMLElement(null); else this.render$jsweet_dom_HTMLElement(document.getElementById(this.getParent().getId()));
     }
 
     /**
@@ -2285,24 +2472,24 @@ class JSContainer implements api.Renderable {
      * The actual {@link HTMLElement} of the root of the application
      * in which this component is found
      */
-    public postRender(root : HTMLElement) {
+    public postRender(root: HTMLElement) {
     }
 
     /**
      * Unitility method to check if the specified object is present in the
      * specified array
      * 
-     * @param {Bound[]} lst
+     * @param {?[]} lst
      * The array to check if object is present
      * @param {*} o
      * The object to check if present
      * @return {boolean} Whether is present or not
      */
-    contains(lst : Array<any>, o : any) : boolean {
-        for(let index150=0; index150 < lst.length; index150++) {
-            let oo = lst[index150];
+    contains(lst: Array<any>, o: any): boolean {
+        for(let index216=0; index216 < lst.length; index216++) {
+            let oo = lst[index216];
             {
-                if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(oo,o))) {
+                if (/* equals */(<any>((o1: any, o2: any) => o1 && o1.equals ? o1.equals(o2) : o1 === o2)(oo,o))){
                     return true;
                 }
             }
@@ -2310,32 +2497,32 @@ class JSContainer implements api.Renderable {
         return false;
     }
 
-    public render$jsweet_dom_HTMLElement(parent : HTMLElement) {
-        let renderers : Array<api.Renderer<any>> = this.getRenderers();
-        if(renderers.length === 0) {
+    public render$jsweet_dom_HTMLElement(parent: HTMLElement) {
+        let renderers: Array<api.Renderer<any>> = this.getRenderers();
+        if (renderers.length === 0){
             renderers.push(JSContainer.defaultRenderer_$LI$());
         }
-        if(!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
-            let tmp : Array<api.Renderer<any>> = <any>(new Array<api.Renderer<any>>());
+        if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())){
+            const tmp: Array<api.Renderer<any>> = <any>(new Array<api.Renderer<any>>());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for(let index151=0; index151 < renderers.length; index151++) {
-                let r = renderers[index151];
+            for(let index217=0; index217 < renderers.length; index217++) {
+                let r = renderers[index217];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for(let index152=0; index152 < renderers.length; index152++) {
-            let renderer = renderers[index152];
+        for(let index218=0; index218 < renderers.length; index218++) {
+            let renderer = renderers[index218];
             renderer.doRender(this, parent)
         }
         {
-            let array154 = this.getChildren();
-            for(let index153=0; index153 < array154.length; index153++) {
-                let child = array154[index153];
+            let array220 = this.getChildren();
+            for(let index219=0; index219 < array220.length; index219++) {
+                let child = array220[index219];
                 {
-                    child.render();
+                    child['render$']();
                 }
             }
         }
@@ -2346,10 +2533,10 @@ class JSContainer implements api.Renderable {
      * 
      * @param {HTMLElement} parent
      */
-    public render(parent? : any) : any {
-        if(((parent != null && parent instanceof <any>HTMLElement) || parent === null)) {
+    public render(parent?: any) {
+        if (((parent != null && parent instanceof <any>HTMLElement) || parent === null)) {
             return <any>this.render$jsweet_dom_HTMLElement(parent);
-        } else if(parent === undefined) {
+        } else if (parent === undefined) {
             return <any>this.render$();
         } else throw new Error('invalid overload');
     }
@@ -2358,7 +2545,7 @@ class JSContainer implements api.Renderable {
      * 
      * @return {*}
      */
-    public getCustomProperties() : any {
+    public getCustomProperties(): any {
         return this.d["data"];
     }
 
@@ -2366,23 +2553,23 @@ class JSContainer implements api.Renderable {
      * 
      * @param {*} data
      */
-    public setCustomProperties(data : any) {
-        let previous : Object = <Object>this.d["data"];
-        if(previous != null && previous instanceof <any>Array) {
-            let arData : Array<Object> = <Array<Object>>previous;
-            for(let index155=0; index155 < arData.length; index155++) {
-                let line = arData[index155];
+    public setCustomProperties(data: any) {
+        const previous: Object = <Object>this.d["data"];
+        if (previous != null && previous instanceof <any>Array){
+            const arData: Array<Object> = <Array<Object>>previous;
+            for(let index221=0; index221 < arData.length; index221++) {
+                let line = arData[index221];
                 {
-                    let value : string = <string>line["value"];
+                    const value: string = <string>line["value"];
                     this.setAttribute(value, null);
                 }
             }
         } else {
-            if(previous != null) {
+            if (previous != null){
                 {
-                    let array157 = Object.keys(previous);
-                    for(let index156=0; index156 < array157.length; index156++) {
-                        let key = array157[index156];
+                    let array223 = Object.keys(previous);
+                    for(let index222=0; index222 < array223.length; index222++) {
+                        let key = array223[index222];
                         {
                             this.setAttribute(key, null);
                         }
@@ -2391,22 +2578,22 @@ class JSContainer implements api.Renderable {
             }
         }
         this.d["data"] = data;
-        if(data != null) {
-            if(data != null && data instanceof <any>Array) {
-                let arData : Array<Object> = <Array<Object>>data;
-                for(let index158=0; index158 < arData.length; index158++) {
-                    let line = arData[index158];
+        if (data != null){
+            if (data != null && data instanceof <any>Array){
+                const arData: Array<Object> = <Array<Object>>data;
+                for(let index224=0; index224 < arData.length; index224++) {
+                    let line = arData[index224];
                     {
-                        let text : string = <string>line["text"];
-                        let value : string = <string>line["value"];
+                        const text: string = <string>line["text"];
+                        const value: string = <string>line["value"];
                         this.setAttribute(value, text);
                     }
                 }
             } else {
                 {
-                    let array160 = Object.keys(data);
-                    for(let index159=0; index159 < array160.length; index159++) {
-                        let key = array160[index159];
+                    let array226 = Object.keys(data);
+                    for(let index225=0; index225 < array226.length; index225++) {
+                        let key = array226[index225];
                         {
                             this.setAttribute(key, <string>(<Object>data)[key]);
                         }
@@ -2423,19 +2610,19 @@ class JSContainer implements api.Renderable {
      * The class to check
      * @return {*} The ancestor that contains the specified class
      */
-    public getAncestorWithClass<T extends api.Renderable>(cls : string) : T {
-        let parent : JSContainer = this.getParent();
-        if(parent == null) {
+    public getAncestorWithClass<T extends api.Renderable>(cls: string): T {
+        const parent: JSContainer = this.getParent();
+        if (parent == null){
             return null;
         }
-        let clsss : string = parent.getAttribute("class");
-        if(clsss != null) {
+        const clsss: string = parent.getAttribute("class");
+        if (clsss != null){
             {
-                let array162 = parent.getAttribute("class").split(" ");
-                for(let index161=0; index161 < array162.length; index161++) {
-                    let s = array162[index161];
+                let array228 = parent.getAttribute("class").split(" ");
+                for(let index227=0; index227 < array228.length; index227++) {
+                    let s = array228[index227];
                     {
-                        if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(s.trim(),cls))) return <T><any>parent;
+                        if (s.trim() === cls)return <T><any>parent;
                     }
                 }
             }
@@ -2448,10 +2635,10 @@ class JSContainer implements api.Renderable {
      * @param {string} id
      * @return {JSContainer}
      */
-    public getAncestorById(id : string) : JSContainer {
-        let parent : JSContainer = this.getParent();
-        if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(this.getId(),id))) return <JSContainer>this;
-        if(parent == null) {
+    public getAncestorById(id: string): JSContainer {
+        const parent: JSContainer = this.getParent();
+        if (this.getId() === id)return <JSContainer>this;
+        if (parent == null){
             return null;
         }
         return parent.getAncestorById(id);
@@ -2462,10 +2649,10 @@ class JSContainer implements api.Renderable {
      * @param {string} name
      * @return {JSContainer}
      */
-    public getAncestorByName(name : string) : JSContainer {
-        if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(this.getName(),name))) return this;
-        let parent : JSContainer = this.getParent();
-        if(parent == null) {
+    public getAncestorByName(name: string): JSContainer {
+        if (this.getName() === name)return this;
+        const parent: JSContainer = this.getParent();
+        if (parent == null){
             return null;
         }
         return parent.getAncestorByName(name);
@@ -2475,20 +2662,20 @@ class JSContainer implements api.Renderable {
      * 
      * @return {JSContainer}
      */
-    public getRoot() : JSContainer {
-        let parent : JSContainer = this.getParent();
-        if(parent == null) {
+    public getRoot(): JSContainer {
+        const parent: JSContainer = this.getParent();
+        if (parent == null){
             return this;
         } else {
             return parent.getRoot();
         }
     }
 
-    /*private*/ setString(key : string, value : string) {
+    /*private*/ setString(key: string, value: string) {
         this.d[key] = value;
     }
 
-    /*private*/ getString(key : string) : string {
+    /*private*/ getString(key: string): string {
         return <string>this.d[key];
     }
 
@@ -2497,7 +2684,7 @@ class JSContainer implements api.Renderable {
      * @param {*} data
      * @return {*}
      */
-    public setUserData(data : any) : api.Renderable {
+    public setUserData(data: any): api.Renderable {
         this.d["userData"] = data;
         return this;
     }
@@ -2506,7 +2693,7 @@ class JSContainer implements api.Renderable {
      * 
      * @return {*}
      */
-    public getUserData() : any {
+    public getUserData(): any {
         return this.d["userData"];
     }
 }
@@ -2524,7 +2711,7 @@ namespace JSContainer {
          * @param {*} source
          * @param {Event} evt
          */
-        public performAction(source : api.Renderable, evt : Event) {
+        public performAction(source: api.Renderable, evt: Event) {
             evt["source"] = source;
             this.listener(evt);
         }
@@ -2540,39 +2727,41 @@ namespace JSContainer {
 
 
 class CardLayout extends JSContainer {
-    /*private*/ currentActive : string = "";
+    /*private*/ currentActive: string;
 
-    /*private*/ currentIndex : number = 0;
+    /*private*/ currentIndex: number;
 
-    public constructor(name : string, tag : string) {
+    public constructor(name: string, tag: string) {
         super(name, tag);
+        this.currentActive = "";
+        this.currentIndex = 0;
     }
 
-    public addItem(item : CardLayoutItem) : CardLayout {
+    public addItem(item: CardLayoutItem): CardLayout {
         this.addChild$framework_components_api_Renderable(item);
         return this;
     }
 
-    public getCurrentIndex() : number {
+    public getCurrentIndex(): number {
         return this.currentIndex;
     }
 
-    public getItem(index : number) : CardLayoutItem {
-        if(index < this.getChildren().length) {
+    public getItem(index: number): CardLayoutItem {
+        if (index < this.getChildren().length){
             return <CardLayoutItem><any>this.getChildren()[index];
         } else {
             return null;
         }
     }
 
-    public getIndex(name : string) : number {
-        let index : number = 0;
+    public getIndex(name: string): number {
+        let index: number = 0;
         {
-            let array164 = this.getChildren();
-            for(let index163=0; index163 < array164.length; index163++) {
-                let child = array164[index163];
+            let array230 = this.getChildren();
+            for(let index229=0; index229 < array230.length; index229++) {
+                let child = array230[index229];
                 {
-                    if(child.getName() === name) {
+                    if (child.getName() === name){
                         return index;
                     }
                     index++;
@@ -2582,19 +2771,19 @@ class CardLayout extends JSContainer {
         return -1;
     }
 
-    public next(...params : Object[]) : CardLayoutItem {
-        if(this.currentIndex < (this.getChildren().length - 1)) {
-            let current : CardLayoutItem = this.getItem(this.currentIndex);
-            let validateEvent : CustomEvent = new CustomEvent("validate");
+    public next(...params: Object[]): CardLayoutItem {
+        if (this.currentIndex < (this.getChildren().length - 1)){
+            const current: CardLayoutItem = this.getItem(this.currentIndex);
+            const validateEvent: CustomEvent = new CustomEvent("validate");
             validateEvent["source"] = current;
             validateEvent["valid"] = true;
             current.fireListener("validate", validateEvent);
-            let isValid : boolean = <boolean>validateEvent["valid"];
-            if(isValid) {
+            const isValid: boolean = <boolean>validateEvent["valid"];
+            if (isValid){
                 this.currentIndex++;
-                let item : CardLayoutItem = this.getItem(this.currentIndex);
+                const item: CardLayoutItem = this.getItem(this.currentIndex);
                 this.activate.apply(this, [item.getName()].concat(<any[]>params));
-                let nextEvent : CustomEvent = new CustomEvent("next");
+                const nextEvent: CustomEvent = new CustomEvent("next");
                 nextEvent["from"] = current;
                 nextEvent["to"] = item;
                 nextEvent["source"] = current;
@@ -2609,13 +2798,13 @@ class CardLayout extends JSContainer {
         }
     }
 
-    public previous(...params : Object[]) : CardLayoutItem {
-        if(this.currentIndex > 0) {
-            let current : CardLayoutItem = this.getItem(this.currentIndex);
+    public previous(...params: Object[]): CardLayoutItem {
+        if (this.currentIndex > 0){
+            const current: CardLayoutItem = this.getItem(this.currentIndex);
             this.currentIndex--;
-            let item : CardLayoutItem = this.getItem(this.currentIndex);
+            const item: CardLayoutItem = this.getItem(this.currentIndex);
             this.activate.apply(this, [item.getName()].concat(<any[]>params));
-            let previousEvent : CustomEvent = new CustomEvent("previous");
+            const previousEvent: CustomEvent = new CustomEvent("previous");
             previousEvent["from"] = current;
             previousEvent["to"] = item;
             previousEvent["source"] = current;
@@ -2627,18 +2816,18 @@ class CardLayout extends JSContainer {
         }
     }
 
-    public back(...params : Object[]) : CardLayoutItem {
+    public back(...params: Object[]): CardLayoutItem {
         return this.previous.apply(this, params);
     }
 
-    public first(...params : Object[]) : CardLayoutItem {
-        if(this.currentIndex > 0) {
-            let current : CardLayoutItem = this.getItem(this.currentIndex);
+    public first(...params: Object[]): CardLayoutItem {
+        if (this.currentIndex > 0){
+            const current: CardLayoutItem = this.getItem(this.currentIndex);
             this.currentIndex = 0;
-            let item : CardLayoutItem = this.getItem(this.currentIndex);
+            const item: CardLayoutItem = this.getItem(this.currentIndex);
             this.activate.apply(this, [item.getName()].concat(<any[]>params));
             this.activate.apply(this, [item.getName()].concat(<any[]>params));
-            let firstEvent : CustomEvent = new CustomEvent("first");
+            const firstEvent: CustomEvent = new CustomEvent("first");
             firstEvent["from"] = current;
             firstEvent["to"] = item;
             firstEvent["source"] = current;
@@ -2647,18 +2836,18 @@ class CardLayout extends JSContainer {
             return item;
         } else {
             this.currentIndex = 0;
-            let item : CardLayoutItem = this.getItem(this.currentIndex);
+            const item: CardLayoutItem = this.getItem(this.currentIndex);
             return item;
         }
     }
 
-    public last(...params : Object[]) : CardLayoutItem {
-        if(this.currentIndex < (this.getChildren().length - 1)) {
-            let current : CardLayoutItem = this.getItem(this.currentIndex);
+    public last(...params: Object[]): CardLayoutItem {
+        if (this.currentIndex < (this.getChildren().length - 1)){
+            const current: CardLayoutItem = this.getItem(this.currentIndex);
             this.currentIndex = this.getChildren().length - 1;
-            let item : CardLayoutItem = this.getItem(this.currentIndex);
+            const item: CardLayoutItem = this.getItem(this.currentIndex);
             this.activate.apply(this, [item.getName()].concat(<any[]>params));
-            let lastEvent : CustomEvent = new CustomEvent("last");
+            const lastEvent: CustomEvent = new CustomEvent("last");
             lastEvent["from"] = current;
             lastEvent["to"] = item;
             lastEvent["source"] = current;
@@ -2667,40 +2856,40 @@ class CardLayout extends JSContainer {
             return item;
         } else {
             this.currentIndex = this.getChildren().length - 1;
-            let item : CardLayoutItem = this.getItem(this.currentIndex);
+            const item: CardLayoutItem = this.getItem(this.currentIndex);
             return item;
         }
     }
 
-    public getDefault() : string {
+    public getDefault(): string {
         return this.getAttribute("default");
     }
 
-    public activate(name : string, ...params : Object[]) {
-        if(name === this.currentActive && this.currentIndex >= 0) {
+    public activate(name: string, ...params: Object[]) {
+        if (name === this.currentActive && this.currentIndex >= 0){
             return;
         }
         {
-            let array166 = this.getChildren();
-            for(let index165=0; index165 < array166.length; index165++) {
-                let child = array166[index165];
+            let array232 = this.getChildren();
+            for(let index231=0; index231 < array232.length; index231++) {
+                let child = array232[index231];
                 {
-                    if(child.getName() === name) {
-                        let evt : CustomEvent = new CustomEvent("activate");
+                    if (child.getName() === name){
+                        const evt: CustomEvent = new CustomEvent("activate");
                         evt["data"] = child;
                         evt["source"] = this;
-                        if(params != null) {
-                            if(params.length > 1) {
+                        if (params != null){
+                            if (params.length > 1){
                                 evt["params"] = params;
-                            } else if(params.length === 1) {
+                            } else if (params.length === 1){
                                 evt["params"] = params;
                                 evt["param"] = params[0];
                             }
                         }
                         (<JSContainer><any>child).fireListener("activate", evt);
                         child.setStyle("display", "block");
-                    } else if(child.getName() === this.currentActive) {
-                        let evt : CustomEvent = new CustomEvent("deactivate");
+                    } else if (child.getName() === this.currentActive){
+                        const evt: CustomEvent = new CustomEvent("deactivate");
                         evt["data"] = child;
                         (<JSContainer><any>child).fireListener("deactivate", evt);
                         child.setStyle("display", "none");
@@ -2716,9 +2905,9 @@ class CardLayout extends JSContainer {
 
     /**
      * 
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
-    public advancedEventTypes() : string[] {
+    public advancedEventTypes(): string[] {
         return ["first", "previous", "next", "last"];
     }
 }
@@ -2728,15 +2917,15 @@ CardLayout["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 class CardLayoutItem extends JSContainer {
-    public constructor(name : string, tag : string) {
+    public constructor(name: string, tag: string) {
         super(name, tag);
     }
 
     /**
      * 
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
-    public advancedEventTypes() : string[] {
+    public advancedEventTypes(): string[] {
         return ["activate", "deactivate", "validate"];
     }
 }
@@ -2746,13 +2935,13 @@ CardLayoutItem["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 class ExternalJavascript extends JSContainer {
-    public constructor(name : string) {
+    public constructor(name: string) {
         super(name, "script");
         this.setAttribute("type", "text/javascript");
         this.setAttribute("identifier", "html:javascript");
     }
 
-    public setSource(src : string) : ExternalJavascript {
+    public setSource(src: string): ExternalJavascript {
         this.setAttribute("src", src);
         return this;
     }
@@ -2763,21 +2952,21 @@ ExternalJavascript["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalStylesheet> {
-    public static ORIGIN_ANONYMOUS : string = "anonymous";
+    public static ORIGIN_ANONYMOUS: string = "anonymous";
 
-    public static ORIGIN_USE_CREDENTIALS : string = "use-credentials";
+    public static ORIGIN_USE_CREDENTIALS: string = "use-credentials";
 
-    public static MEDIA_DEFAULT : string = null;
+    public static MEDIA_DEFAULT: string = null;
 
-    public static MEDIA_ALL : string = "all";
+    public static MEDIA_ALL: string = "all";
 
-    public static MEDIA_SCREEN : string = "screen";
+    public static MEDIA_SCREEN: string = "screen";
 
-    public static MEDIA_PRINT : string = "print";
+    public static MEDIA_PRINT: string = "print";
 
-    public static MEDIA_SPEECH : string = "speech";
+    public static MEDIA_SPEECH: string = "speech";
 
-    public constructor(name : string) {
+    public constructor(name: string) {
         super(name, "link");
         this.setAttribute("type", "text/css");
         this.setAttribute("rel", "stylesheet");
@@ -2785,25 +2974,25 @@ class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalSty
         this.addRenderer(this);
     }
 
-    public setSource(src : string) : ExternalStylesheet {
+    public setSource(src: string): ExternalStylesheet {
         this.setAttribute("source", src);
         return this;
     }
 
-    public setCrossOrigin(origin : string) : ExternalStylesheet {
+    public setCrossOrigin(origin: string): ExternalStylesheet {
         this.setAttribute("crossorigin", origin);
         return this;
     }
 
-    public setMedia(media : string) : ExternalStylesheet {
+    public setMedia(media: string): ExternalStylesheet {
         this.setAttribute("media", media);
         return this;
     }
 
-    public doRender$framework_components_ExternalStylesheet$jsweet_dom_HTMLElement(c : ExternalStylesheet, root : HTMLElement) {
-        if(c.getAncestorWithClass<any>("builder") != null) {
-            let nati : HTMLElement = c.getNative();
-            if(nati != null) {
+    public doRender$framework_components_ExternalStylesheet$jsweet_dom_HTMLElement(c: ExternalStylesheet, root: HTMLElement) {
+        if (c.getAncestorWithClass<any>("builder") != null){
+            const nati: HTMLElement = c.getNative();
+            if (nati != null){
                 nati.remove();
             }
         }
@@ -2814,8 +3003,8 @@ class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalSty
      * @param {ExternalStylesheet} c
      * @param {HTMLElement} root
      */
-    public doRender(c? : any, root? : any) : any {
-        if(((c != null && c instanceof <any>ExternalStylesheet) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
+    public doRender(c?: any, root?: any) {
+        if (((c != null && c instanceof <any>ExternalStylesheet) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
             return <any>this.doRender$framework_components_ExternalStylesheet$jsweet_dom_HTMLElement(c, root);
         } else throw new Error('invalid overload');
     }
@@ -2839,13 +3028,14 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
      * A context that contains variables exposed to the html template. This can be
      * used by javascript to transmit data from the framework to the template
      */
-    public context : Object = <Object>new Object();
+    public context: Object;
 
-    /*private*/ template : string;
+    /*private*/ template: string;
 
-    public constructor(name : string, template : string) {
+    public constructor(name: string, template: string) {
         super(name, "div");
-        if(this.template===undefined) this.template = null;
+        this.context = <Object>new Object();
+        if (this.template === undefined) { this.template = null; }
         this.setTemplate(template);
     }
 
@@ -2853,7 +3043,7 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
      * 
      * @return {string} The template of the component
      */
-    public getTemplate() : string {
+    public getTemplate(): string {
         return this.template;
     }
 
@@ -2862,7 +3052,7 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
      * 
      * @param {string} template The template of this component
      */
-    public setTemplate(template : string) {
+    public setTemplate(template: string) {
         this.template = template;
         this.setRendered(false);
     }
@@ -2871,35 +3061,35 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
      * 
      * @return {Object} The variable context of this component
      */
-    public getContext() : Object {
+    public getContext(): Object {
         return this.context;
     }
 
-    public render$jsweet_dom_HTMLElement(parent : HTMLElement) {
-        if(!this.isRendered()) {
-            let html : string = this.getTemplate();
-            if(html != null) {
-                let cxt : Object = this.context;
-                if(cxt == null) {
+    public render$jsweet_dom_HTMLElement(parent: HTMLElement) {
+        if (!this.isRendered()){
+            const html: string = this.getTemplate();
+            if (html != null){
+                let cxt: Object = this.context;
+                if (cxt == null){
                     cxt = <Object>new Object();
                 }
                 cxt["component"] = this;
                 cxt["me"] = this;
                 cxt["$this"] = this;
-                let rendered : string = this.compile(html, cxt);
-                let tmp : HTMLElement = document.createElement("div");
+                let rendered: string = this.compile(html, cxt);
+                const tmp: HTMLElement = document.createElement("div");
                 tmp.innerHTML = rendered;
-                let tm : Element = tmp.firstElementChild;
-                let children : NodeList = tmp.childNodes;
-                if(children.length > 1 || tm == null) {
+                let tm: Element = tmp.firstElementChild;
+                const children: NodeList = tmp.childNodes;
+                if (children.length > 1 || tm == null){
                     tm = tmp;
                 }
                 rendered = tm.innerHTML;
-                let tag : string = tm.tagName;
+                const tag: string = tm.tagName;
                 this.setTag(tag);
-                let attrs : NamedNodeMap = tm.attributes;
-                for(let index167=0; index167 < attrs.length; index167++) {
-                    let att = attrs[index167];
+                const attrs: NamedNodeMap = tm.attributes;
+                for(let index233=0; index233 < attrs.length; index233++) {
+                    let att = attrs[index233];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -2916,23 +3106,23 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
      * 
      * @param {HTMLElement} parent
      */
-    public render(parent? : any) : any {
-        if(((parent != null && parent instanceof <any>HTMLElement) || parent === null)) {
+    public render(parent?: any) {
+        if (((parent != null && parent instanceof <any>HTMLElement) || parent === null)) {
             return <any>this.render$jsweet_dom_HTMLElement(parent);
-        } else if(parent === undefined) {
+        } else if (parent === undefined) {
             return <any>this.render$();
         } else throw new Error('invalid overload');
     }
 
-    public compile(html : string, ctx : Object) : string {
+    public compile(html: string, ctx: Object): string {
         return html;
     }
 
-    public static invokeFunction(target : Object, __function : string, ...args : any[]) : any {
-        if(target.hasOwnProperty(__function)) {
-            return (o => o.call.apply(o, [target].concat(<any[]>args)))((<Function>target[__function]));
+    public static invokeFunction(target: Object, _function: string, ...args: any[]): any {
+        if (target.hasOwnProperty(_function)){
+            return (o => o.call.apply(o, [target].concat(<any[]>args)))((<Function>target[_function]));
         } else {
-            throw new Error(target + " does not contain function:" + __function);
+            throw new Error(target + " does not contain function:" + _function);
         }
     }
 }
@@ -2943,33 +3133,34 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable","
 
 namespace input {
     export abstract class AbstractJSInput<T> extends JSContainer implements api.InputField<T> {
-        /*private*/ validators : Array<api.Validator<T>> = <any>(new Array<api.Validator<T>>());
+        /*private*/ validators: Array<api.Validator<T>>;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name, "input");
+            this.validators = <any>(new Array<api.Validator<T>>());
         }
 
-        public addValidator(validator : api.Validator<T>) {
+        public addValidator(validator: api.Validator<T>) {
             this.validators.push(validator);
         }
 
-        public setSize(size : number) {
+        public setSize(size: number) {
             this.setAttribute("size", size + "");
         }
 
-        public setPattern(pattern : string) {
+        public setPattern(pattern: string) {
             this.setAttribute("pattern", pattern);
         }
 
-        public setRequired(b : boolean) : AbstractJSInput<T> {
-            if(b) {
+        public setRequired(b: boolean): AbstractJSInput<T> {
+            if (b){
                 this.setAttribute("required", "true");
             } else this.setAttribute("required", null);
             return this;
         }
 
-        public setDisabled(b : boolean) : AbstractJSInput<T> {
-            if(b) {
+        public setDisabled(b: boolean): AbstractJSInput<T> {
+            if (b){
                 this.setAttribute("disabled", "true");
             } else {
                 this.setAttribute("disabled", null);
@@ -2977,8 +3168,8 @@ namespace input {
             return this;
         }
 
-        public setReadOnly(b : boolean) : AbstractJSInput<T> {
-            if(b) {
+        public setReadOnly(b: boolean): AbstractJSInput<T> {
+            if (b){
                 this.setAttribute("readonly", "true");
             } else {
                 this.setAttribute("readonly", null);
@@ -2986,83 +3177,83 @@ namespace input {
             return this;
         }
 
-        toHtmlDateString(date : Date) : string {
-            let month : string = (date.getMonth() + 1) + "";
-            if(month.length === 1) {
+        toHtmlDateString(date: Date): string {
+            let month: string = (date.getMonth() + 1) + "";
+            if (month.length === 1){
                 month = "0" + month;
             }
-            let sdate : string = (date.getDate()) + "";
-            if(sdate.length === 1) {
+            let sdate: string = (date.getDate()) + "";
+            if (sdate.length === 1){
                 sdate = "0" + sdate;
             }
             return date.getFullYear() + "-" + month + "-" + sdate;
         }
 
-        getDoubleValue() : number {
-            let nat : HTMLElement = this.getNative();
-            if(nat != null) {
-                let el : HTMLInputElement = <HTMLInputElement>nat;
+        getDoubleValue(): number {
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const el: HTMLInputElement = <HTMLInputElement>nat;
                 return el.valueAsNumber;
             }
             return parseFloat(this.getAttribute("value"));
         }
 
-        getStringValue() : string {
-            let nat : HTMLElement = this.getNative();
-            if(nat != null) {
-                let el : HTMLInputElement = <HTMLInputElement>nat;
+        getStringValue(): string {
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const el: HTMLInputElement = <HTMLInputElement>nat;
                 return el.value;
             }
             return this.getAttribute("value");
         }
 
-        getDateValue() : Date {
-            let nat : HTMLElement = this.getNative();
-            if(nat != null) {
-                let el : HTMLInputElement = <HTMLInputElement>nat;
+        getDateValue(): Date {
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const el: HTMLInputElement = <HTMLInputElement>nat;
                 return el.valueAsDate;
             }
             return new Date(this.getAttribute("value"));
         }
 
-        getNativeInput() : HTMLInputElement {
-            let nat : HTMLElement = this.getNative();
-            if(nat != null) {
-                let el : HTMLInputElement = <HTMLInputElement>nat;
+        getNativeInput(): HTMLInputElement {
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const el: HTMLInputElement = <HTMLInputElement>nat;
                 return el;
             }
             return null;
         }
 
-        setDoubleValue(val : number) {
-            let el : HTMLInputElement = this.getNativeInput();
-            if(el != null) {
+        setDoubleValue(val: number) {
+            const el: HTMLInputElement = this.getNativeInput();
+            if (el != null){
                 el.valueAsNumber = val;
             }
             this.setAttribute("value", val + "");
         }
 
-        setStringValue(s : string) {
-            let el : HTMLInputElement = this.getNativeInput();
-            if(el != null) {
+        setStringValue(s: string) {
+            const el: HTMLInputElement = this.getNativeInput();
+            if (el != null){
                 el.value = s;
             }
             this.setAttribute("value", s);
         }
 
-        setDateValue(date : Date) {
-            let el : HTMLInputElement = this.getNativeInput();
-            if(el != null) {
+        setDateValue(date: Date) {
+            const el: HTMLInputElement = this.getNativeInput();
+            if (el != null){
                 el.valueAsDate = date;
             }
-            if(date != null) this.setAttribute("value", this.toHtmlDateString(date)); else this.setAttribute("value", "");
+            if (date != null)this.setAttribute("value", this.toHtmlDateString(date)); else this.setAttribute("value", "");
         }
 
-        public getBinding() : string {
+        public getBinding(): string {
             return this.getAttribute("binding");
         }
 
-        public setPlaceHolder(placeholder : string) : AbstractJSInput<T> {
+        public setPlaceHolder(placeholder: string): AbstractJSInput<T> {
             this.setAttribute("placeholder", placeholder);
             return this;
         }
@@ -3077,25 +3268,25 @@ namespace input {
          * The validation exception to add to error context
          * @return {api.ValidationException} The current instance of the {@link ValidationException}
          */
-        public static addError(msg : string, state : ValidityState, e : api.ValidationException) : api.ValidationException {
-            if(!state.valid) {
-                if(state.badInput) {
+        public static addError(msg: string, state: ValidityState, e: api.ValidationException): api.ValidationException {
+            if (!state.valid){
+                if (state.badInput){
                     api.ValidationException.addError(msg, api.ValidationException.badInput, e);
-                } else if(state.customError) {
+                } else if (state.customError){
                     api.ValidationException.addError(msg, api.ValidationException.customError, e);
-                } else if(state.patternMismatch) {
+                } else if (state.patternMismatch){
                     api.ValidationException.addError(msg, api.ValidationException.patternMismatch, e);
-                } else if(state.rangeOverflow) {
+                } else if (state.rangeOverflow){
                     api.ValidationException.addError(msg, api.ValidationException.rangeOverflow, e);
-                } else if(state.rangeUnderflow) {
+                } else if (state.rangeUnderflow){
                     api.ValidationException.addError(msg, api.ValidationException.rangeUnderflow, e);
-                } else if(state.stepMismatch) {
+                } else if (state.stepMismatch){
                     api.ValidationException.addError(msg, api.ValidationException.stepMismatch, e);
-                } else if(state.tooLong) {
+                } else if (state.tooLong){
                     api.ValidationException.addError(msg, api.ValidationException.tooLong, e);
-                } else if(state.typeMismatch) {
+                } else if (state.typeMismatch){
                     api.ValidationException.addError(msg, api.ValidationException.typeMismatch, e);
-                } else if(state.valueMissing) {
+                } else if (state.valueMissing){
                     api.ValidationException.addError(msg, api.ValidationException.valueMissing, e);
                 }
             }
@@ -3106,51 +3297,51 @@ namespace input {
          * 
          */
         public validate() {
-            let valid : boolean = true;
-            let e : api.ValidationException = new api.ValidationException();
-            let nat : HTMLElement = this.getNative();
-            if(nat != null) {
-                let el : HTMLInputElement = <HTMLInputElement>nat;
+            let valid: boolean = true;
+            const e: api.ValidationException = new api.ValidationException();
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const el: HTMLInputElement = <HTMLInputElement>nat;
                 valid = el.checkValidity();
-                if(!valid) {
+                if (!valid){
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index168=0; index168 < this.validators.length; index168++) {
-                let v = this.validators[index168];
+            for(let index234=0; index234 < this.validators.length; index234++) {
+                let v = this.validators[index234];
                 {
-                    let b : boolean = v.validate(this);
-                    if(!b) {
+                    const b: boolean = v.validate(this);
+                    if (!b){
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate : CustomEvent = new CustomEvent("validate");
+            const validate: CustomEvent = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
             this.fireListener("validate", validate);
-            if(!valid) {
+            if (!valid){
                 throw e;
             }
         }
 
         /**
          * 
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
-        public advancedEventTypes() : string[] {
+        public advancedEventTypes(): string[] {
             return ["validate"];
         }
 
-        public setBinding(binding : string) : AbstractJSInput<T> {
+        public setBinding(binding: string): AbstractJSInput<T> {
             this.setAttribute("binding", binding);
             return this;
         }
 
-        public abstract setValue(val?: any): any;
-        public abstract getValue(): any;    }
+        public abstract getValue(): any;
+        public abstract setValue(val?: any): any;    }
     AbstractJSInput["__class"] = "framework.components.input.AbstractJSInput";
     AbstractJSInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
 
@@ -3158,64 +3349,65 @@ namespace input {
 }
 namespace input {
     export class Form extends JSContainer {
-        validationerrors : Object = <Object>new Object();
+        validationerrors: Object;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name, "form");
+            this.validationerrors = <Object>new Object();
         }
 
         /**
          * 
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
-        public advancedEventTypes() : string[] {
+        public advancedEventTypes(): string[] {
             return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterSetData", "beforeSubmit", "afterSubmit", "submit"];
         }
 
-        public isValid() : boolean {
+        public isValid(): boolean {
             return Object.keys(this.validationerrors).length <= 0;
         }
 
-        public hasErrors() : boolean {
-            let keys : string[] = Object.keys(this.validationerrors);
-            if(keys != null && keys.length > 0) {
+        public hasErrors(): boolean {
+            const keys: string[] = Object.keys(this.validationerrors);
+            if (keys != null && keys.length > 0){
                 return true;
             } else {
                 return false;
             }
         }
 
-        public getError(binding : string) : api.ValidationException {
+        public getError(binding: string): api.ValidationException {
             return <api.ValidationException>this.validationerrors[binding];
         }
 
-        public getErrors() : Object {
+        public getErrors(): Object {
             return this.validationerrors;
         }
 
-        public getField(binding : string) : api.InputField<any> {
-            let result : Array<api.InputField<any>> = <any>(new Array<api.InputField<any>>());
+        public getField(binding: string): api.InputField<any> {
+            const result: Array<api.InputField<any>> = <any>(new Array<api.InputField<any>>());
             util.ComponentUtil.visit(this, new Form.Form$0(this, binding, result));
-            if(result.length > 0) {
+            if (result.length > 0){
                 return result[0];
             }
             return null;
         }
 
-        public validate() : boolean {
-            let evt : CustomEvent = new CustomEvent("beforeValidate");
+        public validate(): boolean {
+            const evt: CustomEvent = new CustomEvent("beforeValidate");
             evt["source"] = this;
             this.fireListener("beforeValidate", evt);
             this.validationerrors = <Object>new Object();
             util.ComponentUtil.visit(this, new Form.Form$1(this));
-            let evtAfter : CustomEvent = new CustomEvent("afterValidate");
+            const evtAfter: CustomEvent = new CustomEvent("afterValidate");
             evtAfter["source"] = this;
             evtAfter["data"] = this.validationerrors;
             evtAfter["errors"] = this.validationerrors;
             evtAfter["hasError"] = Object.keys(this.validationerrors).length > 0;
             this.fireListener("afterValidate", evtAfter);
-            if(Object.keys(this.validationerrors).length > 0) {
-                let onError : CustomEvent = new CustomEvent("onError");
+            if (Object.keys(this.validationerrors).length > 0){
+                const onError: CustomEvent = new CustomEvent("onError");
                 onError["source"] = this;
                 onError["data"] = this.validationerrors;
                 onError["errors"] = this.validationerrors;
@@ -3225,25 +3417,25 @@ namespace input {
             return Object.keys(this.validationerrors).length <= 0;
         }
 
-        public setData(data : Object) {
-            let evt : CustomEvent = new CustomEvent("beforeSetData");
+        public setData(data: Object) {
+            const evt: CustomEvent = new CustomEvent("beforeSetData");
             evt["source"] = this;
             evt["data"] = data;
             this.fireListener("beforeSetData", evt);
             util.ComponentUtil.visit(this, new Form.Form$2(this, data));
-            let evtAfter : CustomEvent = new CustomEvent("afterSetData");
+            const evtAfter: CustomEvent = new CustomEvent("afterSetData");
             evtAfter["source"] = this;
             evtAfter["data"] = data;
             this.fireListener("afterSetData", evtAfter);
         }
 
-        public getData() : Object {
-            let evt : CustomEvent = new CustomEvent("beforeGetData");
+        public getData(): Object {
+            const evt: CustomEvent = new CustomEvent("beforeGetData");
             evt["source"] = this;
             this.fireListener("beforeGetData", evt);
-            let data : Object = <Object>new Object();
+            const data: Object = <Object>new Object();
             util.ComponentUtil.visit(this, new Form.Form$3(this, data));
-            let evtAfter : CustomEvent = new CustomEvent("afterGetData");
+            const evtAfter: CustomEvent = new CustomEvent("afterGetData");
             evtAfter["source"] = this;
             evtAfter["data"] = data;
             this.fireListener("afterGetData", evtAfter);
@@ -3251,17 +3443,17 @@ namespace input {
         }
 
         public submit() {
-            let evt : CustomEvent = new CustomEvent("beforeSubmit");
+            const evt: CustomEvent = new CustomEvent("beforeSubmit");
             evt["source"] = this;
             this.fireListener("beforeSubmit", evt);
-            if(this.validate()) {
-                let data : Object = this.getData();
-                let on : CustomEvent = new CustomEvent("submit");
+            if (this.validate()){
+                const data: Object = this.getData();
+                const on: CustomEvent = new CustomEvent("submit");
                 on["source"] = this;
                 on["data"] = data;
                 this.fireListener("submit", on);
             }
-            let evtAfter : CustomEvent = new CustomEvent("afterSubmit");
+            const evtAfter: CustomEvent = new CustomEvent("afterSubmit");
             evtAfter["source"] = this;
             this.fireListener("afterSubmit", evtAfter);
         }
@@ -3279,20 +3471,20 @@ namespace input {
              * 
              * @param {*} designable
              */
-            public doVisit(designable : api.Renderable) {
-                if(designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
                     try {
-                        let b : string = (<api.InputField<any>><any>designable).getBinding();
-                        if(b === this.binding) {
+                        const b: string = (<api.InputField<any>><any>designable).getBinding();
+                        if (b === this.binding){
                             this.result.push((<api.InputField<any>><any>designable));
                         }
                     } catch(e) {
-                        let binding : string = (<api.InputField<any>><any>designable).getBinding();
-                        if(binding == null || binding.trim() === "") {
+                        let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                        if (binding == null || binding.trim() === ""){
                             binding = designable.getName();
                         }
                         this.__parent.validationerrors[binding] = e;
-                    };
+                    }
                 }
             }
 
@@ -3310,17 +3502,17 @@ namespace input {
              * 
              * @param {*} designable
              */
-            public doVisit(designable : api.Renderable) {
-                if(designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
                     try {
                         (<api.InputField<any>><any>designable).validate();
                     } catch(e) {
-                        let binding : string = (<api.InputField<any>><any>designable).getBinding();
-                        if(binding == null || binding.trim() === "") {
+                        let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                        if (binding == null || binding.trim() === ""){
                             binding = designable.getName();
                         }
                         this.__parent.validationerrors[binding] = e;
-                    };
+                    }
                 }
             }
 
@@ -3338,25 +3530,25 @@ namespace input {
              * 
              * @param {*} designable
              */
-            public doVisit(designable : api.Renderable) {
-                if(designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
-                    let binding : string = (<api.InputField<any>><any>designable).getBinding();
-                    if(binding == null || binding.trim() === "") {
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
+                    let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                    if (binding == null || binding.trim() === ""){
                         binding = designable.getName();
                     }
-                    if(util.PropertyUtil.hasOwnProperty(this.data, binding)) {
-                        let obj : Object = util.PropertyUtil.getValue(this.data, binding);
-                        if(designable != null && designable instanceof <any>input.JSDateInput) {
+                    if (util.PropertyUtil.hasOwnProperty(this.data, binding)){
+                        const obj: Object = util.PropertyUtil.getValue(this.data, binding);
+                        if (designable != null && designable instanceof <any>input.JSDateInput){
                             try {
-                                if(obj != null && obj instanceof <any>Date) {
+                                if (obj != null && obj instanceof <any>Date){
                                     (<api.InputField<any>><any>designable).setValue(obj);
                                 } else {
-                                    let date : Date = new Date(/* parseLong */parseInt(obj.toString()));
+                                    const date: Date = new Date(/* parseLong */parseInt(obj.toString()));
                                     (<api.InputField<any>><any>designable).setValue(date);
                                 }
                             } catch(e) {
                                 (<api.InputField<any>><any>designable).setValue(obj);
-                            };
+                            }
                         } else {
                             (<api.InputField<any>><any>designable).setValue(obj);
                         }
@@ -3380,13 +3572,13 @@ namespace input {
              * 
              * @param {*} designable
              */
-            public doVisit(designable : api.Renderable) {
-                if(designable != null && (designable["__interfaces"] != null && designable["__interfaces"].indexOf("framework.components.api.InputField") >= 0 || designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
-                    let binding : string = (<api.InputField<any>><any>designable).getBinding();
-                    if(binding == null || binding.trim() === "") {
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
+                    let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                    if (binding == null || binding.trim() === ""){
                         binding = designable.getName();
                     }
-                    let value : Object = <Object>(<api.InputField<any>><any>designable).getValue();
+                    const value: Object = <Object>(<api.InputField<any>><any>designable).getValue();
                     util.PropertyUtil.setValue(this.data, value, binding);
                 }
             }
@@ -3403,16 +3595,20 @@ namespace input {
 }
 namespace input {
     export class JSImageInput extends JSContainer implements api.InputField<string> {
-        /*private*/ image : JSContainer = new JSContainer("image", "img");
+        /*private*/ image: JSContainer;
 
-        /*private*/ upload : JSUpload = new JSUpload("upload", util.PropertyUtil.REMOTESERVER + "/resources/upload");
+        /*private*/ upload: JSUpload;
 
-        /*private*/ imageContainer : JSContainer = new JSContainer("div");
+        /*private*/ imageContainer: JSContainer;
 
-        /*private*/ validators : Array<api.Validator<string>> = <any>(new Array<api.Validator<string>>());
+        /*private*/ validators: Array<api.Validator<string>>;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name, "div");
+            this.image = new JSContainer("image", "img");
+            this.upload = new JSUpload("upload", util.PropertyUtil.REMOTESERVER + "/resources/upload");
+            this.imageContainer = new JSContainer("div");
+            this.validators = <any>(new Array<api.Validator<string>>());
             this.setAttribute("identifier", "lgt:image-input");
             this.addClass("slds-image-input");
             this.addChild$framework_components_api_Renderable(this.imageContainer);
@@ -3427,27 +3623,27 @@ namespace input {
         }
 
         public refreshUploadDir() {
-            let dir : string = this.getAttribute("uploadDir");
-            let name : string = this.getName();
-            if(dir == null) {
+            let dir: string = this.getAttribute("uploadDir");
+            const name: string = this.getName();
+            if (dir == null){
                 dir = "default";
             }
             this.upload.setUrl(util.PropertyUtil.REMOTESERVER + "/resources/upload?dir=" + dir + "&name=" + name);
         }
 
-        public getImage() : JSContainer {
+        public getImage(): JSContainer {
             return this.image;
         }
 
-        public setRequired(b : boolean) : JSImageInput {
-            if(b) {
+        public setRequired(b: boolean): JSImageInput {
+            if (b){
                 this.setAttribute("required", "true");
             } else this.setAttribute("required", null);
             return this;
         }
 
-        public setDisabled(b : boolean) : JSImageInput {
-            if(b) {
+        public setDisabled(b: boolean): JSImageInput {
+            if (b){
                 this.setAttribute("disabled", "true");
             } else {
                 this.setAttribute("disabled", null);
@@ -3455,8 +3651,8 @@ namespace input {
             return this;
         }
 
-        public setReadOnly(b : boolean) : JSImageInput {
-            if(b) {
+        public setReadOnly(b: boolean): JSImageInput {
+            if (b){
                 this.setAttribute("readonly", "true");
             } else {
                 this.setAttribute("readonly", null);
@@ -3472,12 +3668,12 @@ namespace input {
          * 
          * @return {string}
          */
-        public getValue() : string {
+        public getValue(): string {
             return this.image.getAttribute("src");
         }
 
-        public setValue$java_lang_String(val : string) {
-            if(val == null) {
+        public setValue$java_lang_String(val: string) {
+            if (val == null){
                 this.image.setAttribute("src", this.getAttribute("default"));
             } else {
                 this.image.setAttribute("src", val);
@@ -3488,8 +3684,8 @@ namespace input {
          * 
          * @param {string} val
          */
-        public setValue(val? : any) : any {
-            if(((typeof val === 'string') || val === null)) {
+        public setValue(val?: any) {
+            if (((typeof val === 'string') || val === null)) {
                 return <any>this.setValue$java_lang_String(val);
             } else throw new Error('invalid overload');
         }
@@ -3498,24 +3694,24 @@ namespace input {
          * 
          */
         public validate() {
-            let valid : boolean = true;
-            let e : api.ValidationException = new api.ValidationException();
-            for(let index169=0; index169 < this.validators.length; index169++) {
-                let v = this.validators[index169];
+            let valid: boolean = true;
+            const e: api.ValidationException = new api.ValidationException();
+            for(let index235=0; index235 < this.validators.length; index235++) {
+                let v = this.validators[index235];
                 {
-                    let b : boolean = v.validate(this);
-                    if(!b) {
+                    const b: boolean = v.validate(this);
+                    if (!b){
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate : CustomEvent = new CustomEvent("validate");
+            const validate: CustomEvent = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
             this.fireListener("validate", validate);
-            if(!valid) {
+            if (!valid){
                 throw e;
             }
         }
@@ -3524,7 +3720,7 @@ namespace input {
          * 
          * @return {string}
          */
-        public getBinding() : string {
+        public getBinding(): string {
             return this.getAttribute("binding");
         }
 
@@ -3533,16 +3729,16 @@ namespace input {
          * @param {string} binding
          * @return {*}
          */
-        public setBinding(binding : string) : api.InputField<string> {
+        public setBinding(binding: string): api.InputField<string> {
             this.setAttribute("binding", binding);
             return this;
         }
 
         /**
          * 
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
-        public advancedEventTypes() : string[] {
+        public advancedEventTypes(): string[] {
             return ["success", "error"];
         }
     }
@@ -3560,13 +3756,13 @@ namespace input {
              * @param {*} source
              * @param {Event} evt
              */
-            public performAction(source : api.Renderable, evt : Event) {
-                if(this.__parent.hasListenerOfType("success")) {
+            public performAction(source: api.Renderable, evt: Event) {
+                if (this.__parent.hasListenerOfType("success")){
                     this.__parent.fireListener("success", evt);
                 } else {
-                    let data : Object = <Object>evt["data"];
-                    if(data != null && data.hasOwnProperty("url")) {
-                        let url : string = <string>data["url"];
+                    const data: Object = <Object>evt["data"];
+                    if (data != null && data.hasOwnProperty("url")){
+                        const url: string = <string>data["url"];
                         this.__parent.setValue(url);
                         this.__parent.render();
                     } else {
@@ -3590,7 +3786,7 @@ namespace input {
              * @param {*} source
              * @param {Event} evt
              */
-            public performAction(source : api.Renderable, evt : Event) {
+            public performAction(source: api.Renderable, evt: Event) {
                 this.__parent.fireListener("error", evt);
             }
 
@@ -3609,7 +3805,7 @@ namespace input {
              * @param {*} source
              * @param {Event} evt
              */
-            public performAction(source : api.Renderable, evt : Event) {
+            public performAction(source: api.Renderable, evt: Event) {
                 this.__parent.upload.triggerUpload();
             }
 
@@ -3625,30 +3821,30 @@ namespace input {
 }
 namespace input {
     export class JSOption extends JSContainer {
-        public constructor(text : string, value : string) {
+        public constructor(text: string, value: string) {
             super("option");
             this.setAttribute("value", value);
             this.setHtml(text);
         }
 
-        public getValue() : string {
+        public getValue(): string {
             return this.getAttribute("value");
         }
 
-        public setValue(value : string) {
+        public setValue(value: string) {
             this.setAttribute("value", value);
         }
 
-        public getText() : string {
+        public getText(): string {
             return this.getHtml();
         }
 
-        public setText(label : string) {
+        public setText(label: string) {
             this.setHtml(label);
         }
 
-        public setSelected(b : boolean) {
-            if(b) {
+        public setSelected(b: boolean) {
+            if (b){
                 this.setAttribute("selected", "true");
             } else {
                 this.setAttribute("selected", null);
@@ -3662,27 +3858,28 @@ namespace input {
 }
 namespace input {
     export class JSSelect extends JSContainer implements api.InputField<any> {
-        /*private*/ previousValue : string;
+        /*private*/ previousValue: string;
 
-        /*private*/ validators : Array<api.Validator<any>> = <any>(new Array<api.Validator<any>>());
+        /*private*/ validators: Array<api.Validator<any>>;
 
-        /*private*/ data : Array<Object>;
+        /*private*/ data: Array<Object>;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name, "select");
-            if(this.previousValue===undefined) this.previousValue = null;
-            if(this.data===undefined) this.data = null;
+            if (this.previousValue === undefined) { this.previousValue = null; }
+            this.validators = <any>(new Array<api.Validator<any>>());
+            if (this.data === undefined) { this.data = null; }
             this.setAttribute("identifier", "html:select");
         }
 
-        public addValidator(validator : api.Validator<any>) {
+        public addValidator(validator: api.Validator<any>) {
             this.validators.push(validator);
         }
 
-        public setOptions$java_lang_String(options : string) : JSSelect {
-            let opts : string[] = options.split("\n");
-            for(let index170=0; index170 < opts.length; index170++) {
-                let opt = opts[index170];
+        public setOptions$java_lang_String(options: string): JSSelect {
+            const opts: string[] = options.split("\n");
+            for(let index236=0; index236 < opts.length; index236++) {
+                let opt = opts[index236];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3690,20 +3887,20 @@ namespace input {
             return this;
         }
 
-        public setOptions(options? : any) : any {
-            if(((typeof options === 'string') || options === null)) {
+        public setOptions(options?: any): any {
+            if (((typeof options === 'string') || options === null)) {
                 return <any>this.setOptions$java_lang_String(options);
-            } else if(((options != null && options instanceof <any>Array) || options === null)) {
+            } else if (((options != null && options instanceof <any>Array) || options === null)) {
                 return <any>this.setOptions$jsweet_lang_Array(options);
             } else throw new Error('invalid overload');
         }
 
-        public addOption$framework_components_input_JSOption(option : input.JSOption) : JSSelect {
-            if(this.data == null) {
+        public addOption$framework_components_input_JSOption(option: input.JSOption): JSSelect {
+            if (this.data == null){
                 this.data = <any>(new Array<Object>());
             }
-            if(this.findItem(option.getValue()) == null) {
-                let opt : Object = <Object>new Object();
+            if (this.findItem(option.getValue()) == null){
+                const opt: Object = <Object>new Object();
                 opt["text"] = option.getText();
                 opt["value"] = option.getValue();
                 this.data.push(opt);
@@ -3712,24 +3909,24 @@ namespace input {
             return this;
         }
 
-        public addOption$java_lang_String$java_lang_String(text : string, value : string) : JSSelect {
+        public addOption$java_lang_String$java_lang_String(text: string, value: string): JSSelect {
             return this.addOption$framework_components_input_JSOption(new input.JSOption(text, value));
         }
 
-        public addOption(text? : any, value? : any) : any {
-            if(((typeof text === 'string') || text === null) && ((typeof value === 'string') || value === null)) {
+        public addOption(text?: any, value?: any): any {
+            if (((typeof text === 'string') || text === null) && ((typeof value === 'string') || value === null)) {
                 return <any>this.addOption$java_lang_String$java_lang_String(text, value);
-            } else if(((text != null && text instanceof <any>input.JSOption) || text === null) && value === undefined) {
+            } else if (((text != null && text instanceof <any>input.JSOption) || text === null) && value === undefined) {
                 return <any>this.addOption$framework_components_input_JSOption(text);
-            } else if(((text != null && text instanceof <any>Object) || text === null) && value === undefined) {
+            } else if (((text != null && text instanceof <any>Object) || text === null) && value === undefined) {
                 return <any>this.addOption$jsweet_lang_Object(text);
             } else throw new Error('invalid overload');
         }
 
-        public addOption$jsweet_lang_Object(opt : Object) : JSSelect {
-            let text : string = <string>opt["text"];
+        public addOption$jsweet_lang_Object(opt: Object): JSSelect {
+            let text: string = <string>opt["text"];
             text = text + "";
-            let value : string = <string>opt["value"];
+            let value: string = <string>opt["value"];
             value = value + "";
             return this.addOption$java_lang_String$java_lang_String(text, value);
         }
@@ -3738,40 +3935,40 @@ namespace input {
          * 
          * @return {*}
          */
-        public clearChildren() : api.Renderable {
+        public clearChildren(): api.Renderable {
             this.data = null;
             return super.clearChildren();
         }
 
-        public clearOptions() : api.Renderable {
+        public clearOptions(): api.Renderable {
             return this.clearChildren();
         }
 
-        public setMultiple(b : boolean) {
-            if(b) {
+        public setMultiple(b: boolean) {
+            if (b){
                 this.setAttribute("multiple", "true");
             } else {
                 this.setAttribute("multiple", null);
             }
         }
 
-        public setSize(size : number) {
+        public setSize(size: number) {
             this.setAttribute("size", size + "");
         }
 
-        public setPattern(pattern : string) {
+        public setPattern(pattern: string) {
             this.setAttribute("pattern", pattern);
         }
 
-        public setRequired(b : boolean) : JSSelect {
-            if(b) {
+        public setRequired(b: boolean): JSSelect {
+            if (b){
                 this.setAttribute("required", "true");
             } else this.setAttribute("required", null);
             return this;
         }
 
-        public setDisabled(b : boolean) : JSSelect {
-            if(b) {
+        public setDisabled(b: boolean): JSSelect {
+            if (b){
                 this.setAttribute("disabled", "true");
             } else {
                 this.setAttribute("disabled", null);
@@ -3779,8 +3976,8 @@ namespace input {
             return this;
         }
 
-        public setReadOnly(b : boolean) : JSSelect {
-            if(b) {
+        public setReadOnly(b: boolean): JSSelect {
+            if (b){
                 this.setAttribute("readonly", "true");
             } else {
                 this.setAttribute("readonly", null);
@@ -3788,24 +3985,24 @@ namespace input {
             return this;
         }
 
-        public isMultiple() : boolean {
-            return /* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })("true",this.getAttribute("multiple")));
+        public isMultiple(): boolean {
+            return "true" === this.getAttribute("multiple");
         }
 
         /**
          * 
          * @return {*}
          */
-        public getValue() : any {
-            let ele : HTMLSelectElement = <HTMLSelectElement>this.getNative();
-            if(ele != null) {
-                if(ele.multiple) {
-                    let result : Array<string> = <any>(new Array<string>());
-                    for(let index171=0; index171 < ele.children.length; index171++) {
-                        let e = ele.children[index171];
+        public getValue(): any {
+            const ele: HTMLSelectElement = <HTMLSelectElement>this.getNative();
+            if (ele != null){
+                if (ele.multiple){
+                    const result: Array<string> = <any>(new Array<string>());
+                    for(let index237=0; index237 < ele.children.length; index237++) {
+                        let e = ele.children[index237];
                         {
-                            let opt : HTMLOptionElement = <HTMLOptionElement>e;
-                            if(opt.selected) result.push(opt.value);
+                            const opt: HTMLOptionElement = <HTMLOptionElement>e;
+                            if (opt.selected)result.push(opt.value);
                         }
                     }
                     return result;
@@ -3813,13 +4010,13 @@ namespace input {
                     return ele.value;
                 }
             } else {
-                let val : string = this.getAttribute("value");
+                const val: string = this.getAttribute("value");
                 {
-                    let array173 = this.getChildren();
-                    for(let index172=0; index172 < array173.length; index172++) {
-                        let opt = array173[index172];
+                    let array239 = this.getChildren();
+                    for(let index238=0; index238 < array239.length; index238++) {
+                        let opt = array239[index238];
                         {
-                            if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(opt.getAttribute("value"),val))) {
+                            if (opt.getAttribute("value") === val){
                                 return (<input.JSOption><any>opt).getValue();
                             }
                         }
@@ -3833,15 +4030,15 @@ namespace input {
          * 
          * @param {*} values
          */
-        public setValue(values : any) {
+        public setValue(values: any) {
             this.previousValue = <string>this.getValue();
-            if(values != null) {
-                let ele : HTMLSelectElement = <HTMLSelectElement>this.getNative();
-                let firstVal : string = values.toString();
-                let arrVal : Array<string> = <any>(new Array<string>());
-                if(values != null && values instanceof <any>Array) {
+            if (values != null){
+                const ele: HTMLSelectElement = <HTMLSelectElement>this.getNative();
+                let firstVal: string = values.toString();
+                let arrVal: Array<string> = <any>(new Array<string>());
+                if (values != null && values instanceof <any>Array){
                     arrVal = <Array<any>>values;
-                    if(arrVal.length > 0) {
+                    if (arrVal.length > 0){
                         firstVal = arrVal[0];
                     } else {
                         firstVal = "";
@@ -3849,20 +4046,20 @@ namespace input {
                 } else {
                     arrVal.push(<string>values);
                 }
-                if(ele != null) {
+                if (ele != null){
                     ele.value = firstVal;
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array175 = this.getChildren();
-                    for(let index174=0; index174 < array175.length; index174++) {
-                        let opt = array175[index174];
+                    let array241 = this.getChildren();
+                    for(let index240=0; index240 < array241.length; index240++) {
+                        let opt = array241[index240];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
-                            for(let index176=0; index176 < arrVal.length; index176++) {
-                                let val = arrVal[index176];
+                            for(let index242=0; index242 < arrVal.length; index242++) {
+                                let val = arrVal[index242];
                                 {
-                                    if(/* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(opt.getAttribute("value"),val))) {
+                                    if (opt.getAttribute("value") === val){
                                         (<input.JSOption><any>opt).setSelected(true);
                                     }
                                 }
@@ -3872,23 +4069,23 @@ namespace input {
                 }
             } else {
                 {
-                    let array178 = this.getChildren();
-                    for(let index177=0; index177 < array178.length; index177++) {
-                        let opt = array178[index177];
+                    let array244 = this.getChildren();
+                    for(let index243=0; index243 < array244.length; index243++) {
+                        let opt = array244[index243];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
                         }
                     }
                 }
-                let ele : HTMLSelectElement = <HTMLSelectElement>this.getNative();
-                if(ele != null) {
+                const ele: HTMLSelectElement = <HTMLSelectElement>this.getNative();
+                if (ele != null){
                     ele.value = "";
                 }
                 this.setAttribute("value", "");
             }
         }
 
-        public getPreviousValue() : string {
+        public getPreviousValue(): string {
             return this.previousValue;
         }
 
@@ -3896,91 +4093,91 @@ namespace input {
          * 
          */
         public validate() {
-            let valid : boolean = true;
-            let e : api.ValidationException = new api.ValidationException();
-            let nat : HTMLElement = this.getNative();
-            if(nat != null) {
-                let el : HTMLSelectElement = <HTMLSelectElement>nat;
+            let valid: boolean = true;
+            const e: api.ValidationException = new api.ValidationException();
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const el: HTMLSelectElement = <HTMLSelectElement>nat;
                 valid = el.checkValidity();
-                if(!valid) {
+                if (!valid){
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index179=0; index179 < this.validators.length; index179++) {
-                let v = this.validators[index179];
+            for(let index245=0; index245 < this.validators.length; index245++) {
+                let v = this.validators[index245];
                 {
-                    let b : boolean = v.validate(this);
-                    if(!b) {
+                    const b: boolean = v.validate(this);
+                    if (!b){
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate : CustomEvent = new CustomEvent("validate");
+            const validate: CustomEvent = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
             this.fireListener("validate", validate);
-            if(!valid) {
+            if (!valid){
                 throw e;
             }
         }
 
         /**
          * 
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
-        public advancedEventTypes() : string[] {
+        public advancedEventTypes(): string[] {
             return ["validate"];
         }
 
-        public getBinding() : string {
+        public getBinding(): string {
             return this.getAttribute("binding");
         }
 
-        public setData(data_ : Array<Object>) {
+        public setData(data_: Array<Object>) {
             this.clearChildren();
             this.setRendered(false);
-            for(let index180=0; index180 < data_.length; index180++) {
-                let o = data_[index180];
+            for(let index246=0; index246 < data_.length; index246++) {
+                let o = data_[index246];
                 {
-                    if(o.hasOwnProperty("value")) {
-                        let value : string = <string>o["value"];
-                        let text : string = <string>o["text"];
+                    if (o.hasOwnProperty("value")){
+                        const value: string = <string>o["value"];
+                        const text: string = <string>o["text"];
                         this.addOption$framework_components_input_JSOption(new input.JSOption(text, value));
                     } else {
-                        let value : string = <string>o.toString();
-                        let text : string = <string>o.toString();
+                        const value: string = <string>o.toString();
+                        const text: string = <string>o.toString();
                         this.addOption$framework_components_input_JSOption(new input.JSOption(text, value));
                     }
                 }
             }
         }
 
-        public setOptions$jsweet_lang_Array(data_ : Array<Object>) {
+        public setOptions$jsweet_lang_Array(data_: Array<Object>) {
             this.setData(data_);
         }
 
-        public getSelectedItems() : Array<Object> {
-            let obj : any = this.getValue();
-            let result : Array<Object> = <any>(new Array<Object>());
-            if(this.isMultiple()) {
+        public getSelectedItems(): Array<Object> {
+            const obj: any = this.getValue();
+            const result: Array<Object> = <any>(new Array<Object>());
+            if (this.isMultiple()){
                 {
-                    let array182 = <Array<string>>obj;
-                    for(let index181=0; index181 < array182.length; index181++) {
-                        let o = array182[index181];
+                    let array248 = <Array<string>>obj;
+                    for(let index247=0; index247 < array248.length; index247++) {
+                        let o = array248[index247];
                         {
-                            let item : Object = this.findItem(o);
-                            if(item != null) {
+                            const item: Object = this.findItem(o);
+                            if (item != null){
                                 result.push(item);
                             }
                         }
                     }
                 }
             } else {
-                if(obj != null) {
-                    let item : Object = this.findItem(obj.toString());
-                    if(item != null) {
+                if (obj != null){
+                    const item: Object = this.findItem(obj.toString());
+                    if (item != null){
                         result.push(item);
                     }
                 }
@@ -3988,19 +4185,19 @@ namespace input {
             return result;
         }
 
-        public getData() : Array<Object> {
+        public getData(): Array<Object> {
             return this.data;
         }
 
-        public findItem(value : string) : Object {
-            if(this.data != null) {
-                for(let index183=0; index183 < this.data.length; index183++) {
-                    let o = this.data[index183];
+        public findItem(value: string): Object {
+            if (this.data != null){
+                for(let index249=0; index249 < this.data.length; index249++) {
+                    let o = this.data[index249];
                     {
-                        let val : string = <string>o["value"];
+                        let val: string = <string>o["value"];
                         val = val + "";
-                        let comp : string = value + "";
-                        if(val != null && /* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })(val,comp))) {
+                        const comp: string = value + "";
+                        if (val != null && (val === comp)){
                             return o;
                         }
                     }
@@ -4014,7 +4211,7 @@ namespace input {
          * @param {string} binding
          * @return {*}
          */
-        public setBinding(binding : string) : api.InputField<any> {
+        public setBinding(binding: string): api.InputField<any> {
             this.setAttribute("binding", binding);
             return this;
         }
@@ -4026,26 +4223,27 @@ namespace input {
 }
 namespace input {
     export class JSTextArea extends JSContainer implements api.InputField<string> {
-        /*private*/ validators : Array<api.Validator<string>> = <any>(new Array<api.Validator<string>>());
+        /*private*/ validators: Array<api.Validator<string>>;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name, "textarea");
+            this.validators = <any>(new Array<api.Validator<string>>());
             this.setAttribute("identifier", "html:textarea");
         }
 
-        public addValidator(validator : api.Validator<string>) {
+        public addValidator(validator: api.Validator<string>) {
             this.validators.push(validator);
         }
 
-        public setRequired(b : boolean) : JSTextArea {
-            if(b) {
+        public setRequired(b: boolean): JSTextArea {
+            if (b){
                 this.setAttribute("required", "true");
             } else this.setAttribute("required", null);
             return this;
         }
 
-        public setDisabled(b : boolean) : JSTextArea {
-            if(b) {
+        public setDisabled(b: boolean): JSTextArea {
+            if (b){
                 this.setAttribute("disabled", "true");
             } else {
                 this.setAttribute("disabled", null);
@@ -4057,17 +4255,17 @@ namespace input {
          * 
          * @return {string}
          */
-        public getValue() : string {
-            let elem : HTMLTextAreaElement = <HTMLTextAreaElement>this.getNative();
-            if(elem != null) {
+        public getValue(): string {
+            const elem: HTMLTextAreaElement = <HTMLTextAreaElement>this.getNative();
+            if (elem != null){
                 return elem.value;
             }
             return this.getHtml();
         }
 
-        public setValue$java_lang_String(val : string) {
-            let elem : HTMLTextAreaElement = <HTMLTextAreaElement>this.getNative();
-            if(elem != null) {
+        public setValue$java_lang_String(val: string) {
+            const elem: HTMLTextAreaElement = <HTMLTextAreaElement>this.getNative();
+            if (elem != null){
                 elem.value = val;
             }
             this.setHtml(val);
@@ -4077,8 +4275,8 @@ namespace input {
          * 
          * @param {string} val
          */
-        public setValue(val? : any) : any {
-            if(((typeof val === 'string') || val === null)) {
+        public setValue(val?: any) {
+            if (((typeof val === 'string') || val === null)) {
                 return <any>this.setValue$java_lang_String(val);
             } else throw new Error('invalid overload');
         }
@@ -4087,46 +4285,46 @@ namespace input {
          * 
          */
         public validate() {
-            let valid : boolean = true;
-            let e : api.ValidationException = new api.ValidationException();
-            let nat : HTMLElement = this.getNative();
-            if(nat != null) {
-                let el : HTMLInputElement = <HTMLInputElement>nat;
+            let valid: boolean = true;
+            const e: api.ValidationException = new api.ValidationException();
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const el: HTMLInputElement = <HTMLInputElement>nat;
                 valid = el.checkValidity();
-                if(!valid) {
+                if (!valid){
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index184=0; index184 < this.validators.length; index184++) {
-                let v = this.validators[index184];
+            for(let index250=0; index250 < this.validators.length; index250++) {
+                let v = this.validators[index250];
                 {
-                    let b : boolean = v.validate(this);
-                    if(!b) {
+                    const b: boolean = v.validate(this);
+                    if (!b){
                         valid = false;
                         api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
                     }
                 }
             }
-            let validate : CustomEvent = new CustomEvent("validate");
+            const validate: CustomEvent = new CustomEvent("validate");
             validate["errors"] = e.errors;
             validate["valid"] = valid;
             validate["source"] = this;
             this.fireListener("validate", validate);
-            if(!valid) {
+            if (!valid){
                 throw e;
             }
         }
 
         /**
          * 
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
-        public advancedEventTypes() : string[] {
+        public advancedEventTypes(): string[] {
             return ["validate"];
         }
 
-        public setReadOnly(b : boolean) : JSTextArea {
-            if(b) {
+        public setReadOnly(b: boolean): JSTextArea {
+            if (b){
                 this.setAttribute("readonly", "true");
             } else {
                 this.setAttribute("readonly", null);
@@ -4134,7 +4332,7 @@ namespace input {
             return this;
         }
 
-        public getBinding() : string {
+        public getBinding(): string {
             return this.getAttribute("binding");
         }
 
@@ -4143,7 +4341,7 @@ namespace input {
          * @param {string} binding
          * @return {*}
          */
-        public setBinding(binding : string) : api.InputField<string> {
+        public setBinding(binding: string): api.InputField<string> {
             this.setAttribute("binding", binding);
             return this;
         }
@@ -4154,259 +4352,20 @@ namespace input {
 
 }
 class RestWebservice extends JSContainer {
-    public constructor(name? : any) {
-        if(((typeof name === 'string') || name === null)) {
+    public constructor(name?: any) {
+        if (((typeof name === 'string') || name === null)) {
             let __args = arguments;
             super(name);
-            (() => {
-                this.setAttribute("method", "GET");
-                this.setAsync(true);
-            })();
-        } else if(name === undefined) {
+            this.setAttribute("method", "GET");
+        } else if (name === undefined) {
             let __args = arguments;
             {
                 let __args = arguments;
-                let name : any = "rw";
+                let name: any = "rw";
                 super(name);
-                (() => {
-                    this.setAttribute("method", "GET");
-                    this.setAsync(true);
-                })();
+                this.setAttribute("method", "GET");
             }
         } else throw new Error('invalid overload');
-    }
-
-    /**
-     * 
-     * @return {Array}
-     */
-    public advancedEventTypes() : string[] {
-        return ["success", "error", "beforeSend", "complete"];
-    }
-
-    public isSet(prop : string) : boolean {
-        if(this.getAttribute(prop) != null && this.getAttribute(prop).length > 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public getAccepts() : string {
-        return this.getAttribute("accepts");
-    }
-
-    public setAccepts(accepts : string) {
-        this.setAttribute("accepts", accepts);
-    }
-
-    public setDataType(dataType : string) {
-        this.setAttribute("dataType", dataType);
-    }
-
-    public getDataType() : string {
-        return this.getAttribute("dataType");
-    }
-
-    public setContentType(contentType : string) {
-        this.setAttribute("contentType", contentType);
-    }
-
-    public getContentType() : string {
-        return this.getAttribute("contentType");
-    }
-
-    public getBoolean(prop : string) : boolean {
-        return /* equals */(<any>((o1: any, o2: any) => { if(o1 && o1.equals) { return o1.equals(o2); } else { return o1 === o2; } })("true",this.getAttribute(prop)));
-    }
-
-    public setAsync(b : boolean) {
-        this.setAttribute("async", b?"true":"false");
-    }
-
-    public getAsync() : boolean {
-        return this.getBoolean("async");
-    }
-
-    public setCache(b : boolean) {
-        this.setAttribute("cache", b?"true":"false");
-    }
-
-    public getCache() : boolean {
-        return this.getBoolean("cache");
-    }
-
-    public setCrossDomain(b : boolean) {
-        this.setAttribute("crossDomain", b?"true":"false");
-    }
-
-    public getCrossDomain() : boolean {
-        return this.getBoolean("crossDomain");
-    }
-
-    public setIfModified(b : boolean) {
-        this.setAttribute("ifModified", b?"true":"false");
-    }
-
-    public getIfModified() : boolean {
-        return this.getBoolean("ifModified");
-    }
-
-    public setProcessData(b : boolean) {
-        this.setAttribute("processData", b?"true":"false");
-    }
-
-    public getProcessData() : boolean {
-        return this.getBoolean("processData");
-    }
-
-    public setScriptCharset(charset : string) {
-        this.setAttribute("scriptCharset", charset);
-    }
-
-    public getScriptCharset() : string {
-        return this.getAttribute("scriptCharset");
-    }
-
-    public setUsername(username : string) {
-        this.setAttribute("username", username);
-    }
-
-    public getUsername() : string {
-        return this.getAttribute("username");
-    }
-
-    public setMimeType(mimetype : string) {
-        this.setAttribute("mimeType", mimetype);
-    }
-
-    public getMimeType() : string {
-        return this.getAttribute("mimeType");
-    }
-
-    public setPassword(password : string) {
-        this.setAttribute("password", password);
-    }
-
-    public getPassword() : string {
-        return this.getAttribute("password");
-    }
-
-    public setTraditional(b : boolean) {
-        this.setAttribute("traditional", b?"true":"false");
-    }
-
-    public getTraditional() : boolean {
-        return this.getBoolean("traditional");
-    }
-
-    public setTimeout(timeout : number) {
-        this.setAttribute("timeout", timeout + "");
-    }
-
-    public getTimeout() : number {
-        return parseFloat(this.getAttribute("timeout"));
-    }
-
-    public setUrl(url : string) {
-        this.setAttribute("url", url);
-    }
-
-    public getUrl() : string {
-        return this.getAttribute("url");
-    }
-
-    public addHeader(key : string, value : string) {
-        let headers : string = this.getAttribute("headers");
-        let obj : Object = <Object>JSON.parse(headers);
-        obj[key] = value;
-        this.setAttribute("headers", JSON.stringify(obj));
-    }
-
-    public getHeaders() : any {
-        let headers : string = this.getAttribute("headers");
-        let obj : any = JSON.parse(headers);
-        return obj;
-    }
-
-    public getData() : any {
-        return JSON.parse(this.getAttribute("data"));
-    }
-
-    public setData(data : any) {
-        if(typeof data === 'string') this.setAttribute("data", <string>data); else this.setAttribute("data", JSON.stringify(data));
-    }
-
-    public setMethod(method : string) {
-        this.setAttribute("method", method);
-    }
-
-    public getMethod() : string {
-        return this.getAttribute("method");
-    }
-
-    public execute() {
-        if(this.isSet("url")) {
-            let settings : JQueryAjaxSettings = <any>Object.defineProperty({
-                error: (jqXHR, textStatus, errorThrown) => {
-                    let evt : CustomEvent = new CustomEvent("error");
-                    evt["error"] = errorThrown;
-                    evt["source"] = this;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("error", evt);
-                    this.getRoot().render();
-                    return null;
-                },
-                success: (data, textStatus, jqXHR) => {
-                    let evt : CustomEvent = new CustomEvent("success");
-                    evt["data"] = data;
-                    evt["status"] = textStatus;
-                    evt["source"] = this;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("success", evt);
-                    this.getRoot().render();
-                    return null;
-                },
-                complete: (jqXHR, textStatus) => {
-                    let evt : CustomEvent = new CustomEvent("complete");
-                    evt["status"] = textStatus;
-                    evt["source"] = this;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("complete", evt);
-                    this.getRoot().render();
-                    return null;
-                },
-                beforeSend: (jqXHR, settings) => {
-                    let evt : CustomEvent = new CustomEvent("beforeSend");
-                    evt["source"] = this;
-                    evt["settings"] = settings;
-                    evt["xhr"] = jqXHR;
-                    this.fireListener("beforeSend", evt);
-                    this.getRoot().render();
-                    return null;
-                }
-            }, '__interfaces', { configurable: true, value: ["def.jquery.JQueryAjaxSettings"] });
-            if(this.isSet("accepts")) settings.accepts = this.getAccepts();
-            if(this.isSet("async")) settings.async = this.getAsync();
-            if(this.isSet("cache")) settings.cache = this.getCache();
-            if(this.isSet("contentType")) settings.contentType = this.getContentType();
-            if(this.isSet("crossDomain")) settings.crossDomain = this.getCrossDomain();
-            if(this.isSet("dataType")) settings.dataType = this.getDataType();
-            if(this.isSet("ifModified")) settings.ifModified = this.getIfModified();
-            if(this.isSet("method")) settings.method = this.getMethod();
-            if(this.isSet("mimeType")) settings.mimeType = this.getMimeType();
-            if(this.isSet("password")) settings.password = this.getPassword();
-            if(this.isSet("processData")) settings.processData = this.getProcessData();
-            if(this.isSet("scriptCharset")) settings.scriptCharset = this.getScriptCharset();
-            if(this.isSet("timeout")) settings.timeout = this.getTimeout();
-            if(this.isSet("traditional")) settings.traditional = this.getTraditional();
-            if(this.isSet("type")) settings.type = this.getMethod();
-            if(this.isSet("url")) settings.url = this.getUrl();
-            if(this.isSet("username")) settings.username = this.getUsername();
-            if(this.isSet("headers")) settings.headers = this.getHeaders();
-            if(this.isSet("data")) settings.data = this.getData();
-            $.ajax(settings);
-        }
     }
 }
 RestWebservice["__class"] = "framework.components.RestWebservice";
@@ -4415,7 +4374,7 @@ RestWebservice["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 class Row extends JSContainer {
-    public constructor(name : string) {
+    public constructor(name: string) {
         super(name, "div");
         this.addClass("row");
         this.addCSSRule(".row{display:table;padding:10px;width:100%;}");
@@ -4428,56 +4387,58 @@ Row["__interfaces"] = ["framework.components.api.Renderable"];
 
 namespace table {
     export class Table extends JSContainer {
-        /*private*/ head : JSContainer = new JSContainer("head", "thead");
+        /*private*/ head: JSContainer;
 
-        /*private*/ body : JSContainer = new JSContainer("body", "tbody");
+        /*private*/ body: JSContainer;
 
-        dataModel : table.TableModel;
+        dataModel: table.TableModel;
 
-        columnModel : table.TableColumnModel;
+        columnModel: table.TableColumnModel;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name, "table");
-            if(this.dataModel===undefined) this.dataModel = null;
-            if(this.columnModel===undefined) this.columnModel = null;
+            this.head = new JSContainer("head", "thead");
+            this.body = new JSContainer("body", "tbody");
+            if (this.dataModel === undefined) { this.dataModel = null; }
+            if (this.columnModel === undefined) { this.columnModel = null; }
             this.addChild$framework_components_api_Renderable(this.head);
             this.addChild$framework_components_api_Renderable(this.body);
         }
 
-        public getHead() : JSContainer {
+        public getHead(): api.Renderable {
             return this.head;
         }
 
-        public getBody() : JSContainer {
+        public getBody(): api.Renderable {
             return this.body;
         }
 
-        public getDataModel() : table.TableModel {
+        public getDataModel(): table.TableModel {
             return this.dataModel;
         }
 
-        public setDataModel(dataModel : table.TableModel) {
+        public setDataModel(dataModel: table.TableModel) {
             this.dataModel = dataModel;
         }
 
-        public getColumnModel() : table.TableColumnModel {
+        public getColumnModel(): table.TableColumnModel {
             return this.columnModel;
         }
 
-        public setColumnModel(columnModel : table.TableColumnModel) {
+        public setColumnModel(columnModel: table.TableColumnModel) {
             this.columnModel = columnModel;
         }
 
         public refresh() {
             this.head.clearChildren();
             this.body.clearChildren();
-            if(this.columnModel != null) {
-                let hrow : JSContainer = new JSContainer("headerRow", "tr");
+            if (this.columnModel != null){
+                const hrow: JSContainer = new JSContainer("headerRow", "tr");
                 this.head.addChild$framework_components_api_Renderable(hrow);
-                for(let i : number = 0; i < this.columnModel.getColumnCount(); i++) {{
-                    let column : table.TableColumn = this.columnModel.getColumn(i);
-                    let headerRenderer : table.TableCellRenderer = column.getHeaderRenderer();
-                    let th : JSContainer = new JSContainer("", "th").setAttribute("scope", "col");
+                for(let i: number = 0; i < this.columnModel.getColumnCount(); i++) {{
+                    const column: table.TableColumn = this.columnModel.getColumn(i);
+                    const headerRenderer: table.TableCellRenderer = column.getHeaderRenderer();
+                    const th: JSContainer = new JSContainer("", "th").setAttribute("scope", "col");
                     th.setStyle("width", column.getWidth() + "px");
                     th.setStyle("max-width", column.getMaxWidth() + "px");
                     th.setStyle("min-width", column.getMinWidth() + "px");
@@ -4485,19 +4446,19 @@ namespace table {
                     headerRenderer.renderComponent(this, th, column.getHeaderValue(), false, false, 0, i);
                 };}
             }
-            if(this.dataModel != null) {
-                for(let row : number = 0; row < this.dataModel.getRowCount(); row++) {{
-                    let r : JSContainer = new JSContainer("", "tr");
+            if (this.dataModel != null){
+                for(let row: number = 0; row < this.dataModel.getRowCount(); row++) {{
+                    const r: JSContainer = new JSContainer("", "tr");
                     this.body.addChild$framework_components_api_Renderable(r);
-                    for(let col : number = 0; col < this.dataModel.getColumnCount(); col++) {{
-                        let cell : JSContainer = new JSContainer("", "td");
+                    for(let col: number = 0; col < this.dataModel.getColumnCount(); col++) {{
+                        const cell: JSContainer = new JSContainer("", "td");
                         r.addChild$framework_components_api_Renderable(cell);
-                        let val : any = this.dataModel.getValueAt(row, col);
-                        if(this.columnModel != null) {
-                            let column : table.TableColumn = this.columnModel.getColumn(col);
+                        const val: any = this.dataModel.getValueAt(row, col);
+                        if (this.columnModel != null){
+                            const column: table.TableColumn = this.columnModel.getColumn(col);
                             column.getCellRenderer().renderComponent(this, cell, val, false, false, row, col);
                         } else {
-                            cell.setHtml(val != null?val.toString():"");
+                            cell.setHtml(val != null ? val.toString() : "");
                         }
                     };}
                 };}
@@ -4511,20 +4472,26 @@ namespace table {
 }
 namespace input {
     export class JSAddressInput extends HTMLTemplateContainer implements api.InputField<Object> {
-        /*private*/ address : Object = <Object>new Object();
+        /*private*/ address: Object;
 
-        /*private*/ country : input.JSSelect = new input.JSSelect("country");
+        /*private*/ country: input.JSSelect;
 
-        /*private*/ city : input.JSTextInput = new input.JSTextInput("city");
+        /*private*/ city: input.JSTextInput;
 
-        /*private*/ postalCode : input.JSTextInput = new input.JSTextInput("postalCode");
+        /*private*/ postalCode: input.JSTextInput;
 
-        /*private*/ state : input.JSTextInput = new input.JSTextInput("state");
+        /*private*/ state: input.JSTextInput;
 
-        /*private*/ street : input.JSTextInput = new input.JSTextInput("street");
+        /*private*/ street: input.JSTextInput;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name, "");
+            this.address = <Object>new Object();
+            this.country = new input.JSSelect("country");
+            this.city = new input.JSTextInput("city");
+            this.postalCode = new input.JSTextInput("postalCode");
+            this.state = new input.JSTextInput("state");
+            this.street = new input.JSTextInput("street");
             this.addChild$framework_components_api_Renderable(this.country);
             this.addChild$framework_components_api_Renderable(this.city);
             this.addChild$framework_components_api_Renderable(this.postalCode);
@@ -4536,7 +4503,7 @@ namespace input {
             this.country.setRequired(true);
         }
 
-        public getAddress() : Object {
+        public getAddress(): Object {
             this.address["country"] = this.country.getValue();
             this.address["city"] = this.city.getValue();
             this.address["postalCode"] = this.country.getValue();
@@ -4545,7 +4512,7 @@ namespace input {
             return this.address;
         }
 
-        public setAddress(address : Object) {
+        public setAddress(address: Object) {
             this.country.setValue(address["country"]);
             this.city.setValue$java_lang_String(<string>address["city"]);
             this.postalCode.setValue$java_lang_String(<string>address["postalCode"]);
@@ -4557,11 +4524,11 @@ namespace input {
          * 
          * @return {Object}
          */
-        public getValue() : Object {
+        public getValue(): Object {
             return this.getAddress();
         }
 
-        public setValue$jsweet_lang_Object(val : Object) {
+        public setValue$jsweet_lang_Object(val: Object) {
             this.setAddress(val);
         }
 
@@ -4569,8 +4536,8 @@ namespace input {
          * 
          * @param {Object} val
          */
-        public setValue(val? : any) : any {
-            if(((val != null && val instanceof <any>Object) || val === null)) {
+        public setValue(val?: any) {
+            if (((val != null && val instanceof <any>Object) || val === null)) {
                 return <any>this.setValue$jsweet_lang_Object(val);
             } else throw new Error('invalid overload');
         }
@@ -4589,8 +4556,8 @@ namespace input {
          * 
          * @return {string}
          */
-        public getBinding() : string {
-            if(this.getAttribute("binding") == null) {
+        public getBinding(): string {
+            if (this.getAttribute("binding") == null){
                 return this.getName();
             } else {
                 return this.getAttribute("binding");
@@ -4602,7 +4569,7 @@ namespace input {
          * @param {string} binding
          * @return {*}
          */
-        public setBinding(binding : string) : api.InputField<Object> {
+        public setBinding(binding: string): api.InputField<Object> {
             this.setAttribute("binding", binding);
             return this;
         }
@@ -4612,7 +4579,7 @@ namespace input {
          * @param {boolean} b
          * @return {*}
          */
-        public setRequired(b : boolean) : api.InputField<Object> {
+        public setRequired(b: boolean): api.InputField<Object> {
             return this;
         }
     }
@@ -4631,23 +4598,40 @@ namespace input {
  * @author Rossaye Abdool Kureem
  */
 class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.InputField<Object> {
-    /*private*/ label : JSContainer;
+    /*private*/ label: JSContainer;
 
-    /*private*/ input : JSContainer;
+    /*private*/ input: JSContainer;
 
-    /*private*/ uploader : FileUploader;
+    /*private*/ uploader: FileUploader;
 
-    /*private*/ required : boolean;
+    /*private*/ required: boolean;
 
-    public constructor(name? : any, template? : any, url? : any) {
-        if(((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && ((typeof url === 'string') || url === null)) {
+    public constructor(name?: any, template?: any, url?: any) {
+        if (((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && ((typeof url === 'string') || url === null)) {
             let __args = arguments;
             super(name, template);
             this.label = new JSContainer("label", "label");
             this.input = new JSContainer("uploadfile", "input");
             this.uploader = new FileUploader();
             this.required = false;
-            (() => {
+            this.addChild$framework_components_api_Renderable(this.label);
+            this.input.setAttribute("type", "file").setAttribute("accept", "*");
+            this.label.setHtml("Upload File:");
+            this.input.addEventListener(this, "change");
+            this.input.addClass("slds-input");
+            this.addChild$framework_components_api_Renderable(this.input);
+            this.setAttribute("url", url);
+        } else if (((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && url === undefined) {
+            let __args = arguments;
+            let url: any = __args[1];
+            {
+                let __args = arguments;
+                let template: any = "<form>\n\t<div name=\"label\"></div>\n\t<div name=\"uploadfile\"></div>\n</form>";
+                super(name, template);
+                this.label = new JSContainer("label", "label");
+                this.input = new JSContainer("uploadfile", "input");
+                this.uploader = new FileUploader();
+                this.required = false;
                 this.addChild$framework_components_api_Renderable(this.label);
                 this.input.setAttribute("type", "file").setAttribute("accept", "*");
                 this.label.setHtml("Upload File:");
@@ -4655,28 +4639,11 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
                 this.input.addClass("slds-input");
                 this.addChild$framework_components_api_Renderable(this.input);
                 this.setAttribute("url", url);
-            })();
-        } else if(((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && url === undefined) {
-            let __args = arguments;
-            let url : any = __args[1];
-            {
-                let __args = arguments;
-                let template : any = "<form>\n\t<div name=\"label\"></div>\n\t<div name=\"uploadfile\"></div>\n</form>";
-                super(name, template);
-                this.label = new JSContainer("label", "label");
-                this.input = new JSContainer("uploadfile", "input");
-                this.uploader = new FileUploader();
-                this.required = false;
-                (() => {
-                    this.addChild$framework_components_api_Renderable(this.label);
-                    this.input.setAttribute("type", "file").setAttribute("accept", "*");
-                    this.label.setHtml("Upload File:");
-                    this.input.addEventListener(this, "change");
-                    this.input.addClass("slds-input");
-                    this.addChild$framework_components_api_Renderable(this.input);
-                    this.setAttribute("url", url);
-                })();
             }
+            this.label = new JSContainer("label", "label");
+            this.input = new JSContainer("uploadfile", "input");
+            this.uploader = new FileUploader();
+            this.required = false;
         } else throw new Error('invalid overload');
     }
 
@@ -4689,9 +4656,9 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
 
     /**
      * 
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
-    public advancedEventTypes() : string[] {
+    public advancedEventTypes(): string[] {
         return ["success", "error"];
     }
 
@@ -4699,7 +4666,7 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * Sets a label to this component
      * @param {string} label The label of the component
      */
-    public setLabel(label : string) {
+    public setLabel(label: string) {
         this.label.setHtml(label);
     }
 
@@ -4707,7 +4674,7 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * Sets the accepts mimetypes for this component
      * @param {string} accepts Mime types allowed to upload (e.g image/jpg, image/png, text/html etc)
      */
-    public setAccepts(accepts : string) {
+    public setAccepts(accepts: string) {
         this.input.setAttribute("accept", accepts);
     }
 
@@ -4716,14 +4683,14 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * @param {*} source
      * @param {Event} ev
      */
-    public performAction(source : api.Renderable, ev : Event) {
+    public performAction(source: api.Renderable, ev: Event) {
     }
 
     /**
      * Sets the server url where to submit file to uplaod
      * @param {string} url Url where to submit file to upload
      */
-    public setUrl(url : string) {
+    public setUrl(url: string) {
         this.setAttribute("url", url);
     }
 
@@ -4731,7 +4698,7 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * Synonymous to setUrl
      * @param {string} url The url where to submit file to upload
      */
-    public setEndpoint(url : string) {
+    public setEndpoint(url: string) {
         this.setUrl(url);
     }
 
@@ -4739,19 +4706,19 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * 
      * @return {Object}
      */
-    public getValue() : Object {
+    public getValue(): Object {
         return null;
     }
 
-    public setValue$jsweet_lang_Object(val : Object) {
+    public setValue$jsweet_lang_Object(val: Object) {
     }
 
     /**
      * 
      * @param {Object} val
      */
-    public setValue(val? : any) : any {
-        if(((val != null && val instanceof <any>Object) || val === null)) {
+    public setValue(val?: any) {
+        if (((val != null && val instanceof <any>Object) || val === null)) {
             return <any>this.setValue$jsweet_lang_Object(val);
         } else throw new Error('invalid overload');
     }
@@ -4766,7 +4733,7 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * 
      * @return {string}
      */
-    public getBinding() : string {
+    public getBinding(): string {
         return this.getAttribute("binding");
     }
 
@@ -4775,7 +4742,7 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * @param {string} binding
      * @return {*}
      */
-    public setBinding(binding : string) : api.InputField<Object> {
+    public setBinding(binding: string): api.InputField<Object> {
         this.setAttribute("binding", binding);
         return this;
     }
@@ -4785,28 +4752,28 @@ class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.I
      * @param {boolean} b
      * @return {*}
      */
-    public setRequired(b : boolean) : api.InputField<Object> {
+    public setRequired(b: boolean): api.InputField<Object> {
         this.required = b;
         return this;
     }
 
-    public getUploader() : FileUploader {
+    public getUploader(): FileUploader {
         return this.uploader;
     }
 
-    public setUploader(uploader : FileUploader) {
+    public setUploader(uploader: FileUploader) {
         this.uploader = uploader;
     }
 
-    public getLabel() : JSContainer {
+    public getLabel(): JSContainer {
         return this.label;
     }
 
-    public getInput() : JSContainer {
+    public getInput(): JSContainer {
         return this.input;
     }
 
-    public isRequired() : boolean {
+    public isRequired(): boolean {
         return this.required;
     }
 }
@@ -4817,7 +4784,7 @@ JSUpload["__interfaces"] = ["framework.components.api.EventListener","framework.
 
 namespace input {
     export class JSCheckBox extends input.AbstractJSInput<boolean> {
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name);
             this.setAttribute("type", "checkbox");
         }
@@ -4826,27 +4793,27 @@ namespace input {
          * 
          * @return {boolean}
          */
-        public getValue() : boolean {
-            let el : HTMLInputElement = <HTMLInputElement>this.getNative();
-            if(el != null) {
+        public getValue(): boolean {
+            const el: HTMLInputElement = <HTMLInputElement>this.getNative();
+            if (el != null){
                 return el.checked;
             }
-            if(this.getAttribute("value") != null && /* equalsIgnoreCase */((o1, o2) => o1.toUpperCase() === (o2===null?o2:o2.toUpperCase()))("true", this.getAttribute("value"))) {
+            if (this.getAttribute("value") != null && /* equalsIgnoreCase */((o1, o2) => o1.toUpperCase() === (o2===null ? o2 : o2.toUpperCase()))("true", this.getAttribute("value"))){
                 return true;
             }
             return false;
         }
 
-        public setValue$java_lang_Boolean(b : boolean) {
-            if(b) {
+        public setValue$java_lang_Boolean(b: boolean) {
+            if (b){
                 this.setAttribute("value", "true");
                 this.setAttribute("checked", "true");
             } else {
                 this.setAttribute("value", "false");
                 this.setAttribute("checked", null);
             }
-            let el : HTMLInputElement = <HTMLInputElement>this.getNative();
-            if(el != null) {
+            const el: HTMLInputElement = <HTMLInputElement>this.getNative();
+            if (el != null){
                 el.checked = b;
             }
         }
@@ -4855,17 +4822,17 @@ namespace input {
          * 
          * @param {boolean} b
          */
-        public setValue(b? : any) : any {
-            if(((typeof b === 'boolean') || b === null)) {
+        public setValue(b?: any) {
+            if (((typeof b === 'boolean') || b === null)) {
                 return <any>this.setValue$java_lang_Boolean(b);
             } else throw new Error('invalid overload');
         }
 
-        public isChecked() : boolean {
+        public isChecked(): boolean {
             return this.getValue();
         }
 
-        public setChecked(b : boolean) {
+        public setChecked(b: boolean) {
             this.setValue$java_lang_Boolean(b);
         }
     }
@@ -4876,13 +4843,13 @@ namespace input {
 }
 namespace input {
     export class JSDateInput extends input.AbstractJSInput<Date> {
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name);
             this.setType(input.DateInputTypes.date);
             this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
         }
 
-        public setType(type : string) : JSDateInput {
+        public setType(type: string): JSDateInput {
             this.setAttribute("type", type);
             return this;
         }
@@ -4891,11 +4858,11 @@ namespace input {
          * 
          * @return {Date}
          */
-        public getValue() : Date {
+        public getValue(): Date {
             return this.getDateValue();
         }
 
-        public setValue$jsweet_lang_Date(val : Date) {
+        public setValue$jsweet_lang_Date(val: Date) {
             this.setDateValue(val);
         }
 
@@ -4903,17 +4870,17 @@ namespace input {
          * 
          * @param {Date} val
          */
-        public setValue(val? : any) : any {
-            if(((val != null && val instanceof <any>Date) || val === null)) {
+        public setValue(val?: any) {
+            if (((val != null && val instanceof <any>Date) || val === null)) {
                 return <any>this.setValue$jsweet_lang_Date(val);
             } else throw new Error('invalid overload');
         }
 
-        public setMin(min : Date) {
+        public setMin(min: Date) {
             this.setAttribute("min", this.toHtmlDateString(min));
         }
 
-        public setMax(max : Date) {
+        public setMax(max: Date) {
             this.setAttribute("max", this.toHtmlDateString(max));
         }
     }
@@ -4931,7 +4898,7 @@ namespace input {
              * @param {*} source
              * @param {Event} evt
              */
-            public performAction(source : api.Renderable, evt : Event) {
+            public performAction(source: api.Renderable, evt: Event) {
                 this.__parent.setValue(this.__parent.getValue());
             }
 
@@ -4947,21 +4914,21 @@ namespace input {
 }
 namespace input {
     export class JSNumberInput extends input.AbstractJSInput<number> {
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name);
             this.setAttribute("type", "number");
         }
 
-        public setType(type : string) : JSNumberInput {
+        public setType(type: string): JSNumberInput {
             this.setAttribute("type", type);
             return this;
         }
 
-        public setStep(step : number) {
+        public setStep(step: number) {
             this.setAttribute("step", step + "");
         }
 
-        public getStep() : number {
+        public getStep(): number {
             return parseInt(this.getAttribute("step"));
         }
 
@@ -4969,11 +4936,11 @@ namespace input {
          * 
          * @return {number}
          */
-        public getValue() : number {
+        public getValue(): number {
             return this.getDoubleValue();
         }
 
-        public setValue$java_lang_Double(val : number) {
+        public setValue$java_lang_Double(val: number) {
             this.setDoubleValue(val);
         }
 
@@ -4981,17 +4948,17 @@ namespace input {
          * 
          * @param {number} val
          */
-        public setValue(val? : any) : any {
-            if(((typeof val === 'number') || val === null)) {
+        public setValue(val?: any) {
+            if (((typeof val === 'number') || val === null)) {
                 return <any>this.setValue$java_lang_Double(val);
             } else throw new Error('invalid overload');
         }
 
-        public setMin(min : number) {
+        public setMin(min: number) {
             this.setAttribute("min", min + "");
         }
 
-        public setMax(max : number) {
+        public setMax(max: number) {
             this.setAttribute("max", "" + max);
         }
     }
@@ -5001,19 +4968,17 @@ namespace input {
 
 }
 namespace input {
-    export class JSTextInput extends input.AbstractJSInput<string> implements api.Renderer<JSTextInput> {
-        public constructor(name : string) {
+    export class JSTextInput extends input.AbstractJSInput<string> {
+        public constructor(name: string) {
             super(name);
             this.setType(api.StringInputTypes.text);
-            this.setAttribute("identifier", "html:input");
-            this.addRenderer(this);
         }
 
-        public setMaxLength(length : number) {
+        public setMaxLength(length: number) {
             this.setAttribute("maxlength", length + "");
         }
 
-        public setType(type : string) : JSTextInput {
+        public setType(type: string): JSTextInput {
             this.setAttribute("type", type);
             return this;
         }
@@ -5022,11 +4987,11 @@ namespace input {
          * 
          * @return {string}
          */
-        public getValue() : string {
+        public getValue(): string {
             return this.getStringValue();
         }
 
-        public setValue$java_lang_String(val : string) {
+        public setValue$java_lang_String(val: string) {
             this.setStringValue(val);
         }
 
@@ -5034,53 +4999,33 @@ namespace input {
          * 
          * @param {string} val
          */
-        public setValue(val? : any) : any {
-            if(((typeof val === 'string') || val === null)) {
+        public setValue(val?: any) {
+            if (((typeof val === 'string') || val === null)) {
                 return <any>this.setValue$java_lang_String(val);
             } else throw new Error('invalid overload');
         }
 
-        public getMask() : string {
+        public getMask(): string {
             return this.getAttribute("mask");
         }
 
-        public setMask(mask : string) {
+        public setMask(mask: string) {
             this.setAttribute("mask", mask);
             this.setRendered(false);
         }
-
-        public doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c : JSTextInput, root : HTMLElement) {
-            let mask : string = this.getMask();
-            if(mask != null && mask.trim().length > 0) {
-                let elem : HTMLElement = this.getNative();
-                let jq : JQuery = $(elem);
-                (<Function>$(elem)["inputmask"]).call(jq, mask);
-                eval("");
-            }
-        }
-
-        /**
-         * 
-         * @param {input.JSTextInput} c
-         * @param {HTMLElement} root
-         */
-        public doRender(c? : any, root? : any) : any {
-            if(((c != null && c instanceof <any>input.JSTextInput) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
-                return <any>this.doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c, root);
-            } else throw new Error('invalid overload');
-        }
     }
     JSTextInput["__class"] = "framework.components.input.JSTextInput";
-    JSTextInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.Renderer"];
+    JSTextInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
 
 
 }
 namespace input {
     export class JSTimeInput extends input.AbstractJSInput<Date> {
-        /*private*/ savedDate : Date = new Date();
+        /*private*/ savedDate: Date;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name);
+            this.savedDate = new Date();
             this.setAttribute("type", "time");
             this.setAttribute("identifier", "html:time-input");
         }
@@ -5089,25 +5034,25 @@ namespace input {
          * 
          * @return {Date}
          */
-        public getValue() : Date {
-            let time : string = this.getStringValue();
-            let d : Date = this.savedDate;
-            if(time != null && /* contains */(time.indexOf(":") != -1)) {
-                let htmn : string[] = time.split(":");
+        public getValue(): Date {
+            const time: string = this.getStringValue();
+            const d: Date = this.savedDate;
+            if (time != null && /* contains */(time.indexOf(":") != -1)){
+                const htmn: string[] = time.split(":");
                 d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
             }
             return d;
         }
 
-        public setValue$jsweet_lang_Date(val : Date) {
-            if(val != null) {
+        public setValue$jsweet_lang_Date(val: Date) {
+            if (val != null){
                 this.savedDate = val;
-                let mins : string = val.getMinutes() + "";
-                if(mins.length === 1) {
+                let mins: string = val.getMinutes() + "";
+                if (mins.length === 1){
                     mins = "0" + mins;
                 }
-                let hrs : string = val.getHours() + "";
-                if(hrs.length === 1) {
+                let hrs: string = val.getHours() + "";
+                if (hrs.length === 1){
                     hrs = "0" + hrs;
                 }
                 this.setStringValue(hrs + ":" + mins);
@@ -5118,8 +5063,8 @@ namespace input {
          * 
          * @param {Date} val
          */
-        public setValue(val? : any) : any {
-            if(((val != null && val instanceof <any>Date) || val === null)) {
+        public setValue(val?: any) {
+            if (((val != null && val instanceof <any>Date) || val === null)) {
                 return <any>this.setValue$jsweet_lang_Date(val);
             } else throw new Error('invalid overload');
         }
@@ -5131,16 +5076,17 @@ namespace input {
 }
 namespace input {
     export class RichTextEditor extends input.JSTextArea implements api.Renderer<RichTextEditor> {
-        /*private*/ editor : Object = null;
+        /*private*/ editor: Object;
 
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name);
+            this.editor = null;
             this.setAttribute("identifier", "html:richtext");
             this.addRenderer(this);
         }
 
-        public doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c : RichTextEditor, root : HTMLElement) {
-            if(this.editor == null) {
+        public doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c: RichTextEditor, root: HTMLElement) {
+            if (this.editor == null){
                 eval("this.editor = new Simditor({textarea: $(\'#" + this.getId() + "\')});");
             }
         }
@@ -5150,8 +5096,8 @@ namespace input {
          * @param {input.RichTextEditor} c
          * @param {HTMLElement} root
          */
-        public doRender(c? : any, root? : any) : any {
-            if(((c != null && c instanceof <any>input.RichTextEditor) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
+        public doRender(c?: any, root?: any) {
+            if (((c != null && c instanceof <any>input.RichTextEditor) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
                 return <any>this.doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root);
             } else throw new Error('invalid overload');
         }
@@ -5160,8 +5106,8 @@ namespace input {
          * 
          * @return {string}
          */
-        public getValue() : string {
-            if(this.editor != null) {
+        public getValue(): string {
+            if (this.editor != null){
                 (<Function>this.editor["saveContent"]).call(this.editor);
             }
             return super.getValue();
@@ -5174,7 +5120,7 @@ namespace input {
 }
 namespace input {
     export class JSRadio extends input.JSCheckBox {
-        public constructor(name : string) {
+        public constructor(name: string) {
             super(name);
             this.setAttribute("type", "radio");
         }
@@ -5193,3 +5139,5 @@ input.NumericInputTypes.types_$LI$();
 input.DateInputTypes.types_$LI$();
 
 api.StringInputTypes.types_$LI$();
+
+Boot.main(null);

@@ -2,6 +2,7 @@ package framework.components.table;
 
 
 import framework.components.JSContainer;
+import framework.components.api.Renderable;
 
 public class Table extends JSContainer{
 
@@ -19,11 +20,13 @@ public class Table extends JSContainer{
 		addChild(body);
 	}
 
-	public JSContainer getHead() {
+	public Renderable getHead() {
+		
 		return head;
+		
 	}
 
-	public JSContainer getBody() {
+	public Renderable getBody() {
 		return body;
 	}
 

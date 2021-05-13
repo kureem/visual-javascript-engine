@@ -316,13 +316,13 @@ declare namespace api {
         /**
          * return Array of style names set to this {@link Renderable}
          *
-         * @return {Array} Array of style names set to this {@link Renderable}
+         * @return {java.lang.String[]} Array of style names set to this {@link Renderable}
          */
         getStyleNames(): string[];
         /**
          * return Array of attributes set to this {@link Renderable}
          *
-         * @return {Array} Array of attributes set to this {@link Renderable}
+         * @return {java.lang.String[]} Array of attributes set to this {@link Renderable}
          */
         getAttributeNames(): string[];
         /**
@@ -584,6 +584,9 @@ declare namespace api {
         supports(clazz: any): any;
     }
 }
+declare class Boot {
+    static main(args: string[]): void;
+}
 declare class FileUploader {
 }
 declare namespace input {
@@ -604,6 +607,112 @@ declare namespace input {
     }
 }
 declare namespace table {
+    class DefaulTableModel implements table.TableModel {
+        data: Array<Object>;
+        /**
+         *
+         * @return {number}
+         */
+        getRowCount(): number;
+        /**
+         *
+         * @return {number}
+         */
+        getColumnCount(): number;
+        /**
+         *
+         * @param {number} columnIndex
+         * @return {string}
+         */
+        getColumnName(columnIndex: number): string;
+        /**
+         *
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         * @return {boolean}
+         */
+        isCellEditable(rowIndex: number, columnIndex: number): boolean;
+        /**
+         *
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         * @return {*}
+         */
+        getValueAt(rowIndex: number, columnIndex: number): any;
+        /**
+         *
+         * @param {*} aValue
+         * @param {number} rowIndex
+         * @param {number} columnIndex
+         */
+        setValueAt(aValue: any, rowIndex: number, columnIndex: number): void;
+        /**
+         *
+         * @param {*} l
+         */
+        addTableModelListener(l: table.TableModelListener): void;
+        /**
+         *
+         * @param {*} l
+         */
+        removeTableModelListener(l: table.TableModelListener): void;
+        constructor();
+    }
+}
+declare namespace table {
+    class DefaultTableColumnModel implements table.TableColumnModel {
+        columns: Array<table.TableColumn>;
+        pointer: number;
+        addColumn$framework_components_table_TableColumn(aColumn: table.TableColumn): void;
+        /**
+         *
+         * @param {table.TableColumn} aColumn
+         */
+        addColumn(aColumn?: any): any;
+        reset(): void;
+        /**
+         *
+         * @param {table.TableColumn} column
+         */
+        removeColumn(column: table.TableColumn): void;
+        /**
+         *
+         * @return {number}
+         */
+        getColumnCount(): number;
+        /**
+         *
+         * @return {*}
+         */
+        getColumns(): any;
+        /**
+         *
+         * @param {*} columnIdentifier
+         * @return {number}
+         */
+        getColumnIndex(columnIdentifier: any): number;
+        addColumn$framework_components_table_TableColumn_A(...col: table.TableColumn[]): DefaultTableColumnModel;
+        addColumnAt(col: table.TableColumn, index: number): DefaultTableColumnModel;
+        /**
+         *
+         * @param {number} columnIndex
+         * @return {table.TableColumn}
+         */
+        getColumn(columnIndex: number): table.TableColumn;
+        /**
+         *
+         * @return {boolean}
+         */
+        hasMoreElements(): boolean;
+        /**
+         *
+         * @return {table.TableColumn}
+         */
+        nextElement(): table.TableColumn;
+        constructor();
+    }
+}
+declare namespace table {
     interface TableCellRenderer {
         renderComponent(table: table.Table, container: api.Renderable, value: any, isSelected: boolean, hasFocus: boolean, row: number, column: number): any;
     }
@@ -617,8 +726,9 @@ declare namespace table {
          */
         modelIndex: number;
         /**
+         * @author Kureem Rossaye<br>
          * This object is not used internally by the drawing machinery of the
-         * <code>JTable</code>; identifiers may be set in the <code>TableColumn</code>
+         * <code>Table</code>; identifiers may be set in the <code>TableColumn</code>
          * as as an optional way to tag and locate table columns. The table package does
          * not modify or invoke any methods in these identifier objects other than the
          * <code>equals</code> method which is used in the <code>getColumnIndex()</code>
@@ -945,7 +1055,7 @@ declare class JSContainer implements api.Renderable {
     on(evt: string, listener: EventListener): void;
     /**
      *
-     * @return {Array} An array of custom events supported by the component<br>
+     * @return {java.lang.String[]} An array of custom events supported by the component<br>
      * This method is overridden by more complex components to provide
      * more advanced events mechanisms.
      */
@@ -1119,12 +1229,12 @@ declare class JSContainer implements api.Renderable {
     getChildren(): Array<api.Renderable>;
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     getStyleNames(): string[];
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     getAttributeNames(): string[];
     /**
@@ -1170,7 +1280,7 @@ declare class JSContainer implements api.Renderable {
      * Unitility method to check if the specified object is present in the
      * specified array
      *
-     * @param {Bound[]} lst
+     * @param {?[]} lst
      * The array to check if object is present
      * @param {*} o
      * The object to check if present
@@ -1262,7 +1372,7 @@ declare class CardLayout extends JSContainer {
     activate(name: string, ...params: Object[]): void;
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     advancedEventTypes(): string[];
 }
@@ -1270,7 +1380,7 @@ declare class CardLayoutItem extends JSContainer {
     constructor(name: string, tag: string);
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     advancedEventTypes(): string[];
 }
@@ -1338,7 +1448,7 @@ declare class HTMLTemplateContainer extends JSContainer implements api.TemplateR
      */
     render(parent?: any): any;
     compile(html: string, ctx: Object): string;
-    static invokeFunction(target: Object, __function: string, ...args: any[]): any;
+    static invokeFunction(target: Object, _function: string, ...args: any[]): any;
 }
 declare namespace input {
     abstract class AbstractJSInput<T> extends JSContainer implements api.InputField<T> {
@@ -1377,12 +1487,12 @@ declare namespace input {
         validate(): void;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         setBinding(binding: string): AbstractJSInput<T>;
-        abstract setValue(val?: any): any;
         abstract getValue(): any;
+        abstract setValue(val?: any): any;
     }
 }
 declare namespace input {
@@ -1391,7 +1501,7 @@ declare namespace input {
         constructor(name: string);
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         isValid(): boolean;
@@ -1488,7 +1598,7 @@ declare namespace input {
         setBinding(binding: string): api.InputField<string>;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
     }
@@ -1578,7 +1688,7 @@ declare namespace input {
         validate(): void;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         getBinding(): string;
@@ -1619,7 +1729,7 @@ declare namespace input {
         validate(): void;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         setReadOnly(b: boolean): JSTextArea;
@@ -1634,50 +1744,6 @@ declare namespace input {
 }
 declare class RestWebservice extends JSContainer {
     constructor(name?: any);
-    /**
-     *
-     * @return {Array}
-     */
-    advancedEventTypes(): string[];
-    isSet(prop: string): boolean;
-    getAccepts(): string;
-    setAccepts(accepts: string): void;
-    setDataType(dataType: string): void;
-    getDataType(): string;
-    setContentType(contentType: string): void;
-    getContentType(): string;
-    getBoolean(prop: string): boolean;
-    setAsync(b: boolean): void;
-    getAsync(): boolean;
-    setCache(b: boolean): void;
-    getCache(): boolean;
-    setCrossDomain(b: boolean): void;
-    getCrossDomain(): boolean;
-    setIfModified(b: boolean): void;
-    getIfModified(): boolean;
-    setProcessData(b: boolean): void;
-    getProcessData(): boolean;
-    setScriptCharset(charset: string): void;
-    getScriptCharset(): string;
-    setUsername(username: string): void;
-    getUsername(): string;
-    setMimeType(mimetype: string): void;
-    getMimeType(): string;
-    setPassword(password: string): void;
-    getPassword(): string;
-    setTraditional(b: boolean): void;
-    getTraditional(): boolean;
-    setTimeout(timeout: number): void;
-    getTimeout(): number;
-    setUrl(url: string): void;
-    getUrl(): string;
-    addHeader(key: string, value: string): void;
-    getHeaders(): any;
-    getData(): any;
-    setData(data: any): void;
-    setMethod(method: string): void;
-    getMethod(): string;
-    execute(): void;
 }
 declare class Row extends JSContainer {
     constructor(name: string);
@@ -1689,8 +1755,8 @@ declare namespace table {
         dataModel: table.TableModel;
         columnModel: table.TableColumnModel;
         constructor(name: string);
-        getHead(): JSContainer;
-        getBody(): JSContainer;
+        getHead(): api.Renderable;
+        getBody(): api.Renderable;
         getDataModel(): table.TableModel;
         setDataModel(dataModel: table.TableModel): void;
         getColumnModel(): table.TableColumnModel;
@@ -1764,7 +1830,7 @@ declare class JSUpload extends HTMLTemplateContainer implements api.EventListene
     triggerUpload(): void;
     /**
      *
-     * @return {Array}
+     * @return {java.lang.String[]}
      */
     advancedEventTypes(): string[];
     /**
@@ -1902,7 +1968,7 @@ declare namespace input {
     }
 }
 declare namespace input {
-    class JSTextInput extends input.AbstractJSInput<string> implements api.Renderer<JSTextInput> {
+    class JSTextInput extends input.AbstractJSInput<string> {
         constructor(name: string);
         setMaxLength(length: number): void;
         setType(type: string): JSTextInput;
@@ -1919,13 +1985,6 @@ declare namespace input {
         setValue(val?: any): any;
         getMask(): string;
         setMask(mask: string): void;
-        doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c: JSTextInput, root: HTMLElement): void;
-        /**
-         *
-         * @param {input.JSTextInput} c
-         * @param {HTMLElement} root
-         */
-        doRender(c?: any, root?: any): any;
     }
 }
 declare namespace input {

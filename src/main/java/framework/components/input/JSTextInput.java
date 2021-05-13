@@ -15,22 +15,15 @@
  */
 package framework.components.input;
 
-import static def.jquery.Globals.$;
-import static jsweet.lang.Globals.eval;
-
-import def.jquery.JQuery;
-import def.js.Function;
-import framework.components.api.Renderer;
 import framework.components.api.StringInputTypes;
-import jsweet.dom.HTMLElement;
 
-public class JSTextInput extends AbstractJSInput<String> implements Renderer<JSTextInput> {
+public class JSTextInput extends AbstractJSInput<String> {
 
 	public JSTextInput(String name) {
 		super(name);
 		setType(StringInputTypes.text);
-		setAttribute("identifier", "html:input");
-		addRenderer(this);
+		//setAttribute("identifier", "html:input");
+		//addRenderer(this);
 	}
 
 	public void setMaxLength(Double length) {
@@ -62,18 +55,20 @@ public class JSTextInput extends AbstractJSInput<String> implements Renderer<JST
 	}
 
 	
-	@Override
-	public void doRender(JSTextInput c, HTMLElement root) {
-		
-		String mask = getMask();
-		if(mask != null && mask.trim().length() > 0){
-			HTMLElement elem = getNative();
-			JQuery jq = $(elem);
-			 ((Function)$(elem).$get("inputmask")).call(jq, mask);
-			 eval("");
-		}
-		// TODO Auto-generated method stub
-		
-	}
+
+	
+//	@Override
+//	public void doRender(JSTextInput c, HTMLElement root) {
+//		
+//		String mask = getMask();
+//		if(mask != null && mask.trim().length() > 0){
+//			HTMLElement elem = getNative();
+//			JQuery jq = $(elem);
+//			 ((Function)$(elem).$get("inputmask")).call(jq, mask);
+//			 eval("");
+//		}
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

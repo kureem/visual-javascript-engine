@@ -15,7 +15,6 @@
  */
 package framework.components;
 
-import static jsweet.dom.Globals.window;
 import static jsweet.dom.Globals.document;
 
 import framework.components.api.TemplateRenderable;
@@ -145,12 +144,12 @@ public class HTMLTemplateContainer extends JSContainer implements TemplateRender
 		return html;
 	}
 
-	public static java.lang.Object invokeFunction(jsweet.lang.Object target, String function,
+	public static java.lang.Object invokeFunction(jsweet.lang.Object target, String _function,
 			java.lang.Object... args) {
-		if (target.hasOwnProperty(function)) {
-			return ((Function) target.$get(function)).call(target, args);
+		if (target.hasOwnProperty(_function)) {
+			return ((Function) target.$get(_function)).call(target, args);
 		} else {
-			throw new Error(target + " does not contain function:" + function);
+			throw new Error(target + " does not contain function:" + _function);
 		}
 	}
 }
