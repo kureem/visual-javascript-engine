@@ -1,26 +1,16 @@
-# JSweet visual-javascript candy
+# Visual Javascript engine
 
 ## Description
 
-This project is a Java bridge to the visual javascript library, so that visual-javascript can be used from Java (thanks to the JSweet transpiler).
-
-This candy is used for compilation (typing and API checking) but does not contain any implementation, similarly to a C/C++ header file or to a TypeScript definition file. 
-
+This project is a java library that allows creation of web user interface using pure java.
+The java codes and transpiled to javascript using the Jsweet transpilator.
 ## How to install the candy
 
-Clone this project with git and install the JSweet candy in your local Maven repository (so that you can refer to it as a dependency in other Maven projects):
+Clone this project with git and install the library in your local Maven repository (so that you can refer to it as a dependency in other Maven projects):
 
 ```bash
 > mvn install
 ```
-
-To deploy the candy to the [jsweet-candies](https://github.com/jsweet-candies) organization (please contact us to get an authorized access):
-
-```bash
-> mvn deploy
-```
-
-Note: if you want to publish the candy in your own Maven repository, please refer to existing documentation on that particular topic.
 
 ## Use from a Java/JSweet project
 
@@ -28,8 +18,8 @@ Add the following dependency to the ``pom.xml``:
 
 ```xml
 <dependency>
-	<groupId>org.jsweet.candies.ext</groupId>
-	<artifactId>visual-javascript</artifactId>
+	<groupId>org.vjs</groupId>
+	<artifactId>engine</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 </dependency>
 ```
