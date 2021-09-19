@@ -71,8 +71,8 @@ var api;
                 const me = c;
                 const component = me;
                 this.doNothing(component);
-                for (let index186 = 0; index186 < scripts.length; index186++) {
-                    let scr = scripts[index186];
+                for (let index189 = 0; index189 < scripts.length; index189++) {
+                    let scr = scripts[index189];
                     {
                         eval(scr);
                     }
@@ -97,14 +97,14 @@ var api;
         }
         renderEvents(njq, c) {
             const keys = Object.keys(c.getListeners());
-            for (let index187 = 0; index187 < keys.length; index187++) {
-                let key = keys[index187];
+            for (let index190 = 0; index190 < keys.length; index190++) {
+                let key = keys[index190];
                 {
                     const listeners = c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for (let index188 = 0; index188 < listeners.length; index188++) {
-                                let l = listeners[index188];
+                            for (let index191 = 0; index191 < listeners.length; index191++) {
+                                let l = listeners[index191];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -118,9 +118,9 @@ var api;
         renderAttributes(njq, c, changed) {
             if (changed) {
                 {
-                    let array190 = c.getChangedAttributes();
-                    for (let index189 = 0; index189 < array190.length; index189++) {
-                        let key = array190[index189];
+                    let array193 = c.getChangedAttributes();
+                    for (let index192 = 0; index192 < array193.length; index192++) {
+                        let key = array193[index192];
                         {
                             const attr = c.getAttribute(key);
                             if (attr == null) {
@@ -135,9 +135,9 @@ var api;
             }
             else {
                 {
-                    let array192 = c.getAttributeNames();
-                    for (let index191 = 0; index191 < array192.length; index191++) {
-                        let key = array192[index191];
+                    let array195 = c.getAttributeNames();
+                    for (let index194 = 0; index194 < array195.length; index194++) {
+                        let key = array195[index194];
                         {
                             const attr = c.getAttribute(key);
                             if (attr != null)
@@ -163,9 +163,9 @@ var api;
         renderStyles(njq, c, changed) {
             if (changed) {
                 {
-                    let array194 = c.getChangedStyles();
-                    for (let index193 = 0; index193 < array194.length; index193++) {
-                        let key = array194[index193];
+                    let array197 = c.getChangedStyles();
+                    for (let index196 = 0; index196 < array197.length; index196++) {
+                        let key = array197[index196];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -174,9 +174,9 @@ var api;
             }
             else {
                 {
-                    let array196 = c.getStyleNames();
-                    for (let index195 = 0; index195 < array196.length; index195++) {
-                        let key = array196[index195];
+                    let array199 = c.getStyleNames();
+                    for (let index198 = 0; index198 < array199.length; index198++) {
+                        let key = array199[index198];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -199,8 +199,8 @@ var api;
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet = styleelem.sheet;
-                for (let index197 = 0; index197 < rules.length; index197++) {
-                    let rule = rules[index197];
+                for (let index200 = 0; index200 < rules.length; index200++) {
+                    let rule = rules[index200];
                     sheet.insertRule(rule);
                 }
             }
@@ -327,11 +327,6 @@ var api;
     ValidationException["__class"] = "framework.components.api.ValidationException";
     ValidationException["__interfaces"] = ["java.io.Serializable"];
 })(api || (api = {}));
-class Boot {
-    static main(args) {
-    }
-}
-Boot["__class"] = "framework.components.Boot";
 class FileUploader {
 }
 FileUploader["__class"] = "framework.components.FileUploader";
@@ -359,6 +354,242 @@ var input;
     input.NumericInputTypes = NumericInputTypes;
     NumericInputTypes["__class"] = "framework.components.input.NumericInputTypes";
 })(input || (input = {}));
+class Main {
+    static main(args) {
+        const main = new JSContainer("div");
+        const eventLogs = new JSContainer("eventLogs", "div");
+        main.addChild$framework_components_api_Renderable(eventLogs);
+        const cardLayout = new CardLayout("cards", "div");
+        main.addChild$framework_components_api_Renderable(cardLayout);
+        const buttons = new JSContainer("div");
+        main.addChild$framework_components_api_Renderable(buttons);
+        const first = new Button("first", "<<");
+        const previous = new Button("previous", "<");
+        const next = new Button("next", ">");
+        const last = new Button("last", ">>");
+        buttons.addChild$framework_components_api_Renderable(first).addChild(previous).addChild(next).addChild(last);
+        first.addEventListener(new Main.Main$0(cardLayout), "click");
+        previous.addEventListener(new Main.Main$1(cardLayout), "click");
+        next.addEventListener(new Main.Main$2(cardLayout), "click");
+        last.addEventListener(new Main.Main$3(cardLayout), "click");
+        for (let i = 1; i <= 3; i++) {
+            {
+                const item = new CardLayoutItem("item-" + i, "div");
+                item.setStyle("border", "solid 1px silver").setStyle("width", "200px").setStyle("height", "200px");
+                item.addChild$framework_components_api_Renderable(new JSContainer("h1").setHtml("I am Item number " + i));
+                cardLayout.addItem(item);
+                item.addEventListener(new Main.Main$4(item, eventLogs), "activate");
+                item.addEventListener(new Main.Main$5(item, eventLogs), "deactivate");
+                item.addEventListener(new Main.Main$6(item, eventLogs), "validate");
+            }
+            ;
+        }
+        cardLayout.addEventListener(new Main.Main$7(eventLogs), "next");
+        cardLayout.addEventListener(new Main.Main$8(eventLogs), "previous");
+        cardLayout.addEventListener(new Main.Main$9(eventLogs), "first");
+        cardLayout.addEventListener(new Main.Main$10(eventLogs), "last");
+        cardLayout.refresh();
+        main.render$();
+    }
+}
+Main["__class"] = "framework.components.Main";
+(function (Main) {
+    class Main$0 {
+        constructor(cardLayout) {
+            this.cardLayout = cardLayout;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            const param = new Object();
+            param["method"] = "first";
+            this.cardLayout.first(param);
+        }
+    }
+    Main.Main$0 = Main$0;
+    Main$0["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$1 {
+        constructor(cardLayout) {
+            this.cardLayout = cardLayout;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            const param = new Object();
+            param["method"] = "previous";
+            this.cardLayout.previous(param);
+        }
+    }
+    Main.Main$1 = Main$1;
+    Main$1["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$2 {
+        constructor(cardLayout) {
+            this.cardLayout = cardLayout;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            const param = new Object();
+            param["method"] = "next";
+            this.cardLayout.next(param);
+        }
+    }
+    Main.Main$2 = Main$2;
+    Main$2["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$3 {
+        constructor(cardLayout) {
+            this.cardLayout = cardLayout;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            const param = new Object();
+            param["method"] = "last";
+            this.cardLayout.last(param);
+        }
+    }
+    Main.Main$3 = Main$3;
+    Main$3["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$4 {
+        constructor(item, eventLogs) {
+            this.item = item;
+            this.eventLogs = eventLogs;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            this.item.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml("I am being activated"));
+            this.eventLogs.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml(source.getName() + " is being activated"));
+        }
+    }
+    Main.Main$4 = Main$4;
+    Main$4["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$5 {
+        constructor(item, eventLogs) {
+            this.item = item;
+            this.eventLogs = eventLogs;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            this.item.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml("I am being deactivated"));
+            this.eventLogs.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml(source.getName() + " is being deactivated"));
+        }
+    }
+    Main.Main$5 = Main$5;
+    Main$5["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$6 {
+        constructor(item, eventLogs) {
+            this.item = item;
+            this.eventLogs = eventLogs;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            this.item.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml("I am being validated"));
+            this.eventLogs.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml(source.getName() + " is being validated"));
+        }
+    }
+    Main.Main$6 = Main$6;
+    Main$6["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$7 {
+        constructor(eventLogs) {
+            this.eventLogs = eventLogs;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            console.log(evt["from"]);
+            console.log(evt["to"]);
+            console.log(evt["source"]);
+            console.log(evt["dest"]);
+            this.eventLogs.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml("next is being triggered on " + source.getName()));
+        }
+    }
+    Main.Main$7 = Main$7;
+    Main$7["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$8 {
+        constructor(eventLogs) {
+            this.eventLogs = eventLogs;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            console.log(evt["from"]);
+            console.log(evt["to"]);
+            console.log(evt["source"]);
+            console.log(evt["dest"]);
+            this.eventLogs.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml("previous is being triggered on " + source.getName()));
+        }
+    }
+    Main.Main$8 = Main$8;
+    Main$8["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$9 {
+        constructor(eventLogs) {
+            this.eventLogs = eventLogs;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            console.log(evt["from"]);
+            console.log(evt["to"]);
+            console.log(evt["source"]);
+            console.log(evt["dest"]);
+            this.eventLogs.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml("first is being triggered on " + source.getName()));
+        }
+    }
+    Main.Main$9 = Main$9;
+    Main$9["__interfaces"] = ["framework.components.api.EventListener"];
+    class Main$10 {
+        constructor(eventLogs) {
+            this.eventLogs = eventLogs;
+        }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            console.log(evt["from"]);
+            console.log(evt["to"]);
+            console.log(evt["source"]);
+            console.log(evt["dest"]);
+            this.eventLogs.addChild$framework_components_api_Renderable(new JSContainer("p").setHtml("last is being triggered on " + source.getName()));
+        }
+    }
+    Main.Main$10 = Main$10;
+    Main$10["__interfaces"] = ["framework.components.api.EventListener"];
+})(Main || (Main = {}));
 var table;
 (function (table) {
     class DefaulTableModel {
@@ -485,8 +716,8 @@ var table;
          * @return {number}
          */
         getColumnIndex(columnIdentifier) {
-            for (let index198 = 0; index198 < this.columns.length; index198++) {
-                let col = this.columns[index198];
+            for (let index201 = 0; index201 < this.columns.length; index201++) {
+                let col = this.columns[index201];
                 {
                     if (col.identifier === columnIdentifier) {
                         return (this.columns.indexOf(col) | 0);
@@ -912,9 +1143,9 @@ var util;
         static visit(designable, visitor) {
             visitor.doVisit(designable);
             {
-                let array200 = designable.getChildren();
-                for (let index199 = 0; index199 < array200.length; index199++) {
-                    let child = array200[index199];
+                let array203 = designable.getChildren();
+                for (let index202 = 0; index202 < array203.length; index202++) {
+                    let child = array203[index202];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -924,8 +1155,8 @@ var util;
         static getTags(type) {
             const html5tags = (window["html5tags"]);
             const result = (new Array());
-            for (let index201 = 0; index201 < html5tags.length; index201++) {
-                let html5tag = html5tags[index201];
+            for (let index204 = 0; index204 < html5tags.length; index204++) {
+                let html5tag = html5tags[index204];
                 {
                     const stype = html5tag["type"];
                     if (stype === type || type === "*") {
@@ -948,8 +1179,8 @@ var util;
             if ( /* contains */(property.indexOf(".") != -1)) {
                 const parts = property.split(".");
                 let tmp = obj;
-                for (let index202 = 0; index202 < parts.length; index202++) {
-                    let part = parts[index202];
+                for (let index205 = 0; index205 < parts.length; index205++) {
+                    let part = parts[index205];
                     {
                         tmp = PropertyUtil.getValue(tmp, part);
                     }
@@ -1019,8 +1250,8 @@ var util;
             const result = new Object();
             if ( /* contains */(hash.indexOf("?") != -1)) {
                 const kvs = hash.split("?")[1].split("&");
-                for (let index203 = 0; index203 < kvs.length; index203++) {
-                    let kv = kvs[index203];
+                for (let index206 = 0; index206 < kvs.length; index206++) {
+                    let kv = kvs[index206];
                     {
                         const akv = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1098,8 +1329,8 @@ class JSContainer {
         console.log("firing:" + key + " on " + this.getName());
         const listeners = this.getListeners()[key];
         if (listeners != null && listeners.length > 0) {
-            for (let index204 = 0; index204 < listeners.length; index204++) {
-                let l = listeners[index204];
+            for (let index207 = 0; index207 < listeners.length; index207++) {
+                let l = listeners[index207];
                 {
                     l.performAction(this, evt);
                 }
@@ -1125,9 +1356,9 @@ class JSContainer {
     }
     getChild(name) {
         {
-            let array206 = this.getChildren();
-            for (let index205 = 0; index205 < array206.length; index205++) {
-                let child = array206[index205];
+            let array209 = this.getChildren();
+            for (let index208 = 0; index208 < array209.length; index208++) {
+                let child = array209[index208];
                 {
                     if (child.getName() === name) {
                         return child;
@@ -1307,14 +1538,14 @@ class JSContainer {
         const aStyles = styles.split(" ");
         const toAdds = styleClass.split(" ");
         let res = "";
-        for (let index207 = 0; index207 < toAdds.length; index207++) {
-            let toAdd = toAdds[index207];
+        for (let index210 = 0; index210 < toAdds.length; index210++) {
+            let toAdd = toAdds[index210];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0) {
                     let add = true;
-                    for (let index208 = 0; index208 < aStyles.length; index208++) {
-                        let style = aStyles[index208];
+                    for (let index211 = 0; index211 < aStyles.length; index211++) {
+                        let style = aStyles[index211];
                         {
                             style = style.trim();
                             if (style.length > 0) {
@@ -1350,8 +1581,8 @@ class JSContainer {
             return false;
         }
         const aStyles = styles.split(" ");
-        for (let index209 = 0; index209 < aStyles.length; index209++) {
-            let style = aStyles[index209];
+        for (let index212 = 0; index212 < aStyles.length; index212++) {
+            let style = aStyles[index212];
             {
                 style = style.trim();
                 if (style !== "") {
@@ -1380,8 +1611,8 @@ class JSContainer {
     removeClass(cls) {
         if (cls != null && cls.trim() !== "") {
             const toremove = cls.split(" ");
-            for (let index210 = 0; index210 < toremove.length; index210++) {
-                let s = toremove[index210];
+            for (let index213 = 0; index213 < toremove.length; index213++) {
+                let s = toremove[index213];
                 {
                     this.removeSingleClass(s);
                 }
@@ -1394,8 +1625,8 @@ class JSContainer {
         if (cl != null && cl.length > 0) {
             const classes = cl.split(" ");
             let result = "";
-            for (let index211 = 0; index211 < classes.length; index211++) {
-                let scl = classes[index211];
+            for (let index214 = 0; index214 < classes.length; index214++) {
+                let scl = classes[index214];
                 {
                     if (scl !== cls) {
                         if (result === "") {
@@ -1463,9 +1694,9 @@ class JSContainer {
         let i = 0;
         let added = false;
         {
-            let array213 = this.getChildren();
-            for (let index212 = 0; index212 < array213.length; index212++) {
-                let c = array213[index212];
+            let array216 = this.getChildren();
+            for (let index215 = 0; index215 < array216.length; index215++) {
+                let c = array216[index215];
                 {
                     if (i === index) {
                         children.push(child);
@@ -1702,9 +1933,9 @@ class JSContainer {
         this.d["rendered"] = b;
         if (!b) {
             {
-                let array215 = this.getChildren();
-                for (let index214 = 0; index214 < array215.length; index214++) {
-                    let child = array215[index214];
+                let array218 = this.getChildren();
+                for (let index217 = 0; index217 < array218.length; index217++) {
+                    let child = array218[index217];
                     {
                         child.setRendered(b);
                     }
@@ -1754,8 +1985,8 @@ class JSContainer {
      * @return {boolean} Whether is present or not
      */
     contains(lst, o) {
-        for (let index216 = 0; index216 < lst.length; index216++) {
-            let oo = lst[index216];
+        for (let index219 = 0; index219 < lst.length; index219++) {
+            let oo = lst[index219];
             {
                 if ( /* equals */((o1, o2) => o1 && o1.equals ? o1.equals(o2) : o1 === o2)(oo, o)) {
                     return true;
@@ -1772,22 +2003,22 @@ class JSContainer {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
             const tmp = (new Array());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for (let index217 = 0; index217 < renderers.length; index217++) {
-                let r = renderers[index217];
+            for (let index220 = 0; index220 < renderers.length; index220++) {
+                let r = renderers[index220];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for (let index218 = 0; index218 < renderers.length; index218++) {
-            let renderer = renderers[index218];
+        for (let index221 = 0; index221 < renderers.length; index221++) {
+            let renderer = renderers[index221];
             renderer.doRender(this, parent);
         }
         {
-            let array220 = this.getChildren();
-            for (let index219 = 0; index219 < array220.length; index219++) {
-                let child = array220[index219];
+            let array223 = this.getChildren();
+            for (let index222 = 0; index222 < array223.length; index222++) {
+                let child = array223[index222];
                 {
                     child['render$']();
                 }
@@ -1824,8 +2055,8 @@ class JSContainer {
         const previous = this.d["data"];
         if (previous != null && previous instanceof Array) {
             const arData = previous;
-            for (let index221 = 0; index221 < arData.length; index221++) {
-                let line = arData[index221];
+            for (let index224 = 0; index224 < arData.length; index224++) {
+                let line = arData[index224];
                 {
                     const value = line["value"];
                     this.setAttribute(value, null);
@@ -1835,9 +2066,9 @@ class JSContainer {
         else {
             if (previous != null) {
                 {
-                    let array223 = Object.keys(previous);
-                    for (let index222 = 0; index222 < array223.length; index222++) {
-                        let key = array223[index222];
+                    let array226 = Object.keys(previous);
+                    for (let index225 = 0; index225 < array226.length; index225++) {
+                        let key = array226[index225];
                         {
                             this.setAttribute(key, null);
                         }
@@ -1849,8 +2080,8 @@ class JSContainer {
         if (data != null) {
             if (data != null && data instanceof Array) {
                 const arData = data;
-                for (let index224 = 0; index224 < arData.length; index224++) {
-                    let line = arData[index224];
+                for (let index227 = 0; index227 < arData.length; index227++) {
+                    let line = arData[index227];
                     {
                         const text = line["text"];
                         const value = line["value"];
@@ -1860,9 +2091,9 @@ class JSContainer {
             }
             else {
                 {
-                    let array226 = Object.keys(data);
-                    for (let index225 = 0; index225 < array226.length; index225++) {
-                        let key = array226[index225];
+                    let array229 = Object.keys(data);
+                    for (let index228 = 0; index228 < array229.length; index228++) {
+                        let key = array229[index228];
                         {
                             this.setAttribute(key, data[key]);
                         }
@@ -1886,9 +2117,9 @@ class JSContainer {
         const clsss = parent.getAttribute("class");
         if (clsss != null) {
             {
-                let array228 = parent.getAttribute("class").split(" ");
-                for (let index227 = 0; index227 < array228.length; index227++) {
-                    let s = array228[index227];
+                let array231 = parent.getAttribute("class").split(" ");
+                for (let index230 = 0; index230 < array231.length; index230++) {
+                    let s = array231[index230];
                     {
                         if (s.trim() === cls)
                             return parent;
@@ -1984,19 +2215,66 @@ JSContainer["__interfaces"] = ["framework.components.api.Renderable"];
     JSContainer.JSContainer$0 = JSContainer$0;
     JSContainer$0["__interfaces"] = ["framework.components.api.EventListener"];
 })(JSContainer || (JSContainer = {}));
+class Button extends JSContainer {
+    constructor(name, text) {
+        super(name, "button");
+        this.setHtml(text);
+    }
+}
+Button["__class"] = "framework.components.Button";
+Button["__interfaces"] = ["framework.components.api.Renderable"];
+/**
+ * Creates a new card layout container
+ * @param {string} name - The name of the container.
+ * @param {string} tag - The tag of the container
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 class CardLayout extends JSContainer {
     constructor(name, tag) {
         super(name, tag);
         this.currentActive = "";
         this.currentIndex = 0;
     }
+    /**
+     * Adds a {@link CardLayoutItem} to this container.
+     * @param {CardLayoutItem} item - The item to add
+     * @return {CardLayout} - this
+     */
     addItem(item) {
         this.addChild$framework_components_api_Renderable(item);
+        if (this.getChildren().length > 1) {
+            item.setStyle("display", "none");
+        }
         return this;
     }
+    /**
+     * Adds  {@link CardLayoutItem}s to this container.
+     * @param {framework.components.CardLayoutItem[]} items - The items to add
+     * @return {CardLayout} - this
+     */
+    addItems(...items) {
+        for (let index232 = 0; index232 < items.length; index232++) {
+            let item = items[index232];
+            {
+                this.addItem(item);
+            }
+        }
+        return this;
+    }
+    /**
+     *
+     * @return {number} - The index of the currently active (visible) {@link CardLayoutItem} of this container
+     */
     getCurrentIndex() {
         return this.currentIndex;
     }
+    /**
+     * Search and return the {@link CardLayoutItem} having the specified index
+     * @param {number} index - The index of the {@link CardLayoutItem} searching for
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} item having specified index
+     */
     getItem(index) {
         if (index < this.getChildren().length) {
             return this.getChildren()[index];
@@ -2005,12 +2283,18 @@ class CardLayout extends JSContainer {
             return null;
         }
     }
+    /**
+     * Searches for the {@link CardLayoutItem} having specified name, and returns its index.
+     * @param {string} name - The name of {@link CardLayoutItem} searching for
+     * @return {number} - The index of the {@link CardLayoutItem} having name specified
+     *
+     */
     getIndex(name) {
         let index = 0;
         {
-            let array230 = this.getChildren();
-            for (let index229 = 0; index229 < array230.length; index229++) {
-                let child = array230[index229];
+            let array234 = this.getChildren();
+            for (let index233 = 0; index233 < array234.length; index233++) {
+                let child = array234[index233];
                 {
                     if (child.getName() === name) {
                         return index;
@@ -2021,6 +2305,14 @@ class CardLayout extends JSContainer {
         }
         return -1;
     }
+    /**
+     * Activates the next {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * The previous Event will be activated<br>
+     *
+     * will return null and do nothing if currently the last item is active.
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
+     */
     next(...params) {
         if (this.currentIndex < (this.getChildren().length - 1)) {
             const current = this.getItem(this.currentIndex);
@@ -2049,6 +2341,12 @@ class CardLayout extends JSContainer {
             return null;
         }
     }
+    /**
+     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * will return null and do nothing if currently the first item is active.
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
+     */
     previous(...params) {
         if (this.currentIndex > 0) {
             const current = this.getItem(this.currentIndex);
@@ -2067,6 +2365,12 @@ class CardLayout extends JSContainer {
             return null;
         }
     }
+    /**
+     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * will return null and do nothing if currently the first item is active.
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
+     */
     back(...params) {
         return this.previous.apply(this, params);
     }
@@ -2112,16 +2416,27 @@ class CardLayout extends JSContainer {
         }
     }
     getDefault() {
-        return this.getAttribute("default");
+        const def = this.getAttribute("default");
+        if (def == null || def === "") {
+            if (this.getChildren().length > 0) {
+                return this.getChildren()[0].getName();
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return def;
+        }
     }
     activate(name, ...params) {
         if (name === this.currentActive && this.currentIndex >= 0) {
             return;
         }
         {
-            let array232 = this.getChildren();
-            for (let index231 = 0; index231 < array232.length; index231++) {
-                let child = array232[index231];
+            let array236 = this.getChildren();
+            for (let index235 = 0; index235 < array236.length; index235++) {
+                let child = array236[index235];
                 {
                     if (child.getName() === name) {
                         const evt = new CustomEvent("activate");
@@ -2160,6 +2475,23 @@ class CardLayout extends JSContainer {
      */
     advancedEventTypes() {
         return ["first", "previous", "next", "last"];
+    }
+    refresh() {
+        const def = this.getDefault();
+        {
+            let array238 = this.getChildren();
+            for (let index237 = 0; index237 < array238.length; index237++) {
+                let r = array238[index237];
+                {
+                    if (r.getName() === def) {
+                        r.setStyle("display", null);
+                    }
+                    else {
+                        r.setStyle("display", "none");
+                    }
+                }
+            }
+        }
     }
 }
 CardLayout["__class"] = "framework.components.CardLayout";
@@ -2305,8 +2637,8 @@ class HTMLTemplateContainer extends JSContainer {
                 const tag = tm.tagName;
                 this.setTag(tag);
                 const attrs = tm.attributes;
-                for (let index233 = 0; index233 < attrs.length; index233++) {
-                    let att = attrs[index233];
+                for (let index239 = 0; index239 < attrs.length; index239++) {
+                    let att = attrs[index239];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -2518,8 +2850,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index234 = 0; index234 < this.validators.length; index234++) {
-                let v = this.validators[index234];
+            for (let index240 = 0; index240 < this.validators.length; index240++) {
+                let v = this.validators[index240];
                 {
                     const b = v.validate(this);
                     if (!b) {
@@ -2871,8 +3203,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         validate() {
             let valid = true;
             const e = new api.ValidationException();
-            for (let index235 = 0; index235 < this.validators.length; index235++) {
-                let v = this.validators[index235];
+            for (let index241 = 0; index241 < this.validators.length; index241++) {
+                let v = this.validators[index241];
                 {
                     const b = v.validate(this);
                     if (!b) {
@@ -3028,8 +3360,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         setOptions$java_lang_String(options) {
             const opts = options.split("\n");
-            for (let index236 = 0; index236 < opts.length; index236++) {
-                let opt = opts[index236];
+            for (let index242 = 0; index242 < opts.length; index242++) {
+                let opt = opts[index242];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3145,8 +3477,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             if (ele != null) {
                 if (ele.multiple) {
                     const result = (new Array());
-                    for (let index237 = 0; index237 < ele.children.length; index237++) {
-                        let e = ele.children[index237];
+                    for (let index243 = 0; index243 < ele.children.length; index243++) {
+                        let e = ele.children[index243];
                         {
                             const opt = e;
                             if (opt.selected)
@@ -3162,9 +3494,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             else {
                 const val = this.getAttribute("value");
                 {
-                    let array239 = this.getChildren();
-                    for (let index238 = 0; index238 < array239.length; index238++) {
-                        let opt = array239[index238];
+                    let array245 = this.getChildren();
+                    for (let index244 = 0; index244 < array245.length; index244++) {
+                        let opt = array245[index244];
                         {
                             if (opt.getAttribute("value") === val) {
                                 return opt.getValue();
@@ -3202,13 +3534,13 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array241 = this.getChildren();
-                    for (let index240 = 0; index240 < array241.length; index240++) {
-                        let opt = array241[index240];
+                    let array247 = this.getChildren();
+                    for (let index246 = 0; index246 < array247.length; index246++) {
+                        let opt = array247[index246];
                         {
                             opt.setSelected(false);
-                            for (let index242 = 0; index242 < arrVal.length; index242++) {
-                                let val = arrVal[index242];
+                            for (let index248 = 0; index248 < arrVal.length; index248++) {
+                                let val = arrVal[index248];
                                 {
                                     if (opt.getAttribute("value") === val) {
                                         opt.setSelected(true);
@@ -3221,9 +3553,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             }
             else {
                 {
-                    let array244 = this.getChildren();
-                    for (let index243 = 0; index243 < array244.length; index243++) {
-                        let opt = array244[index243];
+                    let array250 = this.getChildren();
+                    for (let index249 = 0; index249 < array250.length; index249++) {
+                        let opt = array250[index249];
                         {
                             opt.setSelected(false);
                         }
@@ -3253,8 +3585,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index245 = 0; index245 < this.validators.length; index245++) {
-                let v = this.validators[index245];
+            for (let index251 = 0; index251 < this.validators.length; index251++) {
+                let v = this.validators[index251];
                 {
                     const b = v.validate(this);
                     if (!b) {
@@ -3285,8 +3617,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         setData(data_) {
             this.clearChildren();
             this.setRendered(false);
-            for (let index246 = 0; index246 < data_.length; index246++) {
-                let o = data_[index246];
+            for (let index252 = 0; index252 < data_.length; index252++) {
+                let o = data_[index252];
                 {
                     if (o.hasOwnProperty("value")) {
                         const value = o["value"];
@@ -3309,9 +3641,9 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
             const result = (new Array());
             if (this.isMultiple()) {
                 {
-                    let array248 = obj;
-                    for (let index247 = 0; index247 < array248.length; index247++) {
-                        let o = array248[index247];
+                    let array254 = obj;
+                    for (let index253 = 0; index253 < array254.length; index253++) {
+                        let o = array254[index253];
                         {
                             const item = this.findItem(o);
                             if (item != null) {
@@ -3336,8 +3668,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
         }
         findItem(value) {
             if (this.data != null) {
-                for (let index249 = 0; index249 < this.data.length; index249++) {
-                    let o = this.data[index249];
+                for (let index255 = 0; index255 < this.data.length; index255++) {
+                    let o = this.data[index255];
                     {
                         let val = o["value"];
                         val = val + "";
@@ -3434,8 +3766,8 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", 
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index250 = 0; index250 < this.validators.length; index250++) {
-                let v = this.validators[index250];
+            for (let index256 = 0; index256 < this.validators.length; index256++) {
+                let v = this.validators[index256];
                 {
                     const b = v.validate(this);
                     if (!b) {
@@ -4184,4 +4516,4 @@ JSContainer.defaultRenderer_$LI$();
 input.NumericInputTypes.types_$LI$();
 input.DateInputTypes.types_$LI$();
 api.StringInputTypes.types_$LI$();
-Boot.main(null);
+Main.main(null);

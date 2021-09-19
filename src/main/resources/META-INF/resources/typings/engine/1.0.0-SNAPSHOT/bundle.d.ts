@@ -584,9 +584,6 @@ declare namespace api {
         supports(clazz: any): any;
     }
 }
-declare class Boot {
-    static main(args: string[]): void;
-}
 declare class FileUploader {
 }
 declare namespace input {
@@ -604,6 +601,124 @@ declare namespace input {
         static range: string;
         static types: string[];
         static types_$LI$(): string[];
+    }
+}
+declare class Main {
+    static main(args: string[]): void;
+}
+declare namespace Main {
+    class Main$0 implements api.EventListener {
+        private cardLayout;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(cardLayout: any);
+    }
+    class Main$1 implements api.EventListener {
+        private cardLayout;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(cardLayout: any);
+    }
+    class Main$2 implements api.EventListener {
+        private cardLayout;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(cardLayout: any);
+    }
+    class Main$3 implements api.EventListener {
+        private cardLayout;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(cardLayout: any);
+    }
+    class Main$4 implements api.EventListener {
+        private item;
+        private eventLogs;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(item: any, eventLogs: any);
+    }
+    class Main$5 implements api.EventListener {
+        private item;
+        private eventLogs;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(item: any, eventLogs: any);
+    }
+    class Main$6 implements api.EventListener {
+        private item;
+        private eventLogs;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(item: any, eventLogs: any);
+    }
+    class Main$7 implements api.EventListener {
+        private eventLogs;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(eventLogs: any);
+    }
+    class Main$8 implements api.EventListener {
+        private eventLogs;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(eventLogs: any);
+    }
+    class Main$9 implements api.EventListener {
+        private eventLogs;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(eventLogs: any);
+    }
+    class Main$10 implements api.EventListener {
+        private eventLogs;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(eventLogs: any);
     }
 }
 declare namespace table {
@@ -1355,16 +1470,73 @@ declare namespace JSContainer {
         constructor(__parent: any, listener: any);
     }
 }
+declare class Button extends JSContainer {
+    constructor(name: string, text: string);
+}
+/**
+ * Creates a new card layout container
+ * @param {string} name - The name of the container.
+ * @param {string} tag - The tag of the container
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 declare class CardLayout extends JSContainer {
     currentActive: string;
     currentIndex: number;
     constructor(name: string, tag: string);
+    /**
+     * Adds a {@link CardLayoutItem} to this container.
+     * @param {CardLayoutItem} item - The item to add
+     * @return {CardLayout} - this
+     */
     addItem(item: CardLayoutItem): CardLayout;
+    /**
+     * Adds  {@link CardLayoutItem}s to this container.
+     * @param {framework.components.CardLayoutItem[]} items - The items to add
+     * @return {CardLayout} - this
+     */
+    addItems(...items: CardLayoutItem[]): CardLayout;
+    /**
+     *
+     * @return {number} - The index of the currently active (visible) {@link CardLayoutItem} of this container
+     */
     getCurrentIndex(): number;
+    /**
+     * Search and return the {@link CardLayoutItem} having the specified index
+     * @param {number} index - The index of the {@link CardLayoutItem} searching for
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} item having specified index
+     */
     getItem(index: number): CardLayoutItem;
+    /**
+     * Searches for the {@link CardLayoutItem} having specified name, and returns its index.
+     * @param {string} name - The name of {@link CardLayoutItem} searching for
+     * @return {number} - The index of the {@link CardLayoutItem} having name specified
+     *
+     */
     getIndex(name: string): number;
+    /**
+     * Activates the next {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * The previous Event will be activated<br>
+     *
+     * will return null and do nothing if currently the last item is active.
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
+     */
     next(...params: Object[]): CardLayoutItem;
+    /**
+     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * will return null and do nothing if currently the first item is active.
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
+     */
     previous(...params: Object[]): CardLayoutItem;
+    /**
+     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * will return null and do nothing if currently the first item is active.
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
+     */
     back(...params: Object[]): CardLayoutItem;
     first(...params: Object[]): CardLayoutItem;
     last(...params: Object[]): CardLayoutItem;
@@ -1375,6 +1547,7 @@ declare class CardLayout extends JSContainer {
      * @return {java.lang.String[]}
      */
     advancedEventTypes(): string[];
+    refresh(): void;
 }
 declare class CardLayoutItem extends JSContainer {
     constructor(name: string, tag: string);

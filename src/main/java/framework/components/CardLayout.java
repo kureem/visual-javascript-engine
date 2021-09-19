@@ -5,27 +5,66 @@ import jsweet.dom.CustomEvent;
 import jsweet.lang.Object;
 
 
+/**
+ * Simple card layout component<br>
+ * Contains convenient methods to stack containers over other containers and show one at a time. 
+ * @author Kureem Rossaye
+ *
+ */
 public class CardLayout extends JSContainer {
 
 	private String currentActive = "";
 	
 	private double currentIndex = 0;
 
+	/**
+	 * Creates a new card layout container
+	 * @param name - The name of the container.
+	 * @param tag - The tag of the container
+	 */
 	public CardLayout(String name, String tag) {
 		super(name, tag);
-	}
+	} 
 
+	/**
+	 * Adds a {@link CardLayoutItem} to this container.
+	 * @param item - The item to add
+	 * @return - this
+	 */
 	public CardLayout addItem(CardLayoutItem item) {
 		addChild(item);
+		if(getChildren().length > 1) {
+			item.setStyle("display", "none");
+		}
+		return this;
+	}
+	
+	/**
+	 * Adds  {@link CardLayoutItem}s to this container.
+	 * @param items - The items to add
+	 * @return - this
+	 */
+	public CardLayout addItems(CardLayoutItem... items) {
+		for(CardLayoutItem item : items) {
+			addItem(item);
+		}
 		return this;
 	}
 
 	
-	
+	/**
+	 * 
+	 * @return - The index of the currently active (visible) {@link CardLayoutItem} of this container 
+	 */
 	public double getCurrentIndex(){
 		return currentIndex;
 	}
 	
+	/**
+	 * Search and return the {@link CardLayoutItem} having the specified index
+	 * @param index - The index of the {@link CardLayoutItem} searching for
+	 * @return - The {@link CardLayoutItem} item having specified index
+	 */
 	public CardLayoutItem getItem(double index){
 		if(index < getChildren().length){
 			return (CardLayoutItem)getChildren().$get(index);
@@ -33,6 +72,13 @@ public class CardLayout extends JSContainer {
 			return null;
 		}
 	}
+	
+	/**
+	 * Searches for the {@link CardLayoutItem} having specified name, and returns its index.
+	 * @param name - The name of {@link CardLayoutItem} searching for
+	 * @return - The index of the {@link CardLayoutItem} having name specified
+	 *  
+	 */
 	
 	public double getIndex(String name){
 		double index = 0;
@@ -43,8 +89,20 @@ public class CardLayout extends JSContainer {
 			index++;
 		}
 		return -1;
+		
+		
 	}
 	
+	
+	
+	/**
+	 * Activates the next {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+	 * The previous Event will be activated<br>
+	 * 
+	 * will return null and do nothing if currently the last item is active.
+	 * @param params - The payload to set to the next {@link CardLayoutItem} being activated
+	 * @return - The {@link CardLayoutItem} being activated.
+	 */
 	public CardLayoutItem next(Object...params){
 		if(currentIndex < (getChildren().length -1)){
 			
@@ -77,6 +135,12 @@ public class CardLayout extends JSContainer {
 		}
 	}
 	
+	/**
+	 * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+	 * will return null and do nothing if currently the first item is active.
+	 * @param params - The payload to set to the next {@link CardLayoutItem} being activated
+	 * @return - The {@link CardLayoutItem} being activated.
+	 */
 	public CardLayoutItem previous(Object...params){
 		if(currentIndex > 0){
 			CardLayoutItem current = getItem(currentIndex);
@@ -95,6 +159,12 @@ public class CardLayout extends JSContainer {
 		}
 	}
 	
+	/**
+	 * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+	 * will return null and do nothing if currently the first item is active.
+	 * @param params - The payload to set to the next {@link CardLayoutItem} being activated
+	 * @return - The {@link CardLayoutItem} being activated.
+	 */
 	public CardLayoutItem back(Object...params){
 		return previous(params);
 	}
@@ -150,7 +220,16 @@ public class CardLayout extends JSContainer {
 	}
 	
 	public String getDefault(){
-		return getAttribute("default");
+		String def = getAttribute("default");
+		if(def == null || def == "") {
+			if(getChildren().length > 0) {
+				return getChildren().$get(0).getName();
+			}else {
+				return null;
+			}
+		}else {
+			return def;
+		}
 	}
 
 	public void activate(String name, Object...params) {
@@ -186,9 +265,6 @@ public class CardLayout extends JSContainer {
 		this.currentActive = name;
 		this.currentIndex =  getIndex(currentActive);
 	}
-	
-	
-	
 
 
 
@@ -197,7 +273,16 @@ public class CardLayout extends JSContainer {
 		return new String[]{"first","previous", "next","last" };
 	}
 
-	
+	public void refresh() {
+		String def = getDefault();
+		for(Renderable r : getChildren()) {
+			if(r.getName() == def) {
+				r.setStyle("display", null);
+			}else {
+				r.setStyle("display", "none");
+			}
+		}
+	}
 	
 
 }
