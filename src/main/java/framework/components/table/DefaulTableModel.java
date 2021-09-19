@@ -42,13 +42,13 @@ public class DefaulTableModel implements TableModel{
 	}
 
 	@Override
-	public void addTableModelListener(TableModelListener l) {
+	public void addTableModelListener(TableModelEventListener l) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void removeTableModelListener(TableModelListener l) {
+	public void removeTableModelListener(TableModelEventListener l) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -2,16 +2,25 @@ package framework.components.input;
 
 import static jsweet.lang.Globals.parseInt;
 
-public class JSNumberInput extends AbstractJSInput<Double> {
+import framework.components.api.InputType;
+
+public class JSNumberInput extends JSInput<Double> {
 
 	public JSNumberInput(String name) {
 		super(name);
-		setAttribute("type", "number");
+		setType( InputType.NUMBER);
 	}
 	
 	
-	public JSNumberInput setType(String type) {
-		setAttribute("type", type);
+	public JSNumberInput setType(InputType type) {
+		if(type != null) {
+			if(type.getGroup() != "number") {
+				throw new RuntimeException("only numeric types are allowed");
+			}
+			setAttribute("type", type.getValue());
+		}else {
+			throw new RuntimeException("cannot set null value for type attribute");
+		}
 		return this;
 	}
 

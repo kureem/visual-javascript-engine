@@ -31,7 +31,6 @@ public class JSTextArea extends JSContainer implements InputField<String>{
 	private Array<Validator<String>> validators = new Array<Validator<String>>();
 	public JSTextArea(String name) {
 		super(name, "textarea");
-		setAttribute("identifier", "html:textarea");
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -85,7 +84,7 @@ public class JSTextArea extends JSContainer implements InputField<String>{
 			HTMLInputElement el = (HTMLInputElement) nat;
 			valid =el.checkValidity();
 			if(!valid){
-				AbstractJSInput.addError(el.validationMessage, el.validity,e);
+				JSInput.addError(el.validationMessage, el.validity,e);
 				//el.validity.
 			}
 		}

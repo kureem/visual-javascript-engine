@@ -15,23 +15,29 @@
  */
 package framework.components.input;
 
-import framework.components.api.StringInputTypes;
+import framework.components.api.InputType;
 
-public class JSTextInput extends AbstractJSInput<String> {
+public class JSTextInput extends JSInput<String> {
 
 	public JSTextInput(String name) {
 		super(name);
-		setType(StringInputTypes.text);
-		//setAttribute("identifier", "html:input");
-		//addRenderer(this);
+		setType(InputType.TEXT);
 	}
 
 	public void setMaxLength(Double length) {
 		setAttribute("maxlength", length + "");
 	}
 
-	public JSTextInput setType(String type) {
-		setAttribute("type", type);
+	public JSTextInput setType(InputType type) {
+		if(type != null) {
+			if(type.getGroup() == "text") {
+				setAttribute("type", type.getValue());
+			}else {
+				throw new RuntimeException("only text input types can be set as type");
+			}
+		}else {
+			setAttribute("type", null);
+		}
 		return this;
 	}
 

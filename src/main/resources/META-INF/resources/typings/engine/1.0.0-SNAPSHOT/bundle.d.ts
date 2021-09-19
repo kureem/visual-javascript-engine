@@ -70,6 +70,45 @@ declare namespace api {
     }
 }
 declare namespace api {
+    enum InputType {
+        BUTTON = 0,
+        CHECKBOX = 1,
+        DATE = 2,
+        DATETIME_LOCAL = 3,
+        FILE = 4,
+        HIDDEN = 5,
+        IMAGE = 6,
+        MONTH = 7,
+        NUMBER = 8,
+        RADIO = 9,
+        RANGE = 10,
+        RESET = 11,
+        SUBMIT = 12,
+        TIME = 13,
+        WEEK = 14,
+        TEXT = 15,
+        PASSWORD = 16,
+        EMAIL = 17,
+        URL = 18,
+        SEARCH = 19,
+        TEL = 20,
+        COLOR = 21
+    }
+    /** @ignore */
+    class InputType_$WRAPPER {
+        protected _$ordinal: number;
+        protected _$name: string;
+        value: any;
+        group: any;
+        constructor(_$ordinal: number, _$name: string, value?: any, group?: any);
+        getValue(): string;
+        getGroup(): string;
+        name(): string;
+        ordinal(): number;
+        compareTo(other: any): number;
+    }
+}
+declare namespace api {
     /**
      * Base interface that defines contract methods available on any component that
      * can be rendered on a web page.
@@ -460,19 +499,6 @@ declare namespace api {
     }
 }
 declare namespace api {
-    class StringInputTypes {
-        static text: string;
-        static password: string;
-        static email: string;
-        static url: string;
-        static search: string;
-        static tel: string;
-        static color: string;
-        static types: string[];
-        static types_$LI$(): string[];
-    }
-}
-declare namespace api {
     /**
      * More specific component that is rendered based on a specified template instead of a simple tag
      * @author Kureem Rossaye
@@ -584,23 +610,28 @@ declare namespace api {
         supports(clazz: any): any;
     }
 }
-declare class FileUploader {
+declare class Main {
+    static main(args: string[]): void;
 }
-declare namespace input {
-    class DateInputTypes {
-        static date: string;
-        static month: string;
-        static week: string;
-        static types: string[];
-        static types_$LI$(): string[];
+declare namespace Main {
+    class Main$0 implements api.EventListener {
+        private form;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(form: any);
     }
-}
-declare namespace input {
-    class NumericInputTypes {
-        static number: string;
-        static range: string;
-        static types: string[];
-        static types_$LI$(): string[];
+    class Main$1 implements api.EventListener {
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor();
     }
 }
 declare namespace table {
@@ -647,12 +678,12 @@ declare namespace table {
          *
          * @param {*} l
          */
-        addTableModelListener(l: table.TableModelListener): void;
+        addTableModelListener(l: table.TableModelEventListener): void;
         /**
          *
          * @param {*} l
          */
-        removeTableModelListener(l: table.TableModelListener): void;
+        removeTableModelListener(l: table.TableModelEventListener): void;
         constructor();
     }
 }
@@ -908,14 +939,14 @@ declare namespace table {
          *
          * @param   {*} l               the TableModelListener
          */
-        addTableModelListener(l: table.TableModelListener): any;
+        addTableModelListener(l: table.TableModelEventListener): any;
         /**
          * Removes a listener from the list that is notified each time a
          * change to the data model occurs.
          *
          * @param   {*} l               the TableModelListener
          */
-        removeTableModelListener(l: table.TableModelListener): any;
+        removeTableModelListener(l: table.TableModelEventListener): any;
     }
 }
 declare namespace table {
@@ -986,7 +1017,7 @@ declare namespace table {
     }
 }
 declare namespace table {
-    interface TableModelListener {
+    interface TableModelEventListener {
         tableChanged(e: table.TableModelEvent): any;
     }
 }
@@ -1352,9 +1383,6 @@ declare namespace JSContainer {
         constructor(__parent: any, listener: any);
     }
 }
-declare class Button extends JSContainer {
-    constructor(name: string, text: string);
-}
 /**
  * Creates a new card layout container
  * @param {string} name - The name of the container.
@@ -1431,18 +1459,45 @@ declare class CardLayout extends JSContainer {
     advancedEventTypes(): string[];
     refresh(): void;
 }
+/**
+ * Instantiate a {@link CardLayoutItem} with specified name and tag
+ * @param {string} name - name of item
+ * @param {string} tag - tag of item
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 declare class CardLayoutItem extends JSContainer {
     constructor(name: string, tag: string);
     /**
-     *
+     * returns array of specific supported events
      * @return {java.lang.String[]}
      */
     advancedEventTypes(): string[];
 }
+/**
+ * Instantiate this container with the specified name
+ * @param {string} name - name of container
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 declare class ExternalJavascript extends JSContainer {
     constructor(name: string);
+    /**
+     * Sets the source of the external javascript
+     * @param {string} src - source of file
+     * @return {ExternalJavascript} - this
+     */
     setSource(src: string): ExternalJavascript;
 }
+/**
+ * External this external stylesheet container with the specified name
+ * @param {string} name - the name of the container
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 declare class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalStylesheet> {
     static ORIGIN_ANONYMOUS: string;
     static ORIGIN_USE_CREDENTIALS: string;
@@ -1452,12 +1507,27 @@ declare class ExternalStylesheet extends JSContainer implements api.Renderer<Ext
     static MEDIA_PRINT: string;
     static MEDIA_SPEECH: string;
     constructor(name: string);
+    /**
+     * Sets the source of the external css file and returns the updated instance
+     * @param {string} src - source of external css file
+     * @return {ExternalStylesheet} - updated instance of this
+     */
     setSource(src: string): ExternalStylesheet;
+    /**
+     * Sets the cross origin value of the css file
+     * @param {string} origin - cross origin value
+     * @return {ExternalStylesheet} - updated instance of this
+     */
     setCrossOrigin(origin: string): ExternalStylesheet;
+    /**
+     * Sets the media of the css file
+     * @param {string} media - the media of the css file
+     * @return {ExternalStylesheet} - updated instance of this
+     */
     setMedia(media: string): ExternalStylesheet;
     doRender$framework_components_ExternalStylesheet$jsweet_dom_HTMLElement(c: ExternalStylesheet, root: HTMLElement): void;
     /**
-     *
+     * Rendered used internally which avoids rendering of the css file when the tag is used in our buider.
      * @param {ExternalStylesheet} c
      * @param {HTMLElement} root
      */
@@ -1551,7 +1621,33 @@ declare namespace input {
     }
 }
 declare namespace input {
-    class Form extends JSContainer {
+    /**
+     * Creates a new instance of the button with specified name and text
+     * @param {string} name - name of the button
+     * @param {string} text - text inside the button
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
+    class JSButton extends JSContainer {
+        constructor(name: string, text: string);
+        /**
+         * Sets the type of the button
+         * @param {api.InputType} type - type of the button. Valid values are: InputType.RESET | InputType.BUTTON | InputType.SUBMIT
+         * @return {input.JSButton} - updated instance of this Button
+         */
+        setType(type: api.InputType): JSButton;
+    }
+}
+declare namespace input {
+    /**
+     * Renders a form tag with
+     * @author Kureem Rossaye
+     * @param {string} name
+     * @class
+     * @extends JSContainer
+     */
+    class JSForm extends JSContainer {
         validationerrors: Object;
         constructor(name: string);
         /**
@@ -1569,8 +1665,8 @@ declare namespace input {
         getData(): Object;
         submit(): void;
     }
-    namespace Form {
-        class Form$0 implements util.ComponentUtil.ComponentVisitor {
+    namespace JSForm {
+        class JSForm$0 implements util.ComponentUtil.ComponentVisitor {
             private binding;
             private result;
             __parent: any;
@@ -1581,7 +1677,7 @@ declare namespace input {
             doVisit(designable: api.Renderable): void;
             constructor(__parent: any, binding: any, result: any);
         }
-        class Form$1 implements util.ComponentUtil.ComponentVisitor {
+        class JSForm$1 implements util.ComponentUtil.ComponentVisitor {
             __parent: any;
             /**
              *
@@ -1590,7 +1686,7 @@ declare namespace input {
             doVisit(designable: api.Renderable): void;
             constructor(__parent: any);
         }
-        class Form$2 implements util.ComponentUtil.ComponentVisitor {
+        class JSForm$2 implements util.ComponentUtil.ComponentVisitor {
             private data;
             __parent: any;
             /**
@@ -1600,7 +1696,7 @@ declare namespace input {
             doVisit(designable: api.Renderable): void;
             constructor(__parent: any, data: any);
         }
-        class Form$3 implements util.ComponentUtil.ComponentVisitor {
+        class JSForm$3 implements util.ComponentUtil.ComponentVisitor {
             private data;
             __parent: any;
             /**
@@ -1609,84 +1705,6 @@ declare namespace input {
              */
             doVisit(designable: api.Renderable): void;
             constructor(__parent: any, data: any);
-        }
-    }
-}
-declare namespace input {
-    class JSImageInput extends JSContainer implements api.InputField<string> {
-        image: JSContainer;
-        upload: JSUpload;
-        imageContainer: JSContainer;
-        validators: Array<api.Validator<string>>;
-        constructor(name: string);
-        refreshUploadDir(): void;
-        getImage(): JSContainer;
-        setRequired(b: boolean): JSImageInput;
-        setDisabled(b: boolean): JSImageInput;
-        setReadOnly(b: boolean): JSImageInput;
-        decorateImage(): void;
-        /**
-         *
-         * @return {string}
-         */
-        getValue(): string;
-        setValue$java_lang_String(val: string): void;
-        /**
-         *
-         * @param {string} val
-         */
-        setValue(val?: any): any;
-        /**
-         *
-         */
-        validate(): void;
-        /**
-         *
-         * @return {string}
-         */
-        getBinding(): string;
-        /**
-         *
-         * @param {string} binding
-         * @return {*}
-         */
-        setBinding(binding: string): api.InputField<string>;
-        /**
-         *
-         * @return {java.lang.String[]}
-         */
-        advancedEventTypes(): string[];
-    }
-    namespace JSImageInput {
-        class JSImageInput$0 implements api.EventListener {
-            __parent: any;
-            /**
-             *
-             * @param {*} source
-             * @param {Event} evt
-             */
-            performAction(source: api.Renderable, evt: Event): void;
-            constructor(__parent: any);
-        }
-        class JSImageInput$1 implements api.EventListener {
-            __parent: any;
-            /**
-             *
-             * @param {*} source
-             * @param {Event} evt
-             */
-            performAction(source: api.Renderable, evt: Event): void;
-            constructor(__parent: any);
-        }
-        class JSImageInput$2 implements api.EventListener {
-            __parent: any;
-            /**
-             *
-             * @param {*} source
-             * @param {Event} evt
-             */
-            performAction(source: api.Renderable, evt: Event): void;
-            constructor(__parent: any);
         }
     }
 }
@@ -1797,12 +1815,6 @@ declare namespace input {
         setBinding(binding: string): api.InputField<string>;
     }
 }
-declare class RestWebservice extends JSContainer {
-    constructor(name?: any);
-}
-declare class Row extends JSContainer {
-    constructor(name: string);
-}
 declare namespace table {
     class Table extends JSContainer {
         head: JSContainer;
@@ -1818,139 +1830,6 @@ declare namespace table {
         setColumnModel(columnModel: table.TableColumnModel): void;
         refresh(): void;
     }
-}
-declare namespace input {
-    class JSAddressInput extends HTMLTemplateContainer implements api.InputField<Object> {
-        address: Object;
-        country: input.JSSelect;
-        city: input.JSTextInput;
-        postalCode: input.JSTextInput;
-        state: input.JSTextInput;
-        street: input.JSTextInput;
-        constructor(name: string);
-        getAddress(): Object;
-        setAddress(address: Object): void;
-        /**
-         *
-         * @return {Object}
-         */
-        getValue(): Object;
-        setValue$jsweet_lang_Object(val: Object): void;
-        /**
-         *
-         * @param {Object} val
-         */
-        setValue(val?: any): any;
-        /**
-         *
-         */
-        validate(): void;
-        /**
-         *
-         * @return {string}
-         */
-        getBinding(): string;
-        /**
-         *
-         * @param {string} binding
-         * @return {*}
-         */
-        setBinding(binding: string): api.InputField<Object>;
-        /**
-         *
-         * @param {boolean} b
-         * @return {*}
-         */
-        setRequired(b: boolean): api.InputField<Object>;
-    }
-}
-/**
- * Create a new instance of this component
- * @param {string} name The name of the component
- * @param {string} url The url where to submit uploaded file
- * @param {string} template
- * @class
- * @extends HTMLTemplateContainer
- * @author Rossaye Abdool Kureem
- */
-declare class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.InputField<Object> {
-    label: JSContainer;
-    input: JSContainer;
-    uploader: FileUploader;
-    required: boolean;
-    constructor(name?: any, template?: any, url?: any);
-    /**
-     * Manually opens native dialog box to select file to upload
-     */
-    triggerUpload(): void;
-    /**
-     *
-     * @return {java.lang.String[]}
-     */
-    advancedEventTypes(): string[];
-    /**
-     * Sets a label to this component
-     * @param {string} label The label of the component
-     */
-    setLabel(label: string): void;
-    /**
-     * Sets the accepts mimetypes for this component
-     * @param {string} accepts Mime types allowed to upload (e.g image/jpg, image/png, text/html etc)
-     */
-    setAccepts(accepts: string): void;
-    /**
-     *
-     * @param {*} source
-     * @param {Event} ev
-     */
-    performAction(source: api.Renderable, ev: Event): void;
-    /**
-     * Sets the server url where to submit file to uplaod
-     * @param {string} url Url where to submit file to upload
-     */
-    setUrl(url: string): void;
-    /**
-     * Synonymous to setUrl
-     * @param {string} url The url where to submit file to upload
-     */
-    setEndpoint(url: string): void;
-    /**
-     *
-     * @return {Object}
-     */
-    getValue(): Object;
-    setValue$jsweet_lang_Object(val: Object): void;
-    /**
-     *
-     * @param {Object} val
-     */
-    setValue(val?: any): any;
-    /**
-     *
-     */
-    validate(): void;
-    /**
-     *
-     * @return {string}
-     */
-    getBinding(): string;
-    /**
-     *
-     * @param {string} binding
-     * @return {*}
-     */
-    setBinding(binding: string): api.InputField<Object>;
-    /**
-     *
-     * @param {boolean} b
-     * @return {*}
-     */
-    setRequired(b: boolean): api.InputField<Object>;
-    getUploader(): FileUploader;
-    setUploader(uploader: FileUploader): void;
-    getLabel(): JSContainer;
-    getInput(): JSContainer;
-    isRequired(): boolean;
 }
 declare namespace input {
     class JSCheckBox extends input.AbstractJSInput<boolean> {
@@ -1973,7 +1852,7 @@ declare namespace input {
 declare namespace input {
     class JSDateInput extends input.AbstractJSInput<Date> {
         constructor(name: string);
-        setType(type: string): JSDateInput;
+        setType(type: api.InputType): JSDateInput;
         /**
          *
          * @return {Date}
@@ -2004,7 +1883,7 @@ declare namespace input {
 declare namespace input {
     class JSNumberInput extends input.AbstractJSInput<number> {
         constructor(name: string);
-        setType(type: string): JSNumberInput;
+        setType(type: api.InputType): JSNumberInput;
         setStep(step: number): void;
         getStep(): number;
         /**
@@ -2026,7 +1905,7 @@ declare namespace input {
     class JSTextInput extends input.AbstractJSInput<string> {
         constructor(name: string);
         setMaxLength(length: number): void;
-        setType(type: string): JSTextInput;
+        setType(type: api.InputType): JSTextInput;
         /**
          *
          * @return {string}
@@ -2060,21 +1939,29 @@ declare namespace input {
     }
 }
 declare namespace input {
-    class RichTextEditor extends input.JSTextArea implements api.Renderer<RichTextEditor> {
-        editor: Object;
-        constructor(name: string);
-        doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c: RichTextEditor, root: HTMLElement): void;
-        /**
-         *
-         * @param {input.RichTextEditor} c
-         * @param {HTMLElement} root
-         */
-        doRender(c?: any, root?: any): any;
-        /**
-         *
-         * @return {string}
-         */
-        getValue(): string;
+    /**
+     * Creates a new instance of reset button with specified name and text
+     * @param {string} name - name of the reset button
+     * @param {string} text - text inside the reset button
+     * @class
+     * @extends input.JSButton
+     * @author Kureem Rossaye
+     */
+    class JSReset extends input.JSButton {
+        constructor(name: string, text: string);
+    }
+}
+declare namespace input {
+    /**
+     * Instantiate a submit button with specified name and text
+     * @param {string} name - name of button
+     * @param {string} text - text of the button
+     * @class
+     * @extends input.JSButton
+     * @author Kureem Rossaye
+     */
+    class JSSubmit extends input.JSButton {
+        constructor(name: string, text: string);
     }
 }
 declare namespace input {

@@ -2,17 +2,19 @@ package framework.components.input;
 
 import static jsweet.lang.Globals.parseInt;
 
+import framework.components.api.InputType;
 import jsweet.lang.Date;
 
-public class JSTimeInput extends AbstractJSInput<Date>{
+public class JSTimeInput extends JSInput<Date>{
 	
 	private Date savedDate = new Date();
 
 	public JSTimeInput(String name) {
 		super(name);
-		setAttribute("type", "time");
-		setAttribute("identifier", "html:time-input");
+		setAttribute("type", InputType.TIME.getValue());
 	}
+	
+	
 
 	@Override
 	public Date getValue() {

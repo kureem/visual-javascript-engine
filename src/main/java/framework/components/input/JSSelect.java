@@ -38,7 +38,6 @@ public class JSSelect extends JSContainer implements InputField<Object> {
 
 	public JSSelect(String name) {
 		super(name, "select");
-		setAttribute("identifier", "html:select");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -230,7 +229,7 @@ public class JSSelect extends JSContainer implements InputField<Object> {
 			HTMLSelectElement el = (HTMLSelectElement) nat;
 			valid = el.checkValidity();
 			if (!valid) {
-				AbstractJSInput.addError(el.validationMessage, el.validity, e);
+				JSInput.addError(el.validationMessage, el.validity, e);
 				// el.validity.
 			}
 		}

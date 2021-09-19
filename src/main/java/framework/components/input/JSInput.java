@@ -13,13 +13,13 @@ import jsweet.dom.ValidityState;
 import jsweet.lang.Array;
 import jsweet.lang.Date;
 
-public abstract class AbstractJSInput<T> extends JSContainer
+public  class JSInput<T> extends JSContainer
 		implements InputField<T> {
 
 
 	private Array<Validator<T>> validators = new Array<Validator<T>>();
 
-	public AbstractJSInput(String name) {
+	public JSInput(String name) {
 		super(name, "input");
 	}
 
@@ -36,7 +36,7 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		setAttribute("pattern", pattern);
 	}
 
-	public AbstractJSInput<T> setRequired(boolean b) {
+	public JSInput<T> setRequired(boolean b) {
 		if (b) {
 			setAttribute("required", "true");
 		} else
@@ -44,7 +44,7 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		return this;
 	}
 
-	public AbstractJSInput<T> setDisabled(boolean b) {
+	public JSInput<T> setDisabled(boolean b) {
 		if (b) {
 			setAttribute("disabled", "true");
 		} else {
@@ -53,7 +53,7 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		return this;
 	}
 
-	public AbstractJSInput<T> setReadOnly(boolean b) {
+	public JSInput<T> setReadOnly(boolean b) {
 		if (b) {
 			setAttribute("readonly", "true");
 		} else {
@@ -153,7 +153,7 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		return getAttribute("binding");
 	}
 
-	public AbstractJSInput<T> setPlaceHolder(String placeholder) {
+	public JSInput<T> setPlaceHolder(String placeholder) {
 		setAttribute("placeholder", placeholder);
 		return this;
 	}
@@ -241,9 +241,27 @@ public abstract class AbstractJSInput<T> extends JSContainer
 	}
 
 		
-	public AbstractJSInput<T> setBinding(String binding) {
+	public JSInput<T> setBinding(String binding) {
 		setAttribute("binding", binding);
 		return this;
+	}
+
+	@Override
+	public T getValue() {
+		HTMLInputElement inp = (HTMLInputElement)getNative();
+		if(inp != null)
+			return (T)inp.value;
+		else
+			return (T)getAttribute("value");
+	}
+
+	@Override
+	public void setValue(T val) {
+		HTMLInputElement inp = (HTMLInputElement)getNative();
+		if(inp != null)
+			inp.value = (String)val;
+		
+		setAttribute("text", (String)val);
 	}
 
 	

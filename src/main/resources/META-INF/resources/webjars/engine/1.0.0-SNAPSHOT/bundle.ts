@@ -59,8 +59,8 @@ namespace api {
                 const me: api.Renderable = c;
                 const component: api.Renderable = me;
                 this.doNothing(component);
-                for(let index189=0; index189 < scripts.length; index189++) {
-                    let scr = scripts[index189];
+                for(let index121=0; index121 < scripts.length; index121++) {
+                    let scr = scripts[index121];
                     {
                         eval(scr);
                     }
@@ -87,14 +87,14 @@ namespace api {
 
         renderEvents(njq: HTMLElement, c: api.Renderable) {
             const keys: string[] = Object.keys(c.getListeners());
-            for(let index190=0; index190 < keys.length; index190++) {
-                let key = keys[index190];
+            for(let index122=0; index122 < keys.length; index122++) {
+                let key = keys[index122];
                 {
                     const listeners: Array<api.EventListener> = <Array<api.EventListener>>c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for(let index191=0; index191 < listeners.length; index191++) {
-                                let l = listeners[index191];
+                            for(let index123=0; index123 < listeners.length; index123++) {
+                                let l = listeners[index123];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -109,9 +109,9 @@ namespace api {
         renderAttributes(njq: HTMLElement, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
-                    let array193 = c.getChangedAttributes();
-                    for(let index192=0; index192 < array193.length; index192++) {
-                        let key = array193[index192];
+                    let array125 = c.getChangedAttributes();
+                    for(let index124=0; index124 < array125.length; index124++) {
+                        let key = array125[index124];
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr == null){
@@ -124,9 +124,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array195 = c.getAttributeNames();
-                    for(let index194=0; index194 < array195.length; index194++) {
-                        let key = array195[index194];
+                    let array127 = c.getAttributeNames();
+                    for(let index126=0; index126 < array127.length; index126++) {
+                        let key = array127[index126];
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr != null)ContainerRenderer.setAttribute(njq, key, attr);
@@ -150,9 +150,9 @@ namespace api {
         renderStyles(njq: HTMLElement, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
-                    let array197 = c.getChangedStyles();
-                    for(let index196=0; index196 < array197.length; index196++) {
-                        let key = array197[index196];
+                    let array129 = c.getChangedStyles();
+                    for(let index128=0; index128 < array129.length; index128++) {
+                        let key = array129[index128];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -160,9 +160,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array199 = c.getStyleNames();
-                    for(let index198=0; index198 < array199.length; index198++) {
-                        let key = array199[index198];
+                    let array131 = c.getStyleNames();
+                    for(let index130=0; index130 < array131.length; index130++) {
+                        let key = array131[index130];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -186,8 +186,8 @@ namespace api {
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet: CSSStyleSheet = <CSSStyleSheet>styleelem.sheet;
-                for(let index200=0; index200 < rules.length; index200++) {
-                    let rule = rules[index200];
+                for(let index132=0; index132 < rules.length; index132++) {
+                    let rule = rules[index132];
                     sheet.insertRule(rule)
                 }
             }
@@ -260,6 +260,50 @@ namespace api {
          */
         setRequired(b: boolean): InputField<T>;
     }
+}
+namespace api {
+    export enum InputType {
+        BUTTON, CHECKBOX, DATE, DATETIME_LOCAL, FILE, HIDDEN, IMAGE, MONTH, NUMBER, RADIO, RANGE, RESET, SUBMIT, TIME, WEEK, TEXT, PASSWORD, EMAIL, URL, SEARCH, TEL, COLOR
+    }
+
+    /** @ignore */
+    export class InputType_$WRAPPER {
+        /*private*/ value;
+
+        /*private*/ group;
+
+        public constructor(protected _$ordinal: number, protected _$name: string, value?, group?) {
+            if (((typeof value === 'string') || value === null) && ((typeof group === 'string') || group === null)) {
+                let __args = arguments;
+                if (this.value === undefined) { this.value = null; } 
+                this.group = "text";
+                this.value = value;
+                this.group = group;
+            } else if (((typeof value === 'string') || value === null) && group === undefined) {
+                let __args = arguments;
+                if (this.value === undefined) { this.value = null; } 
+                this.group = "text";
+                this.value = value;
+                this.group = "text";
+            } else throw new Error('invalid overload');
+        }
+
+        public getValue(): string {
+            return this.value;
+        }
+
+        public getGroup(): string {
+            return this.group;
+        }
+        public name(): string { return this._$name; }
+        public ordinal(): number { return this._$ordinal; }
+        public compareTo(other: any): number { return this._$ordinal - (isNaN(other)?other._$ordinal:other); }
+    }
+    InputType["__class"] = "framework.components.api.InputType";
+    InputType["__interfaces"] = ["java.lang.constant.Constable","java.lang.Comparable","java.io.Serializable"];
+
+    InputType["_$wrappers"] = {0: new InputType_$WRAPPER(0, "BUTTON", "button", "button"), 1: new InputType_$WRAPPER(1, "CHECKBOX", "checkbox", "boolean"), 2: new InputType_$WRAPPER(2, "DATE", "date", "date"), 3: new InputType_$WRAPPER(3, "DATETIME_LOCAL", "datetime-local", "date"), 4: new InputType_$WRAPPER(4, "FILE", "file", "file"), 5: new InputType_$WRAPPER(5, "HIDDEN", "hidden", "text"), 6: new InputType_$WRAPPER(6, "IMAGE", "image", "image"), 7: new InputType_$WRAPPER(7, "MONTH", "month", "date"), 8: new InputType_$WRAPPER(8, "NUMBER", "number", "number"), 9: new InputType_$WRAPPER(9, "RADIO", "radio", "boolean"), 10: new InputType_$WRAPPER(10, "RANGE", "range", "number"), 11: new InputType_$WRAPPER(11, "RESET", "reset", "button"), 12: new InputType_$WRAPPER(12, "SUBMIT", "submit", "button"), 13: new InputType_$WRAPPER(13, "TIME", "time", "date"), 14: new InputType_$WRAPPER(14, "WEEK", "week", "date"), 15: new InputType_$WRAPPER(15, "TEXT", "text"), 16: new InputType_$WRAPPER(16, "PASSWORD", "password"), 17: new InputType_$WRAPPER(17, "EMAIL", "email"), 18: new InputType_$WRAPPER(18, "URL", "url"), 19: new InputType_$WRAPPER(19, "SEARCH", "search"), 20: new InputType_$WRAPPER(20, "TEL", "tel"), 21: new InputType_$WRAPPER(21, "COLOR", "color")};
+
 }
 namespace api {
     /**
@@ -699,27 +743,6 @@ namespace api {
     }
 }
 namespace api {
-    export class StringInputTypes {
-        public static text: string = "text";
-
-        public static password: string = "password";
-
-        public static email: string = "email";
-
-        public static url: string = "url";
-
-        public static search: string = "search";
-
-        public static tel: string = "tel";
-
-        public static color: string = "color";
-
-        public static types: string[]; public static types_$LI$(): string[] { if (StringInputTypes.types == null) { StringInputTypes.types = [StringInputTypes.text, StringInputTypes.password, StringInputTypes.email, StringInputTypes.url, StringInputTypes.search, StringInputTypes.tel, StringInputTypes.color]; }  return StringInputTypes.types; }
-    }
-    StringInputTypes["__class"] = "framework.components.api.StringInputTypes";
-
-}
-namespace api {
     /**
      * More specific component that is rendered based on a specified template instead of a simple tag
      * @author Kureem Rossaye
@@ -872,34 +895,67 @@ namespace api {
         supports(clazz: any);
     }
 }
-class FileUploader {}
-FileUploader["__class"] = "framework.components.FileUploader";
-
-
-namespace input {
-    export class DateInputTypes {
-        public static date: string = "date";
-
-        public static month: string = "month";
-
-        public static week: string = "week";
-
-        public static types: string[]; public static types_$LI$(): string[] { if (DateInputTypes.types == null) { DateInputTypes.types = [DateInputTypes.date, DateInputTypes.month, DateInputTypes.week]; }  return DateInputTypes.types; }
+class Main {
+    public static main(args: string[]) {
+        const form: input.JSForm = new input.JSForm("myform");
+        const firstName: input.JSTextInput = new input.JSTextInput("firstName");
+        const lastName: input.JSTextInput = new input.JSTextInput("lastName");
+        form.addChild$framework_components_api_Renderable(firstName);
+        form.addChild$framework_components_api_Renderable(lastName);
+        const submit: input.JSSubmit = new input.JSSubmit("submit", "Save");
+        const reset: input.JSReset = new input.JSReset("reset", "Cancel");
+        form.addChild$framework_components_api_Renderable(submit).addChild(reset);
+        form.addEventListener(new Main.Main$0(form), "submit");
+        form.addEventListener(new Main.Main$1(), "reset");
+        const app: JSContainer = new JSContainer("div");
+        app.addChild$framework_components_api_Renderable(form);
+        app.render$();
     }
-    DateInputTypes["__class"] = "framework.components.input.DateInputTypes";
+}
+Main["__class"] = "framework.components.Main";
+
+
+namespace Main {
+
+    export class Main$0 implements api.EventListener {
+        /**
+         * 
+         * @param {*} source
+         * @param {Event} evt
+         */
+        public performAction(source: api.Renderable, evt: Event) {
+            const fe: HTMLFormElement = <HTMLFormElement>this.form.getNative();
+            fe.addEventListener("reset", (e) => {
+                alert("alerttttttt");
+            });
+        }
+
+        constructor(private form: any) {
+        }
+    }
+    Main$0["__interfaces"] = ["framework.components.api.EventListener"];
+
+
+
+    export class Main$1 implements api.EventListener {
+        /**
+         * 
+         * @param {*} source
+         * @param {Event} evt
+         */
+        public performAction(source: api.Renderable, evt: Event) {
+            alert("this is a reset");
+        }
+
+        constructor() {
+        }
+    }
+    Main$1["__interfaces"] = ["framework.components.api.EventListener"];
+
 
 }
-namespace input {
-    export class NumericInputTypes {
-        public static number: string = "number";
 
-        public static range: string = "range";
 
-        public static types: string[]; public static types_$LI$(): string[] { if (NumericInputTypes.types == null) { NumericInputTypes.types = [NumericInputTypes.number, NumericInputTypes.range]; }  return NumericInputTypes.types; }
-    }
-    NumericInputTypes["__class"] = "framework.components.input.NumericInputTypes";
-
-}
 namespace table {
     export class DefaulTableModel implements table.TableModel {
         /*private*/ data: Array<Object>;
@@ -962,14 +1018,14 @@ namespace table {
          * 
          * @param {*} l
          */
-        public addTableModelListener(l: table.TableModelListener) {
+        public addTableModelListener(l: table.TableModelEventListener) {
         }
 
         /**
          * 
          * @param {*} l
          */
-        public removeTableModelListener(l: table.TableModelListener) {
+        public removeTableModelListener(l: table.TableModelEventListener) {
         }
 
         constructor() {
@@ -1039,8 +1095,8 @@ namespace table {
          * @return {number}
          */
         public getColumnIndex(columnIdentifier: any): number {
-            for(let index201=0; index201 < this.columns.length; index201++) {
-                let col = this.columns[index201];
+            for(let index133=0; index133 < this.columns.length; index133++) {
+                let col = this.columns[index133];
                 {
                     if (col.identifier === columnIdentifier){
                         return (<number>this.columns.indexOf(col)|0);
@@ -1390,7 +1446,7 @@ namespace table {
          * 
          * @param   {*} l               the TableModelListener
          */
-        addTableModelListener(l: table.TableModelListener);
+        addTableModelListener(l: table.TableModelEventListener);
 
         /**
          * Removes a listener from the list that is notified each time a
@@ -1398,7 +1454,7 @@ namespace table {
          * 
          * @param   {*} l               the TableModelListener
          */
-        removeTableModelListener(l: table.TableModelListener);
+        removeTableModelListener(l: table.TableModelEventListener);
     }
 }
 namespace table {
@@ -1599,7 +1655,7 @@ namespace table {
 
 }
 namespace table {
-    export interface TableModelListener {
+    export interface TableModelEventListener {
         tableChanged(e: table.TableModelEvent);
     }
 }
@@ -1608,9 +1664,9 @@ namespace util {
         public static visit(designable: api.Renderable, visitor: ComponentUtil.ComponentVisitor) {
             visitor.doVisit(designable);
             {
-                let array203 = designable.getChildren();
-                for(let index202=0; index202 < array203.length; index202++) {
-                    let child = array203[index202];
+                let array135 = designable.getChildren();
+                for(let index134=0; index134 < array135.length; index134++) {
+                    let child = array135[index134];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -1621,8 +1677,8 @@ namespace util {
         public static getTags(type: string): Array<Object> {
             const html5tags: Array<Object> = <any>(window["html5tags"]);
             const result: Array<Object> = <any>(new Array<Object>());
-            for(let index204=0; index204 < html5tags.length; index204++) {
-                let html5tag = html5tags[index204];
+            for(let index136=0; index136 < html5tags.length; index136++) {
+                let html5tag = html5tags[index136];
                 {
                     const stype: string = <string>html5tag["type"];
                     if (stype === type || type === "*"){
@@ -1657,8 +1713,8 @@ namespace util {
             if (/* contains */(property.indexOf(".") != -1)){
                 const parts: string[] = property.split(".");
                 let tmp: Object = obj;
-                for(let index205=0; index205 < parts.length; index205++) {
-                    let part = parts[index205];
+                for(let index137=0; index137 < parts.length; index137++) {
+                    let part = parts[index137];
                     {
                         tmp = PropertyUtil.getValue(tmp, part);
                     }
@@ -1722,8 +1778,8 @@ namespace util {
             const result: Object = <Object>new Object();
             if (/* contains */(hash.indexOf("?") != -1)){
                 const kvs: string[] = hash.split("?")[1].split("&");
-                for(let index206=0; index206 < kvs.length; index206++) {
-                    let kv = kvs[index206];
+                for(let index138=0; index138 < kvs.length; index138++) {
+                    let kv = kvs[index138];
                     {
                         const akv: string[] = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1802,8 +1858,8 @@ class JSContainer implements api.Renderable {
         console.log("firing:" + key + " on " + this.getName());
         const listeners: Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
         if (listeners != null && listeners.length > 0){
-            for(let index207=0; index207 < listeners.length; index207++) {
-                let l = listeners[index207];
+            for(let index139=0; index139 < listeners.length; index139++) {
+                let l = listeners[index139];
                 {
                     l.performAction(this, evt);
                 }
@@ -1831,9 +1887,9 @@ class JSContainer implements api.Renderable {
 
     public getChild(name: string): api.Renderable {
         {
-            let array209 = this.getChildren();
-            for(let index208=0; index208 < array209.length; index208++) {
-                let child = array209[index208];
+            let array141 = this.getChildren();
+            for(let index140=0; index140 < array141.length; index140++) {
+                let child = array141[index140];
                 {
                     if (child.getName() === name){
                         return child;
@@ -2016,14 +2072,14 @@ class JSContainer implements api.Renderable {
         const aStyles: string[] = styles.split(" ");
         const toAdds: string[] = styleClass.split(" ");
         let res: string = "";
-        for(let index210=0; index210 < toAdds.length; index210++) {
-            let toAdd = toAdds[index210];
+        for(let index142=0; index142 < toAdds.length; index142++) {
+            let toAdd = toAdds[index142];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0){
                     let add: boolean = true;
-                    for(let index211=0; index211 < aStyles.length; index211++) {
-                        let style = aStyles[index211];
+                    for(let index143=0; index143 < aStyles.length; index143++) {
+                        let style = aStyles[index143];
                         {
                             style = style.trim();
                             if (style.length > 0){
@@ -2060,8 +2116,8 @@ class JSContainer implements api.Renderable {
             return false;
         }
         const aStyles: string[] = styles.split(" ");
-        for(let index212=0; index212 < aStyles.length; index212++) {
-            let style = aStyles[index212];
+        for(let index144=0; index144 < aStyles.length; index144++) {
+            let style = aStyles[index144];
             {
                 style = style.trim();
                 if (style !== ""){
@@ -2091,8 +2147,8 @@ class JSContainer implements api.Renderable {
     public removeClass(cls: string): JSContainer {
         if (cls != null && cls.trim() !== ""){
             const toremove: string[] = cls.split(" ");
-            for(let index213=0; index213 < toremove.length; index213++) {
-                let s = toremove[index213];
+            for(let index145=0; index145 < toremove.length; index145++) {
+                let s = toremove[index145];
                 {
                     this.removeSingleClass(s);
                 }
@@ -2106,8 +2162,8 @@ class JSContainer implements api.Renderable {
         if (cl != null && cl.length > 0){
             const classes: string[] = cl.split(" ");
             let result: string = "";
-            for(let index214=0; index214 < classes.length; index214++) {
-                let scl = classes[index214];
+            for(let index146=0; index146 < classes.length; index146++) {
+                let scl = classes[index146];
                 {
                     if (scl !== cls){
                         if (result === ""){
@@ -2175,9 +2231,9 @@ class JSContainer implements api.Renderable {
         let i: number = 0;
         let added: boolean = false;
         {
-            let array216 = this.getChildren();
-            for(let index215=0; index215 < array216.length; index215++) {
-                let c = array216[index215];
+            let array148 = this.getChildren();
+            for(let index147=0; index147 < array148.length; index147++) {
+                let c = array148[index147];
                 {
                     if (i === index){
                         children.push(child);
@@ -2426,9 +2482,9 @@ class JSContainer implements api.Renderable {
         this.d["rendered"] = b;
         if (!b){
             {
-                let array218 = this.getChildren();
-                for(let index217=0; index217 < array218.length; index217++) {
-                    let child = array218[index217];
+                let array150 = this.getChildren();
+                for(let index149=0; index149 < array150.length; index149++) {
+                    let child = array150[index149];
                     {
                         child.setRendered(b);
                     }
@@ -2479,8 +2535,8 @@ class JSContainer implements api.Renderable {
      * @return {boolean} Whether is present or not
      */
     contains(lst: Array<any>, o: any): boolean {
-        for(let index219=0; index219 < lst.length; index219++) {
-            let oo = lst[index219];
+        for(let index151=0; index151 < lst.length; index151++) {
+            let oo = lst[index151];
             {
                 if (/* equals */(<any>((o1: any, o2: any) => o1 && o1.equals ? o1.equals(o2) : o1 === o2)(oo,o))){
                     return true;
@@ -2498,22 +2554,22 @@ class JSContainer implements api.Renderable {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())){
             const tmp: Array<api.Renderer<any>> = <any>(new Array<api.Renderer<any>>());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for(let index220=0; index220 < renderers.length; index220++) {
-                let r = renderers[index220];
+            for(let index152=0; index152 < renderers.length; index152++) {
+                let r = renderers[index152];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for(let index221=0; index221 < renderers.length; index221++) {
-            let renderer = renderers[index221];
+        for(let index153=0; index153 < renderers.length; index153++) {
+            let renderer = renderers[index153];
             renderer.doRender(this, parent)
         }
         {
-            let array223 = this.getChildren();
-            for(let index222=0; index222 < array223.length; index222++) {
-                let child = array223[index222];
+            let array155 = this.getChildren();
+            for(let index154=0; index154 < array155.length; index154++) {
+                let child = array155[index154];
                 {
                     child['render$']();
                 }
@@ -2550,8 +2606,8 @@ class JSContainer implements api.Renderable {
         const previous: Object = <Object>this.d["data"];
         if (previous != null && previous instanceof <any>Array){
             const arData: Array<Object> = <Array<Object>>previous;
-            for(let index224=0; index224 < arData.length; index224++) {
-                let line = arData[index224];
+            for(let index156=0; index156 < arData.length; index156++) {
+                let line = arData[index156];
                 {
                     const value: string = <string>line["value"];
                     this.setAttribute(value, null);
@@ -2560,9 +2616,9 @@ class JSContainer implements api.Renderable {
         } else {
             if (previous != null){
                 {
-                    let array226 = Object.keys(previous);
-                    for(let index225=0; index225 < array226.length; index225++) {
-                        let key = array226[index225];
+                    let array158 = Object.keys(previous);
+                    for(let index157=0; index157 < array158.length; index157++) {
+                        let key = array158[index157];
                         {
                             this.setAttribute(key, null);
                         }
@@ -2574,8 +2630,8 @@ class JSContainer implements api.Renderable {
         if (data != null){
             if (data != null && data instanceof <any>Array){
                 const arData: Array<Object> = <Array<Object>>data;
-                for(let index227=0; index227 < arData.length; index227++) {
-                    let line = arData[index227];
+                for(let index159=0; index159 < arData.length; index159++) {
+                    let line = arData[index159];
                     {
                         const text: string = <string>line["text"];
                         const value: string = <string>line["value"];
@@ -2584,9 +2640,9 @@ class JSContainer implements api.Renderable {
                 }
             } else {
                 {
-                    let array229 = Object.keys(data);
-                    for(let index228=0; index228 < array229.length; index228++) {
-                        let key = array229[index228];
+                    let array161 = Object.keys(data);
+                    for(let index160=0; index160 < array161.length; index160++) {
+                        let key = array161[index160];
                         {
                             this.setAttribute(key, <string>(<Object>data)[key]);
                         }
@@ -2611,9 +2667,9 @@ class JSContainer implements api.Renderable {
         const clsss: string = parent.getAttribute("class");
         if (clsss != null){
             {
-                let array231 = parent.getAttribute("class").split(" ");
-                for(let index230=0; index230 < array231.length; index230++) {
-                    let s = array231[index230];
+                let array163 = parent.getAttribute("class").split(" ");
+                for(let index162=0; index162 < array163.length; index162++) {
+                    let s = array163[index162];
                     {
                         if (s.trim() === cls)return <T><any>parent;
                     }
@@ -2719,17 +2775,6 @@ namespace JSContainer {
 }
 
 
-class Button extends JSContainer {
-    public constructor(name: string, text: string) {
-        super(name, "button");
-        this.setHtml(text);
-    }
-}
-Button["__class"] = "framework.components.Button";
-Button["__interfaces"] = ["framework.components.api.Renderable"];
-
-
-
 /**
  * Creates a new card layout container
  * @param {string} name - The name of the container.
@@ -2768,8 +2813,8 @@ class CardLayout extends JSContainer {
      * @return {CardLayout} - this
      */
     public addItems(...items: CardLayoutItem[]): CardLayout {
-        for(let index232=0; index232 < items.length; index232++) {
-            let item = items[index232];
+        for(let index164=0; index164 < items.length; index164++) {
+            let item = items[index164];
             {
                 this.addItem(item);
             }
@@ -2807,9 +2852,9 @@ class CardLayout extends JSContainer {
     public getIndex(name: string): number {
         let index: number = 0;
         {
-            let array234 = this.getChildren();
-            for(let index233=0; index233 < array234.length; index233++) {
-                let child = array234[index233];
+            let array166 = this.getChildren();
+            for(let index165=0; index165 < array166.length; index165++) {
+                let child = array166[index165];
                 {
                     if (child.getName() === name){
                         return index;
@@ -2949,9 +2994,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array236 = this.getChildren();
-            for(let index235=0; index235 < array236.length; index235++) {
-                let child = array236[index235];
+            let array168 = this.getChildren();
+            for(let index167=0; index167 < array168.length; index167++) {
+                let child = array168[index167];
                 {
                     if (child.getName() === name){
                         const evt: CustomEvent = new CustomEvent("activate");
@@ -2993,9 +3038,9 @@ class CardLayout extends JSContainer {
     public refresh() {
         const def: string = this.getDefault();
         {
-            let array238 = this.getChildren();
-            for(let index237=0; index237 < array238.length; index237++) {
-                let r = array238[index237];
+            let array170 = this.getChildren();
+            for(let index169=0; index169 < array170.length; index169++) {
+                let r = array170[index169];
                 {
                     if (r.getName() === def){
                         r.setStyle("display", null);
@@ -3012,13 +3057,21 @@ CardLayout["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 
+/**
+ * Instantiate a {@link CardLayoutItem} with specified name and tag
+ * @param {string} name - name of item
+ * @param {string} tag - tag of item
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 class CardLayoutItem extends JSContainer {
     public constructor(name: string, tag: string) {
         super(name, tag);
     }
 
     /**
-     * 
+     * returns array of specific supported events
      * @return {java.lang.String[]}
      */
     public advancedEventTypes(): string[] {
@@ -3030,13 +3083,24 @@ CardLayoutItem["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 
+/**
+ * Instantiate this container with the specified name
+ * @param {string} name - name of container
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 class ExternalJavascript extends JSContainer {
     public constructor(name: string) {
         super(name, "script");
         this.setAttribute("type", "text/javascript");
-        this.setAttribute("identifier", "html:javascript");
     }
 
+    /**
+     * Sets the source of the external javascript
+     * @param {string} src - source of file
+     * @return {ExternalJavascript} - this
+     */
     public setSource(src: string): ExternalJavascript {
         this.setAttribute("src", src);
         return this;
@@ -3047,6 +3111,13 @@ ExternalJavascript["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 
+/**
+ * External this external stylesheet container with the specified name
+ * @param {string} name - the name of the container
+ * @class
+ * @extends JSContainer
+ * @author Kureem Rossaye
+ */
 class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalStylesheet> {
     public static ORIGIN_ANONYMOUS: string = "anonymous";
 
@@ -3066,20 +3137,34 @@ class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalSty
         super(name, "link");
         this.setAttribute("type", "text/css");
         this.setAttribute("rel", "stylesheet");
-        this.setAttribute("identifier", "html:stylesheet");
         this.addRenderer(this);
     }
 
+    /**
+     * Sets the source of the external css file and returns the updated instance
+     * @param {string} src - source of external css file
+     * @return {ExternalStylesheet} - updated instance of this
+     */
     public setSource(src: string): ExternalStylesheet {
         this.setAttribute("source", src);
         return this;
     }
 
+    /**
+     * Sets the cross origin value of the css file
+     * @param {string} origin - cross origin value
+     * @return {ExternalStylesheet} - updated instance of this
+     */
     public setCrossOrigin(origin: string): ExternalStylesheet {
         this.setAttribute("crossorigin", origin);
         return this;
     }
 
+    /**
+     * Sets the media of the css file
+     * @param {string} media - the media of the css file
+     * @return {ExternalStylesheet} - updated instance of this
+     */
     public setMedia(media: string): ExternalStylesheet {
         this.setAttribute("media", media);
         return this;
@@ -3095,7 +3180,7 @@ class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalSty
     }
 
     /**
-     * 
+     * Rendered used internally which avoids rendering of the css file when the tag is used in our buider.
      * @param {ExternalStylesheet} c
      * @param {HTMLElement} root
      */
@@ -3184,8 +3269,8 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
                 const tag: string = tm.tagName;
                 this.setTag(tag);
                 const attrs: NamedNodeMap = tm.attributes;
-                for(let index239=0; index239 < attrs.length; index239++) {
-                    let att = attrs[index239];
+                for(let index171=0; index171 < attrs.length; index171++) {
+                    let att = attrs[index171];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -3403,8 +3488,8 @@ namespace input {
                     AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index240=0; index240 < this.validators.length; index240++) {
-                let v = this.validators[index240];
+            for(let index172=0; index172 < this.validators.length; index172++) {
+                let v = this.validators[index172];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -3444,7 +3529,51 @@ namespace input {
 
 }
 namespace input {
-    export class Form extends JSContainer {
+    /**
+     * Creates a new instance of the button with specified name and text
+     * @param {string} name - name of the button
+     * @param {string} text - text inside the button
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
+    export class JSButton extends JSContainer {
+        public constructor(name: string, text: string) {
+            super(name, "input");
+            this.setHtml(text);
+        }
+
+        /**
+         * Sets the type of the button
+         * @param {api.InputType} type - type of the button. Valid values are: InputType.RESET | InputType.BUTTON | InputType.SUBMIT
+         * @return {input.JSButton} - updated instance of this Button
+         */
+        public setType(type: api.InputType): JSButton {
+            if (type != null){
+                if (api.InputType["_$wrappers"][type].getGroup() !== "button"){
+                    throw Object.defineProperty(new Error("only button types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                }
+                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            } else {
+                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+            }
+            return this;
+        }
+    }
+    JSButton["__class"] = "framework.components.input.JSButton";
+    JSButton["__interfaces"] = ["framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    /**
+     * Renders a form tag with
+     * @author Kureem Rossaye
+     * @param {string} name
+     * @class
+     * @extends JSContainer
+     */
+    export class JSForm extends JSContainer {
         validationerrors: Object;
 
         public constructor(name: string) {
@@ -3483,7 +3612,7 @@ namespace input {
 
         public getField(binding: string): api.InputField<any> {
             const result: Array<api.InputField<any>> = <any>(new Array<api.InputField<any>>());
-            util.ComponentUtil.visit(this, new Form.Form$0(this, binding, result));
+            util.ComponentUtil.visit(this, new JSForm.JSForm$0(this, binding, result));
             if (result.length > 0){
                 return result[0];
             }
@@ -3495,7 +3624,7 @@ namespace input {
             evt["source"] = this;
             this.fireListener("beforeValidate", evt);
             this.validationerrors = <Object>new Object();
-            util.ComponentUtil.visit(this, new Form.Form$1(this));
+            util.ComponentUtil.visit(this, new JSForm.JSForm$1(this));
             const evtAfter: CustomEvent = new CustomEvent("afterValidate");
             evtAfter["source"] = this;
             evtAfter["data"] = this.validationerrors;
@@ -3518,7 +3647,7 @@ namespace input {
             evt["source"] = this;
             evt["data"] = data;
             this.fireListener("beforeSetData", evt);
-            util.ComponentUtil.visit(this, new Form.Form$2(this, data));
+            util.ComponentUtil.visit(this, new JSForm.JSForm$2(this, data));
             const evtAfter: CustomEvent = new CustomEvent("afterSetData");
             evtAfter["source"] = this;
             evtAfter["data"] = data;
@@ -3530,7 +3659,7 @@ namespace input {
             evt["source"] = this;
             this.fireListener("beforeGetData", evt);
             const data: Object = <Object>new Object();
-            util.ComponentUtil.visit(this, new Form.Form$3(this, data));
+            util.ComponentUtil.visit(this, new JSForm.JSForm$3(this, data));
             const evtAfter: CustomEvent = new CustomEvent("afterGetData");
             evtAfter["source"] = this;
             evtAfter["data"] = data;
@@ -3554,14 +3683,14 @@ namespace input {
             this.fireListener("afterSubmit", evtAfter);
         }
     }
-    Form["__class"] = "framework.components.input.Form";
-    Form["__interfaces"] = ["framework.components.api.Renderable"];
+    JSForm["__class"] = "framework.components.input.JSForm";
+    JSForm["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 
-    export namespace Form {
+    export namespace JSForm {
 
-        export class Form$0 implements util.ComponentUtil.ComponentVisitor {
+        export class JSForm$0 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -3588,11 +3717,11 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$0["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+        JSForm$0["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
 
-        export class Form$1 implements util.ComponentUtil.ComponentVisitor {
+        export class JSForm$1 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -3616,11 +3745,11 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$1["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+        JSForm$1["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
 
-        export class Form$2 implements util.ComponentUtil.ComponentVisitor {
+        export class JSForm$2 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -3658,11 +3787,11 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+        JSForm$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
 
-        export class Form$3 implements util.ComponentUtil.ComponentVisitor {
+        export class JSForm$3 implements util.ComponentUtil.ComponentVisitor {
             public __parent: any;
             /**
              * 
@@ -3683,233 +3812,7 @@ namespace input {
                 this.__parent = __parent;
             }
         }
-        Form$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-
-
-    }
-
-}
-namespace input {
-    export class JSImageInput extends JSContainer implements api.InputField<string> {
-        /*private*/ image: JSContainer;
-
-        /*private*/ upload: JSUpload;
-
-        /*private*/ imageContainer: JSContainer;
-
-        /*private*/ validators: Array<api.Validator<string>>;
-
-        public constructor(name: string) {
-            super(name, "div");
-            this.image = new JSContainer("image", "img");
-            this.upload = new JSUpload("upload", util.PropertyUtil.REMOTESERVER + "/resources/upload");
-            this.imageContainer = new JSContainer("div");
-            this.validators = <any>(new Array<api.Validator<string>>());
-            this.setAttribute("identifier", "lgt:image-input");
-            this.addClass("slds-image-input");
-            this.addChild$framework_components_api_Renderable(this.imageContainer);
-            this.imageContainer.addChild$framework_components_api_Renderable(this.image);
-            this.decorateImage();
-            this.addChild$framework_components_api_Renderable(this.upload);
-            this.upload.setVisible(false);
-            this.upload.setStyle("position", "absolute");
-            this.setStyle("position", "relative");
-            this.upload.addEventListener(new JSImageInput.JSImageInput$0(this), "success");
-            this.upload.addEventListener(new JSImageInput.JSImageInput$1(this), "error");
-        }
-
-        public refreshUploadDir() {
-            let dir: string = this.getAttribute("uploadDir");
-            const name: string = this.getName();
-            if (dir == null){
-                dir = "default";
-            }
-            this.upload.setUrl(util.PropertyUtil.REMOTESERVER + "/resources/upload?dir=" + dir + "&name=" + name);
-        }
-
-        public getImage(): JSContainer {
-            return this.image;
-        }
-
-        public setRequired(b: boolean): JSImageInput {
-            if (b){
-                this.setAttribute("required", "true");
-            } else this.setAttribute("required", null);
-            return this;
-        }
-
-        public setDisabled(b: boolean): JSImageInput {
-            if (b){
-                this.setAttribute("disabled", "true");
-            } else {
-                this.setAttribute("disabled", null);
-            }
-            return this;
-        }
-
-        public setReadOnly(b: boolean): JSImageInput {
-            if (b){
-                this.setAttribute("readonly", "true");
-            } else {
-                this.setAttribute("readonly", null);
-            }
-            return this;
-        }
-
-        public decorateImage() {
-            this.image.addEventListener(new JSImageInput.JSImageInput$2(this), "click");
-        }
-
-        /**
-         * 
-         * @return {string}
-         */
-        public getValue(): string {
-            return this.image.getAttribute("src");
-        }
-
-        public setValue$java_lang_String(val: string) {
-            if (val == null){
-                this.image.setAttribute("src", this.getAttribute("default"));
-            } else {
-                this.image.setAttribute("src", val);
-            }
-        }
-
-        /**
-         * 
-         * @param {string} val
-         */
-        public setValue(val?: any) {
-            if (((typeof val === 'string') || val === null)) {
-                return <any>this.setValue$java_lang_String(val);
-            } else throw new Error('invalid overload');
-        }
-
-        /**
-         * 
-         */
-        public validate() {
-            let valid: boolean = true;
-            const e: api.ValidationException = new api.ValidationException();
-            for(let index241=0; index241 < this.validators.length; index241++) {
-                let v = this.validators[index241];
-                {
-                    const b: boolean = v.validate(this);
-                    if (!b){
-                        valid = false;
-                        api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
-                    }
-                }
-            }
-            const validate: CustomEvent = new CustomEvent("validate");
-            validate["errors"] = e.errors;
-            validate["valid"] = valid;
-            validate["source"] = this;
-            this.fireListener("validate", validate);
-            if (!valid){
-                throw e;
-            }
-        }
-
-        /**
-         * 
-         * @return {string}
-         */
-        public getBinding(): string {
-            return this.getAttribute("binding");
-        }
-
-        /**
-         * 
-         * @param {string} binding
-         * @return {*}
-         */
-        public setBinding(binding: string): api.InputField<string> {
-            this.setAttribute("binding", binding);
-            return this;
-        }
-
-        /**
-         * 
-         * @return {java.lang.String[]}
-         */
-        public advancedEventTypes(): string[] {
-            return ["success", "error"];
-        }
-    }
-    JSImageInput["__class"] = "framework.components.input.JSImageInput";
-    JSImageInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-
-    export namespace JSImageInput {
-
-        export class JSImageInput$0 implements api.EventListener {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} source
-             * @param {Event} evt
-             */
-            public performAction(source: api.Renderable, evt: Event) {
-                if (this.__parent.hasListenerOfType("success")){
-                    this.__parent.fireListener("success", evt);
-                } else {
-                    const data: Object = <Object>evt["data"];
-                    if (data != null && data.hasOwnProperty("url")){
-                        const url: string = <string>data["url"];
-                        this.__parent.setValue(url);
-                        this.__parent.render();
-                    } else {
-                        console.warn("no action taken although upload of image was successfull. You may consider adding a success event to this component");
-                    }
-                }
-            }
-
-            constructor(__parent: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSImageInput$0["__interfaces"] = ["framework.components.api.EventListener"];
-
-
-
-        export class JSImageInput$1 implements api.EventListener {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} source
-             * @param {Event} evt
-             */
-            public performAction(source: api.Renderable, evt: Event) {
-                this.__parent.fireListener("error", evt);
-            }
-
-            constructor(__parent: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSImageInput$1["__interfaces"] = ["framework.components.api.EventListener"];
-
-
-
-        export class JSImageInput$2 implements api.EventListener {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} source
-             * @param {Event} evt
-             */
-            public performAction(source: api.Renderable, evt: Event) {
-                this.__parent.upload.triggerUpload();
-            }
-
-            constructor(__parent: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSImageInput$2["__interfaces"] = ["framework.components.api.EventListener"];
+        JSForm$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
 
 
     }
@@ -3965,7 +3868,6 @@ namespace input {
             if (this.previousValue === undefined) { this.previousValue = null; }
             this.validators = <any>(new Array<api.Validator<any>>());
             if (this.data === undefined) { this.data = null; }
-            this.setAttribute("identifier", "html:select");
         }
 
         public addValidator(validator: api.Validator<any>) {
@@ -3974,8 +3876,8 @@ namespace input {
 
         public setOptions$java_lang_String(options: string): JSSelect {
             const opts: string[] = options.split("\n");
-            for(let index242=0; index242 < opts.length; index242++) {
-                let opt = opts[index242];
+            for(let index173=0; index173 < opts.length; index173++) {
+                let opt = opts[index173];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -4094,8 +3996,8 @@ namespace input {
             if (ele != null){
                 if (ele.multiple){
                     const result: Array<string> = <any>(new Array<string>());
-                    for(let index243=0; index243 < ele.children.length; index243++) {
-                        let e = ele.children[index243];
+                    for(let index174=0; index174 < ele.children.length; index174++) {
+                        let e = ele.children[index174];
                         {
                             const opt: HTMLOptionElement = <HTMLOptionElement>e;
                             if (opt.selected)result.push(opt.value);
@@ -4108,9 +4010,9 @@ namespace input {
             } else {
                 const val: string = this.getAttribute("value");
                 {
-                    let array245 = this.getChildren();
-                    for(let index244=0; index244 < array245.length; index244++) {
-                        let opt = array245[index244];
+                    let array176 = this.getChildren();
+                    for(let index175=0; index175 < array176.length; index175++) {
+                        let opt = array176[index175];
                         {
                             if (opt.getAttribute("value") === val){
                                 return (<input.JSOption><any>opt).getValue();
@@ -4147,13 +4049,13 @@ namespace input {
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array247 = this.getChildren();
-                    for(let index246=0; index246 < array247.length; index246++) {
-                        let opt = array247[index246];
+                    let array178 = this.getChildren();
+                    for(let index177=0; index177 < array178.length; index177++) {
+                        let opt = array178[index177];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
-                            for(let index248=0; index248 < arrVal.length; index248++) {
-                                let val = arrVal[index248];
+                            for(let index179=0; index179 < arrVal.length; index179++) {
+                                let val = arrVal[index179];
                                 {
                                     if (opt.getAttribute("value") === val){
                                         (<input.JSOption><any>opt).setSelected(true);
@@ -4165,9 +4067,9 @@ namespace input {
                 }
             } else {
                 {
-                    let array250 = this.getChildren();
-                    for(let index249=0; index249 < array250.length; index249++) {
-                        let opt = array250[index249];
+                    let array181 = this.getChildren();
+                    for(let index180=0; index180 < array181.length; index180++) {
+                        let opt = array181[index180];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
                         }
@@ -4199,8 +4101,8 @@ namespace input {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index251=0; index251 < this.validators.length; index251++) {
-                let v = this.validators[index251];
+            for(let index182=0; index182 < this.validators.length; index182++) {
+                let v = this.validators[index182];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -4234,8 +4136,8 @@ namespace input {
         public setData(data_: Array<Object>) {
             this.clearChildren();
             this.setRendered(false);
-            for(let index252=0; index252 < data_.length; index252++) {
-                let o = data_[index252];
+            for(let index183=0; index183 < data_.length; index183++) {
+                let o = data_[index183];
                 {
                     if (o.hasOwnProperty("value")){
                         const value: string = <string>o["value"];
@@ -4259,9 +4161,9 @@ namespace input {
             const result: Array<Object> = <any>(new Array<Object>());
             if (this.isMultiple()){
                 {
-                    let array254 = <Array<string>>obj;
-                    for(let index253=0; index253 < array254.length; index253++) {
-                        let o = array254[index253];
+                    let array185 = <Array<string>>obj;
+                    for(let index184=0; index184 < array185.length; index184++) {
+                        let o = array185[index184];
                         {
                             const item: Object = this.findItem(o);
                             if (item != null){
@@ -4287,8 +4189,8 @@ namespace input {
 
         public findItem(value: string): Object {
             if (this.data != null){
-                for(let index255=0; index255 < this.data.length; index255++) {
-                    let o = this.data[index255];
+                for(let index186=0; index186 < this.data.length; index186++) {
+                    let o = this.data[index186];
                     {
                         let val: string = <string>o["value"];
                         val = val + "";
@@ -4324,7 +4226,6 @@ namespace input {
         public constructor(name: string) {
             super(name, "textarea");
             this.validators = <any>(new Array<api.Validator<string>>());
-            this.setAttribute("identifier", "html:textarea");
         }
 
         public addValidator(validator: api.Validator<string>) {
@@ -4391,8 +4292,8 @@ namespace input {
                     input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index256=0; index256 < this.validators.length; index256++) {
-                let v = this.validators[index256];
+            for(let index187=0; index187 < this.validators.length; index187++) {
+                let v = this.validators[index187];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -4447,40 +4348,6 @@ namespace input {
 
 
 }
-class RestWebservice extends JSContainer {
-    public constructor(name?: any) {
-        if (((typeof name === 'string') || name === null)) {
-            let __args = arguments;
-            super(name);
-            this.setAttribute("method", "GET");
-        } else if (name === undefined) {
-            let __args = arguments;
-            {
-                let __args = arguments;
-                let name: any = "rw";
-                super(name);
-                this.setAttribute("method", "GET");
-            }
-        } else throw new Error('invalid overload');
-    }
-}
-RestWebservice["__class"] = "framework.components.RestWebservice";
-RestWebservice["__interfaces"] = ["framework.components.api.Renderable"];
-
-
-
-class Row extends JSContainer {
-    public constructor(name: string) {
-        super(name, "div");
-        this.addClass("row");
-        this.addCSSRule(".row{display:table;padding:10px;width:100%;}");
-    }
-}
-Row["__class"] = "framework.components.Row";
-Row["__interfaces"] = ["framework.components.api.Renderable"];
-
-
-
 namespace table {
     export class Table extends JSContainer {
         /*private*/ head: JSContainer;
@@ -4567,322 +4434,10 @@ namespace table {
 
 }
 namespace input {
-    export class JSAddressInput extends HTMLTemplateContainer implements api.InputField<Object> {
-        /*private*/ address: Object;
-
-        /*private*/ country: input.JSSelect;
-
-        /*private*/ city: input.JSTextInput;
-
-        /*private*/ postalCode: input.JSTextInput;
-
-        /*private*/ state: input.JSTextInput;
-
-        /*private*/ street: input.JSTextInput;
-
-        public constructor(name: string) {
-            super(name, "");
-            this.address = <Object>new Object();
-            this.country = new input.JSSelect("country");
-            this.city = new input.JSTextInput("city");
-            this.postalCode = new input.JSTextInput("postalCode");
-            this.state = new input.JSTextInput("state");
-            this.street = new input.JSTextInput("street");
-            this.addChild$framework_components_api_Renderable(this.country);
-            this.addChild$framework_components_api_Renderable(this.city);
-            this.addChild$framework_components_api_Renderable(this.postalCode);
-            this.addChild$framework_components_api_Renderable(this.state);
-            this.addChild$framework_components_api_Renderable(this.street);
-            this.city.setRequired(true);
-            this.postalCode.setRequired(true);
-            this.street.setRequired(true);
-            this.country.setRequired(true);
-        }
-
-        public getAddress(): Object {
-            this.address["country"] = this.country.getValue();
-            this.address["city"] = this.city.getValue();
-            this.address["postalCode"] = this.country.getValue();
-            this.address["state"] = this.state.getValue();
-            this.address["street"] = this.street.getValue();
-            return this.address;
-        }
-
-        public setAddress(address: Object) {
-            this.country.setValue(address["country"]);
-            this.city.setValue$java_lang_String(<string>address["city"]);
-            this.postalCode.setValue$java_lang_String(<string>address["postalCode"]);
-            this.state.setValue$java_lang_String(<string>address["state"]);
-            this.street.setValue$java_lang_String(<string>address["street"]);
-        }
-
-        /**
-         * 
-         * @return {Object}
-         */
-        public getValue(): Object {
-            return this.getAddress();
-        }
-
-        public setValue$jsweet_lang_Object(val: Object) {
-            this.setAddress(val);
-        }
-
-        /**
-         * 
-         * @param {Object} val
-         */
-        public setValue(val?: any) {
-            if (((val != null && val instanceof <any>Object) || val === null)) {
-                return <any>this.setValue$jsweet_lang_Object(val);
-            } else throw new Error('invalid overload');
-        }
-
-        /**
-         * 
-         */
-        public validate() {
-            this.street.validate();
-            this.postalCode.validate();
-            this.city.validate();
-            this.country.validate();
-        }
-
-        /**
-         * 
-         * @return {string}
-         */
-        public getBinding(): string {
-            if (this.getAttribute("binding") == null){
-                return this.getName();
-            } else {
-                return this.getAttribute("binding");
-            }
-        }
-
-        /**
-         * 
-         * @param {string} binding
-         * @return {*}
-         */
-        public setBinding(binding: string): api.InputField<Object> {
-            this.setAttribute("binding", binding);
-            return this;
-        }
-
-        /**
-         * 
-         * @param {boolean} b
-         * @return {*}
-         */
-        public setRequired(b: boolean): api.InputField<Object> {
-            return this;
-        }
-    }
-    JSAddressInput["__class"] = "framework.components.input.JSAddressInput";
-    JSAddressInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.TemplateRenderable"];
-
-
-}
-/**
- * Create a new instance of this component
- * @param {string} name The name of the component
- * @param {string} url The url where to submit uploaded file
- * @param {string} template
- * @class
- * @extends HTMLTemplateContainer
- * @author Rossaye Abdool Kureem
- */
-class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.InputField<Object> {
-    /*private*/ label: JSContainer;
-
-    /*private*/ input: JSContainer;
-
-    /*private*/ uploader: FileUploader;
-
-    /*private*/ required: boolean;
-
-    public constructor(name?: any, template?: any, url?: any) {
-        if (((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && ((typeof url === 'string') || url === null)) {
-            let __args = arguments;
-            super(name, template);
-            this.label = new JSContainer("label", "label");
-            this.input = new JSContainer("uploadfile", "input");
-            this.uploader = new FileUploader();
-            this.required = false;
-            this.addChild$framework_components_api_Renderable(this.label);
-            this.input.setAttribute("type", "file").setAttribute("accept", "*");
-            this.label.setHtml("Upload File:");
-            this.input.addEventListener(this, "change");
-            this.input.addClass("slds-input");
-            this.addChild$framework_components_api_Renderable(this.input);
-            this.setAttribute("url", url);
-        } else if (((typeof name === 'string') || name === null) && ((typeof template === 'string') || template === null) && url === undefined) {
-            let __args = arguments;
-            let url: any = __args[1];
-            {
-                let __args = arguments;
-                let template: any = "<form>\n\t<div name=\"label\"></div>\n\t<div name=\"uploadfile\"></div>\n</form>";
-                super(name, template);
-                this.label = new JSContainer("label", "label");
-                this.input = new JSContainer("uploadfile", "input");
-                this.uploader = new FileUploader();
-                this.required = false;
-                this.addChild$framework_components_api_Renderable(this.label);
-                this.input.setAttribute("type", "file").setAttribute("accept", "*");
-                this.label.setHtml("Upload File:");
-                this.input.addEventListener(this, "change");
-                this.input.addClass("slds-input");
-                this.addChild$framework_components_api_Renderable(this.input);
-                this.setAttribute("url", url);
-            }
-            this.label = new JSContainer("label", "label");
-            this.input = new JSContainer("uploadfile", "input");
-            this.uploader = new FileUploader();
-            this.required = false;
-        } else throw new Error('invalid overload');
-    }
-
-    /**
-     * Manually opens native dialog box to select file to upload
-     */
-    public triggerUpload() {
-        this.input.getNative().click();
-    }
-
-    /**
-     * 
-     * @return {java.lang.String[]}
-     */
-    public advancedEventTypes(): string[] {
-        return ["success", "error"];
-    }
-
-    /**
-     * Sets a label to this component
-     * @param {string} label The label of the component
-     */
-    public setLabel(label: string) {
-        this.label.setHtml(label);
-    }
-
-    /**
-     * Sets the accepts mimetypes for this component
-     * @param {string} accepts Mime types allowed to upload (e.g image/jpg, image/png, text/html etc)
-     */
-    public setAccepts(accepts: string) {
-        this.input.setAttribute("accept", accepts);
-    }
-
-    /**
-     * 
-     * @param {*} source
-     * @param {Event} ev
-     */
-    public performAction(source: api.Renderable, ev: Event) {
-    }
-
-    /**
-     * Sets the server url where to submit file to uplaod
-     * @param {string} url Url where to submit file to upload
-     */
-    public setUrl(url: string) {
-        this.setAttribute("url", url);
-    }
-
-    /**
-     * Synonymous to setUrl
-     * @param {string} url The url where to submit file to upload
-     */
-    public setEndpoint(url: string) {
-        this.setUrl(url);
-    }
-
-    /**
-     * 
-     * @return {Object}
-     */
-    public getValue(): Object {
-        return null;
-    }
-
-    public setValue$jsweet_lang_Object(val: Object) {
-    }
-
-    /**
-     * 
-     * @param {Object} val
-     */
-    public setValue(val?: any) {
-        if (((val != null && val instanceof <any>Object) || val === null)) {
-            return <any>this.setValue$jsweet_lang_Object(val);
-        } else throw new Error('invalid overload');
-    }
-
-    /**
-     * 
-     */
-    public validate() {
-    }
-
-    /**
-     * 
-     * @return {string}
-     */
-    public getBinding(): string {
-        return this.getAttribute("binding");
-    }
-
-    /**
-     * 
-     * @param {string} binding
-     * @return {*}
-     */
-    public setBinding(binding: string): api.InputField<Object> {
-        this.setAttribute("binding", binding);
-        return this;
-    }
-
-    /**
-     * 
-     * @param {boolean} b
-     * @return {*}
-     */
-    public setRequired(b: boolean): api.InputField<Object> {
-        this.required = b;
-        return this;
-    }
-
-    public getUploader(): FileUploader {
-        return this.uploader;
-    }
-
-    public setUploader(uploader: FileUploader) {
-        this.uploader = uploader;
-    }
-
-    public getLabel(): JSContainer {
-        return this.label;
-    }
-
-    public getInput(): JSContainer {
-        return this.input;
-    }
-
-    public isRequired(): boolean {
-        return this.required;
-    }
-}
-JSUpload["__class"] = "framework.components.JSUpload";
-JSUpload["__interfaces"] = ["framework.components.api.EventListener","framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.TemplateRenderable"];
-
-
-
-namespace input {
     export class JSCheckBox extends input.AbstractJSInput<boolean> {
         public constructor(name: string) {
             super(name);
-            this.setAttribute("type", "checkbox");
+            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.CHECKBOX].getValue());
         }
 
         /**
@@ -4941,12 +4496,19 @@ namespace input {
     export class JSDateInput extends input.AbstractJSInput<Date> {
         public constructor(name: string) {
             super(name);
-            this.setType(input.DateInputTypes.date);
+            this.setType(api.InputType.DATE);
             this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
         }
 
-        public setType(type: string): JSDateInput {
-            this.setAttribute("type", type);
+        public setType(type: api.InputType): JSDateInput {
+            if (type != null){
+                if (api.InputType["_$wrappers"][type].getGroup() !== "date"){
+                    throw Object.defineProperty(new Error("only date types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                }
+                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            } else {
+                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+            }
             return this;
         }
 
@@ -5012,11 +4574,18 @@ namespace input {
     export class JSNumberInput extends input.AbstractJSInput<number> {
         public constructor(name: string) {
             super(name);
-            this.setAttribute("type", "number");
+            this.setType(api.InputType.NUMBER);
         }
 
-        public setType(type: string): JSNumberInput {
-            this.setAttribute("type", type);
+        public setType(type: api.InputType): JSNumberInput {
+            if (type != null){
+                if (api.InputType["_$wrappers"][type].getGroup() !== "number"){
+                    throw Object.defineProperty(new Error("only numeric types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                }
+                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            } else {
+                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+            }
             return this;
         }
 
@@ -5067,15 +4636,15 @@ namespace input {
     export class JSTextInput extends input.AbstractJSInput<string> {
         public constructor(name: string) {
             super(name);
-            this.setType(api.StringInputTypes.text);
+            this.setType(api.InputType.TEXT);
         }
 
         public setMaxLength(length: number) {
             this.setAttribute("maxlength", length + "");
         }
 
-        public setType(type: string): JSTextInput {
-            this.setAttribute("type", type);
+        public setType(type: api.InputType): JSTextInput {
+            this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
             return this;
         }
 
@@ -5122,8 +4691,7 @@ namespace input {
         public constructor(name: string) {
             super(name);
             this.savedDate = new Date();
-            this.setAttribute("type", "time");
-            this.setAttribute("identifier", "html:time-input");
+            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.TIME].getValue());
         }
 
         /**
@@ -5171,46 +4739,42 @@ namespace input {
 
 }
 namespace input {
-    export class RichTextEditor extends input.JSTextArea implements api.Renderer<RichTextEditor> {
-        /*private*/ editor: Object;
-
-        public constructor(name: string) {
-            super(name);
-            this.editor = null;
-            this.setAttribute("identifier", "html:richtext");
-            this.addRenderer(this);
-        }
-
-        public doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c: RichTextEditor, root: HTMLElement) {
-            if (this.editor == null){
-                eval("this.editor = new Simditor({textarea: $(\'#" + this.getId() + "\')});");
-            }
-        }
-
-        /**
-         * 
-         * @param {input.RichTextEditor} c
-         * @param {HTMLElement} root
-         */
-        public doRender(c?: any, root?: any) {
-            if (((c != null && c instanceof <any>input.RichTextEditor) || c === null) && ((root != null && root instanceof <any>HTMLElement) || root === null)) {
-                return <any>this.doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c, root);
-            } else throw new Error('invalid overload');
-        }
-
-        /**
-         * 
-         * @return {string}
-         */
-        public getValue(): string {
-            if (this.editor != null){
-                (<Function>this.editor["saveContent"]).call(this.editor);
-            }
-            return super.getValue();
+    /**
+     * Creates a new instance of reset button with specified name and text
+     * @param {string} name - name of the reset button
+     * @param {string} text - text inside the reset button
+     * @class
+     * @extends input.JSButton
+     * @author Kureem Rossaye
+     */
+    export class JSReset extends input.JSButton {
+        public constructor(name: string, text: string) {
+            super(name, text);
+            this.setType(api.InputType.RESET);
         }
     }
-    RichTextEditor["__class"] = "framework.components.input.RichTextEditor";
-    RichTextEditor["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable","framework.components.api.Renderer"];
+    JSReset["__class"] = "framework.components.input.JSReset";
+    JSReset["__interfaces"] = ["framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    /**
+     * Instantiate a submit button with specified name and text
+     * @param {string} name - name of button
+     * @param {string} text - text of the button
+     * @class
+     * @extends input.JSButton
+     * @author Kureem Rossaye
+     */
+    export class JSSubmit extends input.JSButton {
+        public constructor(name: string, text: string) {
+            super(name, text);
+            this.setType(api.InputType.SUBMIT);
+        }
+    }
+    JSSubmit["__class"] = "framework.components.input.JSSubmit";
+    JSSubmit["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 }
@@ -5218,7 +4782,7 @@ namespace input {
     export class JSRadio extends input.JSCheckBox {
         public constructor(name: string) {
             super(name);
-            this.setAttribute("type", "radio");
+            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.RADIO].getValue());
         }
     }
     JSRadio["__class"] = "framework.components.input.JSRadio";
@@ -5230,8 +4794,4 @@ namespace input {
 
 JSContainer.defaultRenderer_$LI$();
 
-input.NumericInputTypes.types_$LI$();
-
-input.DateInputTypes.types_$LI$();
-
-api.StringInputTypes.types_$LI$();
+Main.main(null);
