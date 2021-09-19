@@ -24,6 +24,19 @@ Add the following dependency to the ``pom.xml``:
 </dependency>
 ```
 
+for convenience, we have created a sample startup project which you can clone. Please visit https://github.com/kureem/visual-javascript-startup 
+
+```bash
+git clone https://github.com/kureem/visual-javascript-startup.git
+
+cd visual-javascript-startup
+
+mvn generate-sources
+
+```
+
+The project contains a few examples that will help you start using the library.
+
 ## License
 
 By default, JSweet candies are published with the Apache 2 Open Source license. Since they are pure APIs, remember that it does not make sense to try to bind a JSweet candy to a commercial license (on contrary to the bridged JS library/framework, which can be distributed under a non-open source license).  
