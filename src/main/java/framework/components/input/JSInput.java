@@ -246,11 +246,12 @@ public  class JSInput<T> extends JSContainer
 		return this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T getValue() {
 		HTMLInputElement inp = (HTMLInputElement)getNative();
 		if(inp != null)
-			return (T)inp.value;
+			return ((T)inp.value);
 		else
 			return (T)getAttribute("value");
 	}

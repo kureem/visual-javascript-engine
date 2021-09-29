@@ -928,7 +928,7 @@ public class JSContainer implements Renderable {
 	 *            The object to check if present
 	 * @return Whether is present or not
 	 */
-	protected boolean contains(Array lst, Object o) {
+	protected boolean contains(@SuppressWarnings("rawtypes") Array lst, Object o) {
 		
 		return lst.indexOf(o) >=0;
 		/*for (Object oo : lst) {

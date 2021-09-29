@@ -43,6 +43,7 @@ public class TableHead extends JSContainer{
 		this.model_ = model;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Array<TableColumn> getColumns(){
 		Array result = tableRow.getChildren();
 		return result;
