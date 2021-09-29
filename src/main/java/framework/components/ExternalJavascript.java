@@ -4,7 +4,7 @@ package framework.components;
  * Class that is rendered as javascript source tag as shown below<br>
  *<br>
  *<code>
- * &lt;script type="text/javascript" src="??"&gt&lt/script&gt
+ * &lt;script type="text/javascript" src="??"&gt;&lt;/script&gt;
  * </code>
  * @author Kureem Rossaye
  *

@@ -70,6 +70,7 @@ public class JSOption extends JSContainer {
 	
 	/**
 	 * Mark or unmark this option as selected
+	 * @param b - Whether to select or not select this option
 	 */
 	public void setSelected(boolean b){
 		if (b) {

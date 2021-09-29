@@ -21,22 +21,40 @@ public class ContainerRenderer implements Renderer<Renderable> {
 	public  static double timeSpent =0;
 
 	
-	
+public static HTMLElement getElementById(String id) {
+		
+		
+		return document.getElementById(id);
+		/*HTMLElement result = null;
+		
+		String js = " var elems = document.getElementsByClassName(id);\n" + 
+				"                     if (elems.length > 0) {\n" + 
+				"                         result = elems[0];\n" + 
+				"                     }\n" + 
+				"                     else {\n" + 
+				"                         result = null;\n" + 
+				"                     }";
+		
+		eval(js);
+		
+		return result;*/
+	}
 
 	public void doRender(Renderable c, HTMLElement root) {
-		HTMLElement jq = document.getElementById(c.getId());
+		HTMLElement jq = c.getElement();//ContainerRenderer.getElementById(c.getId());
 		
 		String tag = c.getTag();
 		boolean rendered = c.isRendered();
 		String name = c.getName();
 		String html = c.getHtml();
-		Renderable parent = c.getParent();
+		Renderable rparent = c.getParent();
 	
 		if (!rendered) {
 	//		decorate(c);
 			if (jq != null)
 				jq.remove();
 			HTMLElement njq = document.createElement(tag);
+			c.setElement(njq);
 			if (name != null && name.length() > 0)
 				njq.setAttribute("name", name);
 			njq.setAttribute("id", c.getId());
@@ -52,7 +70,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 			renderAttributes(njq, c, false);
 			renderStyles(njq, c, false);
 
-			if (parent == null) {
+			if (rparent == null) {
 				if (root == null) {
 					Node body = document.getElementsByTagName("body").$get(0);
 					body.appendChild(njq);
@@ -61,27 +79,42 @@ public class ContainerRenderer implements Renderer<Renderable> {
 				}
 			} else {
 
-				if (parent instanceof TemplateRenderable) {
-					Element elem = document.getElementById(parent.getId()).querySelector("[name=" + name +"]");
+				if (rparent instanceof TemplateRenderable) {
+					Element elem = rparent.getElement();
+					//Element elem = ContainerRenderer.getElementById(rparent.getId()).querySelector("[name=" + name +"]");
 					elem.parentElement.replaceChild(njq, elem);
 					//$("#" + parent.getId() + " [name=" + name + "]").replaceWith(njq);
 				} else {
 					
-					double index = parent.getChildren().indexOf(c);
+					double index = rparent.getChildren().indexOf(c);
 					Renderable nextSib = null;
-					if (index < parent.getChildren().length - 1) {
-						nextSib = parent.getChildren().$get(index + 1);
+					if (index < rparent.getChildren().length - 1) {
+						nextSib = rparent.getChildren().$get(index + 1);
 						if (!nextSib.isRendered()) {
 							nextSib = null;
 						}
 					}
 
 					if (nextSib != null) {
-						Node p = document.getElementById(parent.getId());
-						p.insertBefore(njq, document.getElementById(nextSib.getId()));
+						//next is rendered
+						Node p = rparent.getElement();//ContainerRenderer.getElementById(rparent.getId());
+						p.insertBefore(njq, nextSib.getElement() /*ContainerRenderer.getElementById(nextSib.getId())*/);
 					} else {
+						//next sibbling is not rendered
+						//find previous sibbling
+						//
+						/*
+						 * boolean inserted = false; if(index > 0) { Renderable uiprevious =
+						 * rparent.getChildren().$get(index-1); if(uiprevious.isRendered()) {
+						 * HTMLElement previous = uiprevious.getElement(); if(previous != null) {
+						 * //HTMLElement p = rparent.getElement(); inserted = true;
+						 * previous.insertAdjacentElement("afterend", previous); } } }
+						 */						
 						try{
-							document.getElementById(parent.getId()).appendChild(njq);
+							rparent.getElement().appendChild(njq);
+							//if(!inserted) {
+								//ContainerRenderer.getElementById(rparent.getId()).appendChild(njq);
+							//}
 						}catch(Exception e){
 							e.printStackTrace();
 						}

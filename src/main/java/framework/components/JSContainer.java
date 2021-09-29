@@ -16,7 +16,8 @@
 package framework.components;
 
 import static jsweet.dom.Globals.console;
-import static jsweet.dom.Globals.document;
+
+import java.util.function.BiFunction;
 
 import framework.components.api.ContainerRenderer;
 import framework.components.api.EventListener;
@@ -59,6 +60,8 @@ public class JSContainer implements Renderable {
 	private jsweet.lang.Object d = new jsweet.lang.Object();
 	private static ContainerRenderer defaultRenderer = new ContainerRenderer();
 	
+	private HTMLElement elem_;
+	
 
 
 
@@ -96,13 +99,13 @@ public class JSContainer implements Renderable {
 	 * @param listener
 	 *            The javascript function to be called back
 	 */
-	public void on(String evt, jsweet.dom.EventListener listener) {
+	public void on(String evt, BiFunction<Renderable, Event, Void> listener) {
 		addEventListener(new EventListener() {
 
 			@Override
 			public void performAction(Renderable source, Event evt) {
 				evt.$set("source", source);
-				listener.apply(evt);
+				listener.apply(source,evt);
 			}
 		}, evt);
 	}
@@ -254,7 +257,10 @@ public class JSContainer implements Renderable {
 	 * @see framework.Renderable#getNative()
 	 */
 	public HTMLElement getNative() {
-		HTMLElement elem = document.getElementById(getId());
+		if(elem_ != null) {
+			return elem_;
+		}
+		HTMLElement elem = ContainerRenderer.getElementById(getId());
 		if (elem != null) {
 			return elem;
 		} else {
@@ -843,7 +849,9 @@ public class JSContainer implements Renderable {
 	@Override
 	public Renderable setRendered(boolean b) {
 		d.$set("rendered", b);
+		
 		if (!b) {
+			this.elem_ = null;
 			for (Renderable child : getChildren()) {
 				child.setRendered(b);
 			}
@@ -875,10 +883,24 @@ public class JSContainer implements Renderable {
 	 */
 	@Override
 	public void render() {
-		if (getParent() == null)
-			render(null);
-		else
-			render(document.getElementById(getParent().getId()));
+		if (getParent() == null) {
+			HTMLElement nat = getNative();
+			if(nat != null) {
+				HTMLElement parent = nat.parentElement;
+				if(parent != null) {
+					render(nat.parentElement);
+				}else {
+					render(null);
+				}
+			}else {
+				render(null);
+			}
+		}else {
+			//render(ContainerRenderer.getElementById(getParent().getId()));
+			render(getParent().getElement());
+		}	
+			
+			
 
 	}
 
@@ -906,13 +928,15 @@ public class JSContainer implements Renderable {
 	 *            The object to check if present
 	 * @return Whether is present or not
 	 */
-	protected boolean contains(Array<?> lst, Object o) {
-		for (Object oo : lst) {
+	protected boolean contains(Array lst, Object o) {
+		
+		return lst.indexOf(o) >=0;
+		/*for (Object oo : lst) {
 			if (oo.equals(o)) {
 				return true;
 			}
 		}
-		return false;
+		return false;*/
 	}
 
 	/*
@@ -1101,6 +1125,26 @@ public class JSContainer implements Renderable {
 	@Override
 	public Object getUserData() {
 		return d.$get("userData");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see framwork.Renderable#setElement(jsweet.dom.HTMLElement)
+	 */
+	@Override
+	public void setElement(HTMLElement elem) {
+		this.elem_ = elem;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see framework.Renderable#getElement()
+	 */
+	@Override
+	public HTMLElement getElement() {
+		return getNative();
 	}
 
 }

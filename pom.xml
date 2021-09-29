@@ -6,7 +6,7 @@
 	<artifactId>engine</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<properties>
-		<skipJavadoc>true</skipJavadoc>
+		<skipJavadoc>false</skipJavadoc>
 		<jsweet.transpiler.version>3.0.0</jsweet.transpiler.version>
 		<jsweet.core.version>6.3.0</jsweet.core.version>
 		<java.version.release>11</java.version.release>
@@ -78,7 +78,7 @@
 				<artifactId>jsweet-maven-plugin</artifactId>
 				<version>${jsweet.transpiler.version}</version>
 				<configuration>
-					<verbose>true</verbose>
+					<verbose>true</verbose> 
 					<bundle>true</bundle>
 					<outDir>src/main/resources/META-INF/resources/webjars/${project.artifactId}/${project.version}</outDir>
 					<tsOut>src/main/resources/META-INF/resources/webjars/${project.artifactId}/${project.version}</tsOut>
@@ -107,6 +107,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -133,10 +134,10 @@
 					<encoding>UTF-8</encoding>
 					<fixTags>all</fixTags>
 					<failOnError>false</failOnError>
-					<reportOutputDirectory>/var/www/apidocs/releases/org/jsweet/candies</reportOutputDirectory>
-					<destDir>${project.artifactId}/${project.version}</destDir>
-					<header><![CDATA[<a href="http://www.jsweet.org" target="_blank" style="text-transform: lowercase">http://www.jsweet.org<a>]]></header>
-					<bottom><![CDATA[<center>Copyright 2015, <a href="http://www.cincheo.org" target="_blank">Cinchéo SAS<a> - Web site: <a href="http://www.jsweet.org" target="_blank">http://www.jsweet.org<a><center>]]></bottom>
+					<reportOutputDirectory>docs/reports/${project.artifactId}/${project.version}</reportOutputDirectory>
+					<destDir>docs/javadocs/${project.version}</destDir>
+					<header><![CDATA[<a href="http://www.spoonconsulting.com" target="_blank" style="text-transform: lowercase">http://www.spoonconsulting.com<a>]]></header>
+					<bottom><![CDATA[<center>Copyright 2015, <a href="http://www.spoonconsulting.com" target="_blank">Spoon Consulting<a> - Web site: <a href="http://www.spoonconsulting.com" target="_blank">http://www.spoonconsulting.com<a><center>]]></bottom>
 					<stylesheetfile>/var/www/apidocs/stylesheet.css</stylesheetfile>
 				</configuration>
 				<executions>
@@ -150,6 +151,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
 				<configuration>
 					<filesets>
 						<fileset>

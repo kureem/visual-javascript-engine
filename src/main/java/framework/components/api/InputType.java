@@ -38,12 +38,7 @@ public enum InputType {
 	URL("url"),
 	SEARCH("search"),
 	TEL("tel"),
-	COLOR("color")
-	
-	
-	
-	
-	;
+	COLOR("color");
 	
 	private String value;
 	

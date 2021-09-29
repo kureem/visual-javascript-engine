@@ -3,16 +3,21 @@ namespace api {
     export class ContainerRenderer implements api.Renderer<api.Renderable> {
         public static timeSpent: number = 0;
 
+        public static getElementById(id: string): HTMLElement {
+            return document.getElementById(id);
+        }
+
         public doRender(c: api.Renderable, root: HTMLElement) {
-            const jq: HTMLElement = document.getElementById(c.getId());
+            const jq: HTMLElement = c.getElement();
             const tag: string = c.getTag();
             const rendered: boolean = c.isRendered();
             const name: string = c.getName();
             const html: string = c.getHtml();
-            const parent: api.Renderable = c.getParent();
+            const rparent: api.Renderable = c.getParent();
             if (!rendered){
                 if (jq != null)jq.remove();
                 const njq: HTMLElement = document.createElement(tag);
+                c.setElement(njq);
                 if (name != null && name.length > 0)njq.setAttribute("name", name);
                 njq.setAttribute("id", c.getId());
                 njq.innerHTML = html;
@@ -24,7 +29,7 @@ namespace api {
                 };}
                 this.renderAttributes(njq, c, false);
                 this.renderStyles(njq, c, false);
-                if (parent == null){
+                if (rparent == null){
                     if (root == null){
                         const body: Node = document.getElementsByTagName("body")[0];
                         body.appendChild(njq);
@@ -32,24 +37,24 @@ namespace api {
                         root.appendChild(njq);
                     }
                 } else {
-                    if (parent != null && (parent.constructor != null && parent.constructor["__interfaces"] != null && parent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)){
-                        const elem: Element = document.getElementById(parent.getId()).querySelector("[name=" + name + "]");
+                    if (rparent != null && (rparent.constructor != null && rparent.constructor["__interfaces"] != null && rparent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)){
+                        const elem: Element = rparent.getElement();
                         elem.parentElement.replaceChild(njq, elem);
                     } else {
-                        const index: number = parent.getChildren().indexOf(c);
+                        const index: number = rparent.getChildren().indexOf(c);
                         let nextSib: api.Renderable = null;
-                        if (index < parent.getChildren().length - 1){
-                            nextSib = parent.getChildren()[index + 1];
+                        if (index < rparent.getChildren().length - 1){
+                            nextSib = rparent.getChildren()[index + 1];
                             if (!nextSib.isRendered()){
                                 nextSib = null;
                             }
                         }
                         if (nextSib != null){
-                            const p: Node = document.getElementById(parent.getId());
-                            p.insertBefore(njq, document.getElementById(nextSib.getId()));
+                            const p: Node = rparent.getElement();
+                            p.insertBefore(njq, nextSib.getElement());
                         } else {
                             try {
-                                document.getElementById(parent.getId()).appendChild(njq);
+                                rparent.getElement().appendChild(njq);
                             } catch(e) {
                                 console.error(e.message, e);
                             }
@@ -59,8 +64,8 @@ namespace api {
                 const me: api.Renderable = c;
                 const component: api.Renderable = me;
                 this.doNothing(component);
-                for(let index121=0; index121 < scripts.length; index121++) {
-                    let scr = scripts[index121];
+                for(let index189=0; index189 < scripts.length; index189++) {
+                    let scr = scripts[index189];
                     {
                         eval(scr);
                     }
@@ -87,14 +92,14 @@ namespace api {
 
         renderEvents(njq: HTMLElement, c: api.Renderable) {
             const keys: string[] = Object.keys(c.getListeners());
-            for(let index122=0; index122 < keys.length; index122++) {
-                let key = keys[index122];
+            for(let index190=0; index190 < keys.length; index190++) {
+                let key = keys[index190];
                 {
                     const listeners: Array<api.EventListener> = <Array<api.EventListener>>c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for(let index123=0; index123 < listeners.length; index123++) {
-                                let l = listeners[index123];
+                            for(let index191=0; index191 < listeners.length; index191++) {
+                                let l = listeners[index191];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -109,9 +114,9 @@ namespace api {
         renderAttributes(njq: HTMLElement, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
-                    let array125 = c.getChangedAttributes();
-                    for(let index124=0; index124 < array125.length; index124++) {
-                        let key = array125[index124];
+                    let array193 = c.getChangedAttributes();
+                    for(let index192=0; index192 < array193.length; index192++) {
+                        let key = array193[index192];
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr == null){
@@ -124,9 +129,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array127 = c.getAttributeNames();
-                    for(let index126=0; index126 < array127.length; index126++) {
-                        let key = array127[index126];
+                    let array195 = c.getAttributeNames();
+                    for(let index194=0; index194 < array195.length; index194++) {
+                        let key = array195[index194];
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr != null)ContainerRenderer.setAttribute(njq, key, attr);
@@ -150,9 +155,9 @@ namespace api {
         renderStyles(njq: HTMLElement, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
-                    let array129 = c.getChangedStyles();
-                    for(let index128=0; index128 < array129.length; index128++) {
-                        let key = array129[index128];
+                    let array197 = c.getChangedStyles();
+                    for(let index196=0; index196 < array197.length; index196++) {
+                        let key = array197[index196];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -160,9 +165,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array131 = c.getStyleNames();
-                    for(let index130=0; index130 < array131.length; index130++) {
-                        let key = array131[index130];
+                    let array199 = c.getStyleNames();
+                    for(let index198=0; index198 < array199.length; index198++) {
+                        let key = array199[index198];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -186,8 +191,8 @@ namespace api {
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet: CSSStyleSheet = <CSSStyleSheet>styleelem.sheet;
-                for(let index132=0; index132 < rules.length; index132++) {
-                    let rule = rules[index132];
+                for(let index200=0; index200 < rules.length; index200++) {
+                    let rule = rules[index200];
                     sheet.insertRule(rule)
                 }
             }
@@ -218,7 +223,7 @@ namespace api {
      * This interface defines methods that allows setting and retrieving values
      * @author Kureem Rossaye
      * 
-     * @param <T>
+     * @param <T> - The type of value store by this field
      * @class
      */
     export interface InputField<T> extends api.Renderable {
@@ -713,7 +718,7 @@ namespace api {
 
         /**
          * Add a stylesheet rule to be used with this component
-         * @param {string} rule
+         * @param {string} rule - the css rule to add
          * @return {*} The current renderable
          */
         addCSSRule(rule: string): Renderable;
@@ -723,6 +728,18 @@ namespace api {
          * @return {string[]} All stylesheet rules
          */
         getCSSRules(): Array<string>;
+
+        /**
+         * Sets the {@link HTMLElement} created for this container on the browser when this {@link Renderable} is rendered
+         * @param {HTMLElement} elem - The {@link HTMLElement} that this container represents on the browser
+         */
+        setElement(elem: HTMLElement);
+
+        /**
+         * returns the {@link HTMLElement} that is created for this container on the browser when this {@link Renderable} is rendered
+         * @return {HTMLElement} - The {@link HTMLElement} that this container represents on the browser
+         */
+        getElement(): HTMLElement;
     }
 }
 namespace api {
@@ -730,7 +747,7 @@ namespace api {
      * Interface to implemented by renderer of components
      * @author Kureem Rossaye
      * 
-     * @param <T>
+     * @param <T> - The type of {@link Renderable} that this renderer is compatible with
      * @class
      */
     export interface Renderer<T extends api.Renderable> {
@@ -773,6 +790,49 @@ namespace api {
          */
         render(parent?: any);
     }
+}
+namespace api {
+    export enum Units {
+        PIXEL, CENTIMETER, MILLIMETER, INCH, POINT, PICA, EM, EX, CH, REM, VIEWPORT_WIDTH, VIEWPORT_HEIGHT, VIEWPORT_MIN, VIEWPORT_MAX, PERCENT
+    }
+
+    /** @ignore */
+    export class Units_$WRAPPER {
+        constructor(protected _$ordinal: number, protected _$name: string, name, display, type) {
+            if (this.__name === undefined) { this.__name = null; }
+            if (this.display === undefined) { this.display = null; }
+            if (this.type === undefined) { this.type = null; }
+            this.__name = name;
+            this.display = display;
+            this.type = type;
+        }
+
+        /*private*/ __name;
+
+        /*private*/ display;
+
+        /*private*/ type;
+
+        public getName(): string {
+            return this.__name;
+        }
+
+        public getDisplay(): string {
+            return this.display;
+        }
+
+        public getType(): string {
+            return this.type;
+        }
+        public name(): string { return this._$name; }
+        public ordinal(): number { return this._$ordinal; }
+        public compareTo(other: any): number { return this._$ordinal - (isNaN(other)?other._$ordinal:other); }
+    }
+    Units["__class"] = "framework.components.api.Units";
+    Units["__interfaces"] = ["java.lang.constant.Constable","java.lang.Comparable","java.io.Serializable"];
+
+    Units["_$wrappers"] = {0: new Units_$WRAPPER(0, "PIXEL", "pixel", "px", "absolute"), 1: new Units_$WRAPPER(1, "CENTIMETER", "centimer", "cm", "absolute"), 2: new Units_$WRAPPER(2, "MILLIMETER", "millimeter", "mm", "absolute"), 3: new Units_$WRAPPER(3, "INCH", "inch", "mm", "absolute"), 4: new Units_$WRAPPER(4, "POINT", "point", "pt", "absolute"), 5: new Units_$WRAPPER(5, "PICA", "pica", "pc", "absolute"), 6: new Units_$WRAPPER(6, "EM", "em", "em", "relative"), 7: new Units_$WRAPPER(7, "EX", "ex", "ex", "relative"), 8: new Units_$WRAPPER(8, "CH", "ch", "ch", "relative"), 9: new Units_$WRAPPER(9, "REM", "root element", "rem", "relative"), 10: new Units_$WRAPPER(10, "VIEWPORT_WIDTH", "viewport width", "vw", "relative"), 11: new Units_$WRAPPER(11, "VIEWPORT_HEIGHT", "viewport height", "vw", "relative"), 12: new Units_$WRAPPER(12, "VIEWPORT_MIN", "viewport minimum", "vmin", "relative"), 13: new Units_$WRAPPER(13, "VIEWPORT_MAX", "viewport maximum", "vmax", "relative"), 14: new Units_$WRAPPER(14, "PERCENT", "percent", "%", "relative")};
+
 }
 namespace api {
     /**
@@ -895,67 +955,6 @@ namespace api {
         supports(clazz: any);
     }
 }
-class Main {
-    public static main(args: string[]) {
-        const form: input.JSForm = new input.JSForm("myform");
-        const firstName: input.JSTextInput = new input.JSTextInput("firstName");
-        const lastName: input.JSTextInput = new input.JSTextInput("lastName");
-        form.addChild$framework_components_api_Renderable(firstName);
-        form.addChild$framework_components_api_Renderable(lastName);
-        const submit: input.JSSubmit = new input.JSSubmit("submit", "Save");
-        const reset: input.JSReset = new input.JSReset("reset", "Cancel");
-        form.addChild$framework_components_api_Renderable(submit).addChild(reset);
-        form.addEventListener(new Main.Main$0(form), "submit");
-        form.addEventListener(new Main.Main$1(), "reset");
-        const app: JSContainer = new JSContainer("div");
-        app.addChild$framework_components_api_Renderable(form);
-        app.render$();
-    }
-}
-Main["__class"] = "framework.components.Main";
-
-
-namespace Main {
-
-    export class Main$0 implements api.EventListener {
-        /**
-         * 
-         * @param {*} source
-         * @param {Event} evt
-         */
-        public performAction(source: api.Renderable, evt: Event) {
-            const fe: HTMLFormElement = <HTMLFormElement>this.form.getNative();
-            fe.addEventListener("reset", (e) => {
-                alert("alerttttttt");
-            });
-        }
-
-        constructor(private form: any) {
-        }
-    }
-    Main$0["__interfaces"] = ["framework.components.api.EventListener"];
-
-
-
-    export class Main$1 implements api.EventListener {
-        /**
-         * 
-         * @param {*} source
-         * @param {Event} evt
-         */
-        public performAction(source: api.Renderable, evt: Event) {
-            alert("this is a reset");
-        }
-
-        constructor() {
-        }
-    }
-    Main$1["__interfaces"] = ["framework.components.api.EventListener"];
-
-
-}
-
-
 namespace table {
     export class DefaulTableModel implements table.TableModel {
         /*private*/ data: Array<Object>;
@@ -1095,8 +1094,8 @@ namespace table {
          * @return {number}
          */
         public getColumnIndex(columnIdentifier: any): number {
-            for(let index133=0; index133 < this.columns.length; index133++) {
-                let col = this.columns[index133];
+            for(let index201=0; index201 < this.columns.length; index201++) {
+                let col = this.columns[index201];
                 {
                     if (col.identifier === columnIdentifier){
                         return (<number>this.columns.indexOf(col)|0);
@@ -1167,148 +1166,11 @@ namespace table {
     }
 }
 namespace table {
-    export class TableColumn {
-        /**
-         * The index of the column in the model which is to be displayed by this
-         * <code>TableColumn</code>. As columns are moved around in the view
-         * <code>modelIndex</code> remains constant.
-         */
-        modelIndex: number;
-
-        /**
-         * @author Kureem Rossaye<br>
-         * This object is not used internally by the drawing machinery of the
-         * <code>Table</code>; identifiers may be set in the <code>TableColumn</code>
-         * as as an optional way to tag and locate table columns. The table package does
-         * not modify or invoke any methods in these identifier objects other than the
-         * <code>equals</code> method which is used in the <code>getColumnIndex()</code>
-         * method in the <code>DefaultTableColumnModel</code>.
-         */
-        identifier: any;
-
-        /**
-         * The width of the column.
-         */
-        width: number;
-
-        /**
-         * The minimum width of the column.
-         */
-        minWidth: number;
-
-        /**
-         * The maximum width of the column.
-         */
-        maxWidth: number;
-
-        /**
-         * The renderer used to draw the header of the column.
-         */
-        headerRenderer: table.TableCellRenderer;
-
-        /**
-         * The header value of the column.
-         */
-        headerValue: any;
-
-        /**
-         * The renderer used to draw the data cells of the column.
-         */
-        cellRenderer: table.TableCellRenderer;
-
-        /**
-         * If true, the user is allowed to resize the column; the default is true.
-         */
-        resizable: boolean;
-
-        public getModelIndex(): number {
-            return this.modelIndex;
-        }
-
-        public setModelIndex(modelIndex: number) {
-            this.modelIndex = modelIndex;
-        }
-
-        public getIdentifier(): any {
-            return this.identifier;
-        }
-
-        public setIdentifier(identifier: any) {
-            this.identifier = identifier;
-        }
-
-        public getWidth(): number {
-            return this.width;
-        }
-
-        public setWidth(width: number) {
-            this.width = width;
-        }
-
-        public getMinWidth(): number {
-            return this.minWidth;
-        }
-
-        public setMinWidth(minWidth: number) {
-            this.minWidth = minWidth;
-        }
-
-        public getMaxWidth(): number {
-            return this.maxWidth;
-        }
-
-        public setMaxWidth(maxWidth: number) {
-            this.maxWidth = maxWidth;
-        }
-
-        public getHeaderRenderer(): table.TableCellRenderer {
-            return this.headerRenderer;
-        }
-
-        public setHeaderRenderer(headerRenderer: table.TableCellRenderer) {
-            this.headerRenderer = headerRenderer;
-        }
-
-        public getHeaderValue(): any {
-            return this.headerValue;
-        }
-
-        public setHeaderValue(headerValue: any) {
-            this.headerValue = headerValue;
-        }
-
-        public getCellRenderer(): table.TableCellRenderer {
-            return this.cellRenderer;
-        }
-
-        public setCellRenderer(cellRenderer: table.TableCellRenderer) {
-            this.cellRenderer = cellRenderer;
-        }
-
-        public isResizable(): boolean {
-            return this.resizable;
-        }
-
-        public setResizable(resizable: boolean) {
-            this.resizable = resizable;
-        }
-
-        constructor() {
-            if (this.modelIndex === undefined) { this.modelIndex = 0; }
-            if (this.identifier === undefined) { this.identifier = null; }
-            if (this.width === undefined) { this.width = 0; }
-            if (this.minWidth === undefined) { this.minWidth = 0; }
-            if (this.maxWidth === undefined) { this.maxWidth = 0; }
-            if (this.headerRenderer === undefined) { this.headerRenderer = null; }
-            if (this.headerValue === undefined) { this.headerValue = null; }
-            if (this.cellRenderer === undefined) { this.cellRenderer = null; }
-            if (this.resizable === undefined) { this.resizable = false; }
-        }
-    }
-    TableColumn["__class"] = "framework.components.table.TableColumn";
-
-}
-namespace table {
+    /**
+     * Contract Interface used by Table to render a <code>TableColumn</code>
+     * @author Kureem Rossaye
+     * @class
+     */
     export interface TableColumnModel {
         /**
          * Appends <code>aColumn</code> to the end of the
@@ -1465,11 +1327,11 @@ namespace table {
      * specified range of rows are considered changed.
      * <p>
      * The <I>type</I> should be one of: INSERT, UPDATE and DELETE.
-     * @param {*} source
-     * @param {number} firstRow
-     * @param {number} lastRow
-     * @param {number} column
-     * @param {number} type
+     * @param {*} source - The <code>TableModel</code> on which the event has occurred
+     * @param {number} firstRow - The first row in the range of rows affected
+     * @param {number} lastRow - The last row in the range of rows affected
+     * @param {number} column - The column index in which the event occurred
+     * @param {number} type - The type of event occurred
      * @class
      */
     export class TableModelEvent {
@@ -1619,15 +1481,18 @@ namespace table {
         /**
          * Returns the first row that changed.  HEADER_ROW means the meta data,
          * ie. names, types and order of the columns.
-         * @return {number}
+         * 
+         * @return {number} The first row affected
          */
         public getFirstRow(): number {
             return this.firstRow;
         }
 
         /**
+         * 
          * Returns the last row that changed.
-         * @return {number}
+         * 
+         * @return {number} - The last row affected
          */
         public getLastRow(): number {
             return this.lastRow;
@@ -1637,7 +1502,7 @@ namespace table {
          * Returns the column for the event.  If the return
          * value is ALL_COLUMNS; it means every column in the specified
          * rows changed.
-         * @return {number}
+         * @return {number} - The column index affected
          */
         public getColumn(): number {
             return this.column;
@@ -1645,7 +1510,8 @@ namespace table {
 
         /**
          * Returns the type of event - one of: INSERT, UPDATE and DELETE.
-         * @return {number}
+         * 
+         * @return {number} - The type of event
          */
         public getType(): number {
             return this.type;
@@ -1664,9 +1530,9 @@ namespace util {
         public static visit(designable: api.Renderable, visitor: ComponentUtil.ComponentVisitor) {
             visitor.doVisit(designable);
             {
-                let array135 = designable.getChildren();
-                for(let index134=0; index134 < array135.length; index134++) {
-                    let child = array135[index134];
+                let array203 = designable.getChildren();
+                for(let index202=0; index202 < array203.length; index202++) {
+                    let child = array203[index202];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -1677,8 +1543,8 @@ namespace util {
         public static getTags(type: string): Array<Object> {
             const html5tags: Array<Object> = <any>(window["html5tags"]);
             const result: Array<Object> = <any>(new Array<Object>());
-            for(let index136=0; index136 < html5tags.length; index136++) {
-                let html5tag = html5tags[index136];
+            for(let index204=0; index204 < html5tags.length; index204++) {
+                let html5tag = html5tags[index204];
                 {
                     const stype: string = <string>html5tag["type"];
                     if (stype === type || type === "*"){
@@ -1710,19 +1576,15 @@ namespace util {
             if (obj == null){
                 return null;
             }
-            if (/* contains */(property.indexOf(".") != -1)){
-                const parts: string[] = property.split(".");
-                let tmp: Object = obj;
-                for(let index137=0; index137 < parts.length; index137++) {
-                    let part = parts[index137];
-                    {
-                        tmp = PropertyUtil.getValue(tmp, part);
-                    }
+            const parts: string[] = property.split(".");
+            let tmp: Object = obj;
+            for(let index205=0; index205 < parts.length; index205++) {
+                let part = parts[index205];
+                {
+                    tmp = PropertyUtil.getValue(tmp, part);
                 }
-                return tmp;
-            } else {
-                return <Object>obj[property];
             }
+            return tmp;
         }
 
         public static hasOwnProperty(obj: Object, property: string): boolean {
@@ -1778,8 +1640,8 @@ namespace util {
             const result: Object = <Object>new Object();
             if (/* contains */(hash.indexOf("?") != -1)){
                 const kvs: string[] = hash.split("?")[1].split("&");
-                for(let index138=0; index138 < kvs.length; index138++) {
-                    let kv = kvs[index138];
+                for(let index206=0; index206 < kvs.length; index206++) {
+                    let kv = kvs[index206];
                     {
                         const akv: string[] = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1809,15 +1671,19 @@ class JSContainer implements api.Renderable {
 
     static defaultRenderer: api.ContainerRenderer; public static defaultRenderer_$LI$(): api.ContainerRenderer { if (JSContainer.defaultRenderer == null) { JSContainer.defaultRenderer = new api.ContainerRenderer(); }  return JSContainer.defaultRenderer; }
 
+    /*private*/ elem_: HTMLElement;
+
     public constructor(name?: any, tag?: any) {
         if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null)) {
             let __args = arguments;
+            if (this.elem_ === undefined) { this.elem_ = null; } 
             this.d = <Object>new Object();
             this.setTag(tag);
             this.setName(name);
         } else if (((typeof name === 'string') || name === null) && tag === undefined) {
             let __args = arguments;
             let tag: any = __args[0];
+            if (this.elem_ === undefined) { this.elem_ = null; } 
             this.d = <Object>new Object();
             this.setTag(tag);
         } else throw new Error('invalid overload');
@@ -1831,7 +1697,7 @@ class JSContainer implements api.Renderable {
      * @param {*} listener
      * The javascript function to be called back
      */
-    public on(evt: string, listener: EventListener) {
+    public on(evt: string, listener: (p1: api.Renderable, p2: Event) => void) {
         this.addEventListener(new JSContainer.JSContainer$0(this, listener), evt);
     }
 
@@ -1858,8 +1724,8 @@ class JSContainer implements api.Renderable {
         console.log("firing:" + key + " on " + this.getName());
         const listeners: Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
         if (listeners != null && listeners.length > 0){
-            for(let index139=0; index139 < listeners.length; index139++) {
-                let l = listeners[index139];
+            for(let index207=0; index207 < listeners.length; index207++) {
+                let l = listeners[index207];
                 {
                     l.performAction(this, evt);
                 }
@@ -1887,9 +1753,9 @@ class JSContainer implements api.Renderable {
 
     public getChild(name: string): api.Renderable {
         {
-            let array141 = this.getChildren();
-            for(let index140=0; index140 < array141.length; index140++) {
-                let child = array141[index140];
+            let array209 = this.getChildren();
+            for(let index208=0; index208 < array209.length; index208++) {
+                let child = array209[index208];
                 {
                     if (child.getName() === name){
                         return child;
@@ -1955,7 +1821,10 @@ class JSContainer implements api.Renderable {
     }
 
     public getNative(): HTMLElement {
-        const elem: HTMLElement = document.getElementById(this.getId());
+        if (this.elem_ != null){
+            return this.elem_;
+        }
+        const elem: HTMLElement = api.ContainerRenderer.getElementById(this.getId());
         if (elem != null){
             return elem;
         } else {
@@ -2072,14 +1941,14 @@ class JSContainer implements api.Renderable {
         const aStyles: string[] = styles.split(" ");
         const toAdds: string[] = styleClass.split(" ");
         let res: string = "";
-        for(let index142=0; index142 < toAdds.length; index142++) {
-            let toAdd = toAdds[index142];
+        for(let index210=0; index210 < toAdds.length; index210++) {
+            let toAdd = toAdds[index210];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0){
                     let add: boolean = true;
-                    for(let index143=0; index143 < aStyles.length; index143++) {
-                        let style = aStyles[index143];
+                    for(let index211=0; index211 < aStyles.length; index211++) {
+                        let style = aStyles[index211];
                         {
                             style = style.trim();
                             if (style.length > 0){
@@ -2116,8 +1985,8 @@ class JSContainer implements api.Renderable {
             return false;
         }
         const aStyles: string[] = styles.split(" ");
-        for(let index144=0; index144 < aStyles.length; index144++) {
-            let style = aStyles[index144];
+        for(let index212=0; index212 < aStyles.length; index212++) {
+            let style = aStyles[index212];
             {
                 style = style.trim();
                 if (style !== ""){
@@ -2147,8 +2016,8 @@ class JSContainer implements api.Renderable {
     public removeClass(cls: string): JSContainer {
         if (cls != null && cls.trim() !== ""){
             const toremove: string[] = cls.split(" ");
-            for(let index145=0; index145 < toremove.length; index145++) {
-                let s = toremove[index145];
+            for(let index213=0; index213 < toremove.length; index213++) {
+                let s = toremove[index213];
                 {
                     this.removeSingleClass(s);
                 }
@@ -2162,8 +2031,8 @@ class JSContainer implements api.Renderable {
         if (cl != null && cl.length > 0){
             const classes: string[] = cl.split(" ");
             let result: string = "";
-            for(let index146=0; index146 < classes.length; index146++) {
-                let scl = classes[index146];
+            for(let index214=0; index214 < classes.length; index214++) {
+                let scl = classes[index214];
                 {
                     if (scl !== cls){
                         if (result === ""){
@@ -2231,9 +2100,9 @@ class JSContainer implements api.Renderable {
         let i: number = 0;
         let added: boolean = false;
         {
-            let array148 = this.getChildren();
-            for(let index147=0; index147 < array148.length; index147++) {
-                let c = array148[index147];
+            let array216 = this.getChildren();
+            for(let index215=0; index215 < array216.length; index215++) {
+                let c = array216[index215];
                 {
                     if (i === index){
                         children.push(child);
@@ -2481,10 +2350,11 @@ class JSContainer implements api.Renderable {
     public setRendered(b: boolean): api.Renderable {
         this.d["rendered"] = b;
         if (!b){
+            this.elem_ = null;
             {
-                let array150 = this.getChildren();
-                for(let index149=0; index149 < array150.length; index149++) {
-                    let child = array150[index149];
+                let array218 = this.getChildren();
+                for(let index217=0; index217 < array218.length; index217++) {
+                    let child = array218[index217];
                     {
                         child.setRendered(b);
                     }
@@ -2508,7 +2378,21 @@ class JSContainer implements api.Renderable {
     }
 
     public render$() {
-        if (this.getParent() == null)this.render$jsweet_dom_HTMLElement(null); else this.render$jsweet_dom_HTMLElement(document.getElementById(this.getParent().getId()));
+        if (this.getParent() == null){
+            const nat: HTMLElement = this.getNative();
+            if (nat != null){
+                const parent: HTMLElement = nat.parentElement;
+                if (parent != null){
+                    this.render$jsweet_dom_HTMLElement(nat.parentElement);
+                } else {
+                    this.render$jsweet_dom_HTMLElement(null);
+                }
+            } else {
+                this.render$jsweet_dom_HTMLElement(null);
+            }
+        } else {
+            this.render$jsweet_dom_HTMLElement(this.getParent().getElement());
+        }
     }
 
     /**
@@ -2528,22 +2412,14 @@ class JSContainer implements api.Renderable {
      * Unitility method to check if the specified object is present in the
      * specified array
      * 
-     * @param {?[]} lst
+     * @param {Array} lst
      * The array to check if object is present
      * @param {*} o
      * The object to check if present
      * @return {boolean} Whether is present or not
      */
     contains(lst: Array<any>, o: any): boolean {
-        for(let index151=0; index151 < lst.length; index151++) {
-            let oo = lst[index151];
-            {
-                if (/* equals */(<any>((o1: any, o2: any) => o1 && o1.equals ? o1.equals(o2) : o1 === o2)(oo,o))){
-                    return true;
-                }
-            }
-        }
-        return false;
+        return lst.indexOf(o) >= 0;
     }
 
     public render$jsweet_dom_HTMLElement(parent: HTMLElement) {
@@ -2554,22 +2430,22 @@ class JSContainer implements api.Renderable {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())){
             const tmp: Array<api.Renderer<any>> = <any>(new Array<api.Renderer<any>>());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for(let index152=0; index152 < renderers.length; index152++) {
-                let r = renderers[index152];
+            for(let index219=0; index219 < renderers.length; index219++) {
+                let r = renderers[index219];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for(let index153=0; index153 < renderers.length; index153++) {
-            let renderer = renderers[index153];
+        for(let index220=0; index220 < renderers.length; index220++) {
+            let renderer = renderers[index220];
             renderer.doRender(this, parent)
         }
         {
-            let array155 = this.getChildren();
-            for(let index154=0; index154 < array155.length; index154++) {
-                let child = array155[index154];
+            let array222 = this.getChildren();
+            for(let index221=0; index221 < array222.length; index221++) {
+                let child = array222[index221];
                 {
                     child['render$']();
                 }
@@ -2606,8 +2482,8 @@ class JSContainer implements api.Renderable {
         const previous: Object = <Object>this.d["data"];
         if (previous != null && previous instanceof <any>Array){
             const arData: Array<Object> = <Array<Object>>previous;
-            for(let index156=0; index156 < arData.length; index156++) {
-                let line = arData[index156];
+            for(let index223=0; index223 < arData.length; index223++) {
+                let line = arData[index223];
                 {
                     const value: string = <string>line["value"];
                     this.setAttribute(value, null);
@@ -2616,9 +2492,9 @@ class JSContainer implements api.Renderable {
         } else {
             if (previous != null){
                 {
-                    let array158 = Object.keys(previous);
-                    for(let index157=0; index157 < array158.length; index157++) {
-                        let key = array158[index157];
+                    let array225 = Object.keys(previous);
+                    for(let index224=0; index224 < array225.length; index224++) {
+                        let key = array225[index224];
                         {
                             this.setAttribute(key, null);
                         }
@@ -2630,8 +2506,8 @@ class JSContainer implements api.Renderable {
         if (data != null){
             if (data != null && data instanceof <any>Array){
                 const arData: Array<Object> = <Array<Object>>data;
-                for(let index159=0; index159 < arData.length; index159++) {
-                    let line = arData[index159];
+                for(let index226=0; index226 < arData.length; index226++) {
+                    let line = arData[index226];
                     {
                         const text: string = <string>line["text"];
                         const value: string = <string>line["value"];
@@ -2640,9 +2516,9 @@ class JSContainer implements api.Renderable {
                 }
             } else {
                 {
-                    let array161 = Object.keys(data);
-                    for(let index160=0; index160 < array161.length; index160++) {
-                        let key = array161[index160];
+                    let array228 = Object.keys(data);
+                    for(let index227=0; index227 < array228.length; index227++) {
+                        let key = array228[index227];
                         {
                             this.setAttribute(key, <string>(<Object>data)[key]);
                         }
@@ -2667,9 +2543,9 @@ class JSContainer implements api.Renderable {
         const clsss: string = parent.getAttribute("class");
         if (clsss != null){
             {
-                let array163 = parent.getAttribute("class").split(" ");
-                for(let index162=0; index162 < array163.length; index162++) {
-                    let s = array163[index162];
+                let array230 = parent.getAttribute("class").split(" ");
+                for(let index229=0; index229 < array230.length; index229++) {
+                    let s = array230[index229];
                     {
                         if (s.trim() === cls)return <T><any>parent;
                     }
@@ -2745,6 +2621,22 @@ class JSContainer implements api.Renderable {
     public getUserData(): any {
         return this.d["userData"];
     }
+
+    /**
+     * 
+     * @param {HTMLElement} elem
+     */
+    public setElement(elem: HTMLElement) {
+        this.elem_ = elem;
+    }
+
+    /**
+     * 
+     * @return {HTMLElement}
+     */
+    public getElement(): HTMLElement {
+        return this.getNative();
+    }
 }
 JSContainer["__class"] = "framework.components.JSContainer";
 JSContainer["__interfaces"] = ["framework.components.api.Renderable"];
@@ -2762,7 +2654,7 @@ namespace JSContainer {
          */
         public performAction(source: api.Renderable, evt: Event) {
             evt["source"] = source;
-            this.listener(evt);
+            (target => (typeof target === 'function') ? target(source, evt) : (<any>target).apply(source, evt))(this.listener);
         }
 
         constructor(__parent: any, private listener: any) {
@@ -2813,8 +2705,8 @@ class CardLayout extends JSContainer {
      * @return {CardLayout} - this
      */
     public addItems(...items: CardLayoutItem[]): CardLayout {
-        for(let index164=0; index164 < items.length; index164++) {
-            let item = items[index164];
+        for(let index231=0; index231 < items.length; index231++) {
+            let item = items[index231];
             {
                 this.addItem(item);
             }
@@ -2852,9 +2744,9 @@ class CardLayout extends JSContainer {
     public getIndex(name: string): number {
         let index: number = 0;
         {
-            let array166 = this.getChildren();
-            for(let index165=0; index165 < array166.length; index165++) {
-                let child = array166[index165];
+            let array233 = this.getChildren();
+            for(let index232=0; index232 < array233.length; index232++) {
+                let child = array233[index232];
                 {
                     if (child.getName() === name){
                         return index;
@@ -2994,9 +2886,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array168 = this.getChildren();
-            for(let index167=0; index167 < array168.length; index167++) {
-                let child = array168[index167];
+            let array235 = this.getChildren();
+            for(let index234=0; index234 < array235.length; index234++) {
+                let child = array235[index234];
                 {
                     if (child.getName() === name){
                         const evt: CustomEvent = new CustomEvent("activate");
@@ -3038,9 +2930,9 @@ class CardLayout extends JSContainer {
     public refresh() {
         const def: string = this.getDefault();
         {
-            let array170 = this.getChildren();
-            for(let index169=0; index169 < array170.length; index169++) {
-                let r = array170[index169];
+            let array237 = this.getChildren();
+            for(let index236=0; index236 < array237.length; index236++) {
+                let r = array237[index236];
                 {
                     if (r.getName() === def){
                         r.setStyle("display", null);
@@ -3269,8 +3161,8 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
                 const tag: string = tm.tagName;
                 this.setTag(tag);
                 const attrs: NamedNodeMap = tm.attributes;
-                for(let index171=0; index171 < attrs.length; index171++) {
-                    let att = attrs[index171];
+                for(let index238=0; index238 < attrs.length; index238++) {
+                    let att = attrs[index238];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -3313,7 +3205,446 @@ HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable","
 
 
 namespace input {
-    export abstract class AbstractJSInput<T> extends JSContainer implements api.InputField<T> {
+    /**
+     * Creates a new instance of the button with specified name and text
+     * @param {string} name - name of the button
+     * @param {string} text - text inside the button
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
+    export class JSButton extends JSContainer {
+        public constructor(name: string, text: string) {
+            super(name, "input");
+            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.BUTTON].getValue());
+            this.setAttribute("value", text);
+        }
+
+        /**
+         * Sets the type of the button
+         * @param {api.InputType} type - type of the button. Valid values are: InputType.RESET | InputType.BUTTON | InputType.SUBMIT
+         * @return {input.JSButton} - updated instance of this Button
+         */
+        public setType(type: api.InputType): JSButton {
+            if (type != null){
+                if (api.InputType["_$wrappers"][type].getGroup() !== "button"){
+                    throw Object.defineProperty(new Error("only button types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                }
+                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            } else {
+                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+            }
+            return this;
+        }
+    }
+    JSButton["__class"] = "framework.components.input.JSButton";
+    JSButton["__interfaces"] = ["framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    /**
+     * Creates a new instance of form with the specified name
+     * @param {string} name - The name of the form
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
+    export class JSForm extends JSContainer {
+        validationerrors: Object;
+
+        public constructor(name: string) {
+            super(name, "form");
+            this.validationerrors = <Object>new Object();
+            this.addEventListener(new JSForm.JSForm$0(this), "submit");
+            this.addEventListener(new JSForm.JSForm$1(this), "reset");
+        }
+
+        /**
+         * returns an array of advanced specific supported event listener<br>
+         * <ul>
+         * <li>beforeValidate - Fired before validating the form</li>
+         * <li>afterValidate  - Fired after the form is validated </li>
+         * <li>beforeSetData  - Fired before setting data into the input fields of the form</li>
+         * <li>afterSetData   - Fired after setting data  into the input fields of the form</li>
+         * <li>beforeGetData  - Fired before retrieving data from the input fields of the form</li>
+         * <li>afterGetData   - Fired after  retrieving data from the input fields of the form</li>
+         * <li>onError        - Fired if there is one or more errors after validating the form</li>
+         * <li>beforeSubmit   - Fired before submitting the form</li>
+         * <li>afterSubmit    - Fired after submitting the form even if the form is not valid</li>
+         * <li>submit         - Fired on submitting the form and if there is no error after validation</li>
+         * <li>reset          - Fired when the form is reset</li>
+         * </ul>
+         * @return {java.lang.String[]}
+         */
+        public advancedEventTypes(): string[] {
+            return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterGetData", "beforeSubmit", "afterSubmit", "submit"];
+        }
+
+        /**
+         * Return whether the form is valid of not after validating it.<br> If the form has not been validated yet,
+         * this method will return true
+         * @return {boolean} - Whether the form is valid or not
+         */
+        public isValid(): boolean {
+            return Object.keys(this.validationerrors).length <= 0;
+        }
+
+        /**
+         * Returns whether this form has errors or not after validating it<br> If the form has not been validated yet,
+         * this method will return false
+         * @return {boolean} - Whether this form has errors or not
+         */
+        public hasErrors(): boolean {
+            return !this.isValid();
+        }
+
+        /**
+         * 
+         * @param {string} binding - The name or binding of the input element in the form
+         * @return {api.ValidationException} - The validation exception if any for the specified binding of the form element
+         */
+        public getError(binding: string): api.ValidationException {
+            return <api.ValidationException>this.validationerrors[binding];
+        }
+
+        /**
+         * 
+         * @return {Object} - All errors found after validating this form
+         */
+        public getErrors(): Object {
+            return this.validationerrors;
+        }
+
+        /**
+         * 
+         * @param {string} binding - The binding or name of the input field to search for
+         * @return {*} - The input field having specified name or binding
+         */
+        public getField(binding: string): api.InputField<any> {
+            const result: Array<api.InputField<any>> = <any>(new Array<api.InputField<any>>());
+            util.ComponentUtil.visit(this, new JSForm.JSForm$2(this, binding, result));
+            if (result.length > 0){
+                return result[0];
+            }
+            return null;
+        }
+
+        /**
+         * Validates all fields in this form and returns whether there is any error in the form<br>
+         * The following chain of event will be fired when this method is called:<br>
+         * <ul>
+         * <li>beforeValidate</li>
+         * <li>onError - only if there is any error in the form</li>
+         * <li>afterValidate</li>
+         * </ul>
+         * @return {boolean} - Whether there is any error in the form
+         */
+        public validate(): boolean {
+            const evt: CustomEvent = new CustomEvent("beforeValidate");
+            evt["source"] = this;
+            this.fireListener("beforeValidate", evt);
+            this.validationerrors = <Object>new Object();
+            util.ComponentUtil.visit(this, new JSForm.JSForm$3(this));
+            if (Object.keys(this.validationerrors).length > 0){
+                const onError: CustomEvent = new CustomEvent("onError");
+                onError["source"] = this;
+                onError["data"] = this.validationerrors;
+                onError["errors"] = this.validationerrors;
+                onError["hasError"] = Object.keys(this.validationerrors).length > 0;
+                this.fireListener("onError", onError);
+            }
+            const evtAfter: CustomEvent = new CustomEvent("afterValidate");
+            evtAfter["source"] = this;
+            evtAfter["data"] = this.validationerrors;
+            evtAfter["errors"] = this.validationerrors;
+            evtAfter["hasError"] = Object.keys(this.validationerrors).length > 0;
+            this.fireListener("afterValidate", evtAfter);
+            return Object.keys(this.validationerrors).length <= 0;
+        }
+
+        /**
+         * Injects data into the fields of the form.<br>
+         * each property of the form should be the binding of the input field<br>
+         * If for a field in the form, corresponding property is not found in the specified data,
+         * the field will be cleared and its value set to null<br>
+         * The following chain of event is fired when this method is called:<br>
+         * <ul>
+         * <li>beforeSetData</li>
+         * <li>afterSetData</li>
+         * </ul>
+         * 
+         * @param {Object} data - The data to inject into the form
+         */
+        public setData(data: Object) {
+            const evt: CustomEvent = new CustomEvent("beforeSetData");
+            evt["source"] = this;
+            evt["data"] = data;
+            this.fireListener("beforeSetData", evt);
+            util.ComponentUtil.visit(this, new JSForm.JSForm$4(this, data));
+            const evtAfter: CustomEvent = new CustomEvent("afterSetData");
+            evtAfter["source"] = this;
+            evtAfter["data"] = data;
+            this.fireListener("afterSetData", evtAfter);
+        }
+
+        /**
+         * Retrieves data from all the fields in this form<br>
+         * The following chain of event is fired when this method is called:<br>
+         * <ul>
+         * <li>beforeGetData</li>
+         * <li>afterGetData</li>
+         * </ul>
+         * @return {Object} - The data from all the fields in the form
+         */
+        public getData(): Object {
+            const evt: CustomEvent = new CustomEvent("beforeGetData");
+            evt["source"] = this;
+            this.fireListener("beforeGetData", evt);
+            const data: Object = <Object>new Object();
+            util.ComponentUtil.visit(this, new JSForm.JSForm$5(this, data));
+            const evtAfter: CustomEvent = new CustomEvent("afterGetData");
+            evtAfter["source"] = this;
+            evtAfter["data"] = data;
+            this.fireListener("afterGetData", evtAfter);
+            return data;
+        }
+
+        /**
+         * Resets the form by clearing all the fields in the form<br>
+         * This method is called automatically when the form is reset for example by clicking an input of type reset present in the form<br>
+         * or by resetting it using javascript means.<br>
+         * The reset event is fired when this method is called
+         * 
+         */
+        public reset() {
+            const data: Object = <Object>new Object();
+            this.setData(data);
+            const on: CustomEvent = new CustomEvent("reset");
+            on["source"] = this;
+            on["data"] = data;
+            this.fireListener("reset", on);
+        }
+
+        /**
+         * Submits the form.<br>
+         * This method is called automatically when the form is submitted for example by clicking an input of type submit present
+         * in the form or by submitting the form using javascript.<br>
+         * When this method is called, the form is validated, then the getData method is called.<br>
+         * The following chain of event is fired when this method is called
+         * <ul>
+         * <li>beforeSubmit event is fired</li>
+         * <li>
+         * validate method is called
+         * <ul>
+         * <li>beforeValidate event is fired</li>
+         * <li>onError event is fired only if there is any error in the form</li>
+         * <li>afterValidate event is fired</li>
+         * </ul>
+         * </li>
+         * <li>
+         * if form is valid, getData method is called
+         * <ul>
+         * <li>beforeGetData event is fired</li>
+         * <li>afterGetData event is fired</li>
+         * </ul>
+         * </li>
+         * <li>if form is valid submit event is fired</li>
+         * <li>Whether or not form is valid, afterSubmit event is fired</li>
+         * </ul>
+         * 
+         */
+        public submit() {
+            const evt: CustomEvent = new CustomEvent("beforeSubmit");
+            evt["source"] = this;
+            this.fireListener("beforeSubmit", evt);
+            if (this.validate()){
+                const data: Object = this.getData();
+                const on: CustomEvent = new CustomEvent("submit");
+                on["source"] = this;
+                on["data"] = data;
+                this.fireListener("submit", on);
+            }
+            const evtAfter: CustomEvent = new CustomEvent("afterSubmit");
+            evtAfter["source"] = this;
+            this.fireListener("afterSubmit", evtAfter);
+        }
+    }
+    JSForm["__class"] = "framework.components.input.JSForm";
+    JSForm["__interfaces"] = ["framework.components.api.Renderable"];
+
+
+
+    export namespace JSForm {
+
+        export class JSForm$0 implements api.EventListener {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} source
+             * @param {Event} evt
+             */
+            public performAction(source: api.Renderable, evt: Event) {
+                this.__parent.submit();
+            }
+
+            constructor(__parent: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSForm$0["__interfaces"] = ["framework.components.api.EventListener"];
+
+
+
+        export class JSForm$1 implements api.EventListener {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} source
+             * @param {Event} evt
+             */
+            public performAction(source: api.Renderable, evt: Event) {
+                this.__parent.reset();
+            }
+
+            constructor(__parent: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSForm$1["__interfaces"] = ["framework.components.api.EventListener"];
+
+
+
+        export class JSForm$2 implements util.ComponentUtil.ComponentVisitor {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} designable
+             */
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
+                    try {
+                        const b: string = (<api.InputField<any>><any>designable).getBinding();
+                        if (b === this.binding){
+                            this.result.push((<api.InputField<any>><any>designable));
+                        }
+                    } catch(e) {
+                        let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                        if (binding == null || binding.trim() === ""){
+                            binding = designable.getName();
+                        }
+                        this.__parent.validationerrors[binding] = e;
+                    }
+                }
+            }
+
+            constructor(__parent: any, private binding: any, private result: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSForm$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+
+
+
+        export class JSForm$3 implements util.ComponentUtil.ComponentVisitor {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} designable
+             */
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
+                    try {
+                        (<api.InputField<any>><any>designable).validate();
+                    } catch(e) {
+                        let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                        if (binding == null || binding.trim() === ""){
+                            binding = designable.getName();
+                        }
+                        this.__parent.validationerrors[binding] = e;
+                    }
+                }
+            }
+
+            constructor(__parent: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSForm$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+
+
+
+        export class JSForm$4 implements util.ComponentUtil.ComponentVisitor {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} designable
+             */
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
+                    let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                    if (binding == null || binding.trim() === ""){
+                        binding = designable.getName();
+                    }
+                    if (util.PropertyUtil.hasOwnProperty(this.data, binding)){
+                        const obj: Object = util.PropertyUtil.getValue(this.data, binding);
+                        if (designable != null && designable instanceof <any>input.JSDateInput){
+                            try {
+                                if (obj != null && obj instanceof <any>Date){
+                                    (<api.InputField<any>><any>designable).setValue(obj);
+                                } else {
+                                    const date: Date = new Date(/* parseLong */parseInt(obj.toString()));
+                                    (<api.InputField<any>><any>designable).setValue(date);
+                                }
+                            } catch(e) {
+                                (<api.InputField<any>><any>designable).setValue(obj);
+                            }
+                        } else {
+                            (<api.InputField<any>><any>designable).setValue(obj);
+                        }
+                    } else {
+                        (<api.InputField<any>><any>designable).setValue(null);
+                    }
+                }
+            }
+
+            constructor(__parent: any, private data: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSForm$4["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+
+
+
+        export class JSForm$5 implements util.ComponentUtil.ComponentVisitor {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} designable
+             */
+            public doVisit(designable: api.Renderable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
+                    let binding: string = (<api.InputField<any>><any>designable).getBinding();
+                    if (binding == null || binding.trim() === ""){
+                        binding = designable.getName();
+                    }
+                    const value: Object = <Object>(<api.InputField<any>><any>designable).getValue();
+                    util.PropertyUtil.setValue(this.data, value, binding);
+                }
+            }
+
+            constructor(__parent: any, private data: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSForm$5["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+
+
+    }
+
+}
+namespace input {
+    export class JSInput<T> extends JSContainer implements api.InputField<T> {
         /*private*/ validators: Array<api.Validator<T>>;
 
         public constructor(name: string) {
@@ -3333,14 +3664,14 @@ namespace input {
             this.setAttribute("pattern", pattern);
         }
 
-        public setRequired(b: boolean): AbstractJSInput<T> {
+        public setRequired(b: boolean): JSInput<T> {
             if (b){
                 this.setAttribute("required", "true");
             } else this.setAttribute("required", null);
             return this;
         }
 
-        public setDisabled(b: boolean): AbstractJSInput<T> {
+        public setDisabled(b: boolean): JSInput<T> {
             if (b){
                 this.setAttribute("disabled", "true");
             } else {
@@ -3349,7 +3680,7 @@ namespace input {
             return this;
         }
 
-        public setReadOnly(b: boolean): AbstractJSInput<T> {
+        public setReadOnly(b: boolean): JSInput<T> {
             if (b){
                 this.setAttribute("readonly", "true");
             } else {
@@ -3434,7 +3765,7 @@ namespace input {
             return this.getAttribute("binding");
         }
 
-        public setPlaceHolder(placeholder: string): AbstractJSInput<T> {
+        public setPlaceHolder(placeholder: string): JSInput<T> {
             this.setAttribute("placeholder", placeholder);
             return this;
         }
@@ -3485,11 +3816,11 @@ namespace input {
                 const el: HTMLInputElement = <HTMLInputElement>nat;
                 valid = el.checkValidity();
                 if (!valid){
-                    AbstractJSInput.addError(el.validationMessage, el.validity, e);
+                    JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index172=0; index172 < this.validators.length; index172++) {
-                let v = this.validators[index172];
+            for(let index239=0; index239 < this.validators.length; index239++) {
+                let v = this.validators[index239];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -3516,309 +3847,44 @@ namespace input {
             return ["validate"];
         }
 
-        public setBinding(binding: string): AbstractJSInput<T> {
+        public setBinding(binding: string): JSInput<T> {
             this.setAttribute("binding", binding);
             return this;
         }
 
-        public abstract getValue(): any;
-        public abstract setValue(val?: any): any;    }
-    AbstractJSInput["__class"] = "framework.components.input.AbstractJSInput";
-    AbstractJSInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    /**
-     * Creates a new instance of the button with specified name and text
-     * @param {string} name - name of the button
-     * @param {string} text - text inside the button
-     * @class
-     * @extends JSContainer
-     * @author Kureem Rossaye
-     */
-    export class JSButton extends JSContainer {
-        public constructor(name: string, text: string) {
-            super(name, "input");
-            this.setHtml(text);
-        }
-
         /**
-         * Sets the type of the button
-         * @param {api.InputType} type - type of the button. Valid values are: InputType.RESET | InputType.BUTTON | InputType.SUBMIT
-         * @return {input.JSButton} - updated instance of this Button
+         * 
+         * @return {*}
          */
-        public setType(type: api.InputType): JSButton {
-            if (type != null){
-                if (api.InputType["_$wrappers"][type].getGroup() !== "button"){
-                    throw Object.defineProperty(new Error("only button types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
-                }
-                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
-            } else {
-                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
-            }
-            return this;
-        }
-    }
-    JSButton["__class"] = "framework.components.input.JSButton";
-    JSButton["__interfaces"] = ["framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    /**
-     * Renders a form tag with
-     * @author Kureem Rossaye
-     * @param {string} name
-     * @class
-     * @extends JSContainer
-     */
-    export class JSForm extends JSContainer {
-        validationerrors: Object;
-
-        public constructor(name: string) {
-            super(name, "form");
-            this.validationerrors = <Object>new Object();
+        public getValue(): T {
+            const inp: HTMLInputElement = <HTMLInputElement>this.getNative();
+            if (inp != null)return <T><any>inp.value; else return <T><any>this.getAttribute("value");
         }
 
         /**
          * 
-         * @return {java.lang.String[]}
+         * @param {*} val
          */
-        public advancedEventTypes(): string[] {
-            return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterSetData", "beforeSubmit", "afterSubmit", "submit"];
-        }
-
-        public isValid(): boolean {
-            return Object.keys(this.validationerrors).length <= 0;
-        }
-
-        public hasErrors(): boolean {
-            const keys: string[] = Object.keys(this.validationerrors);
-            if (keys != null && keys.length > 0){
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public getError(binding: string): api.ValidationException {
-            return <api.ValidationException>this.validationerrors[binding];
-        }
-
-        public getErrors(): Object {
-            return this.validationerrors;
-        }
-
-        public getField(binding: string): api.InputField<any> {
-            const result: Array<api.InputField<any>> = <any>(new Array<api.InputField<any>>());
-            util.ComponentUtil.visit(this, new JSForm.JSForm$0(this, binding, result));
-            if (result.length > 0){
-                return result[0];
-            }
-            return null;
-        }
-
-        public validate(): boolean {
-            const evt: CustomEvent = new CustomEvent("beforeValidate");
-            evt["source"] = this;
-            this.fireListener("beforeValidate", evt);
-            this.validationerrors = <Object>new Object();
-            util.ComponentUtil.visit(this, new JSForm.JSForm$1(this));
-            const evtAfter: CustomEvent = new CustomEvent("afterValidate");
-            evtAfter["source"] = this;
-            evtAfter["data"] = this.validationerrors;
-            evtAfter["errors"] = this.validationerrors;
-            evtAfter["hasError"] = Object.keys(this.validationerrors).length > 0;
-            this.fireListener("afterValidate", evtAfter);
-            if (Object.keys(this.validationerrors).length > 0){
-                const onError: CustomEvent = new CustomEvent("onError");
-                onError["source"] = this;
-                onError["data"] = this.validationerrors;
-                onError["errors"] = this.validationerrors;
-                onError["hasError"] = Object.keys(this.validationerrors).length > 0;
-                this.fireListener("onError", onError);
-            }
-            return Object.keys(this.validationerrors).length <= 0;
-        }
-
-        public setData(data: Object) {
-            const evt: CustomEvent = new CustomEvent("beforeSetData");
-            evt["source"] = this;
-            evt["data"] = data;
-            this.fireListener("beforeSetData", evt);
-            util.ComponentUtil.visit(this, new JSForm.JSForm$2(this, data));
-            const evtAfter: CustomEvent = new CustomEvent("afterSetData");
-            evtAfter["source"] = this;
-            evtAfter["data"] = data;
-            this.fireListener("afterSetData", evtAfter);
-        }
-
-        public getData(): Object {
-            const evt: CustomEvent = new CustomEvent("beforeGetData");
-            evt["source"] = this;
-            this.fireListener("beforeGetData", evt);
-            const data: Object = <Object>new Object();
-            util.ComponentUtil.visit(this, new JSForm.JSForm$3(this, data));
-            const evtAfter: CustomEvent = new CustomEvent("afterGetData");
-            evtAfter["source"] = this;
-            evtAfter["data"] = data;
-            this.fireListener("afterGetData", evtAfter);
-            return data;
-        }
-
-        public submit() {
-            const evt: CustomEvent = new CustomEvent("beforeSubmit");
-            evt["source"] = this;
-            this.fireListener("beforeSubmit", evt);
-            if (this.validate()){
-                const data: Object = this.getData();
-                const on: CustomEvent = new CustomEvent("submit");
-                on["source"] = this;
-                on["data"] = data;
-                this.fireListener("submit", on);
-            }
-            const evtAfter: CustomEvent = new CustomEvent("afterSubmit");
-            evtAfter["source"] = this;
-            this.fireListener("afterSubmit", evtAfter);
+        public setValue(val: T) {
+            const inp: HTMLInputElement = <HTMLInputElement>this.getNative();
+            if (inp != null)inp.value = <any>val;
+            this.setAttribute("text", <any>val);
         }
     }
-    JSForm["__class"] = "framework.components.input.JSForm";
-    JSForm["__interfaces"] = ["framework.components.api.Renderable"];
+    JSInput["__class"] = "framework.components.input.JSInput";
+    JSInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
 
-
-
-    export namespace JSForm {
-
-        export class JSForm$0 implements util.ComponentUtil.ComponentVisitor {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} designable
-             */
-            public doVisit(designable: api.Renderable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
-                    try {
-                        const b: string = (<api.InputField<any>><any>designable).getBinding();
-                        if (b === this.binding){
-                            this.result.push((<api.InputField<any>><any>designable));
-                        }
-                    } catch(e) {
-                        let binding: string = (<api.InputField<any>><any>designable).getBinding();
-                        if (binding == null || binding.trim() === ""){
-                            binding = designable.getName();
-                        }
-                        this.__parent.validationerrors[binding] = e;
-                    }
-                }
-            }
-
-            constructor(__parent: any, private binding: any, private result: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSForm$0["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-
-
-
-        export class JSForm$1 implements util.ComponentUtil.ComponentVisitor {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} designable
-             */
-            public doVisit(designable: api.Renderable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
-                    try {
-                        (<api.InputField<any>><any>designable).validate();
-                    } catch(e) {
-                        let binding: string = (<api.InputField<any>><any>designable).getBinding();
-                        if (binding == null || binding.trim() === ""){
-                            binding = designable.getName();
-                        }
-                        this.__parent.validationerrors[binding] = e;
-                    }
-                }
-            }
-
-            constructor(__parent: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSForm$1["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-
-
-
-        export class JSForm$2 implements util.ComponentUtil.ComponentVisitor {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} designable
-             */
-            public doVisit(designable: api.Renderable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
-                    let binding: string = (<api.InputField<any>><any>designable).getBinding();
-                    if (binding == null || binding.trim() === ""){
-                        binding = designable.getName();
-                    }
-                    if (util.PropertyUtil.hasOwnProperty(this.data, binding)){
-                        const obj: Object = util.PropertyUtil.getValue(this.data, binding);
-                        if (designable != null && designable instanceof <any>input.JSDateInput){
-                            try {
-                                if (obj != null && obj instanceof <any>Date){
-                                    (<api.InputField<any>><any>designable).setValue(obj);
-                                } else {
-                                    const date: Date = new Date(/* parseLong */parseInt(obj.toString()));
-                                    (<api.InputField<any>><any>designable).setValue(date);
-                                }
-                            } catch(e) {
-                                (<api.InputField<any>><any>designable).setValue(obj);
-                            }
-                        } else {
-                            (<api.InputField<any>><any>designable).setValue(obj);
-                        }
-                    } else {
-                        (<api.InputField<any>><any>designable).setValue(null);
-                    }
-                }
-            }
-
-            constructor(__parent: any, private data: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSForm$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-
-
-
-        export class JSForm$3 implements util.ComponentUtil.ComponentVisitor {
-            public __parent: any;
-            /**
-             * 
-             * @param {*} designable
-             */
-            public doVisit(designable: api.Renderable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)){
-                    let binding: string = (<api.InputField<any>><any>designable).getBinding();
-                    if (binding == null || binding.trim() === ""){
-                        binding = designable.getName();
-                    }
-                    const value: Object = <Object>(<api.InputField<any>><any>designable).getValue();
-                    util.PropertyUtil.setValue(this.data, value, binding);
-                }
-            }
-
-            constructor(__parent: any, private data: any) {
-                this.__parent = __parent;
-            }
-        }
-        JSForm$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-
-
-    }
 
 }
 namespace input {
+    /**
+     * Creates a new instance of {@link JSOption} with the specified text and value
+     * @param {string} text - The text to display for the option
+     * @param {string} value - the value of the option
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
     export class JSOption extends JSContainer {
         public constructor(text: string, value: string) {
             super("option");
@@ -3826,27 +3892,65 @@ namespace input {
             this.setHtml(text);
         }
 
+        /**
+         * The value of the option
+         * @return {string} - The value of the option
+         */
         public getValue(): string {
             return this.getAttribute("value");
         }
 
+        /**
+         * Sets the value of the option
+         * @param {string} value - The value of the option
+         */
         public setValue(value: string) {
             this.setAttribute("value", value);
         }
 
+        /**
+         * 
+         * @return {string} - The text of the option
+         */
         public getText(): string {
             return this.getHtml();
         }
 
-        public setText(label: string) {
-            this.setHtml(label);
+        /**
+         * Sets the text or label of the option
+         * @param {string} text - The text of the option
+         */
+        public setText(text: string) {
+            this.setHtml(text);
         }
 
+        /**
+         * Mark or unmark this option as selected
+         * @param {boolean} b - Whether to select or not select this option
+         */
         public setSelected(b: boolean) {
             if (b){
                 this.setAttribute("selected", "true");
             } else {
                 this.setAttribute("selected", null);
+            }
+        }
+
+        /**
+         * 
+         * @return {boolean} - Whether this option is selected or not
+         */
+        public isSelected(): boolean {
+            const opt: HTMLOptionElement = <HTMLOptionElement>this.getNative();
+            if (opt != null){
+                return opt.selected;
+            } else {
+                const attr: string = this.getAttribute("selected");
+                if (attr != null && attr === "true"){
+                    return true;
+                } else {
+                    return false;
+                }
             }
         }
     }
@@ -3876,8 +3980,8 @@ namespace input {
 
         public setOptions$java_lang_String(options: string): JSSelect {
             const opts: string[] = options.split("\n");
-            for(let index173=0; index173 < opts.length; index173++) {
-                let opt = opts[index173];
+            for(let index240=0; index240 < opts.length; index240++) {
+                let opt = opts[index240];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3996,8 +4100,8 @@ namespace input {
             if (ele != null){
                 if (ele.multiple){
                     const result: Array<string> = <any>(new Array<string>());
-                    for(let index174=0; index174 < ele.children.length; index174++) {
-                        let e = ele.children[index174];
+                    for(let index241=0; index241 < ele.children.length; index241++) {
+                        let e = ele.children[index241];
                         {
                             const opt: HTMLOptionElement = <HTMLOptionElement>e;
                             if (opt.selected)result.push(opt.value);
@@ -4010,9 +4114,9 @@ namespace input {
             } else {
                 const val: string = this.getAttribute("value");
                 {
-                    let array176 = this.getChildren();
-                    for(let index175=0; index175 < array176.length; index175++) {
-                        let opt = array176[index175];
+                    let array243 = this.getChildren();
+                    for(let index242=0; index242 < array243.length; index242++) {
+                        let opt = array243[index242];
                         {
                             if (opt.getAttribute("value") === val){
                                 return (<input.JSOption><any>opt).getValue();
@@ -4049,13 +4153,13 @@ namespace input {
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array178 = this.getChildren();
-                    for(let index177=0; index177 < array178.length; index177++) {
-                        let opt = array178[index177];
+                    let array245 = this.getChildren();
+                    for(let index244=0; index244 < array245.length; index244++) {
+                        let opt = array245[index244];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
-                            for(let index179=0; index179 < arrVal.length; index179++) {
-                                let val = arrVal[index179];
+                            for(let index246=0; index246 < arrVal.length; index246++) {
+                                let val = arrVal[index246];
                                 {
                                     if (opt.getAttribute("value") === val){
                                         (<input.JSOption><any>opt).setSelected(true);
@@ -4067,9 +4171,9 @@ namespace input {
                 }
             } else {
                 {
-                    let array181 = this.getChildren();
-                    for(let index180=0; index180 < array181.length; index180++) {
-                        let opt = array181[index180];
+                    let array248 = this.getChildren();
+                    for(let index247=0; index247 < array248.length; index247++) {
+                        let opt = array248[index247];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
                         }
@@ -4098,11 +4202,11 @@ namespace input {
                 const el: HTMLSelectElement = <HTMLSelectElement>nat;
                 valid = el.checkValidity();
                 if (!valid){
-                    input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
+                    input.JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index182=0; index182 < this.validators.length; index182++) {
-                let v = this.validators[index182];
+            for(let index249=0; index249 < this.validators.length; index249++) {
+                let v = this.validators[index249];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -4136,8 +4240,8 @@ namespace input {
         public setData(data_: Array<Object>) {
             this.clearChildren();
             this.setRendered(false);
-            for(let index183=0; index183 < data_.length; index183++) {
-                let o = data_[index183];
+            for(let index250=0; index250 < data_.length; index250++) {
+                let o = data_[index250];
                 {
                     if (o.hasOwnProperty("value")){
                         const value: string = <string>o["value"];
@@ -4161,9 +4265,9 @@ namespace input {
             const result: Array<Object> = <any>(new Array<Object>());
             if (this.isMultiple()){
                 {
-                    let array185 = <Array<string>>obj;
-                    for(let index184=0; index184 < array185.length; index184++) {
-                        let o = array185[index184];
+                    let array252 = <Array<string>>obj;
+                    for(let index251=0; index251 < array252.length; index251++) {
+                        let o = array252[index251];
                         {
                             const item: Object = this.findItem(o);
                             if (item != null){
@@ -4189,8 +4293,8 @@ namespace input {
 
         public findItem(value: string): Object {
             if (this.data != null){
-                for(let index186=0; index186 < this.data.length; index186++) {
-                    let o = this.data[index186];
+                for(let index253=0; index253 < this.data.length; index253++) {
+                    let o = this.data[index253];
                     {
                         let val: string = <string>o["value"];
                         val = val + "";
@@ -4289,11 +4393,11 @@ namespace input {
                 const el: HTMLInputElement = <HTMLInputElement>nat;
                 valid = el.checkValidity();
                 if (!valid){
-                    input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
+                    input.JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index187=0; index187 < this.validators.length; index187++) {
-                let v = this.validators[index187];
+            for(let index254=0; index254 < this.validators.length; index254++) {
+                let v = this.validators[index254];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -4349,26 +4453,46 @@ namespace input {
 
 }
 namespace table {
+    /**
+     * Renders a table
+     * 
+     * @author Kureem Rossaye
+     * @param {string} name
+     * @class
+     * @extends JSContainer
+     */
     export class Table extends JSContainer {
-        /*private*/ head: JSContainer;
+        /*private*/ head: table.TableHead;
 
-        /*private*/ body: JSContainer;
-
-        dataModel: table.TableModel;
-
-        columnModel: table.TableColumnModel;
+        /*private*/ body: table.TableBody;
 
         public constructor(name: string) {
             super(name, "table");
-            this.head = new JSContainer("head", "thead");
-            this.body = new JSContainer("body", "tbody");
-            if (this.dataModel === undefined) { this.dataModel = null; }
-            if (this.columnModel === undefined) { this.columnModel = null; }
+            this.head = new table.TableHead("head", this);
+            this.body = new table.TableBody("body", this);
             this.addChild$framework_components_api_Renderable(this.head);
             this.addChild$framework_components_api_Renderable(this.body);
         }
 
-        public getHead(): api.Renderable {
+        public fireOnClickRow(row: api.Renderable, rowIndex: number) {
+            const clickRow: CustomEvent = new CustomEvent("clickRow");
+            clickRow["source"] = row;
+            clickRow["table"] = this;
+            clickRow["rowIndex"] = rowIndex;
+            clickRow["index"] = rowIndex;
+            this.fireListener("clickRow", clickRow);
+        }
+
+        public fireOnDblClickRow(row: api.Renderable, rowIndex: number) {
+            const clickRow: CustomEvent = new CustomEvent("dblClickRow");
+            clickRow["source"] = row;
+            clickRow["table"] = this;
+            clickRow["rowIndex"] = rowIndex;
+            clickRow["index"] = rowIndex;
+            this.fireListener("dblClickRow", clickRow);
+        }
+
+        public getHead(): table.TableHead {
             return this.head;
         }
 
@@ -4377,55 +4501,24 @@ namespace table {
         }
 
         public getDataModel(): table.TableModel {
-            return this.dataModel;
+            return this.body.getModel();
         }
 
         public setDataModel(dataModel: table.TableModel) {
-            this.dataModel = dataModel;
+            this.body.setModel(dataModel);
         }
 
         public getColumnModel(): table.TableColumnModel {
-            return this.columnModel;
+            return this.head.getModel();
         }
 
         public setColumnModel(columnModel: table.TableColumnModel) {
-            this.columnModel = columnModel;
+            this.head.setModel(columnModel);
         }
 
         public refresh() {
-            this.head.clearChildren();
-            this.body.clearChildren();
-            if (this.columnModel != null){
-                const hrow: JSContainer = new JSContainer("headerRow", "tr");
-                this.head.addChild$framework_components_api_Renderable(hrow);
-                for(let i: number = 0; i < this.columnModel.getColumnCount(); i++) {{
-                    const column: table.TableColumn = this.columnModel.getColumn(i);
-                    const headerRenderer: table.TableCellRenderer = column.getHeaderRenderer();
-                    const th: JSContainer = new JSContainer("", "th").setAttribute("scope", "col");
-                    th.setStyle("width", column.getWidth() + "px");
-                    th.setStyle("max-width", column.getMaxWidth() + "px");
-                    th.setStyle("min-width", column.getMinWidth() + "px");
-                    hrow.addChild$framework_components_api_Renderable(th);
-                    headerRenderer.renderComponent(this, th, column.getHeaderValue(), false, false, 0, i);
-                };}
-            }
-            if (this.dataModel != null){
-                for(let row: number = 0; row < this.dataModel.getRowCount(); row++) {{
-                    const r: JSContainer = new JSContainer("", "tr");
-                    this.body.addChild$framework_components_api_Renderable(r);
-                    for(let col: number = 0; col < this.dataModel.getColumnCount(); col++) {{
-                        const cell: JSContainer = new JSContainer("", "td");
-                        r.addChild$framework_components_api_Renderable(cell);
-                        const val: any = this.dataModel.getValueAt(row, col);
-                        if (this.columnModel != null){
-                            const column: table.TableColumn = this.columnModel.getColumn(col);
-                            column.getCellRenderer().renderComponent(this, cell, val, false, false, row, col);
-                        } else {
-                            cell.setHtml(val != null ? val.toString() : "");
-                        }
-                    };}
-                };}
-            }
+            this.head.refresh();
+            this.body.refresh();
         }
     }
     Table["__class"] = "framework.components.table.Table";
@@ -4433,123 +4526,79 @@ namespace table {
 
 
 }
-namespace input {
-    export class JSCheckBox extends input.AbstractJSInput<boolean> {
-        public constructor(name: string) {
-            super(name);
-            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.CHECKBOX].getValue());
+namespace table {
+    export class TableBody extends JSContainer implements api.EventListener {
+        /*private*/ table: table.Table;
+
+        /*private*/ model: table.TableModel;
+
+        public constructor(name: string, table: table.Table) {
+            super(name, "tbody");
+            if (this.table === undefined) { this.table = null; }
+            if (this.model === undefined) { this.model = null; }
+            this.table = table;
+        }
+
+        public getModel(): table.TableModel {
+            return this.model;
+        }
+
+        public setModel(model: table.TableModel) {
+            this.model = model;
+        }
+
+        public getTable(): table.Table {
+            return this.table;
+        }
+
+        public refresh() {
+            this.clearChildren();
+            this.setRendered(false);
+            const columnModel: table.TableColumnModel = this.table.getHead().getModel();
+            if (this.model != null){
+                for(let row: number = 0; row < this.model.getRowCount(); row++) {{
+                    const r: JSContainer = new JSContainer("", "tr");
+                    r.addEventListener(new TableBody.TableBody$0(this), "click");
+                    this.addChild$framework_components_api_Renderable(r);
+                    for(let col: number = 0; col < this.model.getColumnCount(); col++) {{
+                        const cell: JSContainer = new JSContainer("", "td");
+                        r.addChild$framework_components_api_Renderable(cell);
+                        const val: any = this.model.getValueAt(row, col);
+                        if (columnModel != null){
+                            const column: table.TableColumn = columnModel.getColumn(col);
+                            column.getCellRenderer().renderComponent(this.table, cell, val, false, false, row, col);
+                        } else {
+                            cell.setHtml(val != null ? val.toString() : "");
+                        }
+                    };}
+                };}
+            }
         }
 
         /**
          * 
-         * @return {boolean}
+         * @param {*} source
+         * @param {Event} evt
          */
-        public getValue(): boolean {
-            const el: HTMLInputElement = <HTMLInputElement>this.getNative();
-            if (el != null){
-                return el.checked;
-            }
-            if (this.getAttribute("value") != null && /* equalsIgnoreCase */((o1, o2) => o1.toUpperCase() === (o2===null ? o2 : o2.toUpperCase()))("true", this.getAttribute("value"))){
-                return true;
-            }
-            return false;
-        }
-
-        public setValue$java_lang_Boolean(b: boolean) {
-            if (b){
-                this.setAttribute("value", "true");
-                this.setAttribute("checked", "true");
+        public performAction(source: api.Renderable, evt: Event) {
+            const index: number = (<number>this.getChildren().indexOf(source)|0);
+            const me: MouseEvent = <MouseEvent>evt;
+            const type: string = me.type;
+            if (type === "click"){
+                this.table.fireOnClickRow(source, index);
             } else {
-                this.setAttribute("value", "false");
-                this.setAttribute("checked", null);
+                this.table.fireOnDblClickRow(source, index);
             }
-            const el: HTMLInputElement = <HTMLInputElement>this.getNative();
-            if (el != null){
-                el.checked = b;
-            }
-        }
-
-        /**
-         * 
-         * @param {boolean} b
-         */
-        public setValue(b?: any) {
-            if (((typeof b === 'boolean') || b === null)) {
-                return <any>this.setValue$java_lang_Boolean(b);
-            } else throw new Error('invalid overload');
-        }
-
-        public isChecked(): boolean {
-            return this.getValue();
-        }
-
-        public setChecked(b: boolean) {
-            this.setValue$java_lang_Boolean(b);
         }
     }
-    JSCheckBox["__class"] = "framework.components.input.JSCheckBox";
-    JSCheckBox["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    export class JSDateInput extends input.AbstractJSInput<Date> {
-        public constructor(name: string) {
-            super(name);
-            this.setType(api.InputType.DATE);
-            this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
-        }
-
-        public setType(type: api.InputType): JSDateInput {
-            if (type != null){
-                if (api.InputType["_$wrappers"][type].getGroup() !== "date"){
-                    throw Object.defineProperty(new Error("only date types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
-                }
-                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
-            } else {
-                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
-            }
-            return this;
-        }
-
-        /**
-         * 
-         * @return {Date}
-         */
-        public getValue(): Date {
-            return this.getDateValue();
-        }
-
-        public setValue$jsweet_lang_Date(val: Date) {
-            this.setDateValue(val);
-        }
-
-        /**
-         * 
-         * @param {Date} val
-         */
-        public setValue(val?: any) {
-            if (((val != null && val instanceof <any>Date) || val === null)) {
-                return <any>this.setValue$jsweet_lang_Date(val);
-            } else throw new Error('invalid overload');
-        }
-
-        public setMin(min: Date) {
-            this.setAttribute("min", this.toHtmlDateString(min));
-        }
-
-        public setMax(max: Date) {
-            this.setAttribute("max", this.toHtmlDateString(max));
-        }
-    }
-    JSDateInput["__class"] = "framework.components.input.JSDateInput";
-    JSDateInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+    TableBody["__class"] = "framework.components.table.TableBody";
+    TableBody["__interfaces"] = ["framework.components.api.EventListener","framework.components.api.Renderable"];
 
 
 
-    export namespace JSDateInput {
+    export namespace TableBody {
 
-        export class JSDateInput$0 implements api.EventListener {
+        export class TableBody$0 implements api.EventListener {
             public __parent: any;
             /**
              * 
@@ -4557,184 +4606,232 @@ namespace input {
              * @param {Event} evt
              */
             public performAction(source: api.Renderable, evt: Event) {
-                this.__parent.setValue(this.__parent.getValue());
             }
 
             constructor(__parent: any) {
                 this.__parent = __parent;
             }
         }
-        JSDateInput$0["__interfaces"] = ["framework.components.api.EventListener"];
+        TableBody$0["__interfaces"] = ["framework.components.api.EventListener"];
 
 
     }
 
 }
-namespace input {
-    export class JSNumberInput extends input.AbstractJSInput<number> {
+namespace table {
+    /**
+     * Hold all the information for the definition of a column in a <code>Table</code>
+     * @author Kureem Rossaye
+     * @param {string} name
+     * @class
+     * @extends JSContainer
+     */
+    export class TableColumn extends JSContainer {
         public constructor(name: string) {
-            super(name);
-            this.setType(api.InputType.NUMBER);
+            super(name, "th");
+            if (this.modelIndex === undefined) { this.modelIndex = 0; }
+            if (this.identifier === undefined) { this.identifier = null; }
+            if (this.headerRenderer === undefined) { this.headerRenderer = null; }
+            if (this.headerValue === undefined) { this.headerValue = null; }
+            if (this.cellRenderer === undefined) { this.cellRenderer = null; }
+            if (this.resizable === undefined) { this.resizable = false; }
+            this.identifier = name;
+            this.setAttribute("scope", "col");
         }
 
-        public setType(type: api.InputType): JSNumberInput {
-            if (type != null){
-                if (api.InputType["_$wrappers"][type].getGroup() !== "number"){
-                    throw Object.defineProperty(new Error("only numeric types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+        /**
+         * The index of the column in the model which is to be displayed by this
+         * <code>TableColumn</code>. As columns are moved around in the view
+         * <code>modelIndex</code> remains constant.
+         */
+        modelIndex: number;
+
+        /**
+         * @author Kureem Rossaye<br>
+         * This object is not used internally by the drawing machinery of the
+         * <code>Table</code>; identifiers may be set in the <code>TableColumn</code>
+         * as as an optional way to tag and locate table columns. The table package does
+         * not modify or invoke any methods in these identifier objects other than the
+         * <code>equals</code> method which is used in the <code>getColumnIndex()</code>
+         * method in the <code>DefaultTableColumnModel</code>.
+         */
+        identifier: any;
+
+        /**
+         * The renderer used to draw the header of the column.
+         */
+        headerRenderer: table.TableCellRenderer;
+
+        /**
+         * The header value of the column.
+         */
+        headerValue: any;
+
+        /**
+         * The renderer used to draw the data cells of the column.
+         */
+        cellRenderer: table.TableCellRenderer;
+
+        /**
+         * If true, the user is allowed to resize the column; the default is true.
+         */
+        resizable: boolean;
+
+        public getModelIndex(): number {
+            return this.modelIndex;
+        }
+
+        public setModelIndex(modelIndex: number) {
+            this.modelIndex = modelIndex;
+        }
+
+        public getIdentifier(): any {
+            return this.identifier;
+        }
+
+        public setIdentifier(identifier: any) {
+            this.identifier = identifier;
+        }
+
+        public getWidth(): number {
+            return this.getDimensionStyle("width");
+        }
+
+        /*private*/ setDimensionStyle(name: string, value: number) {
+            this.setStyle(name, value + api.Units["_$wrappers"][api.Units.PIXEL].getDisplay());
+        }
+
+        /*private*/ getDimensionStyle(name: string): number {
+            let stWidth: string = this.getStyle(name);
+            if (stWidth != null && stWidth.length > 0){
+                {
+                    let array256 = /* Enum.values */function() { let result: api.Units[] = []; for(let val in api.Units) { if (!isNaN(<any>val)) { result.push(parseInt(val,10)); } } return result; }();
+                    for(let index255=0; index255 < array256.length; index255++) {
+                        let u = array256[index255];
+                        {
+                            stWidth = /* replace */stWidth.split(api.Units["_$wrappers"][u].getDisplay()).join("");
+                        }
+                    }
                 }
-                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
-            } else {
-                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                return /* parseInt */parseInt(stWidth);
+            }
+            return null;
+        }
+
+        public setWidth(width: number) {
+            this.setDimensionStyle("width", width);
+        }
+
+        public getMinWidth(): number {
+            return this.getDimensionStyle("min-width");
+        }
+
+        public setMinWidth(minWidth: number) {
+            this.setDimensionStyle("min-width", minWidth);
+        }
+
+        public getMaxWidth(): number {
+            return this.getDimensionStyle("max-width");
+        }
+
+        public setMaxWidth(maxWidth: number) {
+            this.setDimensionStyle("max-width", maxWidth);
+        }
+
+        public getHeaderRenderer(): table.TableCellRenderer {
+            return this.headerRenderer;
+        }
+
+        public setHeaderRenderer(headerRenderer: table.TableCellRenderer) {
+            this.headerRenderer = headerRenderer;
+        }
+
+        public getHeaderValue(): any {
+            return this.headerValue;
+        }
+
+        public setHeaderValue(headerValue: any) {
+            this.headerValue = headerValue;
+            let html: string = "";
+            if (headerValue != null){
+                html = headerValue.toString();
+            }
+            this.setHtml(html);
+        }
+
+        public getCellRenderer(): table.TableCellRenderer {
+            return this.cellRenderer;
+        }
+
+        public setCellRenderer(cellRenderer: table.TableCellRenderer) {
+            this.cellRenderer = cellRenderer;
+        }
+
+        public isResizable(): boolean {
+            return this.resizable;
+        }
+
+        public setResizable(resizable: boolean) {
+            this.resizable = resizable;
+        }
+    }
+    TableColumn["__class"] = "framework.components.table.TableColumn";
+    TableColumn["__interfaces"] = ["framework.components.api.Renderable"];
+
+
+}
+namespace table {
+    export class TableHead extends JSContainer {
+        /*private*/ tableRow: JSContainer;
+
+        /*private*/ table: table.Table;
+
+        /*private*/ model_: table.TableColumnModel;
+
+        public constructor(name: string, table: table.Table) {
+            super(name, "thead");
+            this.tableRow = new JSContainer("headerRow", "tr");
+            if (this.table === undefined) { this.table = null; }
+            if (this.model_ === undefined) { this.model_ = null; }
+            this.addChild$framework_components_api_Renderable(this.tableRow);
+            this.table = table;
+        }
+
+        public addColumn(column: table.TableColumn): TableHead {
+            this.tableRow.addChild$framework_components_api_Renderable(column);
+            const renderer: table.TableCellRenderer = column.getHeaderRenderer();
+            if (renderer != null){
+                renderer.renderComponent(this.table, column, column, false, false, -1, (<number>this.tableRow.getChildren().indexOf(column)|0));
             }
             return this;
         }
 
-        public setStep(step: number) {
-            this.setAttribute("step", step + "");
-        }
-
-        public getStep(): number {
-            return parseInt(this.getAttribute("step"));
-        }
-
-        /**
-         * 
-         * @return {number}
-         */
-        public getValue(): number {
-            return this.getDoubleValue();
-        }
-
-        public setValue$java_lang_Double(val: number) {
-            this.setDoubleValue(val);
-        }
-
-        /**
-         * 
-         * @param {number} val
-         */
-        public setValue(val?: any) {
-            if (((typeof val === 'number') || val === null)) {
-                return <any>this.setValue$java_lang_Double(val);
-            } else throw new Error('invalid overload');
-        }
-
-        public setMin(min: number) {
-            this.setAttribute("min", min + "");
-        }
-
-        public setMax(max: number) {
-            this.setAttribute("max", "" + max);
-        }
-    }
-    JSNumberInput["__class"] = "framework.components.input.JSNumberInput";
-    JSNumberInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    export class JSTextInput extends input.AbstractJSInput<string> {
-        public constructor(name: string) {
-            super(name);
-            this.setType(api.InputType.TEXT);
-        }
-
-        public setMaxLength(length: number) {
-            this.setAttribute("maxlength", length + "");
-        }
-
-        public setType(type: api.InputType): JSTextInput {
-            this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
-            return this;
-        }
-
-        /**
-         * 
-         * @return {string}
-         */
-        public getValue(): string {
-            return this.getStringValue();
-        }
-
-        public setValue$java_lang_String(val: string) {
-            this.setStringValue(val);
-        }
-
-        /**
-         * 
-         * @param {string} val
-         */
-        public setValue(val?: any) {
-            if (((typeof val === 'string') || val === null)) {
-                return <any>this.setValue$java_lang_String(val);
-            } else throw new Error('invalid overload');
-        }
-
-        public getMask(): string {
-            return this.getAttribute("mask");
-        }
-
-        public setMask(mask: string) {
-            this.setAttribute("mask", mask);
-            this.setRendered(false);
-        }
-    }
-    JSTextInput["__class"] = "framework.components.input.JSTextInput";
-    JSTextInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
-
-
-}
-namespace input {
-    export class JSTimeInput extends input.AbstractJSInput<Date> {
-        /*private*/ savedDate: Date;
-
-        public constructor(name: string) {
-            super(name);
-            this.savedDate = new Date();
-            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.TIME].getValue());
-        }
-
-        /**
-         * 
-         * @return {Date}
-         */
-        public getValue(): Date {
-            const time: string = this.getStringValue();
-            const d: Date = this.savedDate;
-            if (time != null && /* contains */(time.indexOf(":") != -1)){
-                const htmn: string[] = time.split(":");
-                d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
-            }
-            return d;
-        }
-
-        public setValue$jsweet_lang_Date(val: Date) {
-            if (val != null){
-                this.savedDate = val;
-                let mins: string = val.getMinutes() + "";
-                if (mins.length === 1){
-                    mins = "0" + mins;
-                }
-                let hrs: string = val.getHours() + "";
-                if (hrs.length === 1){
-                    hrs = "0" + hrs;
-                }
-                this.setStringValue(hrs + ":" + mins);
+        public refresh() {
+            this.tableRow.clearChildren();
+            this.tableRow.setRendered(false);
+            if (this.model_ != null){
+                for(let i: number = 0; i < this.model_.getColumnCount(); i++) {{
+                    const column: table.TableColumn = this.model_.getColumn(i);
+                    this.addColumn(column);
+                };}
             }
         }
 
-        /**
-         * 
-         * @param {Date} val
-         */
-        public setValue(val?: any) {
-            if (((val != null && val instanceof <any>Date) || val === null)) {
-                return <any>this.setValue$jsweet_lang_Date(val);
-            } else throw new Error('invalid overload');
+        public getModel(): table.TableColumnModel {
+            return this.model_;
+        }
+
+        public setModel(model: table.TableColumnModel) {
+            this.model_ = model;
+        }
+
+        public getColumns(): Array<table.TableColumn> {
+            const result: Array<any> = this.tableRow.getChildren();
+            return result;
         }
     }
-    JSTimeInput["__class"] = "framework.components.input.JSTimeInput";
-    JSTimeInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+    TableHead["__class"] = "framework.components.table.TableHead";
+    TableHead["__interfaces"] = ["framework.components.api.Renderable"];
 
 
 }
@@ -4779,6 +4876,329 @@ namespace input {
 
 }
 namespace input {
+    export class JSCheckBox extends input.JSInput<boolean> {
+        public constructor(name: string) {
+            super(name);
+            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.CHECKBOX].getValue());
+        }
+
+        /**
+         * 
+         * @return {boolean}
+         */
+        public getValue(): boolean {
+            const el: HTMLInputElement = <HTMLInputElement>this.getNative();
+            if (el != null){
+                return el.checked;
+            }
+            if (this.getAttribute("value") != null && /* equalsIgnoreCase */((o1, o2) => o1.toUpperCase() === (o2===null ? o2 : o2.toUpperCase()))("true", this.getAttribute("value"))){
+                return true;
+            }
+            return false;
+        }
+
+        public setValue$java_lang_Boolean(b: boolean) {
+            if (b){
+                this.setAttribute("value", "true");
+                this.setAttribute("checked", "true");
+            } else {
+                this.setAttribute("value", "false");
+                this.setAttribute("checked", null);
+            }
+            const el: HTMLInputElement = <HTMLInputElement>this.getNative();
+            if (el != null){
+                el.checked = b;
+            }
+        }
+
+        /**
+         * 
+         * @param {boolean} b
+         */
+        public setValue(b?: any) {
+            if (((typeof b === 'boolean') || b === null)) {
+                return <any>this.setValue$java_lang_Boolean(b);
+            } else if (((b != null) || b === null)) {
+                super.setValue(b);
+            } else throw new Error('invalid overload');
+        }
+
+        public isChecked(): boolean {
+            return this.getValue();
+        }
+
+        public setChecked(b: boolean) {
+            this.setValue$java_lang_Boolean(b);
+        }
+    }
+    JSCheckBox["__class"] = "framework.components.input.JSCheckBox";
+    JSCheckBox["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    export class JSDateInput extends input.JSInput<Date> {
+        public constructor(name: string) {
+            super(name);
+            this.setType(api.InputType.DATE);
+            this.addEventListener(new JSDateInput.JSDateInput$0(this), "change");
+        }
+
+        public setType(type: api.InputType): JSDateInput {
+            if (type != null){
+                if (api.InputType["_$wrappers"][type].getGroup() !== "date"){
+                    throw Object.defineProperty(new Error("only date types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                }
+                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            } else {
+                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+            }
+            return this;
+        }
+
+        /**
+         * 
+         * @return {Date}
+         */
+        public getValue(): Date {
+            return this.getDateValue();
+        }
+
+        public setValue$jsweet_lang_Date(val: Date) {
+            this.setDateValue(val);
+        }
+
+        /**
+         * 
+         * @param {Date} val
+         */
+        public setValue(val?: any) {
+            if (((val != null && val instanceof <any>Date) || val === null)) {
+                return <any>this.setValue$jsweet_lang_Date(val);
+            } else if (((val != null) || val === null)) {
+                super.setValue(val);
+            } else throw new Error('invalid overload');
+        }
+
+        public setMin(min: Date) {
+            this.setAttribute("min", this.toHtmlDateString(min));
+        }
+
+        public setMax(max: Date) {
+            this.setAttribute("max", this.toHtmlDateString(max));
+        }
+    }
+    JSDateInput["__class"] = "framework.components.input.JSDateInput";
+    JSDateInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+
+    export namespace JSDateInput {
+
+        export class JSDateInput$0 implements api.EventListener {
+            public __parent: any;
+            /**
+             * 
+             * @param {*} source
+             * @param {Event} evt
+             */
+            public performAction(source: api.Renderable, evt: Event) {
+                this.__parent.setValue(this.__parent.getValue());
+            }
+
+            constructor(__parent: any) {
+                this.__parent = __parent;
+            }
+        }
+        JSDateInput$0["__interfaces"] = ["framework.components.api.EventListener"];
+
+
+    }
+
+}
+namespace input {
+    export class JSNumberInput extends input.JSInput<number> {
+        public constructor(name: string) {
+            super(name);
+            this.setType(api.InputType.NUMBER);
+        }
+
+        public setType(type: api.InputType): JSNumberInput {
+            if (type != null){
+                if (api.InputType["_$wrappers"][type].getGroup() !== "number"){
+                    throw Object.defineProperty(new Error("only numeric types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                }
+                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            } else {
+                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+            }
+            return this;
+        }
+
+        public setStep(step: number) {
+            this.setAttribute("step", step + "");
+        }
+
+        public getStep(): number {
+            return parseInt(this.getAttribute("step"));
+        }
+
+        /**
+         * 
+         * @return {number}
+         */
+        public getValue(): number {
+            return this.getDoubleValue();
+        }
+
+        public setValue$java_lang_Double(val: number) {
+            this.setDoubleValue(val);
+        }
+
+        /**
+         * 
+         * @param {number} val
+         */
+        public setValue(val?: any) {
+            if (((typeof val === 'number') || val === null)) {
+                return <any>this.setValue$java_lang_Double(val);
+            } else if (((val != null) || val === null)) {
+                super.setValue(val);
+            } else throw new Error('invalid overload');
+        }
+
+        public setMin(min: number) {
+            this.setAttribute("min", min + "");
+        }
+
+        public setMax(max: number) {
+            this.setAttribute("max", "" + max);
+        }
+    }
+    JSNumberInput["__class"] = "framework.components.input.JSNumberInput";
+    JSNumberInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    export class JSTextInput extends input.JSInput<string> {
+        public constructor(name: string) {
+            super(name);
+            this.setType(api.InputType.TEXT);
+        }
+
+        public setMaxLength(length: number) {
+            this.setAttribute("maxlength", length + "");
+        }
+
+        public setType(type: api.InputType): JSTextInput {
+            if (type != null){
+                if (api.InputType["_$wrappers"][type].getGroup() === "text"){
+                    this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+                } else {
+                    throw Object.defineProperty(new Error("only text input types can be set as type"), '__classes', { configurable: true, value: ['java.lang.Throwable','java.lang.Object','java.lang.RuntimeException','java.lang.Exception'] });
+                }
+            } else {
+                this.setAttribute("type", null);
+            }
+            return this;
+        }
+
+        /**
+         * 
+         * @return {string}
+         */
+        public getValue(): string {
+            return this.getStringValue();
+        }
+
+        public setValue$java_lang_String(val: string) {
+            this.setStringValue(val);
+        }
+
+        /**
+         * 
+         * @param {string} val
+         */
+        public setValue(val?: any) {
+            if (((typeof val === 'string') || val === null)) {
+                return <any>this.setValue$java_lang_String(val);
+            } else if (((val != null) || val === null)) {
+                super.setValue(val);
+            } else throw new Error('invalid overload');
+        }
+
+        public getMask(): string {
+            return this.getAttribute("mask");
+        }
+
+        public setMask(mask: string) {
+            this.setAttribute("mask", mask);
+            this.setRendered(false);
+        }
+    }
+    JSTextInput["__class"] = "framework.components.input.JSTextInput";
+    JSTextInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+}
+namespace input {
+    export class JSTimeInput extends input.JSInput<Date> {
+        /*private*/ savedDate: Date;
+
+        public constructor(name: string) {
+            super(name);
+            this.savedDate = new Date();
+            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.TIME].getValue());
+        }
+
+        /**
+         * 
+         * @return {Date}
+         */
+        public getValue(): Date {
+            const time: string = this.getStringValue();
+            const d: Date = this.savedDate;
+            if (time != null && /* contains */(time.indexOf(":") != -1)){
+                const htmn: string[] = time.split(":");
+                d.setHours(parseInt(htmn[0]), parseInt(htmn[1]));
+            }
+            return d;
+        }
+
+        public setValue$jsweet_lang_Date(val: Date) {
+            if (val != null){
+                this.savedDate = val;
+                let mins: string = val.getMinutes() + "";
+                if (mins.length === 1){
+                    mins = "0" + mins;
+                }
+                let hrs: string = val.getHours() + "";
+                if (hrs.length === 1){
+                    hrs = "0" + hrs;
+                }
+                this.setStringValue(hrs + ":" + mins);
+            }
+        }
+
+        /**
+         * 
+         * @param {Date} val
+         */
+        public setValue(val?: any) {
+            if (((val != null && val instanceof <any>Date) || val === null)) {
+                return <any>this.setValue$jsweet_lang_Date(val);
+            } else if (((val != null) || val === null)) {
+                super.setValue(val);
+            } else throw new Error('invalid overload');
+        }
+    }
+    JSTimeInput["__class"] = "framework.components.input.JSTimeInput";
+    JSTimeInput["__interfaces"] = ["framework.components.api.InputField","framework.components.api.Renderable"];
+
+
+}
+namespace input {
     export class JSRadio extends input.JSCheckBox {
         public constructor(name: string) {
             super(name);
@@ -4793,5 +5213,3 @@ namespace input {
 
 
 JSContainer.defaultRenderer_$LI$();
-
-Main.main(null);

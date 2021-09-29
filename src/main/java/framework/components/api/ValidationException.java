@@ -2,6 +2,7 @@ package framework.components.api;
 
 import static jsweet.lang.Globals.eval;
 
+import framework.components.input.JSTextInput;
 import jsweet.lang.Array;
 import jsweet.lang.Object;
 

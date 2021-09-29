@@ -438,7 +438,7 @@ public interface Renderable {
 	
 	/**
 	 * Add a stylesheet rule to be used with this component
-	 * @param rule
+	 * @param rule - the css rule to add
 	 * @return The current renderable
 	 */
 	public Renderable addCSSRule(String rule);
@@ -449,5 +449,19 @@ public interface Renderable {
 	 * @return All stylesheet rules
 	 */
 	public Array<String> getCSSRules();
+	
+	
+	/**
+	 * Sets the {@link HTMLElement} created for this container on the browser when this {@link Renderable} is rendered
+	 * @param elem - The {@link HTMLElement} that this container represents on the browser
+	 */
+	public void setElement(HTMLElement elem);
+	
+	
+	/**
+	 * returns the {@link HTMLElement} that is created for this container on the browser when this {@link Renderable} is rendered
+	 * @return - The {@link HTMLElement} that this container represents on the browser
+	 */
+	public HTMLElement getElement();
 
 }

@@ -18,7 +18,8 @@ public class JSButton extends JSContainer{
 	 */
 	public JSButton(String name, String text) {
 		super(name, "input");
-		setHtml(text);
+		setAttribute("type",InputType.BUTTON.getValue());
+		setAttribute("value",text);
 	}
 	
 	/**

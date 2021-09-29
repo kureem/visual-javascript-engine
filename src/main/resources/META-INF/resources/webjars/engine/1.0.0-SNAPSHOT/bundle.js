@@ -4,17 +4,21 @@ var api;
     class ContainerRenderer {
         constructor() {
         }
+        static getElementById(id) {
+            return document.getElementById(id);
+        }
         doRender(c, root) {
-            const jq = document.getElementById(c.getId());
+            const jq = c.getElement();
             const tag = c.getTag();
             const rendered = c.isRendered();
             const name = c.getName();
             const html = c.getHtml();
-            const parent = c.getParent();
+            const rparent = c.getParent();
             if (!rendered) {
                 if (jq != null)
                     jq.remove();
                 const njq = document.createElement(tag);
+                c.setElement(njq);
                 if (name != null && name.length > 0)
                     njq.setAttribute("name", name);
                 njq.setAttribute("id", c.getId());
@@ -31,7 +35,7 @@ var api;
                 }
                 this.renderAttributes(njq, c, false);
                 this.renderStyles(njq, c, false);
-                if (parent == null) {
+                if (rparent == null) {
                     if (root == null) {
                         const body = document.getElementsByTagName("body")[0];
                         body.appendChild(njq);
@@ -41,26 +45,26 @@ var api;
                     }
                 }
                 else {
-                    if (parent != null && (parent.constructor != null && parent.constructor["__interfaces"] != null && parent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)) {
-                        const elem = document.getElementById(parent.getId()).querySelector("[name=" + name + "]");
+                    if (rparent != null && (rparent.constructor != null && rparent.constructor["__interfaces"] != null && rparent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)) {
+                        const elem = rparent.getElement();
                         elem.parentElement.replaceChild(njq, elem);
                     }
                     else {
-                        const index = parent.getChildren().indexOf(c);
+                        const index = rparent.getChildren().indexOf(c);
                         let nextSib = null;
-                        if (index < parent.getChildren().length - 1) {
-                            nextSib = parent.getChildren()[index + 1];
+                        if (index < rparent.getChildren().length - 1) {
+                            nextSib = rparent.getChildren()[index + 1];
                             if (!nextSib.isRendered()) {
                                 nextSib = null;
                             }
                         }
                         if (nextSib != null) {
-                            const p = document.getElementById(parent.getId());
-                            p.insertBefore(njq, document.getElementById(nextSib.getId()));
+                            const p = rparent.getElement();
+                            p.insertBefore(njq, nextSib.getElement());
                         }
                         else {
                             try {
-                                document.getElementById(parent.getId()).appendChild(njq);
+                                rparent.getElement().appendChild(njq);
                             }
                             catch (e) {
                                 console.error(e.message, e);
@@ -71,8 +75,8 @@ var api;
                 const me = c;
                 const component = me;
                 this.doNothing(component);
-                for (let index121 = 0; index121 < scripts.length; index121++) {
-                    let scr = scripts[index121];
+                for (let index189 = 0; index189 < scripts.length; index189++) {
+                    let scr = scripts[index189];
                     {
                         eval(scr);
                     }
@@ -97,14 +101,14 @@ var api;
         }
         renderEvents(njq, c) {
             const keys = Object.keys(c.getListeners());
-            for (let index122 = 0; index122 < keys.length; index122++) {
-                let key = keys[index122];
+            for (let index190 = 0; index190 < keys.length; index190++) {
+                let key = keys[index190];
                 {
                     const listeners = c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for (let index123 = 0; index123 < listeners.length; index123++) {
-                                let l = listeners[index123];
+                            for (let index191 = 0; index191 < listeners.length; index191++) {
+                                let l = listeners[index191];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -118,9 +122,9 @@ var api;
         renderAttributes(njq, c, changed) {
             if (changed) {
                 {
-                    let array125 = c.getChangedAttributes();
-                    for (let index124 = 0; index124 < array125.length; index124++) {
-                        let key = array125[index124];
+                    let array193 = c.getChangedAttributes();
+                    for (let index192 = 0; index192 < array193.length; index192++) {
+                        let key = array193[index192];
                         {
                             const attr = c.getAttribute(key);
                             if (attr == null) {
@@ -135,9 +139,9 @@ var api;
             }
             else {
                 {
-                    let array127 = c.getAttributeNames();
-                    for (let index126 = 0; index126 < array127.length; index126++) {
-                        let key = array127[index126];
+                    let array195 = c.getAttributeNames();
+                    for (let index194 = 0; index194 < array195.length; index194++) {
+                        let key = array195[index194];
                         {
                             const attr = c.getAttribute(key);
                             if (attr != null)
@@ -163,9 +167,9 @@ var api;
         renderStyles(njq, c, changed) {
             if (changed) {
                 {
-                    let array129 = c.getChangedStyles();
-                    for (let index128 = 0; index128 < array129.length; index128++) {
-                        let key = array129[index128];
+                    let array197 = c.getChangedStyles();
+                    for (let index196 = 0; index196 < array197.length; index196++) {
+                        let key = array197[index196];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -174,9 +178,9 @@ var api;
             }
             else {
                 {
-                    let array131 = c.getStyleNames();
-                    for (let index130 = 0; index130 < array131.length; index130++) {
-                        let key = array131[index130];
+                    let array199 = c.getStyleNames();
+                    for (let index198 = 0; index198 < array199.length; index198++) {
+                        let key = array199[index198];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -199,8 +203,8 @@ var api;
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet = styleelem.sheet;
-                for (let index132 = 0; index132 < rules.length; index132++) {
-                    let rule = rules[index132];
+                for (let index200 = 0; index200 < rules.length; index200++) {
+                    let rule = rules[index200];
                     sheet.insertRule(rule);
                 }
             }
@@ -277,6 +281,61 @@ var api;
     InputType["__class"] = "framework.components.api.InputType";
     InputType["__interfaces"] = ["java.lang.constant.Constable", "java.lang.Comparable", "java.io.Serializable"];
     InputType["_$wrappers"] = { 0: new InputType_$WRAPPER(0, "BUTTON", "button", "button"), 1: new InputType_$WRAPPER(1, "CHECKBOX", "checkbox", "boolean"), 2: new InputType_$WRAPPER(2, "DATE", "date", "date"), 3: new InputType_$WRAPPER(3, "DATETIME_LOCAL", "datetime-local", "date"), 4: new InputType_$WRAPPER(4, "FILE", "file", "file"), 5: new InputType_$WRAPPER(5, "HIDDEN", "hidden", "text"), 6: new InputType_$WRAPPER(6, "IMAGE", "image", "image"), 7: new InputType_$WRAPPER(7, "MONTH", "month", "date"), 8: new InputType_$WRAPPER(8, "NUMBER", "number", "number"), 9: new InputType_$WRAPPER(9, "RADIO", "radio", "boolean"), 10: new InputType_$WRAPPER(10, "RANGE", "range", "number"), 11: new InputType_$WRAPPER(11, "RESET", "reset", "button"), 12: new InputType_$WRAPPER(12, "SUBMIT", "submit", "button"), 13: new InputType_$WRAPPER(13, "TIME", "time", "date"), 14: new InputType_$WRAPPER(14, "WEEK", "week", "date"), 15: new InputType_$WRAPPER(15, "TEXT", "text"), 16: new InputType_$WRAPPER(16, "PASSWORD", "password"), 17: new InputType_$WRAPPER(17, "EMAIL", "email"), 18: new InputType_$WRAPPER(18, "URL", "url"), 19: new InputType_$WRAPPER(19, "SEARCH", "search"), 20: new InputType_$WRAPPER(20, "TEL", "tel"), 21: new InputType_$WRAPPER(21, "COLOR", "color") };
+})(api || (api = {}));
+(function (api) {
+    let Units;
+    (function (Units) {
+        Units[Units["PIXEL"] = 0] = "PIXEL";
+        Units[Units["CENTIMETER"] = 1] = "CENTIMETER";
+        Units[Units["MILLIMETER"] = 2] = "MILLIMETER";
+        Units[Units["INCH"] = 3] = "INCH";
+        Units[Units["POINT"] = 4] = "POINT";
+        Units[Units["PICA"] = 5] = "PICA";
+        Units[Units["EM"] = 6] = "EM";
+        Units[Units["EX"] = 7] = "EX";
+        Units[Units["CH"] = 8] = "CH";
+        Units[Units["REM"] = 9] = "REM";
+        Units[Units["VIEWPORT_WIDTH"] = 10] = "VIEWPORT_WIDTH";
+        Units[Units["VIEWPORT_HEIGHT"] = 11] = "VIEWPORT_HEIGHT";
+        Units[Units["VIEWPORT_MIN"] = 12] = "VIEWPORT_MIN";
+        Units[Units["VIEWPORT_MAX"] = 13] = "VIEWPORT_MAX";
+        Units[Units["PERCENT"] = 14] = "PERCENT";
+    })(Units = api.Units || (api.Units = {}));
+    /** @ignore */
+    class Units_$WRAPPER {
+        constructor(_$ordinal, _$name, name, display, type) {
+            this._$ordinal = _$ordinal;
+            this._$name = _$name;
+            if (this.__name === undefined) {
+                this.__name = null;
+            }
+            if (this.display === undefined) {
+                this.display = null;
+            }
+            if (this.type === undefined) {
+                this.type = null;
+            }
+            this.__name = name;
+            this.display = display;
+            this.type = type;
+        }
+        getName() {
+            return this.__name;
+        }
+        getDisplay() {
+            return this.display;
+        }
+        getType() {
+            return this.type;
+        }
+        name() { return this._$name; }
+        ordinal() { return this._$ordinal; }
+        compareTo(other) { return this._$ordinal - (isNaN(other) ? other._$ordinal : other); }
+    }
+    api.Units_$WRAPPER = Units_$WRAPPER;
+    Units["__class"] = "framework.components.api.Units";
+    Units["__interfaces"] = ["java.lang.constant.Constable", "java.lang.Comparable", "java.io.Serializable"];
+    Units["_$wrappers"] = { 0: new Units_$WRAPPER(0, "PIXEL", "pixel", "px", "absolute"), 1: new Units_$WRAPPER(1, "CENTIMETER", "centimer", "cm", "absolute"), 2: new Units_$WRAPPER(2, "MILLIMETER", "millimeter", "mm", "absolute"), 3: new Units_$WRAPPER(3, "INCH", "inch", "mm", "absolute"), 4: new Units_$WRAPPER(4, "POINT", "point", "pt", "absolute"), 5: new Units_$WRAPPER(5, "PICA", "pica", "pc", "absolute"), 6: new Units_$WRAPPER(6, "EM", "em", "em", "relative"), 7: new Units_$WRAPPER(7, "EX", "ex", "ex", "relative"), 8: new Units_$WRAPPER(8, "CH", "ch", "ch", "relative"), 9: new Units_$WRAPPER(9, "REM", "root element", "rem", "relative"), 10: new Units_$WRAPPER(10, "VIEWPORT_WIDTH", "viewport width", "vw", "relative"), 11: new Units_$WRAPPER(11, "VIEWPORT_HEIGHT", "viewport height", "vw", "relative"), 12: new Units_$WRAPPER(12, "VIEWPORT_MIN", "viewport minimum", "vmin", "relative"), 13: new Units_$WRAPPER(13, "VIEWPORT_MAX", "viewport maximum", "vmax", "relative"), 14: new Units_$WRAPPER(14, "PERCENT", "percent", "%", "relative") };
 })(api || (api = {}));
 (function (api) {
     /**
@@ -378,58 +437,6 @@ var api;
     ValidationException["__class"] = "framework.components.api.ValidationException";
     ValidationException["__interfaces"] = ["java.io.Serializable"];
 })(api || (api = {}));
-class Main {
-    static main(args) {
-        const form = new input.JSForm("myform");
-        const firstName = new input.JSTextInput("firstName");
-        const lastName = new input.JSTextInput("lastName");
-        form.addChild$framework_components_api_Renderable(firstName);
-        form.addChild$framework_components_api_Renderable(lastName);
-        const submit = new input.JSSubmit("submit", "Save");
-        const reset = new input.JSReset("reset", "Cancel");
-        form.addChild$framework_components_api_Renderable(submit).addChild(reset);
-        form.addEventListener(new Main.Main$0(form), "submit");
-        form.addEventListener(new Main.Main$1(), "reset");
-        const app = new JSContainer("div");
-        app.addChild$framework_components_api_Renderable(form);
-        app.render$();
-    }
-}
-Main["__class"] = "framework.components.Main";
-(function (Main) {
-    class Main$0 {
-        constructor(form) {
-            this.form = form;
-        }
-        /**
-         *
-         * @param {*} source
-         * @param {Event} evt
-         */
-        performAction(source, evt) {
-            const fe = this.form.getNative();
-            fe.addEventListener("reset", (e) => {
-                alert("alerttttttt");
-            });
-        }
-    }
-    Main.Main$0 = Main$0;
-    Main$0["__interfaces"] = ["framework.components.api.EventListener"];
-    class Main$1 {
-        /**
-         *
-         * @param {*} source
-         * @param {Event} evt
-         */
-        performAction(source, evt) {
-            alert("this is a reset");
-        }
-        constructor() {
-        }
-    }
-    Main.Main$1 = Main$1;
-    Main$1["__interfaces"] = ["framework.components.api.EventListener"];
-})(Main || (Main = {}));
 var table;
 (function (table) {
     class DefaulTableModel {
@@ -556,8 +563,8 @@ var table;
          * @return {number}
          */
         getColumnIndex(columnIdentifier) {
-            for (let index133 = 0; index133 < this.columns.length; index133++) {
-                let col = this.columns[index133];
+            for (let index201 = 0; index201 < this.columns.length; index201++) {
+                let col = this.columns[index201];
                 {
                     if (col.identifier === columnIdentifier) {
                         return (this.columns.indexOf(col) | 0);
@@ -615,95 +622,6 @@ var table;
     DefaultTableColumnModel["__interfaces"] = ["framework.components.table.TableColumnModel", "java.util.Enumeration"];
 })(table || (table = {}));
 (function (table) {
-    class TableColumn {
-        constructor() {
-            if (this.modelIndex === undefined) {
-                this.modelIndex = 0;
-            }
-            if (this.identifier === undefined) {
-                this.identifier = null;
-            }
-            if (this.width === undefined) {
-                this.width = 0;
-            }
-            if (this.minWidth === undefined) {
-                this.minWidth = 0;
-            }
-            if (this.maxWidth === undefined) {
-                this.maxWidth = 0;
-            }
-            if (this.headerRenderer === undefined) {
-                this.headerRenderer = null;
-            }
-            if (this.headerValue === undefined) {
-                this.headerValue = null;
-            }
-            if (this.cellRenderer === undefined) {
-                this.cellRenderer = null;
-            }
-            if (this.resizable === undefined) {
-                this.resizable = false;
-            }
-        }
-        getModelIndex() {
-            return this.modelIndex;
-        }
-        setModelIndex(modelIndex) {
-            this.modelIndex = modelIndex;
-        }
-        getIdentifier() {
-            return this.identifier;
-        }
-        setIdentifier(identifier) {
-            this.identifier = identifier;
-        }
-        getWidth() {
-            return this.width;
-        }
-        setWidth(width) {
-            this.width = width;
-        }
-        getMinWidth() {
-            return this.minWidth;
-        }
-        setMinWidth(minWidth) {
-            this.minWidth = minWidth;
-        }
-        getMaxWidth() {
-            return this.maxWidth;
-        }
-        setMaxWidth(maxWidth) {
-            this.maxWidth = maxWidth;
-        }
-        getHeaderRenderer() {
-            return this.headerRenderer;
-        }
-        setHeaderRenderer(headerRenderer) {
-            this.headerRenderer = headerRenderer;
-        }
-        getHeaderValue() {
-            return this.headerValue;
-        }
-        setHeaderValue(headerValue) {
-            this.headerValue = headerValue;
-        }
-        getCellRenderer() {
-            return this.cellRenderer;
-        }
-        setCellRenderer(cellRenderer) {
-            this.cellRenderer = cellRenderer;
-        }
-        isResizable() {
-            return this.resizable;
-        }
-        setResizable(resizable) {
-            this.resizable = resizable;
-        }
-    }
-    table.TableColumn = TableColumn;
-    TableColumn["__class"] = "framework.components.table.TableColumn";
-})(table || (table = {}));
-(function (table) {
     /**
      * The cells from (firstRow, column) to (lastRow, column) have been changed.
      * The <I>column</I> refers to the column index of the cell in the model's
@@ -711,11 +629,11 @@ var table;
      * specified range of rows are considered changed.
      * <p>
      * The <I>type</I> should be one of: INSERT, UPDATE and DELETE.
-     * @param {*} source
-     * @param {number} firstRow
-     * @param {number} lastRow
-     * @param {number} column
-     * @param {number} type
+     * @param {*} source - The <code>TableModel</code> on which the event has occurred
+     * @param {number} firstRow - The first row in the range of rows affected
+     * @param {number} lastRow - The last row in the range of rows affected
+     * @param {number} column - The column index in which the event occurred
+     * @param {number} type - The type of event occurred
      * @class
      */
     class TableModelEvent {
@@ -925,14 +843,17 @@ var table;
         /**
          * Returns the first row that changed.  HEADER_ROW means the meta data,
          * ie. names, types and order of the columns.
-         * @return {number}
+         *
+         * @return {number} The first row affected
          */
         getFirstRow() {
             return this.firstRow;
         }
         /**
+         *
          * Returns the last row that changed.
-         * @return {number}
+         *
+         * @return {number} - The last row affected
          */
         getLastRow() {
             return this.lastRow;
@@ -941,14 +862,15 @@ var table;
          * Returns the column for the event.  If the return
          * value is ALL_COLUMNS; it means every column in the specified
          * rows changed.
-         * @return {number}
+         * @return {number} - The column index affected
          */
         getColumn() {
             return this.column;
         }
         /**
          * Returns the type of event - one of: INSERT, UPDATE and DELETE.
-         * @return {number}
+         *
+         * @return {number} - The type of event
          */
         getType() {
             return this.type;
@@ -983,9 +905,9 @@ var util;
         static visit(designable, visitor) {
             visitor.doVisit(designable);
             {
-                let array135 = designable.getChildren();
-                for (let index134 = 0; index134 < array135.length; index134++) {
-                    let child = array135[index134];
+                let array203 = designable.getChildren();
+                for (let index202 = 0; index202 < array203.length; index202++) {
+                    let child = array203[index202];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -995,8 +917,8 @@ var util;
         static getTags(type) {
             const html5tags = (window["html5tags"]);
             const result = (new Array());
-            for (let index136 = 0; index136 < html5tags.length; index136++) {
-                let html5tag = html5tags[index136];
+            for (let index204 = 0; index204 < html5tags.length; index204++) {
+                let html5tag = html5tags[index204];
                 {
                     const stype = html5tag["type"];
                     if (stype === type || type === "*") {
@@ -1016,20 +938,15 @@ var util;
             if (obj == null) {
                 return null;
             }
-            if ( /* contains */(property.indexOf(".") != -1)) {
-                const parts = property.split(".");
-                let tmp = obj;
-                for (let index137 = 0; index137 < parts.length; index137++) {
-                    let part = parts[index137];
-                    {
-                        tmp = PropertyUtil.getValue(tmp, part);
-                    }
+            const parts = property.split(".");
+            let tmp = obj;
+            for (let index205 = 0; index205 < parts.length; index205++) {
+                let part = parts[index205];
+                {
+                    tmp = PropertyUtil.getValue(tmp, part);
                 }
-                return tmp;
             }
-            else {
-                return obj[property];
-            }
+            return tmp;
         }
         static hasOwnProperty(obj, property) {
             if ( /* contains */(property.indexOf(".") != -1)) {
@@ -1090,8 +1007,8 @@ var util;
             const result = new Object();
             if ( /* contains */(hash.indexOf("?") != -1)) {
                 const kvs = hash.split("?")[1].split("&");
-                for (let index138 = 0; index138 < kvs.length; index138++) {
-                    let kv = kvs[index138];
+                for (let index206 = 0; index206 < kvs.length; index206++) {
+                    let kv = kvs[index206];
                     {
                         const akv = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1120,6 +1037,9 @@ class JSContainer {
     constructor(name, tag) {
         if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null)) {
             let __args = arguments;
+            if (this.elem_ === undefined) {
+                this.elem_ = null;
+            }
             this.d = new Object();
             this.setTag(tag);
             this.setName(name);
@@ -1127,6 +1047,9 @@ class JSContainer {
         else if (((typeof name === 'string') || name === null) && tag === undefined) {
             let __args = arguments;
             let tag = __args[0];
+            if (this.elem_ === undefined) {
+                this.elem_ = null;
+            }
             this.d = new Object();
             this.setTag(tag);
         }
@@ -1169,8 +1092,8 @@ class JSContainer {
         console.log("firing:" + key + " on " + this.getName());
         const listeners = this.getListeners()[key];
         if (listeners != null && listeners.length > 0) {
-            for (let index139 = 0; index139 < listeners.length; index139++) {
-                let l = listeners[index139];
+            for (let index207 = 0; index207 < listeners.length; index207++) {
+                let l = listeners[index207];
                 {
                     l.performAction(this, evt);
                 }
@@ -1196,9 +1119,9 @@ class JSContainer {
     }
     getChild(name) {
         {
-            let array141 = this.getChildren();
-            for (let index140 = 0; index140 < array141.length; index140++) {
-                let child = array141[index140];
+            let array209 = this.getChildren();
+            for (let index208 = 0; index208 < array209.length; index208++) {
+                let child = array209[index208];
                 {
                     if (child.getName() === name) {
                         return child;
@@ -1265,7 +1188,10 @@ class JSContainer {
         }
     }
     getNative() {
-        const elem = document.getElementById(this.getId());
+        if (this.elem_ != null) {
+            return this.elem_;
+        }
+        const elem = api.ContainerRenderer.getElementById(this.getId());
         if (elem != null) {
             return elem;
         }
@@ -1378,14 +1304,14 @@ class JSContainer {
         const aStyles = styles.split(" ");
         const toAdds = styleClass.split(" ");
         let res = "";
-        for (let index142 = 0; index142 < toAdds.length; index142++) {
-            let toAdd = toAdds[index142];
+        for (let index210 = 0; index210 < toAdds.length; index210++) {
+            let toAdd = toAdds[index210];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0) {
                     let add = true;
-                    for (let index143 = 0; index143 < aStyles.length; index143++) {
-                        let style = aStyles[index143];
+                    for (let index211 = 0; index211 < aStyles.length; index211++) {
+                        let style = aStyles[index211];
                         {
                             style = style.trim();
                             if (style.length > 0) {
@@ -1421,8 +1347,8 @@ class JSContainer {
             return false;
         }
         const aStyles = styles.split(" ");
-        for (let index144 = 0; index144 < aStyles.length; index144++) {
-            let style = aStyles[index144];
+        for (let index212 = 0; index212 < aStyles.length; index212++) {
+            let style = aStyles[index212];
             {
                 style = style.trim();
                 if (style !== "") {
@@ -1451,8 +1377,8 @@ class JSContainer {
     removeClass(cls) {
         if (cls != null && cls.trim() !== "") {
             const toremove = cls.split(" ");
-            for (let index145 = 0; index145 < toremove.length; index145++) {
-                let s = toremove[index145];
+            for (let index213 = 0; index213 < toremove.length; index213++) {
+                let s = toremove[index213];
                 {
                     this.removeSingleClass(s);
                 }
@@ -1465,8 +1391,8 @@ class JSContainer {
         if (cl != null && cl.length > 0) {
             const classes = cl.split(" ");
             let result = "";
-            for (let index146 = 0; index146 < classes.length; index146++) {
-                let scl = classes[index146];
+            for (let index214 = 0; index214 < classes.length; index214++) {
+                let scl = classes[index214];
                 {
                     if (scl !== cls) {
                         if (result === "") {
@@ -1534,9 +1460,9 @@ class JSContainer {
         let i = 0;
         let added = false;
         {
-            let array148 = this.getChildren();
-            for (let index147 = 0; index147 < array148.length; index147++) {
-                let c = array148[index147];
+            let array216 = this.getChildren();
+            for (let index215 = 0; index215 < array216.length; index215++) {
+                let c = array216[index215];
                 {
                     if (i === index) {
                         children.push(child);
@@ -1772,10 +1698,11 @@ class JSContainer {
     setRendered(b) {
         this.d["rendered"] = b;
         if (!b) {
+            this.elem_ = null;
             {
-                let array150 = this.getChildren();
-                for (let index149 = 0; index149 < array150.length; index149++) {
-                    let child = array150[index149];
+                let array218 = this.getChildren();
+                for (let index217 = 0; index217 < array218.length; index217++) {
+                    let child = array218[index217];
                     {
                         child.setRendered(b);
                     }
@@ -1797,10 +1724,24 @@ class JSContainer {
         return l;
     }
     render$() {
-        if (this.getParent() == null)
-            this.render$jsweet_dom_HTMLElement(null);
-        else
-            this.render$jsweet_dom_HTMLElement(document.getElementById(this.getParent().getId()));
+        if (this.getParent() == null) {
+            const nat = this.getNative();
+            if (nat != null) {
+                const parent = nat.parentElement;
+                if (parent != null) {
+                    this.render$jsweet_dom_HTMLElement(nat.parentElement);
+                }
+                else {
+                    this.render$jsweet_dom_HTMLElement(null);
+                }
+            }
+            else {
+                this.render$jsweet_dom_HTMLElement(null);
+            }
+        }
+        else {
+            this.render$jsweet_dom_HTMLElement(this.getParent().getElement());
+        }
     }
     /**
      * This method is invoked by the {@link Renderer} after the component is
@@ -1818,22 +1759,14 @@ class JSContainer {
      * Unitility method to check if the specified object is present in the
      * specified array
      *
-     * @param {?[]} lst
+     * @param {Array} lst
      * The array to check if object is present
      * @param {*} o
      * The object to check if present
      * @return {boolean} Whether is present or not
      */
     contains(lst, o) {
-        for (let index151 = 0; index151 < lst.length; index151++) {
-            let oo = lst[index151];
-            {
-                if ( /* equals */((o1, o2) => o1 && o1.equals ? o1.equals(o2) : o1 === o2)(oo, o)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return lst.indexOf(o) >= 0;
     }
     render$jsweet_dom_HTMLElement(parent) {
         let renderers = this.getRenderers();
@@ -1843,22 +1776,22 @@ class JSContainer {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
             const tmp = (new Array());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for (let index152 = 0; index152 < renderers.length; index152++) {
-                let r = renderers[index152];
+            for (let index219 = 0; index219 < renderers.length; index219++) {
+                let r = renderers[index219];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for (let index153 = 0; index153 < renderers.length; index153++) {
-            let renderer = renderers[index153];
+        for (let index220 = 0; index220 < renderers.length; index220++) {
+            let renderer = renderers[index220];
             renderer.doRender(this, parent);
         }
         {
-            let array155 = this.getChildren();
-            for (let index154 = 0; index154 < array155.length; index154++) {
-                let child = array155[index154];
+            let array222 = this.getChildren();
+            for (let index221 = 0; index221 < array222.length; index221++) {
+                let child = array222[index221];
                 {
                     child['render$']();
                 }
@@ -1895,8 +1828,8 @@ class JSContainer {
         const previous = this.d["data"];
         if (previous != null && previous instanceof Array) {
             const arData = previous;
-            for (let index156 = 0; index156 < arData.length; index156++) {
-                let line = arData[index156];
+            for (let index223 = 0; index223 < arData.length; index223++) {
+                let line = arData[index223];
                 {
                     const value = line["value"];
                     this.setAttribute(value, null);
@@ -1906,9 +1839,9 @@ class JSContainer {
         else {
             if (previous != null) {
                 {
-                    let array158 = Object.keys(previous);
-                    for (let index157 = 0; index157 < array158.length; index157++) {
-                        let key = array158[index157];
+                    let array225 = Object.keys(previous);
+                    for (let index224 = 0; index224 < array225.length; index224++) {
+                        let key = array225[index224];
                         {
                             this.setAttribute(key, null);
                         }
@@ -1920,8 +1853,8 @@ class JSContainer {
         if (data != null) {
             if (data != null && data instanceof Array) {
                 const arData = data;
-                for (let index159 = 0; index159 < arData.length; index159++) {
-                    let line = arData[index159];
+                for (let index226 = 0; index226 < arData.length; index226++) {
+                    let line = arData[index226];
                     {
                         const text = line["text"];
                         const value = line["value"];
@@ -1931,9 +1864,9 @@ class JSContainer {
             }
             else {
                 {
-                    let array161 = Object.keys(data);
-                    for (let index160 = 0; index160 < array161.length; index160++) {
-                        let key = array161[index160];
+                    let array228 = Object.keys(data);
+                    for (let index227 = 0; index227 < array228.length; index227++) {
+                        let key = array228[index227];
                         {
                             this.setAttribute(key, data[key]);
                         }
@@ -1957,9 +1890,9 @@ class JSContainer {
         const clsss = parent.getAttribute("class");
         if (clsss != null) {
             {
-                let array163 = parent.getAttribute("class").split(" ");
-                for (let index162 = 0; index162 < array163.length; index162++) {
-                    let s = array163[index162];
+                let array230 = parent.getAttribute("class").split(" ");
+                for (let index229 = 0; index229 < array230.length; index229++) {
+                    let s = array230[index229];
                     {
                         if (s.trim() === cls)
                             return parent;
@@ -2032,6 +1965,20 @@ class JSContainer {
     getUserData() {
         return this.d["userData"];
     }
+    /**
+     *
+     * @param {HTMLElement} elem
+     */
+    setElement(elem) {
+        this.elem_ = elem;
+    }
+    /**
+     *
+     * @return {HTMLElement}
+     */
+    getElement() {
+        return this.getNative();
+    }
 }
 JSContainer.idCount = 0;
 JSContainer["__class"] = "framework.components.JSContainer";
@@ -2049,7 +1996,7 @@ JSContainer["__interfaces"] = ["framework.components.api.Renderable"];
          */
         performAction(source, evt) {
             evt["source"] = source;
-            this.listener(evt);
+            (target => (typeof target === 'function') ? target(source, evt) : target.apply(source, evt))(this.listener);
         }
     }
     JSContainer.JSContainer$0 = JSContainer$0;
@@ -2087,8 +2034,8 @@ class CardLayout extends JSContainer {
      * @return {CardLayout} - this
      */
     addItems(...items) {
-        for (let index164 = 0; index164 < items.length; index164++) {
-            let item = items[index164];
+        for (let index231 = 0; index231 < items.length; index231++) {
+            let item = items[index231];
             {
                 this.addItem(item);
             }
@@ -2124,9 +2071,9 @@ class CardLayout extends JSContainer {
     getIndex(name) {
         let index = 0;
         {
-            let array166 = this.getChildren();
-            for (let index165 = 0; index165 < array166.length; index165++) {
-                let child = array166[index165];
+            let array233 = this.getChildren();
+            for (let index232 = 0; index232 < array233.length; index232++) {
+                let child = array233[index232];
                 {
                     if (child.getName() === name) {
                         return index;
@@ -2266,9 +2213,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array168 = this.getChildren();
-            for (let index167 = 0; index167 < array168.length; index167++) {
-                let child = array168[index167];
+            let array235 = this.getChildren();
+            for (let index234 = 0; index234 < array235.length; index234++) {
+                let child = array235[index234];
                 {
                     if (child.getName() === name) {
                         const evt = new CustomEvent("activate");
@@ -2311,9 +2258,9 @@ class CardLayout extends JSContainer {
     refresh() {
         const def = this.getDefault();
         {
-            let array170 = this.getChildren();
-            for (let index169 = 0; index169 < array170.length; index169++) {
-                let r = array170[index169];
+            let array237 = this.getChildren();
+            for (let index236 = 0; index236 < array237.length; index236++) {
+                let r = array237[index236];
                 {
                     if (r.getName() === def) {
                         r.setStyle("display", null);
@@ -2509,8 +2456,8 @@ class HTMLTemplateContainer extends JSContainer {
                 const tag = tm.tagName;
                 this.setTag(tag);
                 const attrs = tm.attributes;
-                for (let index171 = 0; index171 < attrs.length; index171++) {
-                    let att = attrs[index171];
+                for (let index238 = 0; index238 < attrs.length; index238++) {
+                    let att = attrs[index238];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -2553,7 +2500,415 @@ HTMLTemplateContainer["__class"] = "framework.components.HTMLTemplateContainer";
 HTMLTemplateContainer["__interfaces"] = ["framework.components.api.Renderable", "framework.components.api.TemplateRenderable"];
 var input;
 (function (input) {
-    class AbstractJSInput extends JSContainer {
+    /**
+     * Creates a new instance of the button with specified name and text
+     * @param {string} name - name of the button
+     * @param {string} text - text inside the button
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
+    class JSButton extends JSContainer {
+        constructor(name, text) {
+            super(name, "input");
+            this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.BUTTON].getValue());
+            this.setAttribute("value", text);
+        }
+        /**
+         * Sets the type of the button
+         * @param {api.InputType} type - type of the button. Valid values are: InputType.RESET | InputType.BUTTON | InputType.SUBMIT
+         * @return {input.JSButton} - updated instance of this Button
+         */
+        setType(type) {
+            if (type != null) {
+                if (api.InputType["_$wrappers"][type].getGroup() !== "button") {
+                    throw Object.defineProperty(new Error("only button types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
+                }
+                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            }
+            else {
+                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
+            }
+            return this;
+        }
+    }
+    input.JSButton = JSButton;
+    JSButton["__class"] = "framework.components.input.JSButton";
+    JSButton["__interfaces"] = ["framework.components.api.Renderable"];
+})(input || (input = {}));
+(function (input) {
+    /**
+     * Creates a new instance of form with the specified name
+     * @param {string} name - The name of the form
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
+    class JSForm extends JSContainer {
+        constructor(name) {
+            super(name, "form");
+            this.validationerrors = new Object();
+            this.addEventListener(new JSForm.JSForm$0(this), "submit");
+            this.addEventListener(new JSForm.JSForm$1(this), "reset");
+        }
+        /**
+         * returns an array of advanced specific supported event listener<br>
+         * <ul>
+         * <li>beforeValidate - Fired before validating the form</li>
+         * <li>afterValidate  - Fired after the form is validated </li>
+         * <li>beforeSetData  - Fired before setting data into the input fields of the form</li>
+         * <li>afterSetData   - Fired after setting data  into the input fields of the form</li>
+         * <li>beforeGetData  - Fired before retrieving data from the input fields of the form</li>
+         * <li>afterGetData   - Fired after  retrieving data from the input fields of the form</li>
+         * <li>onError        - Fired if there is one or more errors after validating the form</li>
+         * <li>beforeSubmit   - Fired before submitting the form</li>
+         * <li>afterSubmit    - Fired after submitting the form even if the form is not valid</li>
+         * <li>submit         - Fired on submitting the form and if there is no error after validation</li>
+         * <li>reset          - Fired when the form is reset</li>
+         * </ul>
+         * @return {java.lang.String[]}
+         */
+        advancedEventTypes() {
+            return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterGetData", "beforeSubmit", "afterSubmit", "submit"];
+        }
+        /**
+         * Return whether the form is valid of not after validating it.<br> If the form has not been validated yet,
+         * this method will return true
+         * @return {boolean} - Whether the form is valid or not
+         */
+        isValid() {
+            return Object.keys(this.validationerrors).length <= 0;
+        }
+        /**
+         * Returns whether this form has errors or not after validating it<br> If the form has not been validated yet,
+         * this method will return false
+         * @return {boolean} - Whether this form has errors or not
+         */
+        hasErrors() {
+            return !this.isValid();
+        }
+        /**
+         *
+         * @param {string} binding - The name or binding of the input element in the form
+         * @return {api.ValidationException} - The validation exception if any for the specified binding of the form element
+         */
+        getError(binding) {
+            return this.validationerrors[binding];
+        }
+        /**
+         *
+         * @return {Object} - All errors found after validating this form
+         */
+        getErrors() {
+            return this.validationerrors;
+        }
+        /**
+         *
+         * @param {string} binding - The binding or name of the input field to search for
+         * @return {*} - The input field having specified name or binding
+         */
+        getField(binding) {
+            const result = (new Array());
+            util.ComponentUtil.visit(this, new JSForm.JSForm$2(this, binding, result));
+            if (result.length > 0) {
+                return result[0];
+            }
+            return null;
+        }
+        /**
+         * Validates all fields in this form and returns whether there is any error in the form<br>
+         * The following chain of event will be fired when this method is called:<br>
+         * <ul>
+         * <li>beforeValidate</li>
+         * <li>onError - only if there is any error in the form</li>
+         * <li>afterValidate</li>
+         * </ul>
+         * @return {boolean} - Whether there is any error in the form
+         */
+        validate() {
+            const evt = new CustomEvent("beforeValidate");
+            evt["source"] = this;
+            this.fireListener("beforeValidate", evt);
+            this.validationerrors = new Object();
+            util.ComponentUtil.visit(this, new JSForm.JSForm$3(this));
+            if (Object.keys(this.validationerrors).length > 0) {
+                const onError = new CustomEvent("onError");
+                onError["source"] = this;
+                onError["data"] = this.validationerrors;
+                onError["errors"] = this.validationerrors;
+                onError["hasError"] = Object.keys(this.validationerrors).length > 0;
+                this.fireListener("onError", onError);
+            }
+            const evtAfter = new CustomEvent("afterValidate");
+            evtAfter["source"] = this;
+            evtAfter["data"] = this.validationerrors;
+            evtAfter["errors"] = this.validationerrors;
+            evtAfter["hasError"] = Object.keys(this.validationerrors).length > 0;
+            this.fireListener("afterValidate", evtAfter);
+            return Object.keys(this.validationerrors).length <= 0;
+        }
+        /**
+         * Injects data into the fields of the form.<br>
+         * each property of the form should be the binding of the input field<br>
+         * If for a field in the form, corresponding property is not found in the specified data,
+         * the field will be cleared and its value set to null<br>
+         * The following chain of event is fired when this method is called:<br>
+         * <ul>
+         * <li>beforeSetData</li>
+         * <li>afterSetData</li>
+         * </ul>
+         *
+         * @param {Object} data - The data to inject into the form
+         */
+        setData(data) {
+            const evt = new CustomEvent("beforeSetData");
+            evt["source"] = this;
+            evt["data"] = data;
+            this.fireListener("beforeSetData", evt);
+            util.ComponentUtil.visit(this, new JSForm.JSForm$4(this, data));
+            const evtAfter = new CustomEvent("afterSetData");
+            evtAfter["source"] = this;
+            evtAfter["data"] = data;
+            this.fireListener("afterSetData", evtAfter);
+        }
+        /**
+         * Retrieves data from all the fields in this form<br>
+         * The following chain of event is fired when this method is called:<br>
+         * <ul>
+         * <li>beforeGetData</li>
+         * <li>afterGetData</li>
+         * </ul>
+         * @return {Object} - The data from all the fields in the form
+         */
+        getData() {
+            const evt = new CustomEvent("beforeGetData");
+            evt["source"] = this;
+            this.fireListener("beforeGetData", evt);
+            const data = new Object();
+            util.ComponentUtil.visit(this, new JSForm.JSForm$5(this, data));
+            const evtAfter = new CustomEvent("afterGetData");
+            evtAfter["source"] = this;
+            evtAfter["data"] = data;
+            this.fireListener("afterGetData", evtAfter);
+            return data;
+        }
+        /**
+         * Resets the form by clearing all the fields in the form<br>
+         * This method is called automatically when the form is reset for example by clicking an input of type reset present in the form<br>
+         * or by resetting it using javascript means.<br>
+         * The reset event is fired when this method is called
+         *
+         */
+        reset() {
+            const data = new Object();
+            this.setData(data);
+            const on = new CustomEvent("reset");
+            on["source"] = this;
+            on["data"] = data;
+            this.fireListener("reset", on);
+        }
+        /**
+         * Submits the form.<br>
+         * This method is called automatically when the form is submitted for example by clicking an input of type submit present
+         * in the form or by submitting the form using javascript.<br>
+         * When this method is called, the form is validated, then the getData method is called.<br>
+         * The following chain of event is fired when this method is called
+         * <ul>
+         * <li>beforeSubmit event is fired</li>
+         * <li>
+         * validate method is called
+         * <ul>
+         * <li>beforeValidate event is fired</li>
+         * <li>onError event is fired only if there is any error in the form</li>
+         * <li>afterValidate event is fired</li>
+         * </ul>
+         * </li>
+         * <li>
+         * if form is valid, getData method is called
+         * <ul>
+         * <li>beforeGetData event is fired</li>
+         * <li>afterGetData event is fired</li>
+         * </ul>
+         * </li>
+         * <li>if form is valid submit event is fired</li>
+         * <li>Whether or not form is valid, afterSubmit event is fired</li>
+         * </ul>
+         *
+         */
+        submit() {
+            const evt = new CustomEvent("beforeSubmit");
+            evt["source"] = this;
+            this.fireListener("beforeSubmit", evt);
+            if (this.validate()) {
+                const data = this.getData();
+                const on = new CustomEvent("submit");
+                on["source"] = this;
+                on["data"] = data;
+                this.fireListener("submit", on);
+            }
+            const evtAfter = new CustomEvent("afterSubmit");
+            evtAfter["source"] = this;
+            this.fireListener("afterSubmit", evtAfter);
+        }
+    }
+    input.JSForm = JSForm;
+    JSForm["__class"] = "framework.components.input.JSForm";
+    JSForm["__interfaces"] = ["framework.components.api.Renderable"];
+    (function (JSForm) {
+        class JSForm$0 {
+            constructor(__parent) {
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source, evt) {
+                this.__parent.submit();
+            }
+        }
+        JSForm.JSForm$0 = JSForm$0;
+        JSForm$0["__interfaces"] = ["framework.components.api.EventListener"];
+        class JSForm$1 {
+            constructor(__parent) {
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source, evt) {
+                this.__parent.reset();
+            }
+        }
+        JSForm.JSForm$1 = JSForm$1;
+        JSForm$1["__interfaces"] = ["framework.components.api.EventListener"];
+        class JSForm$2 {
+            constructor(__parent, binding, result) {
+                this.binding = binding;
+                this.result = result;
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} designable
+             */
+            doVisit(designable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                    try {
+                        const b = designable.getBinding();
+                        if (b === this.binding) {
+                            this.result.push(designable);
+                        }
+                    }
+                    catch (e) {
+                        let binding = designable.getBinding();
+                        if (binding == null || binding.trim() === "") {
+                            binding = designable.getName();
+                        }
+                        this.__parent.validationerrors[binding] = e;
+                    }
+                }
+            }
+        }
+        JSForm.JSForm$2 = JSForm$2;
+        JSForm$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+        class JSForm$3 {
+            constructor(__parent) {
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} designable
+             */
+            doVisit(designable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                    try {
+                        designable.validate();
+                    }
+                    catch (e) {
+                        let binding = designable.getBinding();
+                        if (binding == null || binding.trim() === "") {
+                            binding = designable.getName();
+                        }
+                        this.__parent.validationerrors[binding] = e;
+                    }
+                }
+            }
+        }
+        JSForm.JSForm$3 = JSForm$3;
+        JSForm$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+        class JSForm$4 {
+            constructor(__parent, data) {
+                this.data = data;
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} designable
+             */
+            doVisit(designable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                    let binding = designable.getBinding();
+                    if (binding == null || binding.trim() === "") {
+                        binding = designable.getName();
+                    }
+                    if (util.PropertyUtil.hasOwnProperty(this.data, binding)) {
+                        const obj = util.PropertyUtil.getValue(this.data, binding);
+                        if (designable != null && designable instanceof input.JSDateInput) {
+                            try {
+                                if (obj != null && obj instanceof Date) {
+                                    designable.setValue(obj);
+                                }
+                                else {
+                                    const date = new Date(/* parseLong */ parseInt(obj.toString()));
+                                    designable.setValue(date);
+                                }
+                            }
+                            catch (e) {
+                                designable.setValue(obj);
+                            }
+                        }
+                        else {
+                            designable.setValue(obj);
+                        }
+                    }
+                    else {
+                        designable.setValue(null);
+                    }
+                }
+            }
+        }
+        JSForm.JSForm$4 = JSForm$4;
+        JSForm$4["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+        class JSForm$5 {
+            constructor(__parent, data) {
+                this.data = data;
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} designable
+             */
+            doVisit(designable) {
+                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
+                    let binding = designable.getBinding();
+                    if (binding == null || binding.trim() === "") {
+                        binding = designable.getName();
+                    }
+                    const value = designable.getValue();
+                    util.PropertyUtil.setValue(this.data, value, binding);
+                }
+            }
+        }
+        JSForm.JSForm$5 = JSForm$5;
+        JSForm$5["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
+    })(JSForm = input.JSForm || (input.JSForm = {}));
+})(input || (input = {}));
+(function (input) {
+    class JSInput extends JSContainer {
         constructor(name) {
             super(name, "input");
             this.validators = (new Array());
@@ -2720,11 +3075,11 @@ var input;
                 const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
-                    AbstractJSInput.addError(el.validationMessage, el.validity, e);
+                    JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index172 = 0; index172 < this.validators.length; index172++) {
-                let v = this.validators[index172];
+            for (let index239 = 0; index239 < this.validators.length; index239++) {
+                let v = this.validators[index239];
                 {
                     const b = v.validate(this);
                     if (!b) {
@@ -2753,305 +3108,104 @@ var input;
             this.setAttribute("binding", binding);
             return this;
         }
-    }
-    input.AbstractJSInput = AbstractJSInput;
-    AbstractJSInput["__class"] = "framework.components.input.AbstractJSInput";
-    AbstractJSInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
-})(input || (input = {}));
-(function (input) {
-    /**
-     * Creates a new instance of the button with specified name and text
-     * @param {string} name - name of the button
-     * @param {string} text - text inside the button
-     * @class
-     * @extends JSContainer
-     * @author Kureem Rossaye
-     */
-    class JSButton extends JSContainer {
-        constructor(name, text) {
-            super(name, "input");
-            this.setHtml(text);
-        }
         /**
-         * Sets the type of the button
-         * @param {api.InputType} type - type of the button. Valid values are: InputType.RESET | InputType.BUTTON | InputType.SUBMIT
-         * @return {input.JSButton} - updated instance of this Button
+         *
+         * @return {*}
          */
-        setType(type) {
-            if (type != null) {
-                if (api.InputType["_$wrappers"][type].getGroup() !== "button") {
-                    throw Object.defineProperty(new Error("only button types are allowed"), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
-                }
-                this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
-            }
-            else {
-                throw Object.defineProperty(new Error("cannot set null value for type attribute"), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
-            }
-            return this;
-        }
-    }
-    input.JSButton = JSButton;
-    JSButton["__class"] = "framework.components.input.JSButton";
-    JSButton["__interfaces"] = ["framework.components.api.Renderable"];
-})(input || (input = {}));
-(function (input) {
-    /**
-     * Renders a form tag with
-     * @author Kureem Rossaye
-     * @param {string} name
-     * @class
-     * @extends JSContainer
-     */
-    class JSForm extends JSContainer {
-        constructor(name) {
-            super(name, "form");
-            this.validationerrors = new Object();
+        getValue() {
+            const inp = this.getNative();
+            if (inp != null)
+                return inp.value;
+            else
+                return this.getAttribute("value");
         }
         /**
          *
-         * @return {java.lang.String[]}
+         * @param {*} val
          */
-        advancedEventTypes() {
-            return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterSetData", "beforeSubmit", "afterSubmit", "submit"];
-        }
-        isValid() {
-            return Object.keys(this.validationerrors).length <= 0;
-        }
-        hasErrors() {
-            const keys = Object.keys(this.validationerrors);
-            if (keys != null && keys.length > 0) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        getError(binding) {
-            return this.validationerrors[binding];
-        }
-        getErrors() {
-            return this.validationerrors;
-        }
-        getField(binding) {
-            const result = (new Array());
-            util.ComponentUtil.visit(this, new JSForm.JSForm$0(this, binding, result));
-            if (result.length > 0) {
-                return result[0];
-            }
-            return null;
-        }
-        validate() {
-            const evt = new CustomEvent("beforeValidate");
-            evt["source"] = this;
-            this.fireListener("beforeValidate", evt);
-            this.validationerrors = new Object();
-            util.ComponentUtil.visit(this, new JSForm.JSForm$1(this));
-            const evtAfter = new CustomEvent("afterValidate");
-            evtAfter["source"] = this;
-            evtAfter["data"] = this.validationerrors;
-            evtAfter["errors"] = this.validationerrors;
-            evtAfter["hasError"] = Object.keys(this.validationerrors).length > 0;
-            this.fireListener("afterValidate", evtAfter);
-            if (Object.keys(this.validationerrors).length > 0) {
-                const onError = new CustomEvent("onError");
-                onError["source"] = this;
-                onError["data"] = this.validationerrors;
-                onError["errors"] = this.validationerrors;
-                onError["hasError"] = Object.keys(this.validationerrors).length > 0;
-                this.fireListener("onError", onError);
-            }
-            return Object.keys(this.validationerrors).length <= 0;
-        }
-        setData(data) {
-            const evt = new CustomEvent("beforeSetData");
-            evt["source"] = this;
-            evt["data"] = data;
-            this.fireListener("beforeSetData", evt);
-            util.ComponentUtil.visit(this, new JSForm.JSForm$2(this, data));
-            const evtAfter = new CustomEvent("afterSetData");
-            evtAfter["source"] = this;
-            evtAfter["data"] = data;
-            this.fireListener("afterSetData", evtAfter);
-        }
-        getData() {
-            const evt = new CustomEvent("beforeGetData");
-            evt["source"] = this;
-            this.fireListener("beforeGetData", evt);
-            const data = new Object();
-            util.ComponentUtil.visit(this, new JSForm.JSForm$3(this, data));
-            const evtAfter = new CustomEvent("afterGetData");
-            evtAfter["source"] = this;
-            evtAfter["data"] = data;
-            this.fireListener("afterGetData", evtAfter);
-            return data;
-        }
-        submit() {
-            const evt = new CustomEvent("beforeSubmit");
-            evt["source"] = this;
-            this.fireListener("beforeSubmit", evt);
-            if (this.validate()) {
-                const data = this.getData();
-                const on = new CustomEvent("submit");
-                on["source"] = this;
-                on["data"] = data;
-                this.fireListener("submit", on);
-            }
-            const evtAfter = new CustomEvent("afterSubmit");
-            evtAfter["source"] = this;
-            this.fireListener("afterSubmit", evtAfter);
+        setValue(val) {
+            const inp = this.getNative();
+            if (inp != null)
+                inp.value = val;
+            this.setAttribute("text", val);
         }
     }
-    input.JSForm = JSForm;
-    JSForm["__class"] = "framework.components.input.JSForm";
-    JSForm["__interfaces"] = ["framework.components.api.Renderable"];
-    (function (JSForm) {
-        class JSForm$0 {
-            constructor(__parent, binding, result) {
-                this.binding = binding;
-                this.result = result;
-                this.__parent = __parent;
-            }
-            /**
-             *
-             * @param {*} designable
-             */
-            doVisit(designable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
-                    try {
-                        const b = designable.getBinding();
-                        if (b === this.binding) {
-                            this.result.push(designable);
-                        }
-                    }
-                    catch (e) {
-                        let binding = designable.getBinding();
-                        if (binding == null || binding.trim() === "") {
-                            binding = designable.getName();
-                        }
-                        this.__parent.validationerrors[binding] = e;
-                    }
-                }
-            }
-        }
-        JSForm.JSForm$0 = JSForm$0;
-        JSForm$0["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-        class JSForm$1 {
-            constructor(__parent) {
-                this.__parent = __parent;
-            }
-            /**
-             *
-             * @param {*} designable
-             */
-            doVisit(designable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
-                    try {
-                        designable.validate();
-                    }
-                    catch (e) {
-                        let binding = designable.getBinding();
-                        if (binding == null || binding.trim() === "") {
-                            binding = designable.getName();
-                        }
-                        this.__parent.validationerrors[binding] = e;
-                    }
-                }
-            }
-        }
-        JSForm.JSForm$1 = JSForm$1;
-        JSForm$1["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-        class JSForm$2 {
-            constructor(__parent, data) {
-                this.data = data;
-                this.__parent = __parent;
-            }
-            /**
-             *
-             * @param {*} designable
-             */
-            doVisit(designable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
-                    let binding = designable.getBinding();
-                    if (binding == null || binding.trim() === "") {
-                        binding = designable.getName();
-                    }
-                    if (util.PropertyUtil.hasOwnProperty(this.data, binding)) {
-                        const obj = util.PropertyUtil.getValue(this.data, binding);
-                        if (designable != null && designable instanceof input.JSDateInput) {
-                            try {
-                                if (obj != null && obj instanceof Date) {
-                                    designable.setValue(obj);
-                                }
-                                else {
-                                    const date = new Date(/* parseLong */ parseInt(obj.toString()));
-                                    designable.setValue(date);
-                                }
-                            }
-                            catch (e) {
-                                designable.setValue(obj);
-                            }
-                        }
-                        else {
-                            designable.setValue(obj);
-                        }
-                    }
-                    else {
-                        designable.setValue(null);
-                    }
-                }
-            }
-        }
-        JSForm.JSForm$2 = JSForm$2;
-        JSForm$2["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-        class JSForm$3 {
-            constructor(__parent, data) {
-                this.data = data;
-                this.__parent = __parent;
-            }
-            /**
-             *
-             * @param {*} designable
-             */
-            doVisit(designable) {
-                if (designable != null && (designable.constructor != null && designable.constructor["__interfaces"] != null && designable.constructor["__interfaces"].indexOf("framework.components.api.InputField") >= 0)) {
-                    let binding = designable.getBinding();
-                    if (binding == null || binding.trim() === "") {
-                        binding = designable.getName();
-                    }
-                    const value = designable.getValue();
-                    util.PropertyUtil.setValue(this.data, value, binding);
-                }
-            }
-        }
-        JSForm.JSForm$3 = JSForm$3;
-        JSForm$3["__interfaces"] = ["framework.components.util.ComponentUtil.ComponentVisitor"];
-    })(JSForm = input.JSForm || (input.JSForm = {}));
+    input.JSInput = JSInput;
+    JSInput["__class"] = "framework.components.input.JSInput";
+    JSInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
 (function (input) {
+    /**
+     * Creates a new instance of {@link JSOption} with the specified text and value
+     * @param {string} text - The text to display for the option
+     * @param {string} value - the value of the option
+     * @class
+     * @extends JSContainer
+     * @author Kureem Rossaye
+     */
     class JSOption extends JSContainer {
         constructor(text, value) {
             super("option");
             this.setAttribute("value", value);
             this.setHtml(text);
         }
+        /**
+         * The value of the option
+         * @return {string} - The value of the option
+         */
         getValue() {
             return this.getAttribute("value");
         }
+        /**
+         * Sets the value of the option
+         * @param {string} value - The value of the option
+         */
         setValue(value) {
             this.setAttribute("value", value);
         }
+        /**
+         *
+         * @return {string} - The text of the option
+         */
         getText() {
             return this.getHtml();
         }
-        setText(label) {
-            this.setHtml(label);
+        /**
+         * Sets the text or label of the option
+         * @param {string} text - The text of the option
+         */
+        setText(text) {
+            this.setHtml(text);
         }
+        /**
+         * Mark or unmark this option as selected
+         * @param {boolean} b - Whether to select or not select this option
+         */
         setSelected(b) {
             if (b) {
                 this.setAttribute("selected", "true");
             }
             else {
                 this.setAttribute("selected", null);
+            }
+        }
+        /**
+         *
+         * @return {boolean} - Whether this option is selected or not
+         */
+        isSelected() {
+            const opt = this.getNative();
+            if (opt != null) {
+                return opt.selected;
+            }
+            else {
+                const attr = this.getAttribute("selected");
+                if (attr != null && attr === "true") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
             }
         }
     }
@@ -3076,8 +3230,8 @@ var input;
         }
         setOptions$java_lang_String(options) {
             const opts = options.split("\n");
-            for (let index173 = 0; index173 < opts.length; index173++) {
-                let opt = opts[index173];
+            for (let index240 = 0; index240 < opts.length; index240++) {
+                let opt = opts[index240];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3193,8 +3347,8 @@ var input;
             if (ele != null) {
                 if (ele.multiple) {
                     const result = (new Array());
-                    for (let index174 = 0; index174 < ele.children.length; index174++) {
-                        let e = ele.children[index174];
+                    for (let index241 = 0; index241 < ele.children.length; index241++) {
+                        let e = ele.children[index241];
                         {
                             const opt = e;
                             if (opt.selected)
@@ -3210,9 +3364,9 @@ var input;
             else {
                 const val = this.getAttribute("value");
                 {
-                    let array176 = this.getChildren();
-                    for (let index175 = 0; index175 < array176.length; index175++) {
-                        let opt = array176[index175];
+                    let array243 = this.getChildren();
+                    for (let index242 = 0; index242 < array243.length; index242++) {
+                        let opt = array243[index242];
                         {
                             if (opt.getAttribute("value") === val) {
                                 return opt.getValue();
@@ -3250,13 +3404,13 @@ var input;
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array178 = this.getChildren();
-                    for (let index177 = 0; index177 < array178.length; index177++) {
-                        let opt = array178[index177];
+                    let array245 = this.getChildren();
+                    for (let index244 = 0; index244 < array245.length; index244++) {
+                        let opt = array245[index244];
                         {
                             opt.setSelected(false);
-                            for (let index179 = 0; index179 < arrVal.length; index179++) {
-                                let val = arrVal[index179];
+                            for (let index246 = 0; index246 < arrVal.length; index246++) {
+                                let val = arrVal[index246];
                                 {
                                     if (opt.getAttribute("value") === val) {
                                         opt.setSelected(true);
@@ -3269,9 +3423,9 @@ var input;
             }
             else {
                 {
-                    let array181 = this.getChildren();
-                    for (let index180 = 0; index180 < array181.length; index180++) {
-                        let opt = array181[index180];
+                    let array248 = this.getChildren();
+                    for (let index247 = 0; index247 < array248.length; index247++) {
+                        let opt = array248[index247];
                         {
                             opt.setSelected(false);
                         }
@@ -3298,11 +3452,11 @@ var input;
                 const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
-                    input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
+                    input.JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index182 = 0; index182 < this.validators.length; index182++) {
-                let v = this.validators[index182];
+            for (let index249 = 0; index249 < this.validators.length; index249++) {
+                let v = this.validators[index249];
                 {
                     const b = v.validate(this);
                     if (!b) {
@@ -3333,8 +3487,8 @@ var input;
         setData(data_) {
             this.clearChildren();
             this.setRendered(false);
-            for (let index183 = 0; index183 < data_.length; index183++) {
-                let o = data_[index183];
+            for (let index250 = 0; index250 < data_.length; index250++) {
+                let o = data_[index250];
                 {
                     if (o.hasOwnProperty("value")) {
                         const value = o["value"];
@@ -3357,9 +3511,9 @@ var input;
             const result = (new Array());
             if (this.isMultiple()) {
                 {
-                    let array185 = obj;
-                    for (let index184 = 0; index184 < array185.length; index184++) {
-                        let o = array185[index184];
+                    let array252 = obj;
+                    for (let index251 = 0; index251 < array252.length; index251++) {
+                        let o = array252[index251];
                         {
                             const item = this.findItem(o);
                             if (item != null) {
@@ -3384,8 +3538,8 @@ var input;
         }
         findItem(value) {
             if (this.data != null) {
-                for (let index186 = 0; index186 < this.data.length; index186++) {
-                    let o = this.data[index186];
+                for (let index253 = 0; index253 < this.data.length; index253++) {
+                    let o = this.data[index253];
                     {
                         let val = o["value"];
                         val = val + "";
@@ -3478,11 +3632,11 @@ var input;
                 const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
-                    input.AbstractJSInput.addError(el.validationMessage, el.validity, e);
+                    input.JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for (let index187 = 0; index187 < this.validators.length; index187++) {
-                let v = this.validators[index187];
+            for (let index254 = 0; index254 < this.validators.length; index254++) {
+                let v = this.validators[index254];
                 {
                     const b = v.validate(this);
                     if (!b) {
@@ -3534,19 +3688,37 @@ var input;
     JSTextArea["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
 (function (table) {
+    /**
+     * Renders a table
+     *
+     * @author Kureem Rossaye
+     * @param {string} name
+     * @class
+     * @extends JSContainer
+     */
     class Table extends JSContainer {
         constructor(name) {
             super(name, "table");
-            this.head = new JSContainer("head", "thead");
-            this.body = new JSContainer("body", "tbody");
-            if (this.dataModel === undefined) {
-                this.dataModel = null;
-            }
-            if (this.columnModel === undefined) {
-                this.columnModel = null;
-            }
+            this.head = new table.TableHead("head", this);
+            this.body = new table.TableBody("body", this);
             this.addChild$framework_components_api_Renderable(this.head);
             this.addChild$framework_components_api_Renderable(this.body);
+        }
+        fireOnClickRow(row, rowIndex) {
+            const clickRow = new CustomEvent("clickRow");
+            clickRow["source"] = row;
+            clickRow["table"] = this;
+            clickRow["rowIndex"] = rowIndex;
+            clickRow["index"] = rowIndex;
+            this.fireListener("clickRow", clickRow);
+        }
+        fireOnDblClickRow(row, rowIndex) {
+            const clickRow = new CustomEvent("dblClickRow");
+            clickRow["source"] = row;
+            clickRow["table"] = this;
+            clickRow["rowIndex"] = rowIndex;
+            clickRow["index"] = rowIndex;
+            this.fireListener("dblClickRow", clickRow);
         }
         getHead() {
             return this.head;
@@ -3555,50 +3727,65 @@ var input;
             return this.body;
         }
         getDataModel() {
-            return this.dataModel;
+            return this.body.getModel();
         }
         setDataModel(dataModel) {
-            this.dataModel = dataModel;
+            this.body.setModel(dataModel);
         }
         getColumnModel() {
-            return this.columnModel;
+            return this.head.getModel();
         }
         setColumnModel(columnModel) {
-            this.columnModel = columnModel;
+            this.head.setModel(columnModel);
         }
         refresh() {
-            this.head.clearChildren();
-            this.body.clearChildren();
-            if (this.columnModel != null) {
-                const hrow = new JSContainer("headerRow", "tr");
-                this.head.addChild$framework_components_api_Renderable(hrow);
-                for (let i = 0; i < this.columnModel.getColumnCount(); i++) {
-                    {
-                        const column = this.columnModel.getColumn(i);
-                        const headerRenderer = column.getHeaderRenderer();
-                        const th = new JSContainer("", "th").setAttribute("scope", "col");
-                        th.setStyle("width", column.getWidth() + "px");
-                        th.setStyle("max-width", column.getMaxWidth() + "px");
-                        th.setStyle("min-width", column.getMinWidth() + "px");
-                        hrow.addChild$framework_components_api_Renderable(th);
-                        headerRenderer.renderComponent(this, th, column.getHeaderValue(), false, false, 0, i);
-                    }
-                    ;
-                }
+            this.head.refresh();
+            this.body.refresh();
+        }
+    }
+    table.Table = Table;
+    Table["__class"] = "framework.components.table.Table";
+    Table["__interfaces"] = ["framework.components.api.Renderable"];
+})(table || (table = {}));
+(function (table_1) {
+    class TableBody extends JSContainer {
+        constructor(name, table) {
+            super(name, "tbody");
+            if (this.table === undefined) {
+                this.table = null;
             }
-            if (this.dataModel != null) {
-                for (let row = 0; row < this.dataModel.getRowCount(); row++) {
+            if (this.model === undefined) {
+                this.model = null;
+            }
+            this.table = table;
+        }
+        getModel() {
+            return this.model;
+        }
+        setModel(model) {
+            this.model = model;
+        }
+        getTable() {
+            return this.table;
+        }
+        refresh() {
+            this.clearChildren();
+            this.setRendered(false);
+            const columnModel = this.table.getHead().getModel();
+            if (this.model != null) {
+                for (let row = 0; row < this.model.getRowCount(); row++) {
                     {
                         const r = new JSContainer("", "tr");
-                        this.body.addChild$framework_components_api_Renderable(r);
-                        for (let col = 0; col < this.dataModel.getColumnCount(); col++) {
+                        r.addEventListener(new TableBody.TableBody$0(this), "click");
+                        this.addChild$framework_components_api_Renderable(r);
+                        for (let col = 0; col < this.model.getColumnCount(); col++) {
                             {
                                 const cell = new JSContainer("", "td");
                                 r.addChild$framework_components_api_Renderable(cell);
-                                const val = this.dataModel.getValueAt(row, col);
-                                if (this.columnModel != null) {
-                                    const column = this.columnModel.getColumn(col);
-                                    column.getCellRenderer().renderComponent(this, cell, val, false, false, row, col);
+                                const val = this.model.getValueAt(row, col);
+                                if (columnModel != null) {
+                                    const column = columnModel.getColumn(col);
+                                    column.getCellRenderer().renderComponent(this.table, cell, val, false, false, row, col);
                                 }
                                 else {
                                     cell.setHtml(val != null ? val.toString() : "");
@@ -3611,13 +3798,252 @@ var input;
                 }
             }
         }
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source, evt) {
+            const index = (this.getChildren().indexOf(source) | 0);
+            const me = evt;
+            const type = me.type;
+            if (type === "click") {
+                this.table.fireOnClickRow(source, index);
+            }
+            else {
+                this.table.fireOnDblClickRow(source, index);
+            }
+        }
     }
-    table.Table = Table;
-    Table["__class"] = "framework.components.table.Table";
-    Table["__interfaces"] = ["framework.components.api.Renderable"];
+    table_1.TableBody = TableBody;
+    TableBody["__class"] = "framework.components.table.TableBody";
+    TableBody["__interfaces"] = ["framework.components.api.EventListener", "framework.components.api.Renderable"];
+    (function (TableBody) {
+        class TableBody$0 {
+            constructor(__parent) {
+                this.__parent = __parent;
+            }
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source, evt) {
+            }
+        }
+        TableBody.TableBody$0 = TableBody$0;
+        TableBody$0["__interfaces"] = ["framework.components.api.EventListener"];
+    })(TableBody = table_1.TableBody || (table_1.TableBody = {}));
+})(table || (table = {}));
+(function (table) {
+    /**
+     * Hold all the information for the definition of a column in a <code>Table</code>
+     * @author Kureem Rossaye
+     * @param {string} name
+     * @class
+     * @extends JSContainer
+     */
+    class TableColumn extends JSContainer {
+        constructor(name) {
+            super(name, "th");
+            if (this.modelIndex === undefined) {
+                this.modelIndex = 0;
+            }
+            if (this.identifier === undefined) {
+                this.identifier = null;
+            }
+            if (this.headerRenderer === undefined) {
+                this.headerRenderer = null;
+            }
+            if (this.headerValue === undefined) {
+                this.headerValue = null;
+            }
+            if (this.cellRenderer === undefined) {
+                this.cellRenderer = null;
+            }
+            if (this.resizable === undefined) {
+                this.resizable = false;
+            }
+            this.identifier = name;
+            this.setAttribute("scope", "col");
+        }
+        getModelIndex() {
+            return this.modelIndex;
+        }
+        setModelIndex(modelIndex) {
+            this.modelIndex = modelIndex;
+        }
+        getIdentifier() {
+            return this.identifier;
+        }
+        setIdentifier(identifier) {
+            this.identifier = identifier;
+        }
+        getWidth() {
+            return this.getDimensionStyle("width");
+        }
+        /*private*/ setDimensionStyle(name, value) {
+            this.setStyle(name, value + api.Units["_$wrappers"][api.Units.PIXEL].getDisplay());
+        }
+        /*private*/ getDimensionStyle(name) {
+            let stWidth = this.getStyle(name);
+            if (stWidth != null && stWidth.length > 0) {
+                {
+                    let array256 = /* Enum.values */ function () { let result = []; for (let val in api.Units) {
+                        if (!isNaN(val)) {
+                            result.push(parseInt(val, 10));
+                        }
+                    } return result; }();
+                    for (let index255 = 0; index255 < array256.length; index255++) {
+                        let u = array256[index255];
+                        {
+                            stWidth = /* replace */ stWidth.split(api.Units["_$wrappers"][u].getDisplay()).join("");
+                        }
+                    }
+                }
+                return /* parseInt */ parseInt(stWidth);
+            }
+            return null;
+        }
+        setWidth(width) {
+            this.setDimensionStyle("width", width);
+        }
+        getMinWidth() {
+            return this.getDimensionStyle("min-width");
+        }
+        setMinWidth(minWidth) {
+            this.setDimensionStyle("min-width", minWidth);
+        }
+        getMaxWidth() {
+            return this.getDimensionStyle("max-width");
+        }
+        setMaxWidth(maxWidth) {
+            this.setDimensionStyle("max-width", maxWidth);
+        }
+        getHeaderRenderer() {
+            return this.headerRenderer;
+        }
+        setHeaderRenderer(headerRenderer) {
+            this.headerRenderer = headerRenderer;
+        }
+        getHeaderValue() {
+            return this.headerValue;
+        }
+        setHeaderValue(headerValue) {
+            this.headerValue = headerValue;
+            let html = "";
+            if (headerValue != null) {
+                html = headerValue.toString();
+            }
+            this.setHtml(html);
+        }
+        getCellRenderer() {
+            return this.cellRenderer;
+        }
+        setCellRenderer(cellRenderer) {
+            this.cellRenderer = cellRenderer;
+        }
+        isResizable() {
+            return this.resizable;
+        }
+        setResizable(resizable) {
+            this.resizable = resizable;
+        }
+    }
+    table.TableColumn = TableColumn;
+    TableColumn["__class"] = "framework.components.table.TableColumn";
+    TableColumn["__interfaces"] = ["framework.components.api.Renderable"];
+})(table || (table = {}));
+(function (table_2) {
+    class TableHead extends JSContainer {
+        constructor(name, table) {
+            super(name, "thead");
+            this.tableRow = new JSContainer("headerRow", "tr");
+            if (this.table === undefined) {
+                this.table = null;
+            }
+            if (this.model_ === undefined) {
+                this.model_ = null;
+            }
+            this.addChild$framework_components_api_Renderable(this.tableRow);
+            this.table = table;
+        }
+        addColumn(column) {
+            this.tableRow.addChild$framework_components_api_Renderable(column);
+            const renderer = column.getHeaderRenderer();
+            if (renderer != null) {
+                renderer.renderComponent(this.table, column, column, false, false, -1, (this.tableRow.getChildren().indexOf(column) | 0));
+            }
+            return this;
+        }
+        refresh() {
+            this.tableRow.clearChildren();
+            this.tableRow.setRendered(false);
+            if (this.model_ != null) {
+                for (let i = 0; i < this.model_.getColumnCount(); i++) {
+                    {
+                        const column = this.model_.getColumn(i);
+                        this.addColumn(column);
+                    }
+                    ;
+                }
+            }
+        }
+        getModel() {
+            return this.model_;
+        }
+        setModel(model) {
+            this.model_ = model;
+        }
+        getColumns() {
+            const result = this.tableRow.getChildren();
+            return result;
+        }
+    }
+    table_2.TableHead = TableHead;
+    TableHead["__class"] = "framework.components.table.TableHead";
+    TableHead["__interfaces"] = ["framework.components.api.Renderable"];
 })(table || (table = {}));
 (function (input) {
-    class JSCheckBox extends input.AbstractJSInput {
+    /**
+     * Creates a new instance of reset button with specified name and text
+     * @param {string} name - name of the reset button
+     * @param {string} text - text inside the reset button
+     * @class
+     * @extends input.JSButton
+     * @author Kureem Rossaye
+     */
+    class JSReset extends input.JSButton {
+        constructor(name, text) {
+            super(name, text);
+            this.setType(api.InputType.RESET);
+        }
+    }
+    input.JSReset = JSReset;
+    JSReset["__class"] = "framework.components.input.JSReset";
+    JSReset["__interfaces"] = ["framework.components.api.Renderable"];
+})(input || (input = {}));
+(function (input) {
+    /**
+     * Instantiate a submit button with specified name and text
+     * @param {string} name - name of button
+     * @param {string} text - text of the button
+     * @class
+     * @extends input.JSButton
+     * @author Kureem Rossaye
+     */
+    class JSSubmit extends input.JSButton {
+        constructor(name, text) {
+            super(name, text);
+            this.setType(api.InputType.SUBMIT);
+        }
+    }
+    input.JSSubmit = JSSubmit;
+    JSSubmit["__class"] = "framework.components.input.JSSubmit";
+    JSSubmit["__interfaces"] = ["framework.components.api.Renderable"];
+})(input || (input = {}));
+(function (input) {
+    class JSCheckBox extends input.JSInput {
         constructor(name) {
             super(name);
             this.setAttribute("type", api.InputType["_$wrappers"][api.InputType.CHECKBOX].getValue());
@@ -3658,6 +4084,9 @@ var input;
             if (((typeof b === 'boolean') || b === null)) {
                 return this.setValue$java_lang_Boolean(b);
             }
+            else if (((b != null) || b === null)) {
+                super.setValue(b);
+            }
             else
                 throw new Error('invalid overload');
         }
@@ -3673,7 +4102,7 @@ var input;
     JSCheckBox["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
 (function (input) {
-    class JSDateInput extends input.AbstractJSInput {
+    class JSDateInput extends input.JSInput {
         constructor(name) {
             super(name);
             this.setType(api.InputType.DATE);
@@ -3709,6 +4138,9 @@ var input;
             if (((val != null && val instanceof Date) || val === null)) {
                 return this.setValue$jsweet_lang_Date(val);
             }
+            else if (((val != null) || val === null)) {
+                super.setValue(val);
+            }
             else
                 throw new Error('invalid overload');
         }
@@ -3741,7 +4173,7 @@ var input;
     })(JSDateInput = input.JSDateInput || (input.JSDateInput = {}));
 })(input || (input = {}));
 (function (input) {
-    class JSNumberInput extends input.AbstractJSInput {
+    class JSNumberInput extends input.JSInput {
         constructor(name) {
             super(name);
             this.setType(api.InputType.NUMBER);
@@ -3782,6 +4214,9 @@ var input;
             if (((typeof val === 'number') || val === null)) {
                 return this.setValue$java_lang_Double(val);
             }
+            else if (((val != null) || val === null)) {
+                super.setValue(val);
+            }
             else
                 throw new Error('invalid overload');
         }
@@ -3797,7 +4232,7 @@ var input;
     JSNumberInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
 (function (input) {
-    class JSTextInput extends input.AbstractJSInput {
+    class JSTextInput extends input.JSInput {
         constructor(name) {
             super(name);
             this.setType(api.InputType.TEXT);
@@ -3806,7 +4241,17 @@ var input;
             this.setAttribute("maxlength", length + "");
         }
         setType(type) {
-            this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+            if (type != null) {
+                if (api.InputType["_$wrappers"][type].getGroup() === "text") {
+                    this.setAttribute("type", api.InputType["_$wrappers"][type].getValue());
+                }
+                else {
+                    throw Object.defineProperty(new Error("only text input types can be set as type"), '__classes', { configurable: true, value: ['java.lang.Throwable', 'java.lang.Object', 'java.lang.RuntimeException', 'java.lang.Exception'] });
+                }
+            }
+            else {
+                this.setAttribute("type", null);
+            }
             return this;
         }
         /**
@@ -3827,6 +4272,9 @@ var input;
             if (((typeof val === 'string') || val === null)) {
                 return this.setValue$java_lang_String(val);
             }
+            else if (((val != null) || val === null)) {
+                super.setValue(val);
+            }
             else
                 throw new Error('invalid overload');
         }
@@ -3843,7 +4291,7 @@ var input;
     JSTextInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
 (function (input) {
-    class JSTimeInput extends input.AbstractJSInput {
+    class JSTimeInput extends input.JSInput {
         constructor(name) {
             super(name);
             this.savedDate = new Date();
@@ -3884,6 +4332,9 @@ var input;
             if (((val != null && val instanceof Date) || val === null)) {
                 return this.setValue$jsweet_lang_Date(val);
             }
+            else if (((val != null) || val === null)) {
+                super.setValue(val);
+            }
             else
                 throw new Error('invalid overload');
         }
@@ -3891,44 +4342,6 @@ var input;
     input.JSTimeInput = JSTimeInput;
     JSTimeInput["__class"] = "framework.components.input.JSTimeInput";
     JSTimeInput["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
-})(input || (input = {}));
-(function (input) {
-    /**
-     * Creates a new instance of reset button with specified name and text
-     * @param {string} name - name of the reset button
-     * @param {string} text - text inside the reset button
-     * @class
-     * @extends input.JSButton
-     * @author Kureem Rossaye
-     */
-    class JSReset extends input.JSButton {
-        constructor(name, text) {
-            super(name, text);
-            this.setType(api.InputType.RESET);
-        }
-    }
-    input.JSReset = JSReset;
-    JSReset["__class"] = "framework.components.input.JSReset";
-    JSReset["__interfaces"] = ["framework.components.api.Renderable"];
-})(input || (input = {}));
-(function (input) {
-    /**
-     * Instantiate a submit button with specified name and text
-     * @param {string} name - name of button
-     * @param {string} text - text of the button
-     * @class
-     * @extends input.JSButton
-     * @author Kureem Rossaye
-     */
-    class JSSubmit extends input.JSButton {
-        constructor(name, text) {
-            super(name, text);
-            this.setType(api.InputType.SUBMIT);
-        }
-    }
-    input.JSSubmit = JSSubmit;
-    JSSubmit["__class"] = "framework.components.input.JSSubmit";
-    JSSubmit["__interfaces"] = ["framework.components.api.Renderable"];
 })(input || (input = {}));
 (function (input) {
     class JSRadio extends input.JSCheckBox {
@@ -3942,4 +4355,3 @@ var input;
     JSRadio["__interfaces"] = ["framework.components.api.InputField", "framework.components.api.Renderable"];
 })(input || (input = {}));
 JSContainer.defaultRenderer_$LI$();
-Main.main(null);

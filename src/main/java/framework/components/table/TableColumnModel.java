@@ -3,7 +3,11 @@ package framework.components.table;
 import java.util.Enumeration;
 
 
-
+/**
+ * Contract Interface used by Table to render a <code>TableColumn</code>
+ * @author Kureem Rossaye
+ *
+ */
 public interface TableColumnModel
 {
 //

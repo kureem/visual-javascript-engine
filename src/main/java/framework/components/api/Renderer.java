@@ -1,13 +1,12 @@
 package framework.components.api;
 
-import framework.components.api.Renderable;
 import jsweet.dom.HTMLElement;
 
 /**
  * Interface to implemented by renderer of components
  * @author Kureem Rossaye
  *
- * @param <T>
+ * @param <T> - The type of {@link Renderable} that this renderer is compatible with	
  */
 public interface Renderer<T extends Renderable> {
 	

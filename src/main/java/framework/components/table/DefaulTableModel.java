@@ -13,7 +13,6 @@ public class DefaulTableModel implements TableModel{
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

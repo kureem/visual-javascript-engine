@@ -148,7 +148,7 @@ public class JSForm extends JSContainer {
 	 * 	<li>beforeValidate</li>
 	 * 	<li>onError - only if there is any error in the form</li>
 	 * 	<li>afterValidate</li>
-	 * </ul
+	 * </ul>
 	 * @return - Whether there is any error in the form
 	 */
 	public boolean validate() {

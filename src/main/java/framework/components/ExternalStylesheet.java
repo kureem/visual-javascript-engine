@@ -7,7 +7,7 @@ import jsweet.dom.HTMLElement;
  * Rendered as an external stylesheet call tag as show below<br><br>
  * 
  * <code>
- *  &lt;link rel="stylesheet" media="|all|screen|print|speech" crossorigin="|anonymous|use-credentials" type="text/css" source="??"&gt&lt/link&gt
+ *  &lt;link rel="stylesheet" media="|all|screen|print|speech" crossorigin="|anonymous|use-credentials" type="text/css" source="??"&gt;&lt;/link&gt;
  * </code>
  * @author Kureem Rossaye
  *
