@@ -17,7 +17,13 @@ var api;
             if (!rendered) {
                 if (jq != null)
                     jq.remove();
-                const njq = document.createElement(tag);
+                let njq = null;
+                if (tag === "svg") {
+                    njq = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                }
+                else {
+                    njq = document.createElement(tag);
+                }
                 c.setElement(njq);
                 if (name != null && name.length > 0)
                     njq.setAttribute("name", name);

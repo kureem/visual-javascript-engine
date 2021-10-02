@@ -53,8 +53,13 @@ public static HTMLElement getElementById(String id) {
 	//		decorate(c);
 			if (jq != null)
 				jq.remove();
-			HTMLElement njq = document.createElement(tag);
-			c.setElement(njq);
+			Element njq = null;
+			if(tag == "svg") {
+				njq = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+			}else {
+				njq = document.createElement(tag);
+			}
+			c.setElement((HTMLElement)njq);
 			if (name != null && name.length() > 0)
 				njq.setAttribute("name", name);
 			njq.setAttribute("id", c.getId());
@@ -150,7 +155,7 @@ public static HTMLElement getElementById(String id) {
 		
 	}
 
-	protected void execCommands(HTMLElement njq, Renderable container) {
+	protected void execCommands(Element njq, Renderable container) {
 		/*for (JSCommand command : container.getCommands()) {
 			String name = command.getName();
 			jsweet.lang.Object params = command.getParameters();
@@ -169,7 +174,7 @@ public static HTMLElement getElementById(String id) {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void renderEvents(HTMLElement njq, Renderable c) {
+	protected void renderEvents(Element njq, Renderable c) {
 		String[] keys = Object.keys(c.getListeners());
 		for (String key :  keys) {
 			final Array<EventListener> listeners = (Array<EventListener>)c.getListeners().$get(key);
@@ -187,7 +192,7 @@ public static HTMLElement getElementById(String id) {
 
 	
 
-	protected void renderAttributes(HTMLElement njq, Renderable c, boolean changed) {
+	protected void renderAttributes(Element njq, Renderable c, boolean changed) {
 
 		if (changed) {
 			for (String key : c.getChangedAttributes()) {
@@ -212,7 +217,7 @@ public static HTMLElement getElementById(String id) {
 	
 	
 
-	protected void clearAttributes(HTMLElement elem) {
+	protected void clearAttributes(Element elem) {
 		NamedNodeMap attrs = elem.attributes;
 		for (double i = 0; i < attrs.length; i++) {
 			if (!attrs.$get(i).name.equals("id"))
@@ -220,25 +225,25 @@ public static HTMLElement getElementById(String id) {
 		}
 	}
 
-	protected void clearStyles(HTMLElement jq) {
+	protected void clearStyles(Element jq) {
 		jq.removeAttribute("style");
 
 	}
 
-	protected void renderStyles(HTMLElement njq, Renderable c, boolean changed) {
+	protected void renderStyles(Element njq, Renderable c, boolean changed) {
 
 		if (changed) {
 			for (String key : c.getChangedStyles()) {
-				njq.style.setProperty(key, c.getStyle(key));
+				((HTMLElement)njq).style.setProperty(key, c.getStyle(key));
 			}
 		} else {
 			for (String key : c.getStyleNames()) {
-				njq.style.setProperty(key, c.getStyle(key));
+				((HTMLElement)njq).style.setProperty(key, c.getStyle(key));
 			}
 		}
 	}
 	
-	public static void setAttribute(HTMLElement element, String attribute, String value){
+	public static void setAttribute(Element element, String attribute, String value){
 		try{
 			element.setAttribute(attribute, value);
 		}catch(Exception e){
@@ -247,7 +252,7 @@ public static HTMLElement getElementById(String id) {
 	}
 	
 	
-	public static void processCSSRules(Renderable renderable, HTMLElement nativeNode) {
+	public static void processCSSRules(Renderable renderable, Element nativeNode) {
 		
 		Array<String> rules = renderable.getCSSRules();
 		

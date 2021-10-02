@@ -16,8 +16,13 @@ namespace api {
             const rparent: api.Renderable = c.getParent();
             if (!rendered){
                 if (jq != null)jq.remove();
-                const njq: HTMLElement = document.createElement(tag);
-                c.setElement(njq);
+                let njq: Element = null;
+                if (tag === "svg"){
+                    njq = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                } else {
+                    njq = document.createElement(tag);
+                }
+                c.setElement(<HTMLElement>njq);
                 if (name != null && name.length > 0)njq.setAttribute("name", name);
                 njq.setAttribute("id", c.getId());
                 njq.innerHTML = html;
@@ -87,10 +92,10 @@ namespace api {
         /*private*/ doNothing(r: api.Renderable) {
         }
 
-        execCommands(njq: HTMLElement, container: api.Renderable) {
+        execCommands(njq: Element, container: api.Renderable) {
         }
 
-        renderEvents(njq: HTMLElement, c: api.Renderable) {
+        renderEvents(njq: Element, c: api.Renderable) {
             const keys: string[] = Object.keys(c.getListeners());
             for(let index190=0; index190 < keys.length; index190++) {
                 let key = keys[index190];
@@ -111,7 +116,7 @@ namespace api {
             }
         }
 
-        renderAttributes(njq: HTMLElement, c: api.Renderable, changed: boolean) {
+        renderAttributes(njq: Element, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
                     let array193 = c.getChangedAttributes();
@@ -141,25 +146,25 @@ namespace api {
             }
         }
 
-        clearAttributes(elem: HTMLElement) {
+        clearAttributes(elem: Element) {
             const attrs: NamedNodeMap = elem.attributes;
             for(let i: number = 0; i < attrs.length; i++) {{
                 if (!(attrs[i].name === ("id")))elem.removeAttribute(attrs[i].name);
             };}
         }
 
-        clearStyles(jq: HTMLElement) {
+        clearStyles(jq: Element) {
             jq.removeAttribute("style");
         }
 
-        renderStyles(njq: HTMLElement, c: api.Renderable, changed: boolean) {
+        renderStyles(njq: Element, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
                     let array197 = c.getChangedStyles();
                     for(let index196=0; index196 < array197.length; index196++) {
                         let key = array197[index196];
                         {
-                            njq.style.setProperty(key, c.getStyle(key));
+                            (<HTMLElement>njq).style.setProperty(key, c.getStyle(key));
                         }
                     }
                 }
@@ -169,14 +174,14 @@ namespace api {
                     for(let index198=0; index198 < array199.length; index198++) {
                         let key = array199[index198];
                         {
-                            njq.style.setProperty(key, c.getStyle(key));
+                            (<HTMLElement>njq).style.setProperty(key, c.getStyle(key));
                         }
                     }
                 }
             }
         }
 
-        public static setAttribute(element: HTMLElement, attribute: string, value: string) {
+        public static setAttribute(element: Element, attribute: string, value: string) {
             try {
                 element.setAttribute(attribute, value);
             } catch(e) {
@@ -184,7 +189,7 @@ namespace api {
             }
         }
 
-        public static processCSSRules(renderable: api.Renderable, nativeNode: HTMLElement) {
+        public static processCSSRules(renderable: api.Renderable, nativeNode: Element) {
             const rules: Array<string> = renderable.getCSSRules();
             if (rules.length > 0){
                 const styleelem: HTMLStyleElement = <HTMLStyleElement>document.createElement("style");
@@ -3858,7 +3863,7 @@ namespace input {
          */
         public getValue(): T {
             const inp: HTMLInputElement = <HTMLInputElement>this.getNative();
-            if (inp != null)return <T><any>inp.value; else return <T><any>this.getAttribute("value");
+            if (inp != null)return (<T><any>inp.value); else return <T><any>this.getAttribute("value");
         }
 
         /**

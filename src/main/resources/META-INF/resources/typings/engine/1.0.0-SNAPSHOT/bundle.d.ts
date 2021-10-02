@@ -4,14 +4,14 @@ declare namespace api {
         static getElementById(id: string): HTMLElement;
         doRender(c: api.Renderable, root: HTMLElement): void;
         doNothing(r: api.Renderable): void;
-        execCommands(njq: HTMLElement, container: api.Renderable): void;
-        renderEvents(njq: HTMLElement, c: api.Renderable): void;
-        renderAttributes(njq: HTMLElement, c: api.Renderable, changed: boolean): void;
-        clearAttributes(elem: HTMLElement): void;
-        clearStyles(jq: HTMLElement): void;
-        renderStyles(njq: HTMLElement, c: api.Renderable, changed: boolean): void;
-        static setAttribute(element: HTMLElement, attribute: string, value: string): void;
-        static processCSSRules(renderable: api.Renderable, nativeNode: HTMLElement): void;
+        execCommands(njq: Element, container: api.Renderable): void;
+        renderEvents(njq: Element, c: api.Renderable): void;
+        renderAttributes(njq: Element, c: api.Renderable, changed: boolean): void;
+        clearAttributes(elem: Element): void;
+        clearStyles(jq: Element): void;
+        renderStyles(njq: Element, c: api.Renderable, changed: boolean): void;
+        static setAttribute(element: Element, attribute: string, value: string): void;
+        static processCSSRules(renderable: api.Renderable, nativeNode: Element): void;
         constructor();
     }
 }
