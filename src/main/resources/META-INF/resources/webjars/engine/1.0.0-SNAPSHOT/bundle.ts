@@ -69,8 +69,8 @@ namespace api {
                 const me: api.Renderable = c;
                 const component: api.Renderable = me;
                 this.doNothing(component);
-                for(let index257=0; index257 < scripts.length; index257++) {
-                    let scr = scripts[index257];
+                for(let index121=0; index121 < scripts.length; index121++) {
+                    let scr = scripts[index121];
                     {
                         eval(scr);
                     }
@@ -97,14 +97,14 @@ namespace api {
 
         renderEvents(njq: Element, c: api.Renderable) {
             const keys: string[] = Object.keys(c.getListeners());
-            for(let index258=0; index258 < keys.length; index258++) {
-                let key = keys[index258];
+            for(let index122=0; index122 < keys.length; index122++) {
+                let key = keys[index122];
                 {
                     const listeners: Array<api.EventListener> = <Array<api.EventListener>>c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for(let index259=0; index259 < listeners.length; index259++) {
-                                let l = listeners[index259];
+                            for(let index123=0; index123 < listeners.length; index123++) {
+                                let l = listeners[index123];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -119,9 +119,9 @@ namespace api {
         renderAttributes(njq: Element, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
-                    let array261 = c.getChangedAttributes();
-                    for(let index260=0; index260 < array261.length; index260++) {
-                        let key = array261[index260];
+                    let array125 = c.getChangedAttributes();
+                    for(let index124=0; index124 < array125.length; index124++) {
+                        let key = array125[index124];
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr == null){
@@ -134,9 +134,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array263 = c.getAttributeNames();
-                    for(let index262=0; index262 < array263.length; index262++) {
-                        let key = array263[index262];
+                    let array127 = c.getAttributeNames();
+                    for(let index126=0; index126 < array127.length; index126++) {
+                        let key = array127[index126];
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr != null)ContainerRenderer.setAttribute(njq, key, attr);
@@ -160,9 +160,9 @@ namespace api {
         renderStyles(njq: Element, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
-                    let array265 = c.getChangedStyles();
-                    for(let index264=0; index264 < array265.length; index264++) {
-                        let key = array265[index264];
+                    let array129 = c.getChangedStyles();
+                    for(let index128=0; index128 < array129.length; index128++) {
+                        let key = array129[index128];
                         {
                             (<HTMLElement>njq).style.setProperty(key, c.getStyle(key));
                         }
@@ -170,9 +170,9 @@ namespace api {
                 }
             } else {
                 {
-                    let array267 = c.getStyleNames();
-                    for(let index266=0; index266 < array267.length; index266++) {
-                        let key = array267[index266];
+                    let array131 = c.getStyleNames();
+                    for(let index130=0; index130 < array131.length; index130++) {
+                        let key = array131[index130];
                         {
                             (<HTMLElement>njq).style.setProperty(key, c.getStyle(key));
                         }
@@ -196,8 +196,8 @@ namespace api {
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet: CSSStyleSheet = <CSSStyleSheet>styleelem.sheet;
-                for(let index268=0; index268 < rules.length; index268++) {
-                    let rule = rules[index268];
+                for(let index132=0; index132 < rules.length; index132++) {
+                    let rule = rules[index132];
                     sheet.insertRule(rule)
                 }
             }
@@ -1099,8 +1099,8 @@ namespace table {
          * @return {number}
          */
         public getColumnIndex(columnIdentifier: any): number {
-            for(let index269=0; index269 < this.columns.length; index269++) {
-                let col = this.columns[index269];
+            for(let index133=0; index133 < this.columns.length; index133++) {
+                let col = this.columns[index133];
                 {
                     if (col.identifier === columnIdentifier){
                         return (<number>this.columns.indexOf(col)|0);
@@ -1535,9 +1535,9 @@ namespace util {
         public static visit(designable: api.Renderable, visitor: ComponentUtil.ComponentVisitor) {
             visitor.doVisit(designable);
             {
-                let array271 = designable.getChildren();
-                for(let index270=0; index270 < array271.length; index270++) {
-                    let child = array271[index270];
+                let array135 = designable.getChildren();
+                for(let index134=0; index134 < array135.length; index134++) {
+                    let child = array135[index134];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -1548,8 +1548,8 @@ namespace util {
         public static getTags(type: string): Array<Object> {
             const html5tags: Array<Object> = <any>(window["html5tags"]);
             const result: Array<Object> = <any>(new Array<Object>());
-            for(let index272=0; index272 < html5tags.length; index272++) {
-                let html5tag = html5tags[index272];
+            for(let index136=0; index136 < html5tags.length; index136++) {
+                let html5tag = html5tags[index136];
                 {
                     const stype: string = <string>html5tag["type"];
                     if (stype === type || type === "*"){
@@ -1581,10 +1581,13 @@ namespace util {
             if (obj == null){
                 return null;
             }
+            if (!/* contains */(property.indexOf(".") != -1)){
+                return <Object>obj[property];
+            }
             const parts: string[] = property.split(".");
             let tmp: Object = obj;
-            for(let index273=0; index273 < parts.length; index273++) {
-                let part = parts[index273];
+            for(let index137=0; index137 < parts.length; index137++) {
+                let part = parts[index137];
                 {
                     tmp = PropertyUtil.getValue(tmp, part);
                 }
@@ -1645,8 +1648,8 @@ namespace util {
             const result: Object = <Object>new Object();
             if (/* contains */(hash.indexOf("?") != -1)){
                 const kvs: string[] = hash.split("?")[1].split("&");
-                for(let index274=0; index274 < kvs.length; index274++) {
-                    let kv = kvs[index274];
+                for(let index138=0; index138 < kvs.length; index138++) {
+                    let kv = kvs[index138];
                     {
                         const akv: string[] = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1729,8 +1732,8 @@ class JSContainer implements api.Renderable {
         console.log("firing:" + key + " on " + this.getName());
         const listeners: Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
         if (listeners != null && listeners.length > 0){
-            for(let index275=0; index275 < listeners.length; index275++) {
-                let l = listeners[index275];
+            for(let index139=0; index139 < listeners.length; index139++) {
+                let l = listeners[index139];
                 {
                     l.performAction(this, evt);
                 }
@@ -1758,9 +1761,9 @@ class JSContainer implements api.Renderable {
 
     public getChild(name: string): api.Renderable {
         {
-            let array277 = this.getChildren();
-            for(let index276=0; index276 < array277.length; index276++) {
-                let child = array277[index276];
+            let array141 = this.getChildren();
+            for(let index140=0; index140 < array141.length; index140++) {
+                let child = array141[index140];
                 {
                     if (child.getName() === name){
                         return child;
@@ -1946,14 +1949,14 @@ class JSContainer implements api.Renderable {
         const aStyles: string[] = styles.split(" ");
         const toAdds: string[] = styleClass.split(" ");
         let res: string = "";
-        for(let index278=0; index278 < toAdds.length; index278++) {
-            let toAdd = toAdds[index278];
+        for(let index142=0; index142 < toAdds.length; index142++) {
+            let toAdd = toAdds[index142];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0){
                     let add: boolean = true;
-                    for(let index279=0; index279 < aStyles.length; index279++) {
-                        let style = aStyles[index279];
+                    for(let index143=0; index143 < aStyles.length; index143++) {
+                        let style = aStyles[index143];
                         {
                             style = style.trim();
                             if (style.length > 0){
@@ -1990,8 +1993,8 @@ class JSContainer implements api.Renderable {
             return false;
         }
         const aStyles: string[] = styles.split(" ");
-        for(let index280=0; index280 < aStyles.length; index280++) {
-            let style = aStyles[index280];
+        for(let index144=0; index144 < aStyles.length; index144++) {
+            let style = aStyles[index144];
             {
                 style = style.trim();
                 if (style !== ""){
@@ -2021,8 +2024,8 @@ class JSContainer implements api.Renderable {
     public removeClass(cls: string): JSContainer {
         if (cls != null && cls.trim() !== ""){
             const toremove: string[] = cls.split(" ");
-            for(let index281=0; index281 < toremove.length; index281++) {
-                let s = toremove[index281];
+            for(let index145=0; index145 < toremove.length; index145++) {
+                let s = toremove[index145];
                 {
                     this.removeSingleClass(s);
                 }
@@ -2036,8 +2039,8 @@ class JSContainer implements api.Renderable {
         if (cl != null && cl.length > 0){
             const classes: string[] = cl.split(" ");
             let result: string = "";
-            for(let index282=0; index282 < classes.length; index282++) {
-                let scl = classes[index282];
+            for(let index146=0; index146 < classes.length; index146++) {
+                let scl = classes[index146];
                 {
                     if (scl !== cls){
                         if (result === ""){
@@ -2105,9 +2108,9 @@ class JSContainer implements api.Renderable {
         let i: number = 0;
         let added: boolean = false;
         {
-            let array284 = this.getChildren();
-            for(let index283=0; index283 < array284.length; index283++) {
-                let c = array284[index283];
+            let array148 = this.getChildren();
+            for(let index147=0; index147 < array148.length; index147++) {
+                let c = array148[index147];
                 {
                     if (i === index){
                         children.push(child);
@@ -2357,9 +2360,9 @@ class JSContainer implements api.Renderable {
         if (!b){
             this.elem_ = null;
             {
-                let array286 = this.getChildren();
-                for(let index285=0; index285 < array286.length; index285++) {
-                    let child = array286[index285];
+                let array150 = this.getChildren();
+                for(let index149=0; index149 < array150.length; index149++) {
+                    let child = array150[index149];
                     {
                         child.setRendered(b);
                     }
@@ -2435,22 +2438,22 @@ class JSContainer implements api.Renderable {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())){
             const tmp: Array<api.Renderer<any>> = <any>(new Array<api.Renderer<any>>());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for(let index287=0; index287 < renderers.length; index287++) {
-                let r = renderers[index287];
+            for(let index151=0; index151 < renderers.length; index151++) {
+                let r = renderers[index151];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for(let index288=0; index288 < renderers.length; index288++) {
-            let renderer = renderers[index288];
+        for(let index152=0; index152 < renderers.length; index152++) {
+            let renderer = renderers[index152];
             renderer.doRender(this, parent)
         }
         {
-            let array290 = this.getChildren();
-            for(let index289=0; index289 < array290.length; index289++) {
-                let child = array290[index289];
+            let array154 = this.getChildren();
+            for(let index153=0; index153 < array154.length; index153++) {
+                let child = array154[index153];
                 {
                     child['render$']();
                 }
@@ -2487,8 +2490,8 @@ class JSContainer implements api.Renderable {
         const previous: Object = <Object>this.d["data"];
         if (previous != null && previous instanceof <any>Array){
             const arData: Array<Object> = <Array<Object>>previous;
-            for(let index291=0; index291 < arData.length; index291++) {
-                let line = arData[index291];
+            for(let index155=0; index155 < arData.length; index155++) {
+                let line = arData[index155];
                 {
                     const value: string = <string>line["value"];
                     this.setAttribute(value, null);
@@ -2497,9 +2500,9 @@ class JSContainer implements api.Renderable {
         } else {
             if (previous != null){
                 {
-                    let array293 = Object.keys(previous);
-                    for(let index292=0; index292 < array293.length; index292++) {
-                        let key = array293[index292];
+                    let array157 = Object.keys(previous);
+                    for(let index156=0; index156 < array157.length; index156++) {
+                        let key = array157[index156];
                         {
                             this.setAttribute(key, null);
                         }
@@ -2511,8 +2514,8 @@ class JSContainer implements api.Renderable {
         if (data != null){
             if (data != null && data instanceof <any>Array){
                 const arData: Array<Object> = <Array<Object>>data;
-                for(let index294=0; index294 < arData.length; index294++) {
-                    let line = arData[index294];
+                for(let index158=0; index158 < arData.length; index158++) {
+                    let line = arData[index158];
                     {
                         const text: string = <string>line["text"];
                         const value: string = <string>line["value"];
@@ -2521,9 +2524,9 @@ class JSContainer implements api.Renderable {
                 }
             } else {
                 {
-                    let array296 = Object.keys(data);
-                    for(let index295=0; index295 < array296.length; index295++) {
-                        let key = array296[index295];
+                    let array160 = Object.keys(data);
+                    for(let index159=0; index159 < array160.length; index159++) {
+                        let key = array160[index159];
                         {
                             this.setAttribute(key, <string>(<Object>data)[key]);
                         }
@@ -2548,9 +2551,9 @@ class JSContainer implements api.Renderable {
         const clsss: string = parent.getAttribute("class");
         if (clsss != null){
             {
-                let array298 = parent.getAttribute("class").split(" ");
-                for(let index297=0; index297 < array298.length; index297++) {
-                    let s = array298[index297];
+                let array162 = parent.getAttribute("class").split(" ");
+                for(let index161=0; index161 < array162.length; index161++) {
+                    let s = array162[index161];
                     {
                         if (s.trim() === cls)return <T><any>parent;
                     }
@@ -2710,8 +2713,8 @@ class CardLayout extends JSContainer {
      * @return {CardLayout} - this
      */
     public addItems(...items: CardLayoutItem[]): CardLayout {
-        for(let index299=0; index299 < items.length; index299++) {
-            let item = items[index299];
+        for(let index163=0; index163 < items.length; index163++) {
+            let item = items[index163];
             {
                 this.addItem(item);
             }
@@ -2749,9 +2752,9 @@ class CardLayout extends JSContainer {
     public getIndex(name: string): number {
         let index: number = 0;
         {
-            let array301 = this.getChildren();
-            for(let index300=0; index300 < array301.length; index300++) {
-                let child = array301[index300];
+            let array165 = this.getChildren();
+            for(let index164=0; index164 < array165.length; index164++) {
+                let child = array165[index164];
                 {
                     if (child.getName() === name){
                         return index;
@@ -2891,9 +2894,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array303 = this.getChildren();
-            for(let index302=0; index302 < array303.length; index302++) {
-                let child = array303[index302];
+            let array167 = this.getChildren();
+            for(let index166=0; index166 < array167.length; index166++) {
+                let child = array167[index166];
                 {
                     if (child.getName() === name){
                         const evt: CustomEvent = new CustomEvent("activate");
@@ -2935,9 +2938,9 @@ class CardLayout extends JSContainer {
     public refresh() {
         const def: string = this.getDefault();
         {
-            let array305 = this.getChildren();
-            for(let index304=0; index304 < array305.length; index304++) {
-                let r = array305[index304];
+            let array169 = this.getChildren();
+            for(let index168=0; index168 < array169.length; index168++) {
+                let r = array169[index168];
                 {
                     if (r.getName() === def){
                         r.setStyle("display", null);
@@ -3166,8 +3169,8 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
                 const tag: string = tm.tagName;
                 this.setTag(tag);
                 const attrs: NamedNodeMap = tm.attributes;
-                for(let index306=0; index306 < attrs.length; index306++) {
-                    let att = attrs[index306];
+                for(let index170=0; index170 < attrs.length; index170++) {
+                    let att = attrs[index170];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -3277,13 +3280,13 @@ namespace input {
          * <li>onError        - Fired if there is one or more errors after validating the form</li>
          * <li>beforeSubmit   - Fired before submitting the form</li>
          * <li>afterSubmit    - Fired after submitting the form even if the form is not valid</li>
-         * <li>submit         - Fired on submitting the form and if there is no error after validation</li>
-         * <li>reset          - Fired when the form is reset</li>
+         * <li>onSubmit         - Fired on submitting the form and if there is no error after validation</li>
+         * <li>onReset          - Fired when the form is reset</li>
          * </ul>
          * @return {java.lang.String[]}
          */
         public advancedEventTypes(): string[] {
-            return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterGetData", "beforeSubmit", "afterSubmit", "submit"];
+            return ["beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData", "onError", "afterGetData", "beforeSubmit", "afterSubmit", "onSubmit", "onReset"];
         }
 
         /**
@@ -3419,16 +3422,16 @@ namespace input {
          * Resets the form by clearing all the fields in the form<br>
          * This method is called automatically when the form is reset for example by clicking an input of type reset present in the form<br>
          * or by resetting it using javascript means.<br>
-         * The reset event is fired when this method is called
+         * The onReset event is fired when this method is called
          * 
          */
         public reset() {
             const data: Object = <Object>new Object();
             this.setData(data);
-            const on: CustomEvent = new CustomEvent("reset");
+            const on: CustomEvent = new CustomEvent("onReset");
             on["source"] = this;
             on["data"] = data;
-            this.fireListener("reset", on);
+            this.fireListener("onReset", on);
         }
 
         /**
@@ -3454,7 +3457,7 @@ namespace input {
          * <li>afterGetData event is fired</li>
          * </ul>
          * </li>
-         * <li>if form is valid submit event is fired</li>
+         * <li>if form is valid onSubmit event is fired</li>
          * <li>Whether or not form is valid, afterSubmit event is fired</li>
          * </ul>
          * 
@@ -3465,10 +3468,10 @@ namespace input {
             this.fireListener("beforeSubmit", evt);
             if (this.validate()){
                 const data: Object = this.getData();
-                const on: CustomEvent = new CustomEvent("submit");
+                const on: CustomEvent = new CustomEvent("onSubmit");
                 on["source"] = this;
                 on["data"] = data;
-                this.fireListener("submit", on);
+                this.fireListener("onSubmit", on);
             }
             const evtAfter: CustomEvent = new CustomEvent("afterSubmit");
             evtAfter["source"] = this;
@@ -3824,8 +3827,8 @@ namespace input {
                     JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index307=0; index307 < this.validators.length; index307++) {
-                let v = this.validators[index307];
+            for(let index171=0; index171 < this.validators.length; index171++) {
+                let v = this.validators[index171];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -3985,8 +3988,8 @@ namespace input {
 
         public setOptions$java_lang_String(options: string): JSSelect {
             const opts: string[] = options.split("\n");
-            for(let index308=0; index308 < opts.length; index308++) {
-                let opt = opts[index308];
+            for(let index172=0; index172 < opts.length; index172++) {
+                let opt = opts[index172];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -4105,8 +4108,8 @@ namespace input {
             if (ele != null){
                 if (ele.multiple){
                     const result: Array<string> = <any>(new Array<string>());
-                    for(let index309=0; index309 < ele.children.length; index309++) {
-                        let e = ele.children[index309];
+                    for(let index173=0; index173 < ele.children.length; index173++) {
+                        let e = ele.children[index173];
                         {
                             const opt: HTMLOptionElement = <HTMLOptionElement>e;
                             if (opt.selected)result.push(opt.value);
@@ -4119,9 +4122,9 @@ namespace input {
             } else {
                 const val: string = this.getAttribute("value");
                 {
-                    let array311 = this.getChildren();
-                    for(let index310=0; index310 < array311.length; index310++) {
-                        let opt = array311[index310];
+                    let array175 = this.getChildren();
+                    for(let index174=0; index174 < array175.length; index174++) {
+                        let opt = array175[index174];
                         {
                             if (opt.getAttribute("value") === val){
                                 return (<input.JSOption><any>opt).getValue();
@@ -4158,13 +4161,13 @@ namespace input {
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array313 = this.getChildren();
-                    for(let index312=0; index312 < array313.length; index312++) {
-                        let opt = array313[index312];
+                    let array177 = this.getChildren();
+                    for(let index176=0; index176 < array177.length; index176++) {
+                        let opt = array177[index176];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
-                            for(let index314=0; index314 < arrVal.length; index314++) {
-                                let val = arrVal[index314];
+                            for(let index178=0; index178 < arrVal.length; index178++) {
+                                let val = arrVal[index178];
                                 {
                                     if (opt.getAttribute("value") === val){
                                         (<input.JSOption><any>opt).setSelected(true);
@@ -4176,9 +4179,9 @@ namespace input {
                 }
             } else {
                 {
-                    let array316 = this.getChildren();
-                    for(let index315=0; index315 < array316.length; index315++) {
-                        let opt = array316[index315];
+                    let array180 = this.getChildren();
+                    for(let index179=0; index179 < array180.length; index179++) {
+                        let opt = array180[index179];
                         {
                             (<input.JSOption><any>opt).setSelected(false);
                         }
@@ -4210,8 +4213,8 @@ namespace input {
                     input.JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index317=0; index317 < this.validators.length; index317++) {
-                let v = this.validators[index317];
+            for(let index181=0; index181 < this.validators.length; index181++) {
+                let v = this.validators[index181];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -4245,8 +4248,8 @@ namespace input {
         public setData(data_: Array<Object>) {
             this.clearChildren();
             this.setRendered(false);
-            for(let index318=0; index318 < data_.length; index318++) {
-                let o = data_[index318];
+            for(let index182=0; index182 < data_.length; index182++) {
+                let o = data_[index182];
                 {
                     if (o.hasOwnProperty("value")){
                         const value: string = <string>o["value"];
@@ -4270,9 +4273,9 @@ namespace input {
             const result: Array<Object> = <any>(new Array<Object>());
             if (this.isMultiple()){
                 {
-                    let array320 = <Array<string>>obj;
-                    for(let index319=0; index319 < array320.length; index319++) {
-                        let o = array320[index319];
+                    let array184 = <Array<string>>obj;
+                    for(let index183=0; index183 < array184.length; index183++) {
+                        let o = array184[index183];
                         {
                             const item: Object = this.findItem(o);
                             if (item != null){
@@ -4298,8 +4301,8 @@ namespace input {
 
         public findItem(value: string): Object {
             if (this.data != null){
-                for(let index321=0; index321 < this.data.length; index321++) {
-                    let o = this.data[index321];
+                for(let index185=0; index185 < this.data.length; index185++) {
+                    let o = this.data[index185];
                     {
                         let val: string = <string>o["value"];
                         val = val + "";
@@ -4401,8 +4404,8 @@ namespace input {
                     input.JSInput.addError(el.validationMessage, el.validity, e);
                 }
             }
-            for(let index322=0; index322 < this.validators.length; index322++) {
-                let v = this.validators[index322];
+            for(let index186=0; index186 < this.validators.length; index186++) {
+                let v = this.validators[index186];
                 {
                     const b: boolean = v.validate(this);
                     if (!b){
@@ -4710,9 +4713,9 @@ namespace table {
             let stWidth: string = this.getStyle(name);
             if (stWidth != null && stWidth.length > 0){
                 {
-                    let array324 = /* Enum.values */function() { let result: api.Units[] = []; for(let val in api.Units) { if (!isNaN(<any>val)) { result.push(parseInt(val,10)); } } return result; }();
-                    for(let index323=0; index323 < array324.length; index323++) {
-                        let u = array324[index323];
+                    let array188 = /* Enum.values */function() { let result: api.Units[] = []; for(let val in api.Units) { if (!isNaN(<any>val)) { result.push(parseInt(val,10)); } } return result; }();
+                    for(let index187=0; index187 < array188.length; index187++) {
+                        let u = array188[index187];
                         {
                             stWidth = /* replace */stWidth.split(api.Units["_$wrappers"][u].getDisplay()).join("");
                         }

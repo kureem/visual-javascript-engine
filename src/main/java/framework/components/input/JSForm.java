@@ -60,14 +60,14 @@ public class JSForm extends JSContainer {
 	 * <li>onError        - Fired if there is one or more errors after validating the form</li>
 	 * <li>beforeSubmit   - Fired before submitting the form</li>
 	 * <li>afterSubmit    - Fired after submitting the form even if the form is not valid</li>
-	 * <li>submit         - Fired on submitting the form and if there is no error after validation</li>
-	 * <li>reset          - Fired when the form is reset</li>
+	 * <li>onSubmit         - Fired on submitting the form and if there is no error after validation</li>
+	 * <li>onReset          - Fired when the form is reset</li>
 	 * </ul>
 	 */
 	@Override
 	public String[] advancedEventTypes() {
 		return new String[] { "beforeValidate", "afterValidate", "beforeSetData", "afterSetData", "beforeGetData","onError",
-				"afterGetData", "beforeSubmit", "afterSubmit", "submit" };
+				"afterGetData", "beforeSubmit", "afterSubmit", "onSubmit", "onReset" };
 	}
 	
 	
@@ -295,16 +295,16 @@ public class JSForm extends JSContainer {
 	 * Resets the form by clearing all the fields in the form<br>
 	 * This method is called automatically when the form is reset for example by clicking an input of type reset present in the form<br>
 	 * or by resetting it using javascript means.<br>
-	 * The reset event is fired when this method is called
+	 * The onReset event is fired when this method is called
 	 * 
 	 */
 	public void reset() {
 		Object data = new Object();//getData();
 		setData(data);
-		CustomEvent on = new CustomEvent("reset");
+		CustomEvent on = new CustomEvent("onReset");
 		on.$set("source", this);
 		on.$set("data", data);
-		fireListener("reset", on);
+		fireListener("onReset", on);
 
 	}
 
@@ -331,7 +331,7 @@ public class JSForm extends JSContainer {
 	 * 			<li>afterGetData event is fired</li>
 	 *  	</ul>
 	 *  </li>
-	 *  <li>if form is valid submit event is fired</li>
+	 *  <li>if form is valid onSubmit event is fired</li>
 	 *  <li>Whether or not form is valid, afterSubmit event is fired</li>
 	 * </ul> 
 	 * 
@@ -342,10 +342,10 @@ public class JSForm extends JSContainer {
 		fireListener("beforeSubmit", evt);
 		if (validate()) {
 			Object data = getData();
-			CustomEvent on = new CustomEvent("submit");
+			CustomEvent on = new CustomEvent("onSubmit");
 			on.$set("source", this);
 			on.$set("data", data);
-			fireListener("submit", on);
+			fireListener("onSubmit", on);
 		}
 
 		CustomEvent evtAfter = new CustomEvent("afterSubmit");

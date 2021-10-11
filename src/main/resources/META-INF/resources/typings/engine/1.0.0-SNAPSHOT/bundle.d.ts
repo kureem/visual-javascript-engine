@@ -1591,8 +1591,8 @@ declare namespace input {
          * <li>onError        - Fired if there is one or more errors after validating the form</li>
          * <li>beforeSubmit   - Fired before submitting the form</li>
          * <li>afterSubmit    - Fired after submitting the form even if the form is not valid</li>
-         * <li>submit         - Fired on submitting the form and if there is no error after validation</li>
-         * <li>reset          - Fired when the form is reset</li>
+         * <li>onSubmit         - Fired on submitting the form and if there is no error after validation</li>
+         * <li>onReset          - Fired when the form is reset</li>
          * </ul>
          * @return {java.lang.String[]}
          */
@@ -1665,7 +1665,7 @@ declare namespace input {
          * Resets the form by clearing all the fields in the form<br>
          * This method is called automatically when the form is reset for example by clicking an input of type reset present in the form<br>
          * or by resetting it using javascript means.<br>
-         * The reset event is fired when this method is called
+         * The onReset event is fired when this method is called
          *
          */
         reset(): void;
@@ -1692,7 +1692,7 @@ declare namespace input {
          * <li>afterGetData event is fired</li>
          * </ul>
          * </li>
-         * <li>if form is valid submit event is fired</li>
+         * <li>if form is valid onSubmit event is fired</li>
          * <li>Whether or not form is valid, afterSubmit event is fired</li>
          * </ul>
          *

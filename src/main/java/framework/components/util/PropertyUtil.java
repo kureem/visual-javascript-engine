@@ -12,6 +12,10 @@ public class PropertyUtil {
 		if(obj == null){
 			return null;
 		}
+		
+		if(!property.contains(".")) {
+			return (Object)obj.$get(property);
+		}
 			
 		String[]parts = property.split(".");
 		Object tmp = obj;

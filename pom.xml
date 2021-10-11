@@ -51,6 +51,8 @@
 			<artifactId>jsweet-core</artifactId>
 			<version>${jsweet.core.version}</version>
 		</dependency>
+
+
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -78,7 +80,7 @@
 				<artifactId>jsweet-maven-plugin</artifactId>
 				<version>${jsweet.transpiler.version}</version>
 				<configuration>
-					<verbose>true</verbose> 
+					<verbose>true</verbose>
 					<bundle>true</bundle>
 					<outDir>src/main/resources/META-INF/resources/webjars/${project.artifactId}/${project.version}</outDir>
 					<tsOut>src/main/resources/META-INF/resources/webjars/${project.artifactId}/${project.version}</tsOut>
