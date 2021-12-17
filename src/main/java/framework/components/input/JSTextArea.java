@@ -18,24 +18,14 @@ package framework.components.input;
 import framework.components.JSContainer;
 import framework.components.api.InputField;
 import framework.components.api.ValidationException;
-import framework.components.api.Validator;
 import jsweet.dom.CustomEvent;
 import jsweet.dom.HTMLElement;
-import jsweet.dom.HTMLInputElement;
 import jsweet.dom.HTMLTextAreaElement;
-import jsweet.lang.Array;
 
 public class JSTextArea extends JSContainer implements InputField<String>{
 	
-
-	private Array<Validator<String>> validators = new Array<Validator<String>>();
 	public JSTextArea(String name) {
 		super(name, "textarea");
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void addValidator(Validator<String> validator) {
-		validators.push(validator);
 	}
 	
 	public JSTextArea setRequired(boolean b){
@@ -81,23 +71,13 @@ public class JSTextArea extends JSContainer implements InputField<String>{
 		ValidationException e = new ValidationException();
 		HTMLElement nat = getNative();
 		if (nat != null) {
-			HTMLInputElement el = (HTMLInputElement) nat;
+			HTMLTextAreaElement el = (HTMLTextAreaElement) nat;
 			valid =el.checkValidity();
 			if(!valid){
-				JSInput.addError(el.validationMessage, el.validity,e);
-				//el.validity.
+				ValidationException.throwError(el.validationMessage, el.validity);
 			}
 		}
-		
-		for (Validator<String> v : validators) {
-
-			boolean b = v.validate(this);
-			if (!b) {
-				valid = false;
-				ValidationException.addError(v.getErrorMessage(),ValidationException.customError ,e);
-			}
-		}
-		
+				
 		CustomEvent validate = new CustomEvent("validate");
 		validate.$set("errors", e.errors);
 		validate.$set("valid", valid);

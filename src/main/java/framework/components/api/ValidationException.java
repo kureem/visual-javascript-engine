@@ -1,8 +1,7 @@
 package framework.components.api;
 
-import static jsweet.lang.Globals.eval;
-
 import framework.components.input.JSTextInput;
+import jsweet.dom.ValidityState;
 import jsweet.lang.Array;
 import jsweet.lang.Object;
 
@@ -20,6 +19,8 @@ import jsweet.lang.Object;
  *
  */
 public class ValidationException extends jsweet.lang.Error {
+	
+	private int code;
 
 	/**
 	 * Is a <code>Numeric</code> indicating the user has provided input that the
@@ -74,6 +75,16 @@ public class ValidationException extends jsweet.lang.Error {
 	 * <code>required</code> attribute, but no value.
 	 */
 	public final static int valueMissing = 8;
+	
+	/**
+	 * Is a <code>Numeric</code> indicating the value less than the specified
+	 * <code>minlength</code> for {@link JSTextInput}
+	 * component.
+	 * <em><strong>Note:</strong> This will never be <code>true</code> in Gecko,
+	 * because elements' values are prevented from being shorter than
+	 * <code>minlength</code>.</em>
+	 */
+	public final static int tooShort = 9;
 
 	/**
 	 * 
@@ -97,7 +108,8 @@ public class ValidationException extends jsweet.lang.Error {
 	 */
 	public ValidationException(int errorCode) {
 		super();
-		ValidationException.addError("", errorCode,this);
+		this.code = errorCode;
+		//ValidationException.addError(""rrorCode,this);
 	}
 
 	/**
@@ -110,16 +122,44 @@ public class ValidationException extends jsweet.lang.Error {
 	 *            The error code to add in the context
 	 */
 	public ValidationException(String message, int errorCode) {
-		super("Validation Error");
-		ValidationException.addError(message, errorCode,this);
+		super(message);
+		this.code = errorCode;
+		//ValidationException.addError(messagerrorCode,this);
 	}
 	
-	public static void addError(String msg, int code, ValidationException e){
-		eval("if(!e['errors']){e['errors'] = [];}e['errors'].push({'msg':msg, 'code':code});");
+	public static void throwError(String msg, int code){
+		throw new ValidationException(msg, code);
+	}
+	
+	public static void throwError(String msg, ValidityState state) {
+		if (!state.valid) {
+			if (state.badInput) {
+
+				ValidationException.throwError(msg, ValidationException.badInput);
+			} else if (state.customError) {
+				ValidationException.throwError(msg, ValidationException.customError);
+			} else if (state.patternMismatch) {
+				ValidationException.throwError(msg, ValidationException.patternMismatch);
+			} else if (state.rangeOverflow) {
+				ValidationException.throwError(msg, ValidationException.rangeOverflow);
+			} else if (state.rangeUnderflow) {
+				ValidationException.throwError(msg, ValidationException.rangeUnderflow);
+			} else if (state.stepMismatch) {
+				ValidationException.throwError(msg, ValidationException.stepMismatch);
+			} else if (state.tooLong) {
+				ValidationException.throwError(msg, ValidationException.tooLong);
+			} else if (state.typeMismatch) {
+				ValidationException.throwError(msg, ValidationException.typeMismatch);
+			} else if (state.valueMissing) {
+				ValidationException.throwError(msg, ValidationException.valueMissing);
+			}
+		}
 	}
 
 	
 
-	
+	public int getCode() {
+		return code;
+	}
 
 }

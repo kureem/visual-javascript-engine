@@ -19,7 +19,6 @@ import framework.components.JSContainer;
 import framework.components.api.InputField;
 import framework.components.api.Renderable;
 import framework.components.api.ValidationException;
-import framework.components.api.Validator;
 import jsweet.dom.CustomEvent;
 import jsweet.dom.Element;
 import jsweet.dom.HTMLElement;
@@ -32,7 +31,6 @@ public class JSSelect extends JSContainer implements InputField<Object> {
 
 	private String previousValue;
 
-	private Array<Validator<Object>> validators = new Array<Validator<Object>>();
 
 	private Array<jsweet.lang.Object> data;
 
@@ -40,10 +38,6 @@ public class JSSelect extends JSContainer implements InputField<Object> {
 		super(name, "select");
 	}
 
-	@SuppressWarnings("unchecked")
-	public void addValidator(Validator<Object> validator) {
-		validators.push(validator);
-	}
 	
 	
 	public JSSelect setOptions(String options) {
@@ -229,20 +223,13 @@ public class JSSelect extends JSContainer implements InputField<Object> {
 			HTMLSelectElement el = (HTMLSelectElement) nat;
 			valid = el.checkValidity();
 			if (!valid) {
-				JSInput.addError(el.validationMessage, el.validity, e);
+				//JSInput.addError(el.validationMessage, el.validity, e);
 				// el.validity.
+				ValidationException.throwError(el.validationMessage, el.validity);
 			}
 		}
 
-		for (Validator<Object> v : validators) {
-
-			boolean b = v.validate(this);
-			if (!b) {
-				valid = false;
-				ValidationException.addError(v.getErrorMessage(), ValidationException.customError, e);
-			}
-		}
-		
+				
 		CustomEvent validate = new CustomEvent("validate");
 		validate.$set("errors", e.errors);
 		validate.$set("valid", valid);

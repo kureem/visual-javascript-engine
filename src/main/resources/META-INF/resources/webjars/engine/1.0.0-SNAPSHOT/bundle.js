@@ -1,4 +1,18 @@
-/* Generated from Java with JSweet 3.0.0 - http://www.jsweet.org */
+/*
+ * Copyright 2012-2019 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 var api;
 (function (api) {
     class ContainerRenderer {
@@ -6,6 +20,8 @@ var api;
         }
         static getElementById(id) {
             return document.getElementById(id);
+        }
+        decorate(renderable) {
         }
         doRender(c, root) {
             const jq = c.getElement();
@@ -81,8 +97,8 @@ var api;
                 const me = c;
                 const component = me;
                 this.doNothing(component);
-                for (let index121 = 0; index121 < scripts.length; index121++) {
-                    let scr = scripts[index121];
+                for (let index251 = 0; index251 < scripts.length; index251++) {
+                    let scr = scripts[index251];
                     {
                         eval(scr);
                     }
@@ -107,14 +123,14 @@ var api;
         }
         renderEvents(njq, c) {
             const keys = Object.keys(c.getListeners());
-            for (let index122 = 0; index122 < keys.length; index122++) {
-                let key = keys[index122];
+            for (let index252 = 0; index252 < keys.length; index252++) {
+                let key = keys[index252];
                 {
                     const listeners = c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for (let index123 = 0; index123 < listeners.length; index123++) {
-                                let l = listeners[index123];
+                            for (let index253 = 0; index253 < listeners.length; index253++) {
+                                let l = listeners[index253];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -128,9 +144,9 @@ var api;
         renderAttributes(njq, c, changed) {
             if (changed) {
                 {
-                    let array125 = c.getChangedAttributes();
-                    for (let index124 = 0; index124 < array125.length; index124++) {
-                        let key = array125[index124];
+                    let array255 = c.getChangedAttributes();
+                    for (let index254 = 0; index254 < array255.length; index254++) {
+                        let key = array255[index254];
                         {
                             const attr = c.getAttribute(key);
                             if (attr == null) {
@@ -145,9 +161,9 @@ var api;
             }
             else {
                 {
-                    let array127 = c.getAttributeNames();
-                    for (let index126 = 0; index126 < array127.length; index126++) {
-                        let key = array127[index126];
+                    let array257 = c.getAttributeNames();
+                    for (let index256 = 0; index256 < array257.length; index256++) {
+                        let key = array257[index256];
                         {
                             const attr = c.getAttribute(key);
                             if (attr != null)
@@ -173,9 +189,9 @@ var api;
         renderStyles(njq, c, changed) {
             if (changed) {
                 {
-                    let array129 = c.getChangedStyles();
-                    for (let index128 = 0; index128 < array129.length; index128++) {
-                        let key = array129[index128];
+                    let array259 = c.getChangedStyles();
+                    for (let index258 = 0; index258 < array259.length; index258++) {
+                        let key = array259[index258];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -184,9 +200,9 @@ var api;
             }
             else {
                 {
-                    let array131 = c.getStyleNames();
-                    for (let index130 = 0; index130 < array131.length; index130++) {
-                        let key = array131[index130];
+                    let array261 = c.getStyleNames();
+                    for (let index260 = 0; index260 < array261.length; index260++) {
+                        let key = array261[index260];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -209,8 +225,8 @@ var api;
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet = styleelem.sheet;
-                for (let index132 = 0; index132 < rules.length; index132++) {
-                    let rule = rules[index132];
+                for (let index262 = 0; index262 < rules.length; index262++) {
+                    let rule = rules[index262];
                     sheet.insertRule(rule);
                 }
             }
@@ -360,27 +376,80 @@ var api;
         constructor(message, errorCode) {
             if (((typeof message === 'string') || message === null) && ((typeof errorCode === 'number') || errorCode === null)) {
                 let __args = arguments;
-                super("Validation Error");
+                super(message);
+                if (this.code === undefined) {
+                    this.code = 0;
+                }
                 this.errors = (new Array());
-                ValidationException.addError(message, errorCode, this);
+                this.code = errorCode;
             }
             else if (((typeof message === 'number') || message === null) && errorCode === undefined) {
                 let __args = arguments;
                 let errorCode = __args[0];
                 super();
+                if (this.code === undefined) {
+                    this.code = 0;
+                }
                 this.errors = (new Array());
-                ValidationException.addError("", errorCode, this);
+                this.code = errorCode;
             }
             else if (message === undefined && errorCode === undefined) {
                 let __args = arguments;
                 super();
+                if (this.code === undefined) {
+                    this.code = 0;
+                }
                 this.errors = (new Array());
             }
             else
                 throw new Error('invalid overload');
         }
-        static addError(msg, code, e) {
-            eval("if(!e[\'errors\']){e[\'errors\'] = [];}e[\'errors\'].push({\'msg\':msg, \'code\':code});");
+        static throwError$java_lang_String$int(msg, code) {
+            throw new ValidationException(msg, code);
+        }
+        static throwError$java_lang_String$jsweet_dom_ValidityState(msg, state) {
+            if (!state.valid) {
+                if (state.badInput) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.badInput);
+                }
+                else if (state.customError) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.customError);
+                }
+                else if (state.patternMismatch) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.patternMismatch);
+                }
+                else if (state.rangeOverflow) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.rangeOverflow);
+                }
+                else if (state.rangeUnderflow) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.rangeUnderflow);
+                }
+                else if (state.stepMismatch) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.stepMismatch);
+                }
+                else if (state.tooLong) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.tooLong);
+                }
+                else if (state.typeMismatch) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.typeMismatch);
+                }
+                else if (state.valueMissing) {
+                    ValidationException.throwError$java_lang_String$int(msg, ValidationException.valueMissing);
+                }
+            }
+        }
+        static throwError(msg, state) {
+            if (((typeof msg === 'string') || msg === null) && ((state != null && state instanceof ValidityState) || state === null)) {
+                return api.ValidationException.throwError$java_lang_String$jsweet_dom_ValidityState(msg, state);
+            }
+            else if (((typeof msg === 'string') || msg === null) && ((typeof state === 'number') || state === null)) {
+                return api.ValidationException.throwError$java_lang_String$int(msg, state);
+            }
+            else
+                throw new Error('invalid overload');
+        }
+        getCode() {
+            return this.code;
         }
     }
     /**
@@ -435,6 +504,15 @@ var api;
      * <code>required</code> attribute, but no value.
      */
     ValidationException.valueMissing = 8;
+    /**
+     * Is a <code>Numeric</code> indicating the value less than the specified
+     * <code>minlength</code> for {@link JSTextInput}
+     * component.
+     * <em><strong>Note:</strong> This will never be <code>true</code> in Gecko,
+     * because elements' values are prevented from being shorter than
+     * <code>minlength</code>.</em>
+     */
+    ValidationException.tooShort = 9;
     /**
      *
      */
@@ -569,8 +647,8 @@ var table;
          * @return {number}
          */
         getColumnIndex(columnIdentifier) {
-            for (let index133 = 0; index133 < this.columns.length; index133++) {
-                let col = this.columns[index133];
+            for (let index263 = 0; index263 < this.columns.length; index263++) {
+                let col = this.columns[index263];
                 {
                     if (col.identifier === columnIdentifier) {
                         return (this.columns.indexOf(col) | 0);
@@ -911,9 +989,9 @@ var util;
         static visit(designable, visitor) {
             visitor.doVisit(designable);
             {
-                let array135 = designable.getChildren();
-                for (let index134 = 0; index134 < array135.length; index134++) {
-                    let child = array135[index134];
+                let array265 = designable.getChildren();
+                for (let index264 = 0; index264 < array265.length; index264++) {
+                    let child = array265[index264];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -923,8 +1001,8 @@ var util;
         static getTags(type) {
             const html5tags = (window["html5tags"]);
             const result = (new Array());
-            for (let index136 = 0; index136 < html5tags.length; index136++) {
-                let html5tag = html5tags[index136];
+            for (let index266 = 0; index266 < html5tags.length; index266++) {
+                let html5tag = html5tags[index266];
                 {
                     const stype = html5tag["type"];
                     if (stype === type || type === "*") {
@@ -949,8 +1027,8 @@ var util;
             }
             const parts = property.split(".");
             let tmp = obj;
-            for (let index137 = 0; index137 < parts.length; index137++) {
-                let part = parts[index137];
+            for (let index267 = 0; index267 < parts.length; index267++) {
+                let part = parts[index267];
                 {
                     tmp = PropertyUtil.getValue(tmp, part);
                 }
@@ -1016,8 +1094,8 @@ var util;
             const result = new Object();
             if ( /* contains */(hash.indexOf("?") != -1)) {
                 const kvs = hash.split("?")[1].split("&");
-                for (let index138 = 0; index138 < kvs.length; index138++) {
-                    let kv = kvs[index138];
+                for (let index268 = 0; index268 < kvs.length; index268++) {
+                    let kv = kvs[index268];
                     {
                         const akv = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1101,8 +1179,8 @@ class JSContainer {
         console.log("firing:" + key + " on " + this.getName());
         const listeners = this.getListeners()[key];
         if (listeners != null && listeners.length > 0) {
-            for (let index139 = 0; index139 < listeners.length; index139++) {
-                let l = listeners[index139];
+            for (let index269 = 0; index269 < listeners.length; index269++) {
+                let l = listeners[index269];
                 {
                     l.performAction(this, evt);
                 }
@@ -1128,9 +1206,9 @@ class JSContainer {
     }
     getChild(name) {
         {
-            let array141 = this.getChildren();
-            for (let index140 = 0; index140 < array141.length; index140++) {
-                let child = array141[index140];
+            let array271 = this.getChildren();
+            for (let index270 = 0; index270 < array271.length; index270++) {
+                let child = array271[index270];
                 {
                     if (child.getName() === name) {
                         return child;
@@ -1313,14 +1391,14 @@ class JSContainer {
         const aStyles = styles.split(" ");
         const toAdds = styleClass.split(" ");
         let res = "";
-        for (let index142 = 0; index142 < toAdds.length; index142++) {
-            let toAdd = toAdds[index142];
+        for (let index272 = 0; index272 < toAdds.length; index272++) {
+            let toAdd = toAdds[index272];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0) {
                     let add = true;
-                    for (let index143 = 0; index143 < aStyles.length; index143++) {
-                        let style = aStyles[index143];
+                    for (let index273 = 0; index273 < aStyles.length; index273++) {
+                        let style = aStyles[index273];
                         {
                             style = style.trim();
                             if (style.length > 0) {
@@ -1356,8 +1434,8 @@ class JSContainer {
             return false;
         }
         const aStyles = styles.split(" ");
-        for (let index144 = 0; index144 < aStyles.length; index144++) {
-            let style = aStyles[index144];
+        for (let index274 = 0; index274 < aStyles.length; index274++) {
+            let style = aStyles[index274];
             {
                 style = style.trim();
                 if (style !== "") {
@@ -1386,8 +1464,8 @@ class JSContainer {
     removeClass(cls) {
         if (cls != null && cls.trim() !== "") {
             const toremove = cls.split(" ");
-            for (let index145 = 0; index145 < toremove.length; index145++) {
-                let s = toremove[index145];
+            for (let index275 = 0; index275 < toremove.length; index275++) {
+                let s = toremove[index275];
                 {
                     this.removeSingleClass(s);
                 }
@@ -1400,8 +1478,8 @@ class JSContainer {
         if (cl != null && cl.length > 0) {
             const classes = cl.split(" ");
             let result = "";
-            for (let index146 = 0; index146 < classes.length; index146++) {
-                let scl = classes[index146];
+            for (let index276 = 0; index276 < classes.length; index276++) {
+                let scl = classes[index276];
                 {
                     if (scl !== cls) {
                         if (result === "") {
@@ -1469,9 +1547,9 @@ class JSContainer {
         let i = 0;
         let added = false;
         {
-            let array148 = this.getChildren();
-            for (let index147 = 0; index147 < array148.length; index147++) {
-                let c = array148[index147];
+            let array278 = this.getChildren();
+            for (let index277 = 0; index277 < array278.length; index277++) {
+                let c = array278[index277];
                 {
                     if (i === index) {
                         children.push(child);
@@ -1709,9 +1787,9 @@ class JSContainer {
         if (!b) {
             this.elem_ = null;
             {
-                let array150 = this.getChildren();
-                for (let index149 = 0; index149 < array150.length; index149++) {
-                    let child = array150[index149];
+                let array280 = this.getChildren();
+                for (let index279 = 0; index279 < array280.length; index279++) {
+                    let child = array280[index279];
                     {
                         child.setRendered(b);
                     }
@@ -1785,22 +1863,22 @@ class JSContainer {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
             const tmp = (new Array());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for (let index151 = 0; index151 < renderers.length; index151++) {
-                let r = renderers[index151];
+            for (let index281 = 0; index281 < renderers.length; index281++) {
+                let r = renderers[index281];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for (let index152 = 0; index152 < renderers.length; index152++) {
-            let renderer = renderers[index152];
+        for (let index282 = 0; index282 < renderers.length; index282++) {
+            let renderer = renderers[index282];
             renderer.doRender(this, parent);
         }
         {
-            let array154 = this.getChildren();
-            for (let index153 = 0; index153 < array154.length; index153++) {
-                let child = array154[index153];
+            let array284 = this.getChildren();
+            for (let index283 = 0; index283 < array284.length; index283++) {
+                let child = array284[index283];
                 {
                     child['render$']();
                 }
@@ -1837,8 +1915,8 @@ class JSContainer {
         const previous = this.d["data"];
         if (previous != null && previous instanceof Array) {
             const arData = previous;
-            for (let index155 = 0; index155 < arData.length; index155++) {
-                let line = arData[index155];
+            for (let index285 = 0; index285 < arData.length; index285++) {
+                let line = arData[index285];
                 {
                     const value = line["value"];
                     this.setAttribute(value, null);
@@ -1848,9 +1926,9 @@ class JSContainer {
         else {
             if (previous != null) {
                 {
-                    let array157 = Object.keys(previous);
-                    for (let index156 = 0; index156 < array157.length; index156++) {
-                        let key = array157[index156];
+                    let array287 = Object.keys(previous);
+                    for (let index286 = 0; index286 < array287.length; index286++) {
+                        let key = array287[index286];
                         {
                             this.setAttribute(key, null);
                         }
@@ -1862,8 +1940,8 @@ class JSContainer {
         if (data != null) {
             if (data != null && data instanceof Array) {
                 const arData = data;
-                for (let index158 = 0; index158 < arData.length; index158++) {
-                    let line = arData[index158];
+                for (let index288 = 0; index288 < arData.length; index288++) {
+                    let line = arData[index288];
                     {
                         const text = line["text"];
                         const value = line["value"];
@@ -1873,9 +1951,9 @@ class JSContainer {
             }
             else {
                 {
-                    let array160 = Object.keys(data);
-                    for (let index159 = 0; index159 < array160.length; index159++) {
-                        let key = array160[index159];
+                    let array290 = Object.keys(data);
+                    for (let index289 = 0; index289 < array290.length; index289++) {
+                        let key = array290[index289];
                         {
                             this.setAttribute(key, data[key]);
                         }
@@ -1899,9 +1977,9 @@ class JSContainer {
         const clsss = parent.getAttribute("class");
         if (clsss != null) {
             {
-                let array162 = parent.getAttribute("class").split(" ");
-                for (let index161 = 0; index161 < array162.length; index161++) {
-                    let s = array162[index161];
+                let array292 = parent.getAttribute("class").split(" ");
+                for (let index291 = 0; index291 < array292.length; index291++) {
+                    let s = array292[index291];
                     {
                         if (s.trim() === cls)
                             return parent;
@@ -2043,8 +2121,8 @@ class CardLayout extends JSContainer {
      * @return {CardLayout} - this
      */
     addItems(...items) {
-        for (let index163 = 0; index163 < items.length; index163++) {
-            let item = items[index163];
+        for (let index293 = 0; index293 < items.length; index293++) {
+            let item = items[index293];
             {
                 this.addItem(item);
             }
@@ -2080,9 +2158,9 @@ class CardLayout extends JSContainer {
     getIndex(name) {
         let index = 0;
         {
-            let array165 = this.getChildren();
-            for (let index164 = 0; index164 < array165.length; index164++) {
-                let child = array165[index164];
+            let array295 = this.getChildren();
+            for (let index294 = 0; index294 < array295.length; index294++) {
+                let child = array295[index294];
                 {
                     if (child.getName() === name) {
                         return index;
@@ -2222,9 +2300,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array167 = this.getChildren();
-            for (let index166 = 0; index166 < array167.length; index166++) {
-                let child = array167[index166];
+            let array297 = this.getChildren();
+            for (let index296 = 0; index296 < array297.length; index296++) {
+                let child = array297[index296];
                 {
                     if (child.getName() === name) {
                         const evt = new CustomEvent("activate");
@@ -2267,9 +2345,9 @@ class CardLayout extends JSContainer {
     refresh() {
         const def = this.getDefault();
         {
-            let array169 = this.getChildren();
-            for (let index168 = 0; index168 < array169.length; index168++) {
-                let r = array169[index168];
+            let array299 = this.getChildren();
+            for (let index298 = 0; index298 < array299.length; index298++) {
+                let r = array299[index298];
                 {
                     if (r.getName() === def) {
                         r.setStyle("display", null);
@@ -2465,8 +2543,8 @@ class HTMLTemplateContainer extends JSContainer {
                 const tag = tm.tagName;
                 this.setTag(tag);
                 const attrs = tm.attributes;
-                for (let index170 = 0; index170 < attrs.length; index170++) {
-                    let att = attrs[index170];
+                for (let index300 = 0; index300 < attrs.length; index300++) {
+                    let att = attrs[index300];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -2920,10 +2998,6 @@ var input;
     class JSInput extends JSContainer {
         constructor(name) {
             super(name, "input");
-            this.validators = (new Array());
-        }
-        addValidator(validator) {
-            this.validators.push(validator);
         }
         setSize(size) {
             this.setAttribute("size", size + "");
@@ -3033,48 +3107,6 @@ var input;
         }
         /**
          *
-         * @param {string} msg
-         * The message to add in the validation context
-         * @param {ValidityState} state
-         * The ValidityState returned
-         * @param {api.ValidationException} e
-         * The validation exception to add to error context
-         * @return {api.ValidationException} The current instance of the {@link ValidationException}
-         */
-        static addError(msg, state, e) {
-            if (!state.valid) {
-                if (state.badInput) {
-                    api.ValidationException.addError(msg, api.ValidationException.badInput, e);
-                }
-                else if (state.customError) {
-                    api.ValidationException.addError(msg, api.ValidationException.customError, e);
-                }
-                else if (state.patternMismatch) {
-                    api.ValidationException.addError(msg, api.ValidationException.patternMismatch, e);
-                }
-                else if (state.rangeOverflow) {
-                    api.ValidationException.addError(msg, api.ValidationException.rangeOverflow, e);
-                }
-                else if (state.rangeUnderflow) {
-                    api.ValidationException.addError(msg, api.ValidationException.rangeUnderflow, e);
-                }
-                else if (state.stepMismatch) {
-                    api.ValidationException.addError(msg, api.ValidationException.stepMismatch, e);
-                }
-                else if (state.tooLong) {
-                    api.ValidationException.addError(msg, api.ValidationException.tooLong, e);
-                }
-                else if (state.typeMismatch) {
-                    api.ValidationException.addError(msg, api.ValidationException.typeMismatch, e);
-                }
-                else if (state.valueMissing) {
-                    api.ValidationException.addError(msg, api.ValidationException.valueMissing, e);
-                }
-            }
-            return e;
-        }
-        /**
-         *
          */
         validate() {
             let valid = true;
@@ -3084,17 +3116,7 @@ var input;
                 const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
-                    JSInput.addError(el.validationMessage, el.validity, e);
-                }
-            }
-            for (let index171 = 0; index171 < this.validators.length; index171++) {
-                let v = this.validators[index171];
-                {
-                    const b = v.validate(this);
-                    if (!b) {
-                        valid = false;
-                        api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
-                    }
+                    api.ValidationException.throwError$java_lang_String$jsweet_dom_ValidityState(el.validationMessage, el.validity);
                 }
             }
             const validate = new CustomEvent("validate");
@@ -3229,18 +3251,14 @@ var input;
             if (this.previousValue === undefined) {
                 this.previousValue = null;
             }
-            this.validators = (new Array());
             if (this.data === undefined) {
                 this.data = null;
             }
         }
-        addValidator(validator) {
-            this.validators.push(validator);
-        }
         setOptions$java_lang_String(options) {
             const opts = options.split("\n");
-            for (let index172 = 0; index172 < opts.length; index172++) {
-                let opt = opts[index172];
+            for (let index301 = 0; index301 < opts.length; index301++) {
+                let opt = opts[index301];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3356,8 +3374,8 @@ var input;
             if (ele != null) {
                 if (ele.multiple) {
                     const result = (new Array());
-                    for (let index173 = 0; index173 < ele.children.length; index173++) {
-                        let e = ele.children[index173];
+                    for (let index302 = 0; index302 < ele.children.length; index302++) {
+                        let e = ele.children[index302];
                         {
                             const opt = e;
                             if (opt.selected)
@@ -3373,9 +3391,9 @@ var input;
             else {
                 const val = this.getAttribute("value");
                 {
-                    let array175 = this.getChildren();
-                    for (let index174 = 0; index174 < array175.length; index174++) {
-                        let opt = array175[index174];
+                    let array304 = this.getChildren();
+                    for (let index303 = 0; index303 < array304.length; index303++) {
+                        let opt = array304[index303];
                         {
                             if (opt.getAttribute("value") === val) {
                                 return opt.getValue();
@@ -3413,13 +3431,13 @@ var input;
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array177 = this.getChildren();
-                    for (let index176 = 0; index176 < array177.length; index176++) {
-                        let opt = array177[index176];
+                    let array306 = this.getChildren();
+                    for (let index305 = 0; index305 < array306.length; index305++) {
+                        let opt = array306[index305];
                         {
                             opt.setSelected(false);
-                            for (let index178 = 0; index178 < arrVal.length; index178++) {
-                                let val = arrVal[index178];
+                            for (let index307 = 0; index307 < arrVal.length; index307++) {
+                                let val = arrVal[index307];
                                 {
                                     if (opt.getAttribute("value") === val) {
                                         opt.setSelected(true);
@@ -3432,9 +3450,9 @@ var input;
             }
             else {
                 {
-                    let array180 = this.getChildren();
-                    for (let index179 = 0; index179 < array180.length; index179++) {
-                        let opt = array180[index179];
+                    let array309 = this.getChildren();
+                    for (let index308 = 0; index308 < array309.length; index308++) {
+                        let opt = array309[index308];
                         {
                             opt.setSelected(false);
                         }
@@ -3461,17 +3479,7 @@ var input;
                 const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
-                    input.JSInput.addError(el.validationMessage, el.validity, e);
-                }
-            }
-            for (let index181 = 0; index181 < this.validators.length; index181++) {
-                let v = this.validators[index181];
-                {
-                    const b = v.validate(this);
-                    if (!b) {
-                        valid = false;
-                        api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
-                    }
+                    api.ValidationException.throwError$java_lang_String$jsweet_dom_ValidityState(el.validationMessage, el.validity);
                 }
             }
             const validate = new CustomEvent("validate");
@@ -3496,8 +3504,8 @@ var input;
         setData(data_) {
             this.clearChildren();
             this.setRendered(false);
-            for (let index182 = 0; index182 < data_.length; index182++) {
-                let o = data_[index182];
+            for (let index310 = 0; index310 < data_.length; index310++) {
+                let o = data_[index310];
                 {
                     if (o.hasOwnProperty("value")) {
                         const value = o["value"];
@@ -3520,9 +3528,9 @@ var input;
             const result = (new Array());
             if (this.isMultiple()) {
                 {
-                    let array184 = obj;
-                    for (let index183 = 0; index183 < array184.length; index183++) {
-                        let o = array184[index183];
+                    let array312 = obj;
+                    for (let index311 = 0; index311 < array312.length; index311++) {
+                        let o = array312[index311];
                         {
                             const item = this.findItem(o);
                             if (item != null) {
@@ -3547,8 +3555,8 @@ var input;
         }
         findItem(value) {
             if (this.data != null) {
-                for (let index185 = 0; index185 < this.data.length; index185++) {
-                    let o = this.data[index185];
+                for (let index313 = 0; index313 < this.data.length; index313++) {
+                    let o = this.data[index313];
                     {
                         let val = o["value"];
                         val = val + "";
@@ -3579,10 +3587,6 @@ var input;
     class JSTextArea extends JSContainer {
         constructor(name) {
             super(name, "textarea");
-            this.validators = (new Array());
-        }
-        addValidator(validator) {
-            this.validators.push(validator);
         }
         setRequired(b) {
             if (b) {
@@ -3641,17 +3645,7 @@ var input;
                 const el = nat;
                 valid = el.checkValidity();
                 if (!valid) {
-                    input.JSInput.addError(el.validationMessage, el.validity, e);
-                }
-            }
-            for (let index186 = 0; index186 < this.validators.length; index186++) {
-                let v = this.validators[index186];
-                {
-                    const b = v.validate(this);
-                    if (!b) {
-                        valid = false;
-                        api.ValidationException.addError(v.getErrorMessage(), api.ValidationException.customError, e);
-                    }
+                    api.ValidationException.throwError$java_lang_String$jsweet_dom_ValidityState(el.validationMessage, el.validity);
                 }
             }
             const validate = new CustomEvent("validate");
@@ -3898,13 +3892,13 @@ var input;
             let stWidth = this.getStyle(name);
             if (stWidth != null && stWidth.length > 0) {
                 {
-                    let array188 = /* Enum.values */ function () { let result = []; for (let val in api.Units) {
+                    let array315 = /* Enum.values */ function () { let result = []; for (let val in api.Units) {
                         if (!isNaN(val)) {
                             result.push(parseInt(val, 10));
                         }
                     } return result; }();
-                    for (let index187 = 0; index187 < array188.length; index187++) {
-                        let u = array188[index187];
+                    for (let index314 = 0; index314 < array315.length; index314++) {
+                        let u = array315[index314];
                         {
                             stWidth = /* replace */ stWidth.split(api.Units["_$wrappers"][u].getDisplay()).join("");
                         }

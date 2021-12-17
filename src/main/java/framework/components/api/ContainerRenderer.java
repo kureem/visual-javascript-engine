@@ -21,28 +21,22 @@ public class ContainerRenderer implements Renderer<Renderable> {
 	public  static double timeSpent =0;
 
 	
-public static HTMLElement getElementById(String id) {
+	public static HTMLElement getElementById(String id) {
 		
 		
 		return document.getElementById(id);
-		/*HTMLElement result = null;
+	}
+	
+	
+	public void decorate(Renderable renderable) {
 		
-		String js = " var elems = document.getElementsByClassName(id);\n" + 
-				"                     if (elems.length > 0) {\n" + 
-				"                         result = elems[0];\n" + 
-				"                     }\n" + 
-				"                     else {\n" + 
-				"                         result = null;\n" + 
-				"                     }";
-		
-		eval(js);
-		
-		return result;*/
 	}
 
 	public void doRender(Renderable c, HTMLElement root) {
-		HTMLElement jq = c.getElement();//ContainerRenderer.getElementById(c.getId());
+
 		
+		
+		HTMLElement jq = c.getElement();//ContainerRenderer.getElementById(c.getId());
 		String tag = c.getTag();
 		boolean rendered = c.isRendered();
 		String name = c.getName();
@@ -101,25 +95,11 @@ public static HTMLElement getElementById(String id) {
 					}
 
 					if (nextSib != null) {
-						//next is rendered
 						Node p = rparent.getElement();//ContainerRenderer.getElementById(rparent.getId());
 						p.insertBefore(njq, nextSib.getElement() /*ContainerRenderer.getElementById(nextSib.getId())*/);
 					} else {
-						//next sibbling is not rendered
-						//find previous sibbling
-						//
-						/*
-						 * boolean inserted = false; if(index > 0) { Renderable uiprevious =
-						 * rparent.getChildren().$get(index-1); if(uiprevious.isRendered()) {
-						 * HTMLElement previous = uiprevious.getElement(); if(previous != null) {
-						 * //HTMLElement p = rparent.getElement(); inserted = true;
-						 * previous.insertAdjacentElement("afterend", previous); } } }
-						 */						
 						try{
 							rparent.getElement().appendChild(njq);
-							//if(!inserted) {
-								//ContainerRenderer.getElementById(rparent.getId()).appendChild(njq);
-							//}
 						}catch(Exception e){
 							e.printStackTrace();
 						}

@@ -2,6 +2,7 @@ declare namespace api {
     class ContainerRenderer implements api.Renderer<api.Renderable> {
         static timeSpent: number;
         static getElementById(id: string): HTMLElement;
+        decorate(renderable: api.Renderable): void;
         doRender(c: api.Renderable, root: HTMLElement): void;
         doNothing(r: api.Renderable): void;
         execCommands(njq: Element, container: api.Renderable): void;
@@ -586,6 +587,7 @@ declare namespace api {
      * @author Rossaye Abdool Kureem Apr 15, 2018
      */
     class ValidationException extends Error {
+        code: number;
         /**
          * Is a <code>Numeric</code> indicating the user has provided input that the
          * browser is unable to convert.
@@ -639,20 +641,24 @@ declare namespace api {
          */
         static valueMissing: number;
         /**
+         * Is a <code>Numeric</code> indicating the value less than the specified
+         * <code>minlength</code> for {@link JSTextInput}
+         * component.
+         * <em><strong>Note:</strong> This will never be <code>true</code> in Gecko,
+         * because elements' values are prevented from being shorter than
+         * <code>minlength</code>.</em>
+         */
+        static tooShort: number;
+        /**
          *
          */
         static serialVersionUID: number;
         errors: Array<Object>;
         constructor(message?: any, errorCode?: any);
-        static addError(msg: string, code: number, e: ValidationException): void;
-    }
-}
-declare namespace api {
-    interface Validator<T> {
-        validate(source: api.InputField<T>): boolean;
-        getErrorMessage(): string;
-        getSuccessMessage(): string;
-        supports(clazz: any): any;
+        static throwError$java_lang_String$int(msg: string, code: number): void;
+        static throwError$java_lang_String$jsweet_dom_ValidityState(msg: string, state: ValidityState): void;
+        static throwError(msg?: any, state?: any): any;
+        getCode(): number;
     }
 }
 declare namespace table {
@@ -1764,9 +1770,7 @@ declare namespace input {
 }
 declare namespace input {
     class JSInput<T> extends JSContainer implements api.InputField<T> {
-        validators: Array<api.Validator<T>>;
         constructor(name: string);
-        addValidator(validator: api.Validator<T>): void;
         setSize(size: number): void;
         setPattern(pattern: string): void;
         setRequired(b: boolean): JSInput<T>;
@@ -1782,17 +1786,6 @@ declare namespace input {
         setDateValue(date: Date): void;
         getBinding(): string;
         setPlaceHolder(placeholder: string): JSInput<T>;
-        /**
-         *
-         * @param {string} msg
-         * The message to add in the validation context
-         * @param {ValidityState} state
-         * The ValidityState returned
-         * @param {api.ValidationException} e
-         * The validation exception to add to error context
-         * @return {api.ValidationException} The current instance of the {@link ValidationException}
-         */
-        static addError(msg: string, state: ValidityState, e: api.ValidationException): api.ValidationException;
         /**
          *
          */
@@ -1861,10 +1854,8 @@ declare namespace input {
 declare namespace input {
     class JSSelect extends JSContainer implements api.InputField<any> {
         previousValue: string;
-        validators: Array<api.Validator<any>>;
         data: Array<Object>;
         constructor(name: string);
-        addValidator(validator: api.Validator<any>): void;
         setOptions$java_lang_String(options: string): JSSelect;
         setOptions(options?: any): any;
         addOption$framework_components_input_JSOption(option: input.JSOption): JSSelect;
@@ -1920,9 +1911,7 @@ declare namespace input {
 }
 declare namespace input {
     class JSTextArea extends JSContainer implements api.InputField<string> {
-        validators: Array<api.Validator<string>>;
         constructor(name: string);
-        addValidator(validator: api.Validator<string>): void;
         setRequired(b: boolean): JSTextArea;
         setDisabled(b: boolean): JSTextArea;
         /**

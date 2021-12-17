@@ -88,6 +88,8 @@
 					<dtsOut>src/main/resources/META-INF/resources/typings/${project.artifactId}/${project.version}</dtsOut>
 					<targetVersion>ES6</targetVersion>
 					<encoding>UTF-8</encoding>
+					<sourceMap>false</sourceMap>
+					<header>header.txt</header>
 				</configuration>
 				<executions>
 					<execution>

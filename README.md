@@ -34,6 +34,48 @@ cd visual-javascript-startup
 mvn generate-sources
 
 ```
+### Get Started
+```java
+
+package framework.components;
+
+import framework.components.api.EventListener;
+import framework.components.api.Renderable;
+import jsweet.dom.Event;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		JSContainer app = new JSContainer("myApp", "div");
+		
+		JSContainer link = new JSContainer("a");
+		link.setAttribute("href", "https://www.google.com");
+		link.setHtml("Google");
+		link.setStyle("color", "red");
+		
+		app.addChild(link);
+		
+		JSContainer button = new JSContainer("button");
+		button.setHtml("Click Me");
+		button.addEventListener(new EventListener() {
+			
+			@Override
+			public void performAction(Renderable source, Event evt) {
+				link.setHtml("Apple");
+				link.setAttribute("href", "https://wwww.apple.com");
+				app.setRendered(false);
+			}
+		}, "click");
+		
+		app.addChild(button);
+		
+		app.render();
+	}
+}
+
+
+```
 
 The project contains a few examples that will help you start using the library.
 

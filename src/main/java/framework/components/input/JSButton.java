@@ -9,6 +9,7 @@ import framework.components.api.InputType;
  * @author Kureem Rossaye
  *
  */
+
 public class JSButton extends JSContainer{
 
 	/**
