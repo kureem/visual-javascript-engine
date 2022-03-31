@@ -97,8 +97,8 @@ var api;
                 const me = c;
                 const component = me;
                 this.doNothing(component);
-                for (let index251 = 0; index251 < scripts.length; index251++) {
-                    let scr = scripts[index251];
+                for (let index186 = 0; index186 < scripts.length; index186++) {
+                    let scr = scripts[index186];
                     {
                         eval(scr);
                     }
@@ -123,14 +123,14 @@ var api;
         }
         renderEvents(njq, c) {
             const keys = Object.keys(c.getListeners());
-            for (let index252 = 0; index252 < keys.length; index252++) {
-                let key = keys[index252];
+            for (let index187 = 0; index187 < keys.length; index187++) {
+                let key = keys[index187];
                 {
                     const listeners = c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
-                            for (let index253 = 0; index253 < listeners.length; index253++) {
-                                let l = listeners[index253];
+                            for (let index188 = 0; index188 < listeners.length; index188++) {
+                                let l = listeners[index188];
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -144,9 +144,9 @@ var api;
         renderAttributes(njq, c, changed) {
             if (changed) {
                 {
-                    let array255 = c.getChangedAttributes();
-                    for (let index254 = 0; index254 < array255.length; index254++) {
-                        let key = array255[index254];
+                    let array190 = c.getChangedAttributes();
+                    for (let index189 = 0; index189 < array190.length; index189++) {
+                        let key = array190[index189];
                         {
                             const attr = c.getAttribute(key);
                             if (attr == null) {
@@ -161,9 +161,9 @@ var api;
             }
             else {
                 {
-                    let array257 = c.getAttributeNames();
-                    for (let index256 = 0; index256 < array257.length; index256++) {
-                        let key = array257[index256];
+                    let array192 = c.getAttributeNames();
+                    for (let index191 = 0; index191 < array192.length; index191++) {
+                        let key = array192[index191];
                         {
                             const attr = c.getAttribute(key);
                             if (attr != null)
@@ -189,9 +189,9 @@ var api;
         renderStyles(njq, c, changed) {
             if (changed) {
                 {
-                    let array259 = c.getChangedStyles();
-                    for (let index258 = 0; index258 < array259.length; index258++) {
-                        let key = array259[index258];
+                    let array194 = c.getChangedStyles();
+                    for (let index193 = 0; index193 < array194.length; index193++) {
+                        let key = array194[index193];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -200,9 +200,9 @@ var api;
             }
             else {
                 {
-                    let array261 = c.getStyleNames();
-                    for (let index260 = 0; index260 < array261.length; index260++) {
-                        let key = array261[index260];
+                    let array196 = c.getStyleNames();
+                    for (let index195 = 0; index195 < array196.length; index195++) {
+                        let key = array196[index195];
                         {
                             njq.style.setProperty(key, c.getStyle(key));
                         }
@@ -225,8 +225,8 @@ var api;
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet = styleelem.sheet;
-                for (let index262 = 0; index262 < rules.length; index262++) {
-                    let rule = rules[index262];
+                for (let index197 = 0; index197 < rules.length; index197++) {
+                    let rule = rules[index197];
                     sheet.insertRule(rule);
                 }
             }
@@ -647,8 +647,8 @@ var table;
          * @return {number}
          */
         getColumnIndex(columnIdentifier) {
-            for (let index263 = 0; index263 < this.columns.length; index263++) {
-                let col = this.columns[index263];
+            for (let index198 = 0; index198 < this.columns.length; index198++) {
+                let col = this.columns[index198];
                 {
                     if (col.identifier === columnIdentifier) {
                         return (this.columns.indexOf(col) | 0);
@@ -989,9 +989,9 @@ var util;
         static visit(designable, visitor) {
             visitor.doVisit(designable);
             {
-                let array265 = designable.getChildren();
-                for (let index264 = 0; index264 < array265.length; index264++) {
-                    let child = array265[index264];
+                let array200 = designable.getChildren();
+                for (let index199 = 0; index199 < array200.length; index199++) {
+                    let child = array200[index199];
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -1001,8 +1001,8 @@ var util;
         static getTags(type) {
             const html5tags = (window["html5tags"]);
             const result = (new Array());
-            for (let index266 = 0; index266 < html5tags.length; index266++) {
-                let html5tag = html5tags[index266];
+            for (let index201 = 0; index201 < html5tags.length; index201++) {
+                let html5tag = html5tags[index201];
                 {
                     const stype = html5tag["type"];
                     if (stype === type || type === "*") {
@@ -1027,8 +1027,8 @@ var util;
             }
             const parts = property.split(".");
             let tmp = obj;
-            for (let index267 = 0; index267 < parts.length; index267++) {
-                let part = parts[index267];
+            for (let index202 = 0; index202 < parts.length; index202++) {
+                let part = parts[index202];
                 {
                     tmp = PropertyUtil.getValue(tmp, part);
                 }
@@ -1094,8 +1094,8 @@ var util;
             const result = new Object();
             if ( /* contains */(hash.indexOf("?") != -1)) {
                 const kvs = hash.split("?")[1].split("&");
-                for (let index268 = 0; index268 < kvs.length; index268++) {
-                    let kv = kvs[index268];
+                for (let index203 = 0; index203 < kvs.length; index203++) {
+                    let kv = kvs[index203];
                     {
                         const akv = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1179,8 +1179,8 @@ class JSContainer {
         console.log("firing:" + key + " on " + this.getName());
         const listeners = this.getListeners()[key];
         if (listeners != null && listeners.length > 0) {
-            for (let index269 = 0; index269 < listeners.length; index269++) {
-                let l = listeners[index269];
+            for (let index204 = 0; index204 < listeners.length; index204++) {
+                let l = listeners[index204];
                 {
                     l.performAction(this, evt);
                 }
@@ -1206,9 +1206,9 @@ class JSContainer {
     }
     getChild(name) {
         {
-            let array271 = this.getChildren();
-            for (let index270 = 0; index270 < array271.length; index270++) {
-                let child = array271[index270];
+            let array206 = this.getChildren();
+            for (let index205 = 0; index205 < array206.length; index205++) {
+                let child = array206[index205];
                 {
                     if (child.getName() === name) {
                         return child;
@@ -1391,14 +1391,14 @@ class JSContainer {
         const aStyles = styles.split(" ");
         const toAdds = styleClass.split(" ");
         let res = "";
-        for (let index272 = 0; index272 < toAdds.length; index272++) {
-            let toAdd = toAdds[index272];
+        for (let index207 = 0; index207 < toAdds.length; index207++) {
+            let toAdd = toAdds[index207];
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0) {
                     let add = true;
-                    for (let index273 = 0; index273 < aStyles.length; index273++) {
-                        let style = aStyles[index273];
+                    for (let index208 = 0; index208 < aStyles.length; index208++) {
+                        let style = aStyles[index208];
                         {
                             style = style.trim();
                             if (style.length > 0) {
@@ -1434,8 +1434,8 @@ class JSContainer {
             return false;
         }
         const aStyles = styles.split(" ");
-        for (let index274 = 0; index274 < aStyles.length; index274++) {
-            let style = aStyles[index274];
+        for (let index209 = 0; index209 < aStyles.length; index209++) {
+            let style = aStyles[index209];
             {
                 style = style.trim();
                 if (style !== "") {
@@ -1464,8 +1464,8 @@ class JSContainer {
     removeClass(cls) {
         if (cls != null && cls.trim() !== "") {
             const toremove = cls.split(" ");
-            for (let index275 = 0; index275 < toremove.length; index275++) {
-                let s = toremove[index275];
+            for (let index210 = 0; index210 < toremove.length; index210++) {
+                let s = toremove[index210];
                 {
                     this.removeSingleClass(s);
                 }
@@ -1478,8 +1478,8 @@ class JSContainer {
         if (cl != null && cl.length > 0) {
             const classes = cl.split(" ");
             let result = "";
-            for (let index276 = 0; index276 < classes.length; index276++) {
-                let scl = classes[index276];
+            for (let index211 = 0; index211 < classes.length; index211++) {
+                let scl = classes[index211];
                 {
                     if (scl !== cls) {
                         if (result === "") {
@@ -1547,9 +1547,9 @@ class JSContainer {
         let i = 0;
         let added = false;
         {
-            let array278 = this.getChildren();
-            for (let index277 = 0; index277 < array278.length; index277++) {
-                let c = array278[index277];
+            let array213 = this.getChildren();
+            for (let index212 = 0; index212 < array213.length; index212++) {
+                let c = array213[index212];
                 {
                     if (i === index) {
                         children.push(child);
@@ -1787,9 +1787,9 @@ class JSContainer {
         if (!b) {
             this.elem_ = null;
             {
-                let array280 = this.getChildren();
-                for (let index279 = 0; index279 < array280.length; index279++) {
-                    let child = array280[index279];
+                let array215 = this.getChildren();
+                for (let index214 = 0; index214 < array215.length; index214++) {
+                    let child = array215[index214];
                     {
                         child.setRendered(b);
                     }
@@ -1863,22 +1863,22 @@ class JSContainer {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())) {
             const tmp = (new Array());
             tmp.push(JSContainer.defaultRenderer_$LI$());
-            for (let index281 = 0; index281 < renderers.length; index281++) {
-                let r = renderers[index281];
+            for (let index216 = 0; index216 < renderers.length; index216++) {
+                let r = renderers[index216];
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
-        for (let index282 = 0; index282 < renderers.length; index282++) {
-            let renderer = renderers[index282];
+        for (let index217 = 0; index217 < renderers.length; index217++) {
+            let renderer = renderers[index217];
             renderer.doRender(this, parent);
         }
         {
-            let array284 = this.getChildren();
-            for (let index283 = 0; index283 < array284.length; index283++) {
-                let child = array284[index283];
+            let array219 = this.getChildren();
+            for (let index218 = 0; index218 < array219.length; index218++) {
+                let child = array219[index218];
                 {
                     child['render$']();
                 }
@@ -1915,8 +1915,8 @@ class JSContainer {
         const previous = this.d["data"];
         if (previous != null && previous instanceof Array) {
             const arData = previous;
-            for (let index285 = 0; index285 < arData.length; index285++) {
-                let line = arData[index285];
+            for (let index220 = 0; index220 < arData.length; index220++) {
+                let line = arData[index220];
                 {
                     const value = line["value"];
                     this.setAttribute(value, null);
@@ -1926,9 +1926,9 @@ class JSContainer {
         else {
             if (previous != null) {
                 {
-                    let array287 = Object.keys(previous);
-                    for (let index286 = 0; index286 < array287.length; index286++) {
-                        let key = array287[index286];
+                    let array222 = Object.keys(previous);
+                    for (let index221 = 0; index221 < array222.length; index221++) {
+                        let key = array222[index221];
                         {
                             this.setAttribute(key, null);
                         }
@@ -1940,8 +1940,8 @@ class JSContainer {
         if (data != null) {
             if (data != null && data instanceof Array) {
                 const arData = data;
-                for (let index288 = 0; index288 < arData.length; index288++) {
-                    let line = arData[index288];
+                for (let index223 = 0; index223 < arData.length; index223++) {
+                    let line = arData[index223];
                     {
                         const text = line["text"];
                         const value = line["value"];
@@ -1951,9 +1951,9 @@ class JSContainer {
             }
             else {
                 {
-                    let array290 = Object.keys(data);
-                    for (let index289 = 0; index289 < array290.length; index289++) {
-                        let key = array290[index289];
+                    let array225 = Object.keys(data);
+                    for (let index224 = 0; index224 < array225.length; index224++) {
+                        let key = array225[index224];
                         {
                             this.setAttribute(key, data[key]);
                         }
@@ -1977,9 +1977,9 @@ class JSContainer {
         const clsss = parent.getAttribute("class");
         if (clsss != null) {
             {
-                let array292 = parent.getAttribute("class").split(" ");
-                for (let index291 = 0; index291 < array292.length; index291++) {
-                    let s = array292[index291];
+                let array227 = parent.getAttribute("class").split(" ");
+                for (let index226 = 0; index226 < array227.length; index226++) {
+                    let s = array227[index226];
                     {
                         if (s.trim() === cls)
                             return parent;
@@ -2121,8 +2121,8 @@ class CardLayout extends JSContainer {
      * @return {CardLayout} - this
      */
     addItems(...items) {
-        for (let index293 = 0; index293 < items.length; index293++) {
-            let item = items[index293];
+        for (let index228 = 0; index228 < items.length; index228++) {
+            let item = items[index228];
             {
                 this.addItem(item);
             }
@@ -2158,9 +2158,9 @@ class CardLayout extends JSContainer {
     getIndex(name) {
         let index = 0;
         {
-            let array295 = this.getChildren();
-            for (let index294 = 0; index294 < array295.length; index294++) {
-                let child = array295[index294];
+            let array230 = this.getChildren();
+            for (let index229 = 0; index229 < array230.length; index229++) {
+                let child = array230[index229];
                 {
                     if (child.getName() === name) {
                         return index;
@@ -2300,9 +2300,9 @@ class CardLayout extends JSContainer {
             return;
         }
         {
-            let array297 = this.getChildren();
-            for (let index296 = 0; index296 < array297.length; index296++) {
-                let child = array297[index296];
+            let array232 = this.getChildren();
+            for (let index231 = 0; index231 < array232.length; index231++) {
+                let child = array232[index231];
                 {
                     if (child.getName() === name) {
                         const evt = new CustomEvent("activate");
@@ -2345,9 +2345,9 @@ class CardLayout extends JSContainer {
     refresh() {
         const def = this.getDefault();
         {
-            let array299 = this.getChildren();
-            for (let index298 = 0; index298 < array299.length; index298++) {
-                let r = array299[index298];
+            let array234 = this.getChildren();
+            for (let index233 = 0; index233 < array234.length; index233++) {
+                let r = array234[index233];
                 {
                     if (r.getName() === def) {
                         r.setStyle("display", null);
@@ -2543,8 +2543,8 @@ class HTMLTemplateContainer extends JSContainer {
                 const tag = tm.tagName;
                 this.setTag(tag);
                 const attrs = tm.attributes;
-                for (let index300 = 0; index300 < attrs.length; index300++) {
-                    let att = attrs[index300];
+                for (let index235 = 0; index235 < attrs.length; index235++) {
+                    let att = attrs[index235];
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -3257,8 +3257,8 @@ var input;
         }
         setOptions$java_lang_String(options) {
             const opts = options.split("\n");
-            for (let index301 = 0; index301 < opts.length; index301++) {
-                let opt = opts[index301];
+            for (let index236 = 0; index236 < opts.length; index236++) {
+                let opt = opts[index236];
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -3374,8 +3374,8 @@ var input;
             if (ele != null) {
                 if (ele.multiple) {
                     const result = (new Array());
-                    for (let index302 = 0; index302 < ele.children.length; index302++) {
-                        let e = ele.children[index302];
+                    for (let index237 = 0; index237 < ele.children.length; index237++) {
+                        let e = ele.children[index237];
                         {
                             const opt = e;
                             if (opt.selected)
@@ -3391,9 +3391,9 @@ var input;
             else {
                 const val = this.getAttribute("value");
                 {
-                    let array304 = this.getChildren();
-                    for (let index303 = 0; index303 < array304.length; index303++) {
-                        let opt = array304[index303];
+                    let array239 = this.getChildren();
+                    for (let index238 = 0; index238 < array239.length; index238++) {
+                        let opt = array239[index238];
                         {
                             if (opt.getAttribute("value") === val) {
                                 return opt.getValue();
@@ -3431,13 +3431,13 @@ var input;
                 }
                 this.setAttribute("value", firstVal);
                 {
-                    let array306 = this.getChildren();
-                    for (let index305 = 0; index305 < array306.length; index305++) {
-                        let opt = array306[index305];
+                    let array241 = this.getChildren();
+                    for (let index240 = 0; index240 < array241.length; index240++) {
+                        let opt = array241[index240];
                         {
                             opt.setSelected(false);
-                            for (let index307 = 0; index307 < arrVal.length; index307++) {
-                                let val = arrVal[index307];
+                            for (let index242 = 0; index242 < arrVal.length; index242++) {
+                                let val = arrVal[index242];
                                 {
                                     if (opt.getAttribute("value") === val) {
                                         opt.setSelected(true);
@@ -3450,9 +3450,9 @@ var input;
             }
             else {
                 {
-                    let array309 = this.getChildren();
-                    for (let index308 = 0; index308 < array309.length; index308++) {
-                        let opt = array309[index308];
+                    let array244 = this.getChildren();
+                    for (let index243 = 0; index243 < array244.length; index243++) {
+                        let opt = array244[index243];
                         {
                             opt.setSelected(false);
                         }
@@ -3504,8 +3504,8 @@ var input;
         setData(data_) {
             this.clearChildren();
             this.setRendered(false);
-            for (let index310 = 0; index310 < data_.length; index310++) {
-                let o = data_[index310];
+            for (let index245 = 0; index245 < data_.length; index245++) {
+                let o = data_[index245];
                 {
                     if (o.hasOwnProperty("value")) {
                         const value = o["value"];
@@ -3528,9 +3528,9 @@ var input;
             const result = (new Array());
             if (this.isMultiple()) {
                 {
-                    let array312 = obj;
-                    for (let index311 = 0; index311 < array312.length; index311++) {
-                        let o = array312[index311];
+                    let array247 = obj;
+                    for (let index246 = 0; index246 < array247.length; index246++) {
+                        let o = array247[index246];
                         {
                             const item = this.findItem(o);
                             if (item != null) {
@@ -3555,8 +3555,8 @@ var input;
         }
         findItem(value) {
             if (this.data != null) {
-                for (let index313 = 0; index313 < this.data.length; index313++) {
-                    let o = this.data[index313];
+                for (let index248 = 0; index248 < this.data.length; index248++) {
+                    let o = this.data[index248];
                     {
                         let val = o["value"];
                         val = val + "";
@@ -3892,13 +3892,13 @@ var input;
             let stWidth = this.getStyle(name);
             if (stWidth != null && stWidth.length > 0) {
                 {
-                    let array315 = /* Enum.values */ function () { let result = []; for (let val in api.Units) {
+                    let array250 = /* Enum.values */ function () { let result = []; for (let val in api.Units) {
                         if (!isNaN(val)) {
                             result.push(parseInt(val, 10));
                         }
                     } return result; }();
-                    for (let index314 = 0; index314 < array315.length; index314++) {
-                        let u = array315[index314];
+                    for (let index249 = 0; index249 < array250.length; index249++) {
+                        let u = array250[index249];
                         {
                             stWidth = /* replace */ stWidth.split(api.Units["_$wrappers"][u].getDisplay()).join("");
                         }
