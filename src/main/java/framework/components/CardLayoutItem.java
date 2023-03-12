@@ -7,6 +7,7 @@ package framework.components;
  */
 public class CardLayoutItem extends JSContainer{
 
+	
 	/**
 	 * Instantiate a {@link CardLayoutItem} with specified name and tag
 	 * @param name - name of item
