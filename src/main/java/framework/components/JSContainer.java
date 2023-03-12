@@ -626,7 +626,7 @@ public class JSContainer implements Renderable {
 		if (current.lastIndexOf(listener) < 0) {
 			((Array<EventListener>) listeners.$get(type)).push(listener);
 		} else {
-			console.log("trap  coq");
+			console.log("already added.. ignoring");
 		}
 
 		return this;
