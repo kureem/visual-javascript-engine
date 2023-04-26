@@ -81,7 +81,11 @@ public class ContainerRenderer implements Renderer<Renderable> {
 				if (rparent instanceof TemplateRenderable) {
 					Element elem = rparent.getElement();
 					//Element elem = ContainerRenderer.getElementById(rparent.getId()).querySelector("[name=" + name +"]");
-					elem.parentElement.replaceChild(njq, elem);
+					Element toreplace = elem.querySelector("[name=" + name +"]");
+					if(toreplace != null) {
+						toreplace.parentElement.replaceChild(njq, toreplace);
+					}
+					//elem.parentElement.replaceChild(njq, elem);
 					//$("#" + parent.getId() + " [name=" + name + "]").replaceWith(njq);
 				} else {
 					
