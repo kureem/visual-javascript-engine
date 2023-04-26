@@ -1100,7 +1100,7 @@ declare class JSContainer implements api.Renderable {
      * the browser. This method is used internally by the engine
      *
      * @param {string} s
-     * A secret value know by the implementor of the framework. This
+     * A secret value known by the implementor of the framework. This
      * is to prevent any end user from invoking this method since it
      * is a public exposed method
      */
@@ -1146,6 +1146,19 @@ declare class JSContainer implements api.Renderable {
     addChild$framework_components_api_Renderable(container: api.Renderable): api.Renderable;
     addChild$java_lang_String$java_lang_String(name: string, tag: string): JSContainer;
     addChild$java_lang_String$java_lang_String$java_lang_String(name: string, tag: string, cls: string): JSContainer;
+    /**
+     * Adds a {@link JSContainer} to this component with the specified tag.<br />
+     * The added {@link JSContainer} will have the specified tag css class to it.<br />
+     * It will also be given the specified name.
+     *
+     * @param {string} name The name of the {@link JSContainer} added
+     *
+     * @param {string} tag  The tag of the {@link JSContainer} added
+     *
+     * @param {string} cls  The css class to be added on the added {@link JSContainer}
+     *
+     * @return {JSContainer} The Updated state if the current {@link JSContainer} for chaining.
+     */
     addChild(name?: any, tag?: any, cls?: any): any;
     isValidParent(parent: api.Renderable): boolean;
     /**
@@ -1365,11 +1378,12 @@ declare namespace JSContainer {
 }
 /**
  * Creates a new card layout container
+ *
  * @param {string} name - The name of the container.
- * @param {string} tag - The tag of the container
+ * @param {string} tag  - The tag of the container
  * @class
  * @extends JSContainer
- * @author Kureem Rossaye
+ * @author Kureem Rossaye<br>
  */
 declare class CardLayout extends JSContainer {
     currentActive: string;
@@ -1377,57 +1391,81 @@ declare class CardLayout extends JSContainer {
     constructor(name: string, tag: string);
     /**
      * Adds a {@link CardLayoutItem} to this container.
+     *
      * @param {CardLayoutItem} item - The item to add
      * @return {CardLayout} - this
      */
     addItem(item: CardLayoutItem): CardLayout;
     /**
-     * Adds  {@link CardLayoutItem}s to this container.
+     * Adds {@link CardLayoutItem}s to this container.
+     *
      * @param {framework.components.CardLayoutItem[]} items - The items to add
      * @return {CardLayout} - this
      */
     addItems(...items: CardLayoutItem[]): CardLayout;
     /**
      *
-     * @return {number} - The index of the currently active (visible) {@link CardLayoutItem} of this container
+     * @return {number} - The index of the currently active (visible) {@link CardLayoutItem}
+     * of this container
      */
     getCurrentIndex(): number;
     /**
      * Search and return the {@link CardLayoutItem} having the specified index
+     *
      * @param {number} index - The index of the {@link CardLayoutItem} searching for
      * @return {CardLayoutItem} - The {@link CardLayoutItem} item having specified index
      */
     getItem(index: number): CardLayoutItem;
     /**
-     * Searches for the {@link CardLayoutItem} having specified name, and returns its index.
-     * @param {string} name - The name of {@link CardLayoutItem} searching for
-     * @return {number} - The index of the {@link CardLayoutItem} having name specified
+     * Searches for the {@link CardLayoutItem} having specified name, and returns
+     * its index.
      *
+     * @param {string} name - The name of {@link CardLayoutItem} searching for
+     *
+     * @return {number} - The index of the {@link CardLayoutItem} having name specified
      */
     getIndex(name: string): number;
     /**
-     * Activates the next {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * Activates the next {@link CardLayoutItem} of this container, and setting the
+     * specified object as payload<br>
      * The previous Event will be activated<br>
      *
      * will return null and do nothing if currently the last item is active.
-     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     *
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being
+     * activated
      * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
      */
     next(...params: Object[]): CardLayoutItem;
     /**
-     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * Activates the previous {@link CardLayoutItem} of this container, and setting
+     * the specified object as payload<br>
      * will return null and do nothing if currently the first item is active.
-     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     *
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being
+     * activated
      * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
      */
     previous(...params: Object[]): CardLayoutItem;
     /**
-     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * Activates the previous {@link CardLayoutItem} of this container, and setting
+     * the specified object as payload<br>
      * will return null and do nothing if currently the first item is active.
-     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     *
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being
+     * activated
      * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
      */
     back(...params: Object[]): CardLayoutItem;
+    /**
+     * Shows the first {@link CardLayoutItem} by passing the specified parameters in
+     * the event triggered when the method is called
+     *
+     * @param {jsweet.lang.Object[]} params The parameters that are set in the event triggered when the
+     * method is called
+     *
+     * @return {CardLayoutItem} The current state of this component
+     */
     first(...params: Object[]): CardLayoutItem;
     last(...params: Object[]): CardLayoutItem;
     getDefault(): string;
@@ -1525,7 +1563,9 @@ declare class ExternalStylesheet extends JSContainer implements api.Renderer<Ext
 declare class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderable {
     /**
      * A context that contains variables exposed to the html template. This can be
-     * used by javascript to transmit data from the framework to the template
+     * used by javascript to transmit data from the framework to the template.
+     * Depending on the compiler of the template, the data in the context are rendered<br>
+     * refer to documentation of implementation of {@link HTMLTemplateContainer} used for understanding on how the context are used to render the template.
      */
     context: Object;
     template: string;

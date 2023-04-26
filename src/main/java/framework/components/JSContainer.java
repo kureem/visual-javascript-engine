@@ -28,29 +28,17 @@ import jsweet.dom.HTMLElement;
 import jsweet.lang.Array;
 
 /**
- * 
  * Most basic component built in with a default {@link Renderer}<br>
  * An instance of this component will render a simple tag in the browser. The
  * tag is specified in the constructor of the component or can be set via
  * {@link #setTag(String)}<br>
- * 
- * Example:<br>
- * <code>
- * 	var ctn = new framework.components.JSContainer('mycomponent', 'div');<br><br>
- * 	ctn.setStyle('width', '100px')<br>
- * &nbsp;&nbsp;&nbsp;.setStyle('height', '100px')<br>
- * &nbsp;&nbsp;&nbsp;.setStyle('background', 'red');<br><br>
- * 	ctn.on('click', function(e){<br>
- * &nbsp;&nbsp;&nbsp;alert('Hello world');<br>
- * 	})<br>
- * 
- * 	source.addChild(ctn);<br><br>
- * </code>
- * 
- * All other components in the framework are sub classes of this component
+ * Example:<br />
+ * <code>import framework.components.JSContainer;</code><br>
+ * <code> JSContainer ctn = new JSContainer("component name", "div");<br><br> ctn.setStyle("width", "100px")<br>    .setStyle("height", "100px")<br> &nbsp;&nbsp;&nbsp;.setStyle("background", "red");<br><br> ctn.on("click", function(e){<br> &nbsp;&nbsp;&nbsp;alert("Hello world");<br> })<br> ctn.on("dblclick", (me,evt)-&gt;{<br> &nbsp;&nbsp;&nbsp;ctn.setStyle("background-color", "red");<br> &nbsp;&nbsp;&nbsp;alert("Hello world");<br> })<br>  source.addChild(ctn);<br><br> </code>
+ * <br />
+ * All other components are subclass of this class
  * 
  * @author Rossaye Abdool Kureem Apr 10, 2018
- *
  */
 @SuppressWarnings("unchecked")
 public class JSContainer implements Renderable {
@@ -134,7 +122,6 @@ public class JSContainer implements Renderable {
 	 *            The payload to transmit when executing the event.
 	 */
 	public void fireListener(String key, Event evt) {
-		console.log("firing:" + key + " on " + getName());
 		final Array<EventListener> listeners = (Array<EventListener>) getListeners().$get(key);
 		if (listeners != null && listeners.length > 0) {
 			for (EventListener l : listeners) {
@@ -142,7 +129,6 @@ public class JSContainer implements Renderable {
 				l.performAction(this, evt);
 			}
 		}
-
 	}
 
 	/*
@@ -289,7 +275,7 @@ public class JSContainer implements Renderable {
 	 * the browser. This method is used internally by the engine
 	 * 
 	 * @param s
-	 *            A secret value know by the implementor of the framework. This
+	 *            A secret value known by the implementor of the framework. This
 	 *            is to prevent any end user from invoking this method since it
 	 *            is a public exposed method
 	 */
@@ -533,12 +519,35 @@ public class JSContainer implements Renderable {
 	
 	
 	
+	/**
+	 * Adds a {@link JSContainer} with the specified name and specified tag to this
+	 * JSContainer
+	 * 
+	 * @param name The name of the {@link JSContainer} added
+	 * 
+	 * @param tag  The tag of the {@link JSContainer} added
+	 * 
+	 * @return Updated state of the current {@link JSContainer}
+	 */
 	public JSContainer addChild(String name, String tag) {
 		JSContainer child = new JSContainer(name, tag);
 		addChild(child);
 		return child;
 	}
 	
+	/**
+	 * Adds a {@link JSContainer} to this component with the specified tag.<br />
+	 * The added {@link JSContainer} will have the specified tag css class to it.<br />
+	 * It will also be given the specified name.
+	 * 
+	 * @param name The name of the {@link JSContainer} added
+	 * 
+	 * @param tag  The tag of the {@link JSContainer} added
+	 * 
+	 * @param cls  The css class to be added on the added {@link JSContainer}
+	 * 
+	 * @return The Updated state if the current {@link JSContainer} for chaining.
+	 */
 	public JSContainer addChild(String name, String tag, String cls) {
 		JSContainer child = new JSContainer(name, tag);
 		child.addClass(cls);

@@ -61,7 +61,10 @@ namespace api {
                 } else {
                     if (rparent != null && (rparent.constructor != null && rparent.constructor["__interfaces"] != null && rparent.constructor["__interfaces"].indexOf("framework.components.api.TemplateRenderable") >= 0)){
                         const elem: Element = rparent.getElement();
-                        elem.parentElement.replaceChild(njq, elem);
+                        const toreplace: Element = elem.querySelector("[name=" + name + "]");
+                        if (toreplace != null){
+                            toreplace.parentElement.replaceChild(njq, toreplace);
+                        }
                     } else {
                         const index: number = rparent.getChildren().indexOf(c);
                         let nextSib: api.Renderable = null;
@@ -327,7 +330,7 @@ namespace api {
         public compareTo(other: any): number { return this._$ordinal - (isNaN(other)?other._$ordinal:other); }
     }
     InputType["__class"] = "framework.components.api.InputType";
-    InputType["__interfaces"] = ["java.lang.constant.Constable","java.lang.Comparable","java.io.Serializable"];
+    InputType["__interfaces"] = ["java.lang.Comparable","java.io.Serializable"];
 
     InputType["_$wrappers"] = {0: new InputType_$WRAPPER(0, "BUTTON", "button", "button"), 1: new InputType_$WRAPPER(1, "CHECKBOX", "checkbox", "boolean"), 2: new InputType_$WRAPPER(2, "DATE", "date", "date"), 3: new InputType_$WRAPPER(3, "DATETIME_LOCAL", "datetime-local", "date"), 4: new InputType_$WRAPPER(4, "FILE", "file", "file"), 5: new InputType_$WRAPPER(5, "HIDDEN", "hidden", "text"), 6: new InputType_$WRAPPER(6, "IMAGE", "image", "image"), 7: new InputType_$WRAPPER(7, "MONTH", "month", "date"), 8: new InputType_$WRAPPER(8, "NUMBER", "number", "number"), 9: new InputType_$WRAPPER(9, "RADIO", "radio", "boolean"), 10: new InputType_$WRAPPER(10, "RANGE", "range", "number"), 11: new InputType_$WRAPPER(11, "RESET", "reset", "button"), 12: new InputType_$WRAPPER(12, "SUBMIT", "submit", "button"), 13: new InputType_$WRAPPER(13, "TIME", "time", "date"), 14: new InputType_$WRAPPER(14, "WEEK", "week", "date"), 15: new InputType_$WRAPPER(15, "TEXT", "text"), 16: new InputType_$WRAPPER(16, "PASSWORD", "password"), 17: new InputType_$WRAPPER(17, "EMAIL", "email"), 18: new InputType_$WRAPPER(18, "URL", "url"), 19: new InputType_$WRAPPER(19, "SEARCH", "search"), 20: new InputType_$WRAPPER(20, "TEL", "tel"), 21: new InputType_$WRAPPER(21, "COLOR", "color")};
 
@@ -851,7 +854,7 @@ namespace api {
         public compareTo(other: any): number { return this._$ordinal - (isNaN(other)?other._$ordinal:other); }
     }
     Units["__class"] = "framework.components.api.Units";
-    Units["__interfaces"] = ["java.lang.constant.Constable","java.lang.Comparable","java.io.Serializable"];
+    Units["__interfaces"] = ["java.lang.Comparable","java.io.Serializable"];
 
     Units["_$wrappers"] = {0: new Units_$WRAPPER(0, "PIXEL", "pixel", "px", "absolute"), 1: new Units_$WRAPPER(1, "CENTIMETER", "centimer", "cm", "absolute"), 2: new Units_$WRAPPER(2, "MILLIMETER", "millimeter", "mm", "absolute"), 3: new Units_$WRAPPER(3, "INCH", "inch", "mm", "absolute"), 4: new Units_$WRAPPER(4, "POINT", "point", "pt", "absolute"), 5: new Units_$WRAPPER(5, "PICA", "pica", "pc", "absolute"), 6: new Units_$WRAPPER(6, "EM", "em", "em", "relative"), 7: new Units_$WRAPPER(7, "EX", "ex", "ex", "relative"), 8: new Units_$WRAPPER(8, "CH", "ch", "ch", "relative"), 9: new Units_$WRAPPER(9, "REM", "root element", "rem", "relative"), 10: new Units_$WRAPPER(10, "VIEWPORT_WIDTH", "viewport width", "vw", "relative"), 11: new Units_$WRAPPER(11, "VIEWPORT_HEIGHT", "viewport height", "vw", "relative"), 12: new Units_$WRAPPER(12, "VIEWPORT_MIN", "viewport minimum", "vmin", "relative"), 13: new Units_$WRAPPER(13, "VIEWPORT_MAX", "viewport maximum", "vmax", "relative"), 14: new Units_$WRAPPER(14, "PERCENT", "percent", "%", "relative")};
 
@@ -1786,7 +1789,6 @@ class JSContainer implements api.Renderable {
      * The payload to transmit when executing the event.
      */
     public fireListener(key: string, evt: Event) {
-        console.log("firing:" + key + " on " + this.getName());
         const listeners: Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
         if (listeners != null && listeners.length > 0){
             for(let index204=0; index204 < listeners.length; index204++) {
@@ -1916,7 +1918,7 @@ class JSContainer implements api.Renderable {
      * the browser. This method is used internally by the engine
      * 
      * @param {string} s
-     * A secret value know by the implementor of the framework. This
+     * A secret value known by the implementor of the framework. This
      * is to prevent any end user from invoking this method since it
      * is a public exposed method
      */
@@ -2139,6 +2141,19 @@ class JSContainer implements api.Renderable {
         return child;
     }
 
+    /**
+     * Adds a {@link JSContainer} to this component with the specified tag.<br />
+     * The added {@link JSContainer} will have the specified tag css class to it.<br />
+     * It will also be given the specified name.
+     * 
+     * @param {string} name The name of the {@link JSContainer} added
+     * 
+     * @param {string} tag  The tag of the {@link JSContainer} added
+     * 
+     * @param {string} cls  The css class to be added on the added {@link JSContainer}
+     * 
+     * @return {JSContainer} The Updated state if the current {@link JSContainer} for chaining.
+     */
     public addChild(name?: any, tag?: any, cls?: any): any {
         if (((typeof name === 'string') || name === null) && ((typeof tag === 'string') || tag === null) && ((typeof cls === 'string') || cls === null)) {
             return <any>this.addChild$java_lang_String$java_lang_String$java_lang_String(name, tag, cls);
@@ -2734,11 +2749,12 @@ namespace JSContainer {
 
 /**
  * Creates a new card layout container
+ * 
  * @param {string} name - The name of the container.
- * @param {string} tag - The tag of the container
+ * @param {string} tag  - The tag of the container
  * @class
  * @extends JSContainer
- * @author Kureem Rossaye
+ * @author Kureem Rossaye<br>
  */
 class CardLayout extends JSContainer {
     /*private*/ currentActive: string;
@@ -2753,6 +2769,7 @@ class CardLayout extends JSContainer {
 
     /**
      * Adds a {@link CardLayoutItem} to this container.
+     * 
      * @param {CardLayoutItem} item - The item to add
      * @return {CardLayout} - this
      */
@@ -2765,7 +2782,8 @@ class CardLayout extends JSContainer {
     }
 
     /**
-     * Adds  {@link CardLayoutItem}s to this container.
+     * Adds {@link CardLayoutItem}s to this container.
+     * 
      * @param {framework.components.CardLayoutItem[]} items - The items to add
      * @return {CardLayout} - this
      */
@@ -2781,7 +2799,8 @@ class CardLayout extends JSContainer {
 
     /**
      * 
-     * @return {number} - The index of the currently active (visible) {@link CardLayoutItem} of this container
+     * @return {number} - The index of the currently active (visible) {@link CardLayoutItem}
+     * of this container
      */
     public getCurrentIndex(): number {
         return this.currentIndex;
@@ -2789,6 +2808,7 @@ class CardLayout extends JSContainer {
 
     /**
      * Search and return the {@link CardLayoutItem} having the specified index
+     * 
      * @param {number} index - The index of the {@link CardLayoutItem} searching for
      * @return {CardLayoutItem} - The {@link CardLayoutItem} item having specified index
      */
@@ -2801,10 +2821,12 @@ class CardLayout extends JSContainer {
     }
 
     /**
-     * Searches for the {@link CardLayoutItem} having specified name, and returns its index.
-     * @param {string} name - The name of {@link CardLayoutItem} searching for
-     * @return {number} - The index of the {@link CardLayoutItem} having name specified
+     * Searches for the {@link CardLayoutItem} having specified name, and returns
+     * its index.
      * 
+     * @param {string} name - The name of {@link CardLayoutItem} searching for
+     * 
+     * @return {number} - The index of the {@link CardLayoutItem} having name specified
      */
     public getIndex(name: string): number {
         let index: number = 0;
@@ -2824,11 +2846,14 @@ class CardLayout extends JSContainer {
     }
 
     /**
-     * Activates the next {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * Activates the next {@link CardLayoutItem} of this container, and setting the
+     * specified object as payload<br>
      * The previous Event will be activated<br>
      * 
      * will return null and do nothing if currently the last item is active.
-     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * 
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being
+     * activated
      * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
      */
     public next(...params: Object[]): CardLayoutItem {
@@ -2859,9 +2884,12 @@ class CardLayout extends JSContainer {
     }
 
     /**
-     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * Activates the previous {@link CardLayoutItem} of this container, and setting
+     * the specified object as payload<br>
      * will return null and do nothing if currently the first item is active.
-     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * 
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being
+     * activated
      * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
      */
     public previous(...params: Object[]): CardLayoutItem {
@@ -2883,15 +2911,27 @@ class CardLayout extends JSContainer {
     }
 
     /**
-     * Activates the previous {@link CardLayoutItem} of this container, and setting the specified object as payload<br>
+     * Activates the previous {@link CardLayoutItem} of this container, and setting
+     * the specified object as payload<br>
      * will return null and do nothing if currently the first item is active.
-     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being activated
+     * 
+     * @param {jsweet.lang.Object[]} params - The payload to set to the next {@link CardLayoutItem} being
+     * activated
      * @return {CardLayoutItem} - The {@link CardLayoutItem} being activated.
      */
     public back(...params: Object[]): CardLayoutItem {
         return this.previous.apply(this, params);
     }
 
+    /**
+     * Shows the first {@link CardLayoutItem} by passing the specified parameters in
+     * the event triggered when the method is called
+     * 
+     * @param {jsweet.lang.Object[]} params The parameters that are set in the event triggered when the
+     * method is called
+     * 
+     * @return {CardLayoutItem} The current state of this component
+     */
     public first(...params: Object[]): CardLayoutItem {
         if (this.currentIndex > 0){
             const current: CardLayoutItem = this.getItem(this.currentIndex);
@@ -3164,7 +3204,9 @@ ExternalStylesheet["__interfaces"] = ["framework.components.api.Renderable","fra
 class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderable {
     /**
      * A context that contains variables exposed to the html template. This can be
-     * used by javascript to transmit data from the framework to the template
+     * used by javascript to transmit data from the framework to the template.
+     * Depending on the compiler of the template, the data in the context are rendered<br>
+     * refer to documentation of implementation of {@link HTMLTemplateContainer} used for understanding on how the context are used to render the template.
      */
     public context: Object;
 
