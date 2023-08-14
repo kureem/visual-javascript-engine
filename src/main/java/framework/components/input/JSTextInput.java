@@ -15,6 +15,7 @@
  */
 package framework.components.input;
 
+<<<<<<< HEAD
 import framework.components.api.StringInputTypes;
 
 public class JSTextInput extends AbstractJSInput<String> {
@@ -24,14 +25,31 @@ public class JSTextInput extends AbstractJSInput<String> {
 		setType(StringInputTypes.text);
 		setAttribute("identifier", "html:input");
 		//addRenderer(this);
+=======
+import framework.components.api.InputType;
+
+public class JSTextInput extends JSInput<String> {
+
+	public JSTextInput(String name) {
+		super(name);
+		setType(InputType.TEXT);
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 	}
 
 	public void setMaxLength(Double length) {
 		setAttribute("maxlength", length + "");
 	}
 
-	public JSTextInput setType(String type) {
-		setAttribute("type", type);
+	public JSTextInput setType(InputType type) {
+		if(type != null) {
+			if(type.getGroup() == "text") {
+				setAttribute("type", type.getValue());
+			}else {
+				throw new RuntimeException("only text input types can be set as type");
+			}
+		}else {
+			setAttribute("type", null);
+		}
 		return this;
 	}
 
@@ -55,6 +73,24 @@ public class JSTextInput extends AbstractJSInput<String> {
 	}
 
 	
+<<<<<<< HEAD
 	
+=======
+
+	
+//	@Override
+//	public void doRender(JSTextInput c, HTMLElement root) {
+//		
+//		String mask = getMask();
+//		if(mask != null && mask.trim().length() > 0){
+//			HTMLElement elem = getNative();
+//			JQuery jq = $(elem);
+//			 ((Function)$(elem).$get("inputmask")).call(jq, mask);
+//			 eval("");
+//		}
+//		// TODO Auto-generated method stub
+//		
+//	}
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 
 }

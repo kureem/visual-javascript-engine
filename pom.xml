@@ -4,9 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.vjs</groupId>
 	<artifactId>engine</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.2-SNAPSHOT</version>
 	<properties>
+<<<<<<< HEAD
 		<skipJavadoc>true</skipJavadoc>
+=======
+		<skipJavadoc>false</skipJavadoc>
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 		<jsweet.transpiler.version>3.0.0</jsweet.transpiler.version>
 		<jsweet.core.version>6.3.0</jsweet.core.version>
 		<java.version.release>11</java.version.release>
@@ -51,6 +55,7 @@
 			<artifactId>jsweet-core</artifactId>
 			<version>${jsweet.core.version}</version>
 		</dependency>
+<<<<<<< HEAD
 		<dependency>
     <groupId>org.jsweet.candies</groupId>
     <artifactId>cordova</artifactId>
@@ -66,6 +71,10 @@
     <artifactId>cordova--plugins-FileTransfer</artifactId>
     <version>0.0.0-1.1.0-20160525</version>
 </dependency>
+=======
+
+
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 	</dependencies>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
@@ -101,6 +110,11 @@
 					<dtsOut>src/main/resources/META-INF/resources/typings/${project.artifactId}/${project.version}</dtsOut>
 					<targetVersion>ES6</targetVersion>
 					<encoding>UTF-8</encoding>
+<<<<<<< HEAD
+=======
+					<sourceMap>false</sourceMap>
+					<header>header.txt</header>
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 				</configuration>
 				<executions>
 					<execution>
@@ -122,6 +136,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -148,10 +163,17 @@
 					<encoding>UTF-8</encoding>
 					<fixTags>all</fixTags>
 					<failOnError>false</failOnError>
+<<<<<<< HEAD
 					<reportOutputDirectory>/var/www/apidocs/releases/org/jsweet/candies</reportOutputDirectory>
 					<destDir>${project.artifactId}/${project.version}</destDir>
 					<header><![CDATA[<a href="http://www.jsweet.org" target="_blank" style="text-transform: lowercase">http://www.jsweet.org<a>]]></header>
 					<bottom><![CDATA[<center>Copyright 2015, <a href="http://www.cincheo.org" target="_blank">Cinchéo SAS<a> - Web site: <a href="http://www.jsweet.org" target="_blank">http://www.jsweet.org<a><center>]]></bottom>
+=======
+					<reportOutputDirectory>docs/reports/${project.artifactId}/${project.version}</reportOutputDirectory>
+					<destDir>docs/javadocs/${project.version}</destDir>
+					<header><![CDATA[<a href="http://www.spoonconsulting.com" target="_blank" style="text-transform: lowercase">http://www.spoonconsulting.com<a>]]></header>
+					<bottom><![CDATA[<center>Copyright 2015, <a href="http://www.spoonconsulting.com" target="_blank">Spoon Consulting<a> - Web site: <a href="http://www.spoonconsulting.com" target="_blank">http://www.spoonconsulting.com<a><center>]]></bottom>
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 					<stylesheetfile>/var/www/apidocs/stylesheet.css</stylesheetfile>
 				</configuration>
 				<executions>
@@ -165,6 +187,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-clean-plugin</artifactId>
+				<version>3.1.0</version>
 				<configuration>
 					<filesets>
 						<fileset>

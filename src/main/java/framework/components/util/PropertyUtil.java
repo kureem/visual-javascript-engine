@@ -12,18 +12,18 @@ public class PropertyUtil {
 		if(obj == null){
 			return null;
 		}
-		if(property.contains(".")){
-			
-			String[]parts = property.split(".");
-			Object tmp = obj;
-			for(String part :  parts){
-				tmp = getValue(tmp, part);
-			}
-			return tmp;
-			
-		}else{
+		
+		if(!property.contains(".")) {
 			return (Object)obj.$get(property);
 		}
+			
+		String[]parts = property.split(".");
+		Object tmp = obj;
+		for(String part :  parts){
+			tmp = getValue(tmp, part);
+		}
+		return tmp;
+			
 	}
 	
 	
@@ -49,7 +49,36 @@ public class PropertyUtil {
 		if(obj == null){
 			throw new Error("cannot set  property " + property  + " to undefined");
 		}
-		
+		//a.b.c = 25
+		/*
+		 * spoon.senior.address.line1 
+		 * 
+		 * {
+		 * 	"spoon":{
+		 * 			"senior":{
+		 * 					"firstName":'Rossaye',
+		 * 					"lastName" :'Kureem'
+		 * 					"address"  :{
+		 * 									line1:"R.Tagore Avenue",
+		 * 									line2:"Mesnil"
+		 * 								}
+		 * 						  
+		 * 				}
+		 * 			,
+		 * 			"confirmed":{
+		 * 					"firstName":'Rossaye',
+		 * 					"lastName" :'Kureem'
+		 * 					"address"  :{
+		 * 									line1:"R.Tagore Avenue",
+		 * 									line2:"Mesnil"
+		 * 								}
+		 * 							
+		 * 			}
+		 * 		}
+		 * }
+		 * 
+		 * spoon.confirmed.address.line1
+		 */
 		if(property.contains(".")){
 			String[] keys = property.split(".");
 			Object tmp = obj;

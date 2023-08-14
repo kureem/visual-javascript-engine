@@ -13,21 +13,29 @@ import jsweet.dom.HTMLScriptElement;
 import jsweet.dom.HTMLStyleElement;
 import jsweet.dom.NamedNodeMap;
 import jsweet.dom.Node;
-import jsweet.dom.NodeList;
 import jsweet.dom.NodeListOf;
 import jsweet.lang.Array;
 import jsweet.lang.Globals;
 import jsweet.lang.Object;
+<<<<<<< HEAD
 import jsweet.util.StringTypes;
 import static jsweet.lang.Globals.eval;
+=======
+
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 public class ContainerRenderer implements Renderer<Renderable> {
 	
 	public  static double timeSpent =0;
 
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 	public static HTMLElement getElementById(String id) {
 		
 		
 		return document.getElementById(id);
+<<<<<<< HEAD
 		/*HTMLElement result = null;
 		
 		String js = " var elems = document.getElementsByClassName(id);\n" + 
@@ -41,29 +49,52 @@ public class ContainerRenderer implements Renderer<Renderable> {
 		eval(js);
 		
 		return result;*/
+=======
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 	}
 	
+	
+	public void decorate(Renderable renderable) {
+		
+	}
 
 	public void doRender(Renderable c, HTMLElement root) {
+<<<<<<< HEAD
 		HTMLElement jq = getElementById(c.getId());
+=======
+
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 		
+		
+		HTMLElement jq = c.getElement();//ContainerRenderer.getElementById(c.getId());
 		String tag = c.getTag();
 		boolean rendered = c.isRendered();
 		String name = c.getName();
 		String html = c.getHtml();
-		Renderable parent = c.getParent();
+		Renderable rparent = c.getParent();
 	
 		if (!rendered) {
 	//		decorate(c);
 			if (jq != null)
 				jq.remove();
-			HTMLElement njq = document.createElement(tag);
+			Element njq = null;
+			if(tag == "svg") {
+				njq = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+			}else {
+				njq = document.createElement(tag);
+			}
+			c.setElement((HTMLElement)njq);
 			if (name != null && name.length() > 0)
 				njq.setAttribute("name", name);
 			njq.setAttribute("id", c.getId());
 			//njq.classList.add(c.getId());
 			njq.innerHTML = html;
+<<<<<<< HEAD
 			/*NodeListOf<HTMLScriptElement> uiscripts =  njq.getElementsByTagName(StringTypes.script);
+=======
+			
+			NodeListOf<Element> uiscripts =  njq.querySelectorAll("script");//njq.getElementsByTagName(StringTypes.script);
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 			Array<String> scripts = new Array<String>();
 			for(double i =0; i < uiscripts.length;i++) {
 				HTMLScriptElement elem = (HTMLScriptElement)uiscripts.$get(i);
@@ -73,7 +104,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 			renderAttributes(njq, c, false);
 			renderStyles(njq, c, false);
 
-			if (parent == null) {
+			if (rparent == null) {
 				if (root == null) {
 					Node body = document.getElementsByTagName("body").$get(0);
 					body.appendChild(njq);
@@ -82,27 +113,46 @@ public class ContainerRenderer implements Renderer<Renderable> {
 				}
 			} else {
 
+<<<<<<< HEAD
 				if (parent instanceof TemplateRenderable) {
 					Element elem = getElementById(parent.getId()).querySelector("[name=" + name +"]");
 					elem.parentElement.replaceChild(njq, elem);
+=======
+				if (rparent instanceof TemplateRenderable) {
+					Element elem = rparent.getElement();
+					//Element elem = ContainerRenderer.getElementById(rparent.getId()).querySelector("[name=" + name +"]");
+					Element toreplace = elem.querySelector("[name=" + name +"]");
+					if(toreplace != null) {
+						toreplace.parentElement.replaceChild(njq, toreplace);
+					}
+					//elem.parentElement.replaceChild(njq, elem);
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 					//$("#" + parent.getId() + " [name=" + name + "]").replaceWith(njq);
 				} else {
 					
-					double index = parent.getChildren().indexOf(c);
+					double index = rparent.getChildren().indexOf(c);
 					Renderable nextSib = null;
-					if (index < parent.getChildren().length - 1) {
-						nextSib = parent.getChildren().$get(index + 1);
+					if (index < rparent.getChildren().length - 1) {
+						nextSib = rparent.getChildren().$get(index + 1);
 						if (!nextSib.isRendered()) {
 							nextSib = null;
 						}
 					}
 
 					if (nextSib != null) {
+<<<<<<< HEAD
 						Node p = getElementById(parent.getId());
 						p.insertBefore(njq, getElementById(nextSib.getId()));
 					} else {
 						try{
 							getElementById(parent.getId()).appendChild(njq);
+=======
+						Node p = rparent.getElement();//ContainerRenderer.getElementById(rparent.getId());
+						p.insertBefore(njq, nextSib.getElement() /*ContainerRenderer.getElementById(nextSib.getId())*/);
+					} else {
+						try{
+							rparent.getElement().appendChild(njq);
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 						}catch(Exception e){
 							e.printStackTrace();
 						}
@@ -138,7 +188,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 		
 	}
 
-	protected void execCommands(HTMLElement njq, Renderable container) {
+	protected void execCommands(Element njq, Renderable container) {
 		/*for (JSCommand command : container.getCommands()) {
 			String name = command.getName();
 			jsweet.lang.Object params = command.getParameters();
@@ -157,7 +207,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void renderEvents(HTMLElement njq, Renderable c) {
+	protected void renderEvents(Element njq, Renderable c) {
 		String[] keys = Object.keys(c.getListeners());
 		for (String key :  keys) {
 			final Array<EventListener> listeners = (Array<EventListener>)c.getListeners().$get(key);
@@ -175,7 +225,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 
 	
 
-	protected void renderAttributes(HTMLElement njq, Renderable c, boolean changed) {
+	protected void renderAttributes(Element njq, Renderable c, boolean changed) {
 
 		if (changed) {
 			for (String key : c.getChangedAttributes()) {
@@ -203,7 +253,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 	
 	
 
-	protected void clearAttributes(HTMLElement elem) {
+	protected void clearAttributes(Element elem) {
 		NamedNodeMap attrs = elem.attributes;
 		for (double i = 0; i < attrs.length; i++) {
 			if (!attrs.$get(i).name.equals("id"))
@@ -211,25 +261,25 @@ public class ContainerRenderer implements Renderer<Renderable> {
 		}
 	}
 
-	protected void clearStyles(HTMLElement jq) {
+	protected void clearStyles(Element jq) {
 		jq.removeAttribute("style");
 
 	}
 
-	protected void renderStyles(HTMLElement njq, Renderable c, boolean changed) {
+	protected void renderStyles(Element njq, Renderable c, boolean changed) {
 
 		if (changed) {
 			for (String key : c.getChangedStyles()) {
-				njq.style.setProperty(key, c.getStyle(key));
+				((HTMLElement)njq).style.setProperty(key, c.getStyle(key));
 			}
 		} else {
 			for (String key : c.getStyleNames()) {
-				njq.style.setProperty(key, c.getStyle(key));
+				((HTMLElement)njq).style.setProperty(key, c.getStyle(key));
 			}
 		}
 	}
 	
-	public static void setAttribute(HTMLElement element, String attribute, String value){
+	public static void setAttribute(Element element, String attribute, String value){
 		try{
 			element.setAttribute(attribute, value);
 		}catch(Exception e){
@@ -238,7 +288,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 	}
 	
 	
-	public static void processCSSRules(Renderable renderable, HTMLElement nativeNode) {
+	public static void processCSSRules(Renderable renderable, Element nativeNode) {
 		
 		Array<String> rules = renderable.getCSSRules();
 		

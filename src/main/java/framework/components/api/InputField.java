@@ -20,7 +20,7 @@ package framework.components.api;
  * This interface defines methods that allows setting and retrieving values 
  * @author Kureem Rossaye
  *
- * @param <T>
+ * @param <T> - The type of value store by this field
  */
 public interface InputField<T> extends Renderable{
 

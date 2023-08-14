@@ -15,13 +15,14 @@
  */
 package framework.components.input;
 
+import framework.components.api.InputType;
 import jsweet.dom.HTMLInputElement;
 
-public class JSCheckBox extends AbstractJSInput<Boolean> {
+public class JSCheckBox extends JSInput<Boolean> {
 
 	public JSCheckBox(String name) {
 		super(name);
-		setAttribute("type", "checkbox");
+		setAttribute("type", InputType.CHECKBOX.getValue());
 	}
 
 	@Override

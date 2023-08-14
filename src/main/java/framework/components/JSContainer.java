@@ -16,7 +16,8 @@
 package framework.components;
 
 import static jsweet.dom.Globals.console;
-import static jsweet.dom.Globals.document;
+
+import java.util.function.BiFunction;
 
 import framework.components.api.ContainerRenderer;
 import framework.components.api.EventListener;
@@ -27,29 +28,17 @@ import jsweet.dom.HTMLElement;
 import jsweet.lang.Array;
 
 /**
- * 
  * Most basic component built in with a default {@link Renderer}<br>
  * An instance of this component will render a simple tag in the browser. The
  * tag is specified in the constructor of the component or can be set via
  * {@link #setTag(String)}<br>
- * 
- * Example:<br>
- * <code>
- * 	var ctn = new framework.components.JSContainer('mycomponent', 'div');<br><br>
- * 	ctn.setStyle('width', '100px')<br>
- * &nbsp;&nbsp;&nbsp;.setStyle('height', '100px')<br>
- * &nbsp;&nbsp;&nbsp;.setStyle('background', 'red');<br><br>
- * 	ctn.on('click', function(e){<br>
- * &nbsp;&nbsp;&nbsp;alert('Hello world');<br>
- * 	})<br>
- * 
- * 	source.addChild(ctn);<br><br>
- * </code>
- * 
- * All other components in the framework are sub classes of this component
+ * Example:<br />
+ * <code>import framework.components.JSContainer;</code><br>
+ * <code> JSContainer ctn = new JSContainer("component name", "div");<br><br> ctn.setStyle("width", "100px")<br>    .setStyle("height", "100px")<br> &nbsp;&nbsp;&nbsp;.setStyle("background", "red");<br><br> ctn.on("click", function(e){<br> &nbsp;&nbsp;&nbsp;alert("Hello world");<br> })<br> ctn.on("dblclick", (me,evt)-&gt;{<br> &nbsp;&nbsp;&nbsp;ctn.setStyle("background-color", "red");<br> &nbsp;&nbsp;&nbsp;alert("Hello world");<br> })<br>  source.addChild(ctn);<br><br> </code>
+ * <br />
+ * All other components are subclass of this class
  * 
  * @author Rossaye Abdool Kureem Apr 10, 2018
- *
  */
 @SuppressWarnings("unchecked")
 public class JSContainer implements Renderable {
@@ -58,6 +47,8 @@ public class JSContainer implements Renderable {
 
 	private jsweet.lang.Object d = new jsweet.lang.Object();
 	private static ContainerRenderer defaultRenderer = new ContainerRenderer();
+	
+	private HTMLElement elem_;
 	
 
 
@@ -96,13 +87,13 @@ public class JSContainer implements Renderable {
 	 * @param listener
 	 *            The javascript function to be called back
 	 */
-	public void on(String evt, jsweet.dom.EventListener listener) {
+	public void on(String evt, BiFunction<Renderable, Event, Void> listener) {
 		addEventListener(new EventListener() {
 
 			@Override
 			public void performAction(Renderable source, Event evt) {
 				evt.$set("source", source);
-				listener.apply(evt);
+				listener.apply(source,evt);
 			}
 		}, evt);
 	}
@@ -131,7 +122,6 @@ public class JSContainer implements Renderable {
 	 *            The payload to transmit when executing the event.
 	 */
 	public void fireListener(String key, Event evt) {
-		console.log("firing:" + key + " on " + getName());
 		final Array<EventListener> listeners = (Array<EventListener>) getListeners().$get(key);
 		if (listeners != null && listeners.length > 0) {
 			for (EventListener l : listeners) {
@@ -139,7 +129,6 @@ public class JSContainer implements Renderable {
 				l.performAction(this, evt);
 			}
 		}
-
 	}
 
 	/*
@@ -258,6 +247,12 @@ public class JSContainer implements Renderable {
 	 * @see framework.Renderable#getNative()
 	 */
 	public HTMLElement getNative() {
+<<<<<<< HEAD
+=======
+		if(elem_ != null) {
+			return elem_;
+		}
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 		HTMLElement elem = ContainerRenderer.getElementById(getId());
 		if (elem != null) {
 			return elem;
@@ -287,7 +282,7 @@ public class JSContainer implements Renderable {
 	 * the browser. This method is used internally by the engine
 	 * 
 	 * @param s
-	 *            A secret value know by the implementor of the framework. This
+	 *            A secret value known by the implementor of the framework. This
 	 *            is to prevent any end user from invoking this method since it
 	 *            is a public exposed method
 	 */
@@ -531,12 +526,35 @@ public class JSContainer implements Renderable {
 	
 	
 	
+	/**
+	 * Adds a {@link JSContainer} with the specified name and specified tag to this
+	 * JSContainer
+	 * 
+	 * @param name The name of the {@link JSContainer} added
+	 * 
+	 * @param tag  The tag of the {@link JSContainer} added
+	 * 
+	 * @return Updated state of the current {@link JSContainer}
+	 */
 	public JSContainer addChild(String name, String tag) {
 		JSContainer child = new JSContainer(name, tag);
 		addChild(child);
 		return child;
 	}
 	
+	/**
+	 * Adds a {@link JSContainer} to this component with the specified tag.<br />
+	 * The added {@link JSContainer} will have the specified tag css class to it.<br />
+	 * It will also be given the specified name.
+	 * 
+	 * @param name The name of the {@link JSContainer} added
+	 * 
+	 * @param tag  The tag of the {@link JSContainer} added
+	 * 
+	 * @param cls  The css class to be added on the added {@link JSContainer}
+	 * 
+	 * @return The Updated state if the current {@link JSContainer} for chaining.
+	 */
 	public JSContainer addChild(String name, String tag, String cls) {
 		JSContainer child = new JSContainer(name, tag);
 		child.addClass(cls);
@@ -847,7 +865,9 @@ public class JSContainer implements Renderable {
 	@Override
 	public Renderable setRendered(boolean b) {
 		d.$set("rendered", b);
+		
 		if (!b) {
+			this.elem_ = null;
 			for (Renderable child : getChildren()) {
 				child.setRendered(b);
 			}
@@ -879,10 +899,31 @@ public class JSContainer implements Renderable {
 	 */
 	@Override
 	public void render() {
+<<<<<<< HEAD
 		if (getParent() == null)
 			render(null);
 		else
 			render(ContainerRenderer.getElementById(getParent().getId()));
+=======
+		if (getParent() == null) {
+			HTMLElement nat = getNative();
+			if(nat != null) {
+				HTMLElement parent = nat.parentElement;
+				if(parent != null) {
+					render(nat.parentElement);
+				}else {
+					render(null);
+				}
+			}else {
+				render(null);
+			}
+		}else {
+			//render(ContainerRenderer.getElementById(getParent().getId()));
+			render(getParent().getElement());
+		}	
+			
+			
+>>>>>>> 397d0857239819c5511f298d8b42d80ea904d52a
 
 	}
 
@@ -910,13 +951,15 @@ public class JSContainer implements Renderable {
 	 *            The object to check if present
 	 * @return Whether is present or not
 	 */
-	protected boolean contains(Array<?> lst, Object o) {
-		for (Object oo : lst) {
+	protected boolean contains(@SuppressWarnings("rawtypes") Array lst, Object o) {
+		
+		return lst.indexOf(o) >=0;
+		/*for (Object oo : lst) {
 			if (oo.equals(o)) {
 				return true;
 			}
 		}
-		return false;
+		return false;*/
 	}
 
 	/*
@@ -1105,6 +1148,26 @@ public class JSContainer implements Renderable {
 	@Override
 	public Object getUserData() {
 		return d.$get("userData");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see framwork.Renderable#setElement(jsweet.dom.HTMLElement)
+	 */
+	@Override
+	public void setElement(HTMLElement elem) {
+		this.elem_ = elem;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see framework.Renderable#getElement()
+	 */
+	@Override
+	public HTMLElement getElement() {
+		return getNative();
 	}
 
 }

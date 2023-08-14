@@ -1,7 +1,7 @@
 package framework.components.table;
 
 
-public interface TableModelListener {
+public interface TableModelEventListener {
 	
 	public void tableChanged(TableModelEvent e);
 

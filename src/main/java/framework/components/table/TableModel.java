@@ -75,7 +75,7 @@ public interface TableModel{
      *
      * @param   l               the TableModelListener
      */
-    public void addTableModelListener(TableModelListener l);
+    public void addTableModelListener(TableModelEventListener l);
 
     /**
      * Removes a listener from the list that is notified each time a
@@ -83,5 +83,5 @@ public interface TableModel{
      *
      * @param   l               the TableModelListener
      */
-    public void removeTableModelListener(TableModelListener l);
+    public void removeTableModelListener(TableModelEventListener l);
 }

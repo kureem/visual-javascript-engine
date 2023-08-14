@@ -5,28 +5,20 @@ import static jsweet.lang.Globals.parseFloat;
 import framework.components.JSContainer;
 import framework.components.api.InputField;
 import framework.components.api.ValidationException;
-import framework.components.api.Validator;
 import jsweet.dom.CustomEvent;
 import jsweet.dom.HTMLElement;
 import jsweet.dom.HTMLInputElement;
-import jsweet.dom.ValidityState;
-import jsweet.lang.Array;
 import jsweet.lang.Date;
 
-public abstract class AbstractJSInput<T> extends JSContainer
+public  class JSInput<T> extends JSContainer
 		implements InputField<T> {
 
 
-	private Array<Validator<T>> validators = new Array<Validator<T>>();
 
-	public AbstractJSInput(String name) {
+	public JSInput(String name) {
 		super(name, "input");
 	}
 
-	@SuppressWarnings("unchecked")
-	public void addValidator(Validator<T> validator) {
-		validators.push(validator);
-	}
 
 	public void setSize(Double size) {
 		setAttribute("size", size + "");
@@ -36,7 +28,7 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		setAttribute("pattern", pattern);
 	}
 
-	public AbstractJSInput<T> setRequired(boolean b) {
+	public JSInput<T> setRequired(boolean b) {
 		if (b) {
 			setAttribute("required", "true");
 		} else
@@ -44,7 +36,7 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		return this;
 	}
 
-	public AbstractJSInput<T> setDisabled(boolean b) {
+	public JSInput<T> setDisabled(boolean b) {
 		if (b) {
 			setAttribute("disabled", "true");
 		} else {
@@ -53,7 +45,7 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		return this;
 	}
 
-	public AbstractJSInput<T> setReadOnly(boolean b) {
+	public JSInput<T> setReadOnly(boolean b) {
 		if (b) {
 			setAttribute("readonly", "true");
 		} else {
@@ -153,46 +145,11 @@ public abstract class AbstractJSInput<T> extends JSContainer
 		return getAttribute("binding");
 	}
 
-	public AbstractJSInput<T> setPlaceHolder(String placeholder) {
+	public JSInput<T> setPlaceHolder(String placeholder) {
 		setAttribute("placeholder", placeholder);
 		return this;
 	}
 
-	/**
-	 * 
-	 * @param msg
-	 *            The message to add in the validation context
-	 * @param state
-	 *            The ValidityState returned
-	 * @param e
-	 *            The validation exception to add to error context
-	 * @return The current instance of the {@link ValidationException}
-	 */
-	public static ValidationException addError(String msg, ValidityState state, ValidationException e) {
-		if (!state.valid) {
-			if (state.badInput) {
-
-				ValidationException.addError(msg, ValidationException.badInput, e);
-			} else if (state.customError) {
-				ValidationException.addError(msg, ValidationException.customError, e);
-			} else if (state.patternMismatch) {
-				ValidationException.addError(msg, ValidationException.patternMismatch, e);
-			} else if (state.rangeOverflow) {
-				ValidationException.addError(msg, ValidationException.rangeOverflow, e);
-			} else if (state.rangeUnderflow) {
-				ValidationException.addError(msg, ValidationException.rangeUnderflow, e);
-			} else if (state.stepMismatch) {
-				ValidationException.addError(msg, ValidationException.stepMismatch, e);
-			} else if (state.tooLong) {
-				ValidationException.addError(msg, ValidationException.tooLong, e);
-			} else if (state.typeMismatch) {
-				ValidationException.addError(msg, ValidationException.typeMismatch, e);
-			} else if (state.valueMissing) {
-				ValidationException.addError(msg, ValidationException.valueMissing, e);
-			}
-		}
-		return e;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -207,20 +164,17 @@ public abstract class AbstractJSInput<T> extends JSContainer
 			HTMLInputElement el = (HTMLInputElement) nat;
 			valid = el.checkValidity();
 			if (!valid) {
-				addError(el.validationMessage, el.validity, e);
-				// el.validity.
+				ValidationException.throwError(el.validationMessage,el.validity);
 			}
 		}
 
-		for (Validator<T> v : validators) {
-
-			boolean b = v.validate(this);
-			if (!b) {
-				valid = false;
-				ValidationException.addError(v.getErrorMessage(), ValidationException.customError, e);
-			}
-		}
-
+		/*
+		 * for (Validator<T> v : validators) {
+		 * 
+		 * boolean b = v.validate(this); if (!b) { valid = false;
+		 * ValidationException.addError(v.getErrorMessage(),
+		 * ValidationException.customError, e); } }
+		 */
 		CustomEvent validate = new CustomEvent("validate");
 		validate.$set("errors", e.errors);
 		validate.$set("valid", valid);
@@ -241,9 +195,28 @@ public abstract class AbstractJSInput<T> extends JSContainer
 	}
 
 		
-	public AbstractJSInput<T> setBinding(String binding) {
+	public JSInput<T> setBinding(String binding) {
 		setAttribute("binding", binding);
 		return this;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T getValue() {
+		HTMLInputElement inp = (HTMLInputElement)getNative();
+		if(inp != null)
+			return ((T)inp.value);
+		else
+			return (T)getAttribute("value");
+	}
+
+	@Override
+	public void setValue(T val) {
+		HTMLInputElement inp = (HTMLInputElement)getNative();
+		if(inp != null)
+			inp.value = (String)val;
+		
+		setAttribute("text", (String)val);
 	}
 
 	
