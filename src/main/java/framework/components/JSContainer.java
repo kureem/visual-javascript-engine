@@ -186,12 +186,16 @@ public class JSContainer implements Renderable {
 	 */
 	public Renderable removeChild(final Renderable r) {
 		Array<Renderable> children = getChildren();
-		d.$set("children", children.filter((ctn, inde, lst) -> {
+		Renderable[] tmp = children.filter((ctn, inde, lst) -> {
 			return !ctn.equals(r);
 
-		}));
+		}); 
+		
+		if(children.length != tmp.length) {
+			d.$set("children", tmp);
 
-		setRendered(false);
+			setRendered(false);
+		}
 		return this;
 	}
 	
@@ -221,7 +225,7 @@ public class JSContainer implements Renderable {
 			return getCSSRules();
 		}
 	}
-
+ 
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -254,7 +258,7 @@ public class JSContainer implements Renderable {
 	 * @see framework.Renderable#getNative()
 	 */
 	public HTMLElement getNative() {
-		HTMLElement elem = document.getElementById(getId());
+		HTMLElement elem = ContainerRenderer.getElementById(getId());
 		if (elem != null) {
 			return elem;
 		} else {
@@ -878,7 +882,7 @@ public class JSContainer implements Renderable {
 		if (getParent() == null)
 			render(null);
 		else
-			render(document.getElementById(getParent().getId()));
+			render(ContainerRenderer.getElementById(getParent().getId()));
 
 	}
 

@@ -1,20 +1,21 @@
-declare namespace api {
-    class ContainerRenderer implements api.Renderer<api.Renderable> {
+declare namespace framework.components.api {
+    class ContainerRenderer implements framework.components.api.Renderer<framework.components.api.Renderable> {
         static timeSpent: number;
-        doRender(c: api.Renderable, root: HTMLElement): void;
-        doNothing(r: api.Renderable): void;
-        execCommands(njq: HTMLElement, container: api.Renderable): void;
-        renderEvents(njq: HTMLElement, c: api.Renderable): void;
-        renderAttributes(njq: HTMLElement, c: api.Renderable, changed: boolean): void;
+        static getElementById(id: string): HTMLElement;
+        doRender(c: framework.components.api.Renderable, root: HTMLElement): void;
+        doNothing(r: framework.components.api.Renderable): void;
+        execCommands(njq: HTMLElement, container: framework.components.api.Renderable): void;
+        renderEvents(njq: HTMLElement, c: framework.components.api.Renderable): void;
+        renderAttributes(njq: HTMLElement, c: framework.components.api.Renderable, changed: boolean): void;
         clearAttributes(elem: HTMLElement): void;
         clearStyles(jq: HTMLElement): void;
-        renderStyles(njq: HTMLElement, c: api.Renderable, changed: boolean): void;
+        renderStyles(njq: HTMLElement, c: framework.components.api.Renderable, changed: boolean): void;
         static setAttribute(element: HTMLElement, attribute: string, value: string): void;
-        static processCSSRules(renderable: api.Renderable, nativeNode: HTMLElement): void;
+        static processCSSRules(renderable: framework.components.api.Renderable, nativeNode: HTMLElement): void;
         constructor();
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     /**
      * Interface to implement when adding events on components.
      * @author Rossaye Abdool Kureem
@@ -22,10 +23,10 @@ declare namespace api {
      * @class
      */
     interface EventListener {
-        performAction(source: api.Renderable, evt: Event): any;
+        performAction(source: framework.components.api.Renderable, evt: Event): any;
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     /**
      * All components which allows a user to input a value implements this interface.<br>
      * This interface defines methods that allows setting and retrieving values
@@ -34,7 +35,7 @@ declare namespace api {
      * @param <T>
      * @class
      */
-    interface InputField<T> extends api.Renderable {
+    interface InputField<T> extends framework.components.api.Renderable {
         /**
          * Returns the value entered
          * @return {*} The value entered
@@ -69,7 +70,7 @@ declare namespace api {
         setRequired(b: boolean): InputField<T>;
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     /**
      * Base interface that defines contract methods available on any component that
      * can be rendered on a web page.
@@ -140,7 +141,7 @@ declare namespace api {
          *
          * @return {*[]} List of Renders used to render this component
          */
-        getRenderers(): Array<api.Renderer<any>>;
+        getRenderers(): Array<framework.components.api.Renderer<any>>;
         /**
          * Adds a rendered to the list of {@link Renderer} used to render this
          * component.
@@ -149,7 +150,7 @@ declare namespace api {
          * {@link Renderer} to add to this component
          * @return {*} This current {@link Renderable}
          */
-        addRenderer(renderer: api.Renderer<any>): Renderable;
+        addRenderer(renderer: framework.components.api.Renderer<any>): Renderable;
         /**
          * return The id of the Renderable.<br>
          * Although it is possible to override this method and manage the id of this
@@ -235,7 +236,7 @@ declare namespace api {
          * Type of event. e.g click, dblclick, keyup, keydown etc etc.
          * @return {*} The current {@link Renderable}
          */
-        addEventListener(listener: api.EventListener, type: string): Renderable;
+        addEventListener(listener: framework.components.api.EventListener, type: string): Renderable;
         /**
          *
          * @return {string} The html tag of the renderable
@@ -316,13 +317,13 @@ declare namespace api {
         /**
          * return Array of style names set to this {@link Renderable}
          *
-         * @return {Array} Array of style names set to this {@link Renderable}
+         * @return {java.lang.String[]} Array of style names set to this {@link Renderable}
          */
         getStyleNames(): string[];
         /**
          * return Array of attributes set to this {@link Renderable}
          *
-         * @return {Array} Array of attributes set to this {@link Renderable}
+         * @return {java.lang.String[]} Array of attributes set to this {@link Renderable}
          */
         getAttributeNames(): string[];
         /**
@@ -442,7 +443,7 @@ declare namespace api {
         getCSSRules(): Array<string>;
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     /**
      * Interface to implemented by renderer of components
      * @author Kureem Rossaye
@@ -450,7 +451,7 @@ declare namespace api {
      * @param <T>
      * @class
      */
-    interface Renderer<T extends api.Renderable> {
+    interface Renderer<T extends framework.components.api.Renderable> {
         /**
          * Render the specified component and attach it to the specified parent
          * @param {*} renderable The component to render
@@ -459,7 +460,7 @@ declare namespace api {
         doRender(renderable: T, parent: HTMLElement): any;
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     class StringInputTypes {
         static text: string;
         static password: string;
@@ -472,13 +473,13 @@ declare namespace api {
         static types_$LI$(): string[];
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     /**
      * More specific component that is rendered based on a specified template instead of a simple tag
      * @author Kureem Rossaye
      * @class
      */
-    interface TemplateRenderable extends api.Renderable {
+    interface TemplateRenderable extends framework.components.api.Renderable {
         /**
          * Returns the html template of the component
          * @return {string} The html template of the component
@@ -501,7 +502,7 @@ declare namespace api {
         render(parent?: any): any;
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     /**
      * Constructs an new {@link ValidationException} with the specified message
      * and code
@@ -576,17 +577,24 @@ declare namespace api {
         static addError(msg: string, code: number, e: ValidationException): void;
     }
 }
-declare namespace api {
+declare namespace framework.components.api {
     interface Validator<T> {
-        validate(source: api.InputField<T>): boolean;
+        validate(source: framework.components.api.InputField<T>): boolean;
         getErrorMessage(): string;
         getSuccessMessage(): string;
         supports(clazz: any): any;
     }
 }
-declare class FileUploader {
+declare namespace framework.components {
+    class Boot {
+        static main(args: string[]): void;
+    }
 }
-declare namespace input {
+declare namespace framework.components {
+    class FileUploader {
+    }
+}
+declare namespace framework.components.input {
     class DateInputTypes {
         static date: string;
         static month: string;
@@ -595,7 +603,7 @@ declare namespace input {
         static types_$LI$(): string[];
     }
 }
-declare namespace input {
+declare namespace framework.components.input {
     class NumericInputTypes {
         static number: string;
         static range: string;
@@ -603,12 +611,12 @@ declare namespace input {
         static types_$LI$(): string[];
     }
 }
-declare namespace table {
+declare namespace framework.components.table {
     interface TableCellRenderer {
-        renderComponent(table: table.Table, container: api.Renderable, value: any, isSelected: boolean, hasFocus: boolean, row: number, column: number): any;
+        renderComponent(table: framework.components.table.Table, container: framework.components.api.Renderable, value: any, isSelected: boolean, hasFocus: boolean, row: number, column: number): any;
     }
 }
-declare namespace table {
+declare namespace framework.components.table {
     class TableColumn {
         /**
          * The index of the column in the model which is to be displayed by this
@@ -640,7 +648,7 @@ declare namespace table {
         /**
          * The renderer used to draw the header of the column.
          */
-        headerRenderer: table.TableCellRenderer;
+        headerRenderer: framework.components.table.TableCellRenderer;
         /**
          * The header value of the column.
          */
@@ -648,7 +656,7 @@ declare namespace table {
         /**
          * The renderer used to draw the data cells of the column.
          */
-        cellRenderer: table.TableCellRenderer;
+        cellRenderer: framework.components.table.TableCellRenderer;
         /**
          * If true, the user is allowed to resize the column; the default is true.
          */
@@ -663,18 +671,18 @@ declare namespace table {
         setMinWidth(minWidth: number): void;
         getMaxWidth(): number;
         setMaxWidth(maxWidth: number): void;
-        getHeaderRenderer(): table.TableCellRenderer;
-        setHeaderRenderer(headerRenderer: table.TableCellRenderer): void;
+        getHeaderRenderer(): framework.components.table.TableCellRenderer;
+        setHeaderRenderer(headerRenderer: framework.components.table.TableCellRenderer): void;
         getHeaderValue(): any;
         setHeaderValue(headerValue: any): void;
-        getCellRenderer(): table.TableCellRenderer;
-        setCellRenderer(cellRenderer: table.TableCellRenderer): void;
+        getCellRenderer(): framework.components.table.TableCellRenderer;
+        setCellRenderer(cellRenderer: framework.components.table.TableCellRenderer): void;
         isResizable(): boolean;
         setResizable(resizable: boolean): void;
         constructor();
     }
 }
-declare namespace table {
+declare namespace framework.components.table {
     interface TableColumnModel {
         /**
          * Appends <code>aColumn</code> to the end of the
@@ -682,10 +690,10 @@ declare namespace table {
          * This method posts a <code>columnAdded</code>
          * event to its listeners.
          *
-         * @param   {table.TableColumn} aColumn         the <code>TableColumn</code> to be added
+         * @param   {framework.components.table.TableColumn} aColumn         the <code>TableColumn</code> to be added
          * @see     #removeColumn
          */
-        addColumn(aColumn: table.TableColumn): any;
+        addColumn(aColumn: framework.components.table.TableColumn): any;
         /**
          * Deletes the <code>TableColumn</code> <code>column</code> from the
          * <code>tableColumns</code> array.  This method will do nothing if
@@ -693,10 +701,10 @@ declare namespace table {
          * This method posts a <code>columnRemoved</code>
          * event to its listeners.
          *
-         * @param   {table.TableColumn} column          the <code>TableColumn</code> to be removed
+         * @param   {framework.components.table.TableColumn} column          the <code>TableColumn</code> to be removed
          * @see     #addColumn
          */
-        removeColumn(column: table.TableColumn): any;
+        removeColumn(column: framework.components.table.TableColumn): any;
         /**
          * Returns the number of columns in the model.
          * @return {number} the number of columns in the model
@@ -727,13 +735,13 @@ declare namespace table {
          * <code>columnIndex</code>.
          *
          * @param   {number} columnIndex     the index of the desired column
-         * @return  {table.TableColumn} the <code>TableColumn</code> object for
+         * @return  {framework.components.table.TableColumn} the <code>TableColumn</code> object for
          * the column at <code>columnIndex</code>
          */
-        getColumn(columnIndex: number): table.TableColumn;
+        getColumn(columnIndex: number): framework.components.table.TableColumn;
     }
 }
-declare namespace table {
+declare namespace framework.components.table {
     interface TableModel {
         /**
          * Returns the number of rows in the model. A
@@ -801,17 +809,17 @@ declare namespace table {
          *
          * @param   {*} l               the TableModelListener
          */
-        addTableModelListener(l: table.TableModelListener): any;
+        addTableModelListener(l: framework.components.table.TableModelListener): any;
         /**
          * Removes a listener from the list that is notified each time a
          * change to the data model occurs.
          *
          * @param   {*} l               the TableModelListener
          */
-        removeTableModelListener(l: table.TableModelListener): any;
+        removeTableModelListener(l: framework.components.table.TableModelListener): any;
     }
 }
-declare namespace table {
+declare namespace framework.components.table {
     /**
      * The cells from (firstRow, column) to (lastRow, column) have been changed.
      * The <I>column</I> refers to the column index of the cell in the model's
@@ -851,7 +859,7 @@ declare namespace table {
         firstRow: number;
         lastRow: number;
         column: number;
-        source: table.TableModel;
+        source: framework.components.table.TableModel;
         constructor(source?: any, firstRow?: any, lastRow?: any, column?: any, type?: any);
         /**
          * Returns the first row that changed.  HEADER_ROW means the meta data,
@@ -878,23 +886,23 @@ declare namespace table {
         getType(): number;
     }
 }
-declare namespace table {
+declare namespace framework.components.table {
     interface TableModelListener {
-        tableChanged(e: table.TableModelEvent): any;
+        tableChanged(e: framework.components.table.TableModelEvent): any;
     }
 }
-declare namespace util {
+declare namespace framework.components.util {
     class ComponentUtil {
-        static visit(designable: api.Renderable, visitor: ComponentUtil.ComponentVisitor): void;
+        static visit(designable: framework.components.api.Renderable, visitor: ComponentUtil.ComponentVisitor): void;
         static getTags(type: string): Array<Object>;
     }
     namespace ComponentUtil {
         interface ComponentVisitor {
-            doVisit(designable: api.Renderable): any;
+            doVisit(designable: framework.components.api.Renderable): any;
         }
     }
 }
-declare namespace util {
+declare namespace framework.components.util {
     class PropertyUtil {
         static DOCUMENT_STRCTURE_HIDE_CONTEXT_MENU_ADDED: boolean;
         static REMOTESERVER: string;
@@ -918,433 +926,529 @@ declare namespace util {
         static getQuery(hash: string): Object;
     }
 }
-/**
- * Constructs a new instance of this component
- *
- * @param {string} name
- * The name of the component
- * @param {string} tag
- * The html tag of the component
- * @class
- * @author Rossaye Abdool Kureem Apr 10, 2018
- */
-declare class JSContainer implements api.Renderable {
-    static idCount: number;
-    d: Object;
-    static defaultRenderer: api.ContainerRenderer;
-    static defaultRenderer_$LI$(): api.ContainerRenderer;
-    constructor(name?: any, tag?: any);
-    /**
-     * Adds an event on the component
-     *
-     * @param {string} evt
-     * The name of the event (click, dblclick, keyup etc)
-     * @param {*} listener
-     * The javascript function to be called back
-     */
-    on(evt: string, listener: EventListener): void;
-    /**
-     *
-     * @return {Array} An array of custom events supported by the component<br>
-     * This method is overridden by more complex components to provide
-     * more advanced events mechanisms.
-     */
-    advancedEventTypes(): string[];
-    /**
-     * Fires the {@link EventListener}s for the specified key passing the
-     * specified payload
-     *
-     * @param {string} key
-     * The event to execute
-     * @param {Event} evt
-     * The payload to transmit when executing the event.
-     */
-    fireListener(key: string, evt: Event): void;
-    hasListenerOfType(type: string): boolean;
-    /**
-     *
-     * @return {Object} An {@link jsweet.lang.Object} to provide a scope for this
-     * environement
-     */
-    getScope(): Object;
-    getChild(name: string): api.Renderable;
-    removeChild(r: api.Renderable): api.Renderable;
-    addCSSRule(rule: string): api.Renderable;
-    /**
-     *
-     * @return {string[]}
-     */
-    getCSSRules(): Array<string>;
-    clearChildren(): api.Renderable;
-    /**
-     *
-     * @return {string[]}
-     */
-    getChangedAttributes(): Array<string>;
-    getNative(): HTMLElement;
-    /**
-     *
-     * @return {string[]}
-     */
-    getChangedStyles(): Array<string>;
-    /**
-     * Flushes any data cleaning this component after it has been rendered on
-     * the browser. This method is used internally by the engine
-     *
-     * @param {string} s
-     * A secret value know by the implementor of the framework. This
-     * is to prevent any end user from invoking this method since it
-     * is a public exposed method
-     */
-    flush(s: string): void;
-    /**
-     *
-     * @return {*[]}
-     */
-    getRenderers(): Array<api.Renderer<any>>;
-    /**
-     *
-     * @param {*} renderer
-     * @return {JSContainer}
-     */
-    addRenderer(renderer: api.Renderer<any>): JSContainer;
-    /**
-     *
-     * @return {string}
-     */
-    getId(): string;
-    /**
-     * Generates a unique id for this component
-     *
-     * @return {string} A unique id
-     */
-    uid(): string;
-    addOrRemoveClass(cls: string, b: boolean): void;
-    /**
-     *
-     * @param {string} styleClass
-     * @return {JSContainer}
-     */
-    addClass(styleClass: string): JSContainer;
-    hasClass(cls: string): boolean;
-    toggleClass(cls: string): api.Renderable;
-    /**
-     *
-     * @param {string} cls
-     * @return {JSContainer}
-     */
-    removeClass(cls: string): JSContainer;
-    removeSingleClass(cls: string): JSContainer;
-    addChild$framework_components_api_Renderable(container: api.Renderable): api.Renderable;
-    addChild$java_lang_String$java_lang_String(name: string, tag: string): JSContainer;
-    addChild$java_lang_String$java_lang_String$java_lang_String(name: string, tag: string, cls: string): JSContainer;
-    addChild(name?: any, tag?: any, cls?: any): any;
-    isValidParent(parent: api.Renderable): boolean;
-    /**
-     *
-     * @param {number} index
-     * @param {*} child
-     * @return {*}
-     */
-    addChildAt(index: number, child: api.Renderable): api.Renderable;
-    /**
-     *
-     * @param {boolean} b
-     * @return {JSContainer}
-     */
-    setVisible(b: boolean): JSContainer;
-    /**
-     *
-     * @param {*} listener
-     * @param {string} type
-     * @return {JSContainer}
-     */
-    addEventListener(listener: api.EventListener, type: string): JSContainer;
-    /**
-     *
-     * @return {string}
-     */
-    getTag(): string;
-    /**
-     *
-     * @param {string} tag
-     * @return {JSContainer}
-     */
-    setTag(tag: string): JSContainer;
-    /**
-     *
-     * @param {string} key
-     * @param {string} value
-     * @return {JSContainer}
-     */
-    setStyle(key: string, value: string): JSContainer;
-    /**
-     *
-     * @param {string} key
-     * @return {string}
-     */
-    getStyle(key: string): string;
-    /**
-     *
-     * @param {string} key
-     * @param {string} value
-     * @return {JSContainer}
-     */
-    setAttribute(key: string, value: string): JSContainer;
-    /**
-     *
-     * @param {string} key
-     * @return {string}
-     */
-    getAttribute(key: string): string;
-    /**
-     *
-     * @return {string}
-     */
-    getName(): string;
-    /**
-     *
-     * @param {string} name
-     */
-    setName(name: string): void;
-    /**
-     *
-     * @return {JSContainer}
-     */
-    getParent(): JSContainer;
-    /**
-     *
-     * @return {*[]}
-     */
-    getChildren(): Array<api.Renderable>;
-    /**
-     *
-     * @return {Array}
-     */
-    getStyleNames(): string[];
-    /**
-     *
-     * @return {Array}
-     */
-    getAttributeNames(): string[];
-    /**
-     *
-     * @return {string}
-     */
-    getHtml(): string;
-    /**
-     *
-     * @param {string} h
-     * @return {JSContainer}
-     */
-    setHtml(h: string): JSContainer;
-    /**
-     *
-     * @return {boolean}
-     */
-    isRendered(): boolean;
-    /**
-     *
-     * @param {boolean} b
-     * @return {*}
-     */
-    setRendered(b: boolean): api.Renderable;
-    /**
-     *
-     * @return {Object}
-     */
-    getListeners(): Object;
-    render$(): void;
-    /**
-     * This method is invoked by the {@link Renderer} after the component is
-     * rendered on the browser. <br>
-     * This provides a hook for further processing after the component has been
-     * rendered
-     *
-     * @param {HTMLElement} root
-     * The actual {@link HTMLElement} of the root of the application
-     * in which this component is found
-     */
-    postRender(root: HTMLElement): void;
-    /**
-     * Unitility method to check if the specified object is present in the
-     * specified array
-     *
-     * @param {Bound[]} lst
-     * The array to check if object is present
-     * @param {*} o
-     * The object to check if present
-     * @return {boolean} Whether is present or not
-     */
-    contains(lst: Array<any>, o: any): boolean;
-    render$jsweet_dom_HTMLElement(parent: HTMLElement): void;
-    /**
-     *
-     * @param {HTMLElement} parent
-     */
-    render(parent?: any): any;
-    /**
-     *
-     * @return {*}
-     */
-    getCustomProperties(): any;
-    /**
-     *
-     * @param {*} data
-     */
-    setCustomProperties(data: any): void;
-    /**
-     * Finds an ancestor that contains the specified class
-     *
-     * @param {string} cls
-     * The class to check
-     * @return {*} The ancestor that contains the specified class
-     */
-    getAncestorWithClass<T extends api.Renderable>(cls: string): T;
-    /**
-     *
-     * @param {string} id
-     * @return {JSContainer}
-     */
-    getAncestorById(id: string): JSContainer;
-    /**
-     *
-     * @param {string} name
-     * @return {JSContainer}
-     */
-    getAncestorByName(name: string): JSContainer;
-    /**
-     *
-     * @return {JSContainer}
-     */
-    getRoot(): JSContainer;
-    setString(key: string, value: string): void;
-    getString(key: string): string;
-    /**
-     *
-     * @param {*} data
-     * @return {*}
-     */
-    setUserData(data: any): api.Renderable;
-    /**
-     *
-     * @return {*}
-     */
-    getUserData(): any;
-}
-declare namespace JSContainer {
-    class JSContainer$0 implements api.EventListener {
-        private listener;
-        __parent: any;
-        /**
-         *
-         * @param {*} source
-         * @param {Event} evt
-         */
-        performAction(source: api.Renderable, evt: Event): void;
-        constructor(__parent: any, listener: any);
+declare namespace framework.components {
+    class Util {
+        static DAYS: string[];
+        static DAYS_$LI$(): string[];
+        static SHORT_DAYS: string[];
+        static SHORT_DAYS_$LI$(): string[];
+        static LONG_DAYS: string[];
+        static LONG_DAYS_$LI$(): string[];
+        static MONTHS: string[];
+        static MONTHS_$LI$(): string[];
+        static DAYS_IN_MONTH: number[];
+        static DAYS_IN_MONTH_$LI$(): number[];
+        static MIN_HOUR: number;
+        static MAX_HOUR: number;
+        static ROW_HEIGHT_PX: number;
+        static COLOR_DISPO: string;
+        static COLOR_ABS: string;
+        static getSemaineType(): Object;
+        static getDaysInMonth(date: Date): number;
+        static getFirstDateOfMonth(date: Date): Date;
+        static getLastDateOfMonth(date: Date): Date;
+        static to2num(val: number): string;
+        static getTime(hour: number, minute: number): string;
+        static getHour(time: string): number;
+        static getMinute(time: string): number;
+        static countRows(startTime: string, endTime: string): number;
+        static countStartRowPosition(startTime: string): number;
+        static formatDate(dt: Date, format: string): string;
+        static replace(text: string, s: string, __with: string): string;
+        static formatNum(d: number): string;
+        static countStartColPosition(day: string, gutter: number, colWidth: number): number;
+        static addWeeks(dt: Date, weeks: number): Date;
+        static addDays(dt: Date, days: number): Date;
+        static addHour(dt: Date, hrs: number): Date;
+        static addMinutes(dt: Date, minutes: number): Date;
+        static addSeconds(dt: Date, secs: number): Date;
+        static addMiliseconds(dt: Date, ms: number): Date;
+        static isSameDate(dt1: Date, dt2: Date): boolean;
     }
 }
-declare class CardLayout extends JSContainer {
-    currentActive: string;
-    currentIndex: number;
-    constructor(name: string, tag: string);
-    addItem(item: CardLayoutItem): CardLayout;
-    getCurrentIndex(): number;
-    getItem(index: number): CardLayoutItem;
-    getIndex(name: string): number;
-    next(...params: Object[]): CardLayoutItem;
-    previous(...params: Object[]): CardLayoutItem;
-    back(...params: Object[]): CardLayoutItem;
-    first(...params: Object[]): CardLayoutItem;
-    last(...params: Object[]): CardLayoutItem;
-    getDefault(): string;
-    activate(name: string, ...params: Object[]): void;
-    /**
-     *
-     * @return {Array}
-     */
-    advancedEventTypes(): string[];
+declare namespace framework.components {
+    interface ViewEvent extends framework.components.api.Renderable {
+        getNewEvent(date: Date): Object;
+        setValue(value: Object): any;
+        getStartDate(): Date;
+        getEndDate(): Date;
+    }
 }
-declare class CardLayoutItem extends JSContainer {
-    constructor(name: string, tag: string);
-    /**
-     *
-     * @return {Array}
-     */
-    advancedEventTypes(): string[];
+declare namespace framework.components {
+    class WeekViewDndManager {
+        static dragging: framework.components.ViewEvent;
+        static resizing: framework.components.WeekViewEvent;
+    }
 }
-declare class ExternalJavascript extends JSContainer {
-    constructor(name: string);
-    setSource(src: string): ExternalJavascript;
+declare namespace framework.components {
+    /**
+     * Constructs a new instance of this component
+     *
+     * @param {string} name
+     * The name of the component
+     * @param {string} tag
+     * The html tag of the component
+     * @class
+     * @author Rossaye Abdool Kureem Apr 10, 2018
+     */
+    class JSContainer implements framework.components.api.Renderable {
+        static idCount: number;
+        d: Object;
+        static defaultRenderer: framework.components.api.ContainerRenderer;
+        static defaultRenderer_$LI$(): framework.components.api.ContainerRenderer;
+        constructor(name?: any, tag?: any);
+        /**
+         * Adds an event on the component
+         *
+         * @param {string} evt
+         * The name of the event (click, dblclick, keyup etc)
+         * @param {*} listener
+         * The javascript function to be called back
+         */
+        on(evt: string, listener: EventListener): void;
+        /**
+         *
+         * @return {java.lang.String[]} An array of custom events supported by the component<br>
+         * This method is overridden by more complex components to provide
+         * more advanced events mechanisms.
+         */
+        advancedEventTypes(): string[];
+        /**
+         * Fires the {@link EventListener}s for the specified key passing the
+         * specified payload
+         *
+         * @param {string} key
+         * The event to execute
+         * @param {Event} evt
+         * The payload to transmit when executing the event.
+         */
+        fireListener(key: string, evt: Event): void;
+        hasListenerOfType(type: string): boolean;
+        /**
+         *
+         * @return {Object} An {@link jsweet.lang.Object} to provide a scope for this
+         * environement
+         */
+        getScope(): Object;
+        getChild(name: string): framework.components.api.Renderable;
+        removeChild(r: framework.components.api.Renderable): framework.components.api.Renderable;
+        addCSSRule(rule: string): framework.components.api.Renderable;
+        /**
+         *
+         * @return {string[]}
+         */
+        getCSSRules(): Array<string>;
+        clearChildren(): framework.components.api.Renderable;
+        /**
+         *
+         * @return {string[]}
+         */
+        getChangedAttributes(): Array<string>;
+        getNative(): HTMLElement;
+        /**
+         *
+         * @return {string[]}
+         */
+        getChangedStyles(): Array<string>;
+        /**
+         * Flushes any data cleaning this component after it has been rendered on
+         * the browser. This method is used internally by the engine
+         *
+         * @param {string} s
+         * A secret value know by the implementor of the framework. This
+         * is to prevent any end user from invoking this method since it
+         * is a public exposed method
+         */
+        flush(s: string): void;
+        /**
+         *
+         * @return {*[]}
+         */
+        getRenderers(): Array<framework.components.api.Renderer<any>>;
+        /**
+         *
+         * @param {*} renderer
+         * @return {framework.components.JSContainer}
+         */
+        addRenderer(renderer: framework.components.api.Renderer<any>): JSContainer;
+        /**
+         *
+         * @return {string}
+         */
+        getId(): string;
+        /**
+         * Generates a unique id for this component
+         *
+         * @return {string} A unique id
+         */
+        uid(): string;
+        addOrRemoveClass(cls: string, b: boolean): void;
+        /**
+         *
+         * @param {string} styleClass
+         * @return {framework.components.JSContainer}
+         */
+        addClass(styleClass: string): JSContainer;
+        hasClass(cls: string): boolean;
+        toggleClass(cls: string): framework.components.api.Renderable;
+        /**
+         *
+         * @param {string} cls
+         * @return {framework.components.JSContainer}
+         */
+        removeClass(cls: string): JSContainer;
+        removeSingleClass(cls: string): JSContainer;
+        addChild$framework_components_api_Renderable(container: framework.components.api.Renderable): framework.components.api.Renderable;
+        addChild$java_lang_String$java_lang_String(name: string, tag: string): JSContainer;
+        addChild$java_lang_String$java_lang_String$java_lang_String(name: string, tag: string, cls: string): JSContainer;
+        addChild(name?: any, tag?: any, cls?: any): any;
+        isValidParent(parent: framework.components.api.Renderable): boolean;
+        /**
+         *
+         * @param {number} index
+         * @param {*} child
+         * @return {*}
+         */
+        addChildAt(index: number, child: framework.components.api.Renderable): framework.components.api.Renderable;
+        /**
+         *
+         * @param {boolean} b
+         * @return {framework.components.JSContainer}
+         */
+        setVisible(b: boolean): JSContainer;
+        /**
+         *
+         * @param {*} listener
+         * @param {string} type
+         * @return {framework.components.JSContainer}
+         */
+        addEventListener(listener: framework.components.api.EventListener, type: string): JSContainer;
+        /**
+         *
+         * @return {string}
+         */
+        getTag(): string;
+        /**
+         *
+         * @param {string} tag
+         * @return {framework.components.JSContainer}
+         */
+        setTag(tag: string): JSContainer;
+        /**
+         *
+         * @param {string} key
+         * @param {string} value
+         * @return {framework.components.JSContainer}
+         */
+        setStyle(key: string, value: string): JSContainer;
+        /**
+         *
+         * @param {string} key
+         * @return {string}
+         */
+        getStyle(key: string): string;
+        /**
+         *
+         * @param {string} key
+         * @param {string} value
+         * @return {framework.components.JSContainer}
+         */
+        setAttribute(key: string, value: string): JSContainer;
+        /**
+         *
+         * @param {string} key
+         * @return {string}
+         */
+        getAttribute(key: string): string;
+        /**
+         *
+         * @return {string}
+         */
+        getName(): string;
+        /**
+         *
+         * @param {string} name
+         */
+        setName(name: string): void;
+        /**
+         *
+         * @return {framework.components.JSContainer}
+         */
+        getParent(): JSContainer;
+        /**
+         *
+         * @return {*[]}
+         */
+        getChildren(): Array<framework.components.api.Renderable>;
+        /**
+         *
+         * @return {java.lang.String[]}
+         */
+        getStyleNames(): string[];
+        /**
+         *
+         * @return {java.lang.String[]}
+         */
+        getAttributeNames(): string[];
+        /**
+         *
+         * @return {string}
+         */
+        getHtml(): string;
+        /**
+         *
+         * @param {string} h
+         * @return {framework.components.JSContainer}
+         */
+        setHtml(h: string): JSContainer;
+        /**
+         *
+         * @return {boolean}
+         */
+        isRendered(): boolean;
+        /**
+         *
+         * @param {boolean} b
+         * @return {*}
+         */
+        setRendered(b: boolean): framework.components.api.Renderable;
+        /**
+         *
+         * @return {Object}
+         */
+        getListeners(): Object;
+        render$(): void;
+        /**
+         * This method is invoked by the {@link Renderer} after the component is
+         * rendered on the browser. <br>
+         * This provides a hook for further processing after the component has been
+         * rendered
+         *
+         * @param {HTMLElement} root
+         * The actual {@link HTMLElement} of the root of the application
+         * in which this component is found
+         */
+        postRender(root: HTMLElement): void;
+        /**
+         * Unitility method to check if the specified object is present in the
+         * specified array
+         *
+         * @param {?[]} lst
+         * The array to check if object is present
+         * @param {*} o
+         * The object to check if present
+         * @return {boolean} Whether is present or not
+         */
+        contains(lst: Array<any>, o: any): boolean;
+        render$jsweet_dom_HTMLElement(parent: HTMLElement): void;
+        /**
+         *
+         * @param {HTMLElement} parent
+         */
+        render(parent?: any): any;
+        /**
+         *
+         * @return {*}
+         */
+        getCustomProperties(): any;
+        /**
+         *
+         * @param {*} data
+         */
+        setCustomProperties(data: any): void;
+        /**
+         * Finds an ancestor that contains the specified class
+         *
+         * @param {string} cls
+         * The class to check
+         * @return {*} The ancestor that contains the specified class
+         */
+        getAncestorWithClass<T extends framework.components.api.Renderable>(cls: string): T;
+        /**
+         *
+         * @param {string} id
+         * @return {framework.components.JSContainer}
+         */
+        getAncestorById(id: string): JSContainer;
+        /**
+         *
+         * @param {string} name
+         * @return {framework.components.JSContainer}
+         */
+        getAncestorByName(name: string): JSContainer;
+        /**
+         *
+         * @return {framework.components.JSContainer}
+         */
+        getRoot(): JSContainer;
+        setString(key: string, value: string): void;
+        getString(key: string): string;
+        /**
+         *
+         * @param {*} data
+         * @return {*}
+         */
+        setUserData(data: any): framework.components.api.Renderable;
+        /**
+         *
+         * @return {*}
+         */
+        getUserData(): any;
+    }
+    namespace JSContainer {
+        class JSContainer$0 implements framework.components.api.EventListener {
+            private listener;
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any, listener: any);
+        }
+    }
 }
-declare class ExternalStylesheet extends JSContainer implements api.Renderer<ExternalStylesheet> {
-    static ORIGIN_ANONYMOUS: string;
-    static ORIGIN_USE_CREDENTIALS: string;
-    static MEDIA_DEFAULT: string;
-    static MEDIA_ALL: string;
-    static MEDIA_SCREEN: string;
-    static MEDIA_PRINT: string;
-    static MEDIA_SPEECH: string;
-    constructor(name: string);
-    setSource(src: string): ExternalStylesheet;
-    setCrossOrigin(origin: string): ExternalStylesheet;
-    setMedia(media: string): ExternalStylesheet;
-    doRender$framework_components_ExternalStylesheet$jsweet_dom_HTMLElement(c: ExternalStylesheet, root: HTMLElement): void;
-    /**
-     *
-     * @param {ExternalStylesheet} c
-     * @param {HTMLElement} root
-     */
-    doRender(c?: any, root?: any): any;
+declare namespace framework.components {
+    class App extends framework.components.JSContainer {
+        cmp: any;
+        evt: any;
+        helper: Object;
+        constructor();
+    }
+    namespace App {
+        class App$0 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+    }
 }
-/**
- * Constructs an instance of this component
- *
- * @param {string} name     The name of the component
- * @param {string} template The html template of this component
- * @class
- * @extends JSContainer
- * @author Rossaye Abdool Kureem
- */
-declare class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderable {
-    /**
-     * A context that contains variables exposed to the html template. This can be
-     * used by javascript to transmit data from the framework to the template
-     */
-    context: Object;
-    template: string;
-    constructor(name: string, template: string);
-    /**
-     *
-     * @return {string} The template of the component
-     */
-    getTemplate(): string;
-    /**
-     * Sets the template of this component
-     *
-     * @param {string} template The template of this component
-     */
-    setTemplate(template: string): void;
-    /**
-     *
-     * @return {Object} The variable context of this component
-     */
-    getContext(): Object;
-    render$jsweet_dom_HTMLElement(parent: HTMLElement): void;
-    /**
-     *
-     * @param {HTMLElement} parent
-     */
-    render(parent?: any): any;
-    compile(html: string, ctx: Object): string;
-    static invokeFunction(target: Object, __function: string, ...args: any[]): any;
+declare namespace framework.components {
+    class Box extends framework.components.JSContainer {
+        constructor(name: string, size: number, of: number);
+    }
 }
-declare namespace input {
-    abstract class AbstractJSInput<T> extends JSContainer implements api.InputField<T> {
-        validators: Array<api.Validator<T>>;
+declare namespace framework.components {
+    class CardLayout extends framework.components.JSContainer {
+        currentActive: string;
+        currentIndex: number;
+        constructor(name: string, tag: string);
+        addItem(item: framework.components.CardLayoutItem): CardLayout;
+        getCurrentIndex(): number;
+        getItem(index: number): framework.components.CardLayoutItem;
+        getIndex(name: string): number;
+        next(...params: Object[]): framework.components.CardLayoutItem;
+        previous(...params: Object[]): framework.components.CardLayoutItem;
+        back(...params: Object[]): framework.components.CardLayoutItem;
+        first(...params: Object[]): framework.components.CardLayoutItem;
+        last(...params: Object[]): framework.components.CardLayoutItem;
+        getDefault(): string;
+        activate(name: string, ...params: Object[]): void;
+        /**
+         *
+         * @return {java.lang.String[]}
+         */
+        advancedEventTypes(): string[];
+    }
+}
+declare namespace framework.components {
+    class CardLayoutItem extends framework.components.JSContainer {
+        constructor(name: string, tag: string);
+        /**
+         *
+         * @return {java.lang.String[]}
+         */
+        advancedEventTypes(): string[];
+    }
+}
+declare namespace framework.components {
+    class Col extends framework.components.JSContainer {
+        constructor(name: string, size: number, of: number);
+    }
+}
+declare namespace framework.components {
+    class ExternalJavascript extends framework.components.JSContainer {
         constructor(name: string);
-        addValidator(validator: api.Validator<T>): void;
+        setSource(src: string): ExternalJavascript;
+    }
+}
+declare namespace framework.components {
+    class ExternalStylesheet extends framework.components.JSContainer implements framework.components.api.Renderer<ExternalStylesheet> {
+        static ORIGIN_ANONYMOUS: string;
+        static ORIGIN_USE_CREDENTIALS: string;
+        static MEDIA_DEFAULT: string;
+        static MEDIA_ALL: string;
+        static MEDIA_SCREEN: string;
+        static MEDIA_PRINT: string;
+        static MEDIA_SPEECH: string;
+        constructor(name: string);
+        setSource(src: string): ExternalStylesheet;
+        setCrossOrigin(origin: string): ExternalStylesheet;
+        setMedia(media: string): ExternalStylesheet;
+        doRender$framework_components_ExternalStylesheet$jsweet_dom_HTMLElement(c: ExternalStylesheet, root: HTMLElement): void;
+        /**
+         *
+         * @param {framework.components.ExternalStylesheet} c
+         * @param {HTMLElement} root
+         */
+        doRender(c?: any, root?: any): any;
+    }
+}
+declare namespace framework.components {
+    /**
+     * Constructs an instance of this component
+     *
+     * @param {string} name     The name of the component
+     * @param {string} template The html template of this component
+     * @class
+     * @extends framework.components.JSContainer
+     * @author Rossaye Abdool Kureem
+     */
+    class HTMLTemplateContainer extends framework.components.JSContainer implements framework.components.api.TemplateRenderable {
+        /**
+         * A context that contains variables exposed to the html template. This can be
+         * used by javascript to transmit data from the framework to the template
+         */
+        context: Object;
+        template: string;
+        constructor(name: string, template: string);
+        /**
+         *
+         * @return {string} The template of the component
+         */
+        getTemplate(): string;
+        /**
+         * Sets the template of this component
+         *
+         * @param {string} template The template of this component
+         */
+        setTemplate(template: string): void;
+        /**
+         *
+         * @return {Object} The variable context of this component
+         */
+        getContext(): Object;
+        render$jsweet_dom_HTMLElement(parent: HTMLElement): void;
+        /**
+         *
+         * @param {HTMLElement} parent
+         */
+        render(parent?: any): any;
+        compile(html: string, ctx: Object): string;
+        static invokeFunction(target: Object, __function: string, ...args: any[]): any;
+    }
+}
+declare namespace framework.components.input {
+    abstract class AbstractJSInput<T> extends framework.components.JSContainer implements framework.components.api.InputField<T> {
+        validators: Array<framework.components.api.Validator<T>>;
+        constructor(name: string);
+        addValidator(validator: framework.components.api.Validator<T>): void;
         setSize(size: number): void;
         setPattern(pattern: string): void;
         setRequired(b: boolean): AbstractJSInput<T>;
@@ -1366,46 +1470,46 @@ declare namespace input {
          * The message to add in the validation context
          * @param {ValidityState} state
          * The ValidityState returned
-         * @param {api.ValidationException} e
+         * @param {framework.components.api.ValidationException} e
          * The validation exception to add to error context
-         * @return {api.ValidationException} The current instance of the {@link ValidationException}
+         * @return {framework.components.api.ValidationException} The current instance of the {@link ValidationException}
          */
-        static addError(msg: string, state: ValidityState, e: api.ValidationException): api.ValidationException;
+        static addError(msg: string, state: ValidityState, e: framework.components.api.ValidationException): framework.components.api.ValidationException;
         /**
          *
          */
         validate(): void;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         setBinding(binding: string): AbstractJSInput<T>;
-        abstract setValue(val?: any): any;
         abstract getValue(): any;
+        abstract setValue(val?: any): any;
     }
 }
-declare namespace input {
-    class Form extends JSContainer {
+declare namespace framework.components.input {
+    class Form extends framework.components.JSContainer {
         validationerrors: Object;
         constructor(name: string);
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         isValid(): boolean;
         hasErrors(): boolean;
-        getError(binding: string): api.ValidationException;
+        getError(binding: string): framework.components.api.ValidationException;
         getErrors(): Object;
-        getField(binding: string): api.InputField<any>;
+        getField(binding: string): framework.components.api.InputField<any>;
         validate(): boolean;
         setData(data: Object): void;
         getData(): Object;
         submit(): void;
     }
     namespace Form {
-        class Form$0 implements util.ComponentUtil.ComponentVisitor {
+        class Form$0 implements framework.components.util.ComponentUtil.ComponentVisitor {
             private binding;
             private result;
             __parent: any;
@@ -1413,49 +1517,49 @@ declare namespace input {
              *
              * @param {*} designable
              */
-            doVisit(designable: api.Renderable): void;
+            doVisit(designable: framework.components.api.Renderable): void;
             constructor(__parent: any, binding: any, result: any);
         }
-        class Form$1 implements util.ComponentUtil.ComponentVisitor {
+        class Form$1 implements framework.components.util.ComponentUtil.ComponentVisitor {
             __parent: any;
             /**
              *
              * @param {*} designable
              */
-            doVisit(designable: api.Renderable): void;
+            doVisit(designable: framework.components.api.Renderable): void;
             constructor(__parent: any);
         }
-        class Form$2 implements util.ComponentUtil.ComponentVisitor {
+        class Form$2 implements framework.components.util.ComponentUtil.ComponentVisitor {
             private data;
             __parent: any;
             /**
              *
              * @param {*} designable
              */
-            doVisit(designable: api.Renderable): void;
+            doVisit(designable: framework.components.api.Renderable): void;
             constructor(__parent: any, data: any);
         }
-        class Form$3 implements util.ComponentUtil.ComponentVisitor {
+        class Form$3 implements framework.components.util.ComponentUtil.ComponentVisitor {
             private data;
             __parent: any;
             /**
              *
              * @param {*} designable
              */
-            doVisit(designable: api.Renderable): void;
+            doVisit(designable: framework.components.api.Renderable): void;
             constructor(__parent: any, data: any);
         }
     }
 }
-declare namespace input {
-    class JSImageInput extends JSContainer implements api.InputField<string> {
-        image: JSContainer;
-        upload: JSUpload;
-        imageContainer: JSContainer;
-        validators: Array<api.Validator<string>>;
+declare namespace framework.components.input {
+    class JSImageInput extends framework.components.JSContainer implements framework.components.api.InputField<string> {
+        image: framework.components.JSContainer;
+        upload: framework.components.JSUpload;
+        imageContainer: framework.components.JSContainer;
+        validators: Array<framework.components.api.Validator<string>>;
         constructor(name: string);
         refreshUploadDir(): void;
-        getImage(): JSContainer;
+        getImage(): framework.components.JSContainer;
         setRequired(b: boolean): JSImageInput;
         setDisabled(b: boolean): JSImageInput;
         setReadOnly(b: boolean): JSImageInput;
@@ -1485,48 +1589,48 @@ declare namespace input {
          * @param {string} binding
          * @return {*}
          */
-        setBinding(binding: string): api.InputField<string>;
+        setBinding(binding: string): framework.components.api.InputField<string>;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
     }
     namespace JSImageInput {
-        class JSImageInput$0 implements api.EventListener {
+        class JSImageInput$0 implements framework.components.api.EventListener {
             __parent: any;
             /**
              *
              * @param {*} source
              * @param {Event} evt
              */
-            performAction(source: api.Renderable, evt: Event): void;
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
             constructor(__parent: any);
         }
-        class JSImageInput$1 implements api.EventListener {
+        class JSImageInput$1 implements framework.components.api.EventListener {
             __parent: any;
             /**
              *
              * @param {*} source
              * @param {Event} evt
              */
-            performAction(source: api.Renderable, evt: Event): void;
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
             constructor(__parent: any);
         }
-        class JSImageInput$2 implements api.EventListener {
+        class JSImageInput$2 implements framework.components.api.EventListener {
             __parent: any;
             /**
              *
              * @param {*} source
              * @param {Event} evt
              */
-            performAction(source: api.Renderable, evt: Event): void;
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
             constructor(__parent: any);
         }
     }
 }
-declare namespace input {
-    class JSOption extends JSContainer {
+declare namespace framework.components.input {
+    class JSOption extends framework.components.JSContainer {
         constructor(text: string, value: string);
         getValue(): string;
         setValue(value: string): void;
@@ -1535,16 +1639,16 @@ declare namespace input {
         setSelected(b: boolean): void;
     }
 }
-declare namespace input {
-    class JSSelect extends JSContainer implements api.InputField<any> {
+declare namespace framework.components.input {
+    class JSSelect extends framework.components.JSContainer implements framework.components.api.InputField<any> {
         previousValue: string;
-        validators: Array<api.Validator<any>>;
+        validators: Array<framework.components.api.Validator<any>>;
         data: Array<Object>;
         constructor(name: string);
-        addValidator(validator: api.Validator<any>): void;
+        addValidator(validator: framework.components.api.Validator<any>): void;
         setOptions$java_lang_String(options: string): JSSelect;
         setOptions(options?: any): any;
-        addOption$framework_components_input_JSOption(option: input.JSOption): JSSelect;
+        addOption$framework_components_input_JSOption(option: framework.components.input.JSOption): JSSelect;
         addOption$java_lang_String$java_lang_String(text: string, value: string): JSSelect;
         addOption(text?: any, value?: any): any;
         addOption$jsweet_lang_Object(opt: Object): JSSelect;
@@ -1552,8 +1656,8 @@ declare namespace input {
          *
          * @return {*}
          */
-        clearChildren(): api.Renderable;
-        clearOptions(): api.Renderable;
+        clearChildren(): framework.components.api.Renderable;
+        clearOptions(): framework.components.api.Renderable;
         setMultiple(b: boolean): void;
         setSize(size: number): void;
         setPattern(pattern: string): void;
@@ -1578,7 +1682,7 @@ declare namespace input {
         validate(): void;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         getBinding(): string;
@@ -1592,14 +1696,14 @@ declare namespace input {
          * @param {string} binding
          * @return {*}
          */
-        setBinding(binding: string): api.InputField<any>;
+        setBinding(binding: string): framework.components.api.InputField<any>;
     }
 }
-declare namespace input {
-    class JSTextArea extends JSContainer implements api.InputField<string> {
-        validators: Array<api.Validator<string>>;
+declare namespace framework.components.input {
+    class JSTextArea extends framework.components.JSContainer implements framework.components.api.InputField<string> {
+        validators: Array<framework.components.api.Validator<string>>;
         constructor(name: string);
-        addValidator(validator: api.Validator<string>): void;
+        addValidator(validator: framework.components.api.Validator<string>): void;
         setRequired(b: boolean): JSTextArea;
         setDisabled(b: boolean): JSTextArea;
         /**
@@ -1619,7 +1723,7 @@ declare namespace input {
         validate(): void;
         /**
          *
-         * @return {Array}
+         * @return {java.lang.String[]}
          */
         advancedEventTypes(): string[];
         setReadOnly(b: boolean): JSTextArea;
@@ -1629,83 +1733,494 @@ declare namespace input {
          * @param {string} binding
          * @return {*}
          */
-        setBinding(binding: string): api.InputField<string>;
+        setBinding(binding: string): framework.components.api.InputField<string>;
     }
 }
-declare class RestWebservice extends JSContainer {
-    constructor(name?: any);
-    /**
-     *
-     * @return {Array}
-     */
-    advancedEventTypes(): string[];
-    isSet(prop: string): boolean;
-    getAccepts(): string;
-    setAccepts(accepts: string): void;
-    setDataType(dataType: string): void;
-    getDataType(): string;
-    setContentType(contentType: string): void;
-    getContentType(): string;
-    getBoolean(prop: string): boolean;
-    setAsync(b: boolean): void;
-    getAsync(): boolean;
-    setCache(b: boolean): void;
-    getCache(): boolean;
-    setCrossDomain(b: boolean): void;
-    getCrossDomain(): boolean;
-    setIfModified(b: boolean): void;
-    getIfModified(): boolean;
-    setProcessData(b: boolean): void;
-    getProcessData(): boolean;
-    setScriptCharset(charset: string): void;
-    getScriptCharset(): string;
-    setUsername(username: string): void;
-    getUsername(): string;
-    setMimeType(mimetype: string): void;
-    getMimeType(): string;
-    setPassword(password: string): void;
-    getPassword(): string;
-    setTraditional(b: boolean): void;
-    getTraditional(): boolean;
-    setTimeout(timeout: number): void;
-    getTimeout(): number;
-    setUrl(url: string): void;
-    getUrl(): string;
-    addHeader(key: string, value: string): void;
-    getHeaders(): any;
-    getData(): any;
-    setData(data: any): void;
-    setMethod(method: string): void;
-    getMethod(): string;
-    execute(): void;
-}
-declare class Row extends JSContainer {
-    constructor(name: string);
-}
-declare namespace table {
-    class Table extends JSContainer {
-        head: JSContainer;
-        body: JSContainer;
-        dataModel: table.TableModel;
-        columnModel: table.TableColumnModel;
+declare namespace framework.components {
+    class MonthView extends framework.components.JSContainer {
+        startDate: Date;
+        static CELL_HEIGHT: number;
+        days: number;
+        header: framework.components.Box;
+        body: framework.components.MonthViewBody;
+        static DAYS: string[];
+        static DAYS_$LI$(): string[];
         constructor(name: string);
-        getHead(): JSContainer;
-        getBody(): JSContainer;
-        getDataModel(): table.TableModel;
-        setDataModel(dataModel: table.TableModel): void;
-        getColumnModel(): table.TableColumnModel;
-        setColumnModel(columnModel: table.TableColumnModel): void;
+        getStartDate(): Date;
+        setStartDate(startDate: Date): void;
+        reset(): void;
+        fillHeader(): void;
+        fillBody(): void;
+        addCalEvent(evt: Object): void;
+        removeCalEvent(uiCalEvt: framework.components.ViewEvent): void;
+        moveCalEvent(uiCalEvent: framework.components.ViewEvent, newEvent: Object): void;
+        getCell(dt: Date): framework.components.MonthViewCell;
+    }
+}
+declare namespace framework.components {
+    class MonthViewEvent extends framework.components.JSContainer implements framework.components.ViewEvent {
+        value: Object;
+        header: framework.components.JSContainer;
+        close: framework.components.JSContainer;
+        title: framework.components.JSContainer;
+        constructor(name: string);
+        reset(): void;
+        formatDate(dt: Date): string;
+        setValue(value: Object): void;
+        getStartDate(): Date;
+        getEndDate(): Date;
+        /**
+         *
+         * @param {Date} startDate
+         * @return {Object}
+         */
+        getNewEvent(startDate: Date): Object;
+    }
+    namespace MonthViewEvent {
+        class MonthViewEvent$0 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class MonthViewEvent$1 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class MonthViewEvent$2 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+    }
+}
+declare namespace framework.components {
+    class Row extends framework.components.JSContainer {
+        constructor(name: string);
+    }
+}
+declare namespace framework.components {
+    class SemaineType extends framework.components.JSContainer {
+        cmp: Object;
+        evt: Object;
+        helper: Object;
+        table: framework.components.SemaineTypeTable;
+        constructor();
+        callHelper(method: string, ...parsm: Object[]): void;
+        setSemaineType(semaineType: Object): void;
+        addItem(from: string, to: string, type: string, day: string, quantity: number): void;
+    }
+    namespace SemaineType {
+        class SemaineType$0 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+    }
+}
+declare namespace framework.components {
+    class SemaineTypeCell extends framework.components.JSContainer {
+        hour: number;
+        minute: number;
+        day: string;
+        constructor(day: string, hour: number, minute: number);
+        getHour(): number;
+        getMinute(): number;
+        getDay(): string;
+    }
+    namespace SemaineTypeCell {
+        class SemaineTypeCell$0 implements framework.components.api.EventListener {
+            private hour;
+            private minute;
+            private day;
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any, hour: any, minute: any, day: any);
+        }
+    }
+}
+declare namespace framework.components {
+    class SemaineTypeRow extends framework.components.JSContainer {
+        hour: number;
+        minute: number;
+        constructor(hour: number, minute: number);
+        getHour(): number;
+        getMinute(): number;
+    }
+}
+declare namespace framework.components {
+    class SemaineTypeTable extends framework.components.JSContainer {
+        thead: framework.components.JSContainer;
+        tbody: framework.components.JSContainer;
+        constructor();
+        getColWidth(): number;
+        getGutterWitdh(): number;
+        initHeader(): void;
+        initBody(): void;
+    }
+}
+declare namespace framework.components.table {
+    class Table extends framework.components.JSContainer {
+        head: framework.components.JSContainer;
+        body: framework.components.JSContainer;
+        dataModel: framework.components.table.TableModel;
+        columnModel: framework.components.table.TableColumnModel;
+        constructor(name: string);
+        getHead(): framework.components.JSContainer;
+        getBody(): framework.components.JSContainer;
+        getDataModel(): framework.components.table.TableModel;
+        setDataModel(dataModel: framework.components.table.TableModel): void;
+        getColumnModel(): framework.components.table.TableColumnModel;
+        setColumnModel(columnModel: framework.components.table.TableColumnModel): void;
         refresh(): void;
     }
 }
-declare namespace input {
-    class JSAddressInput extends HTMLTemplateContainer implements api.InputField<Object> {
+declare namespace framework.components {
+    class Token extends framework.components.JSContainer {
+        from: string;
+        to: string;
+        day: string;
+        type: string;
+        quantity: number;
+        constructor(from: string, to: string, day: string, type: string, quantity: number);
+        getFrom(): string;
+        getTo(): string;
+        getDay(): string;
+        getType(): string;
+        processWith(table: framework.components.SemaineTypeTable): void;
+    }
+    namespace Token {
+        class Token$0 implements framework.components.api.EventListener {
+            private from;
+            private to;
+            private day;
+            private type;
+            private quantity;
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any, from: any, to: any, day: any, type: any, quantity: any);
+        }
+    }
+}
+declare namespace framework.components {
+    class WeekView extends framework.components.JSContainer {
+        startDate: Date;
+        days: number;
+        startHour: number;
+        endHour: number;
+        static CELL_HEIGHT: number;
+        header: framework.components.Box;
+        headerLeftGutter: framework.components.Box;
+        headerRightBody: framework.components.Box;
+        body: framework.components.Box;
+        bodyLeftGutter: framework.components.Box;
+        bodyRightBody: framework.components.WeekViewBody;
+        constructor(name: string);
+        reset(): void;
+        fillAll(): void;
+        formatDate(date: Date): string;
+        fillLeftGutter(): void;
+        fillRightBody(): void;
+        setStartDate(date: Date): void;
+        setTimeRange(startHour: number, endHour: number): void;
+        removeCalEvent(uiCalEvt: framework.components.ViewEvent): void;
+        adjustEventWidth(): void;
+        addCalEvent(evt: Object): void;
+        unHoldEvent(uiCalEvt: framework.components.WeekViewEvent): void;
+        adjustHolding(uiCalEvt: framework.components.WeekViewEvent): void;
+        moveCalEvent(uiCalEvt: framework.components.ViewEvent, newEvt: Object): void;
+        getCellsForDateRange(startDate: Date, endDate: Date): Array<framework.components.WeekViewCell>;
+        getDateCell(date: Date): framework.components.WeekViewDateCell;
+    }
+}
+declare namespace framework.components {
+    class WeekViewEvent extends framework.components.JSContainer implements framework.components.ViewEvent {
+        value: Object;
+        header: framework.components.JSContainer;
+        body: framework.components.JSContainer;
+        footer: framework.components.JSContainer;
+        title: framework.components.JSContainer;
+        time: framework.components.JSContainer;
+        description: framework.components.JSContainer;
+        resizer: framework.components.JSContainer;
+        close: framework.components.JSContainer;
+        heldBy: Array<framework.components.WeekViewCell>;
+        startY: number;
+        startHeight: number;
+        newHeight: number;
+        resizing: boolean;
+        p: HTMLElement;
+        doDrag: EventListener;
+        stopDrag: EventListener;
+        constructor(name: string);
+        reset(): void;
+        getGhost(): framework.components.JSContainer;
+        getStartDate(): Date;
+        getEndDate(): Date;
+        getEventDurationMS(): number;
+        isHeldBy(cell: framework.components.WeekViewCell): boolean;
+        addHeldBy(cell: framework.components.WeekViewCell): void;
+        formatDate(dt: Date): string;
+        setValue(value: Object): void;
+        getValue(): Object;
+        removeFromCell(): void;
+        getNewEvent(startDate: Date): Object;
+        updateEndDate(): void;
+    }
+    namespace WeekViewEvent {
+        class WeekViewEvent$0 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class WeekViewEvent$1 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class WeekViewEvent$2 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class WeekViewEvent$3 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+    }
+}
+declare namespace framework.components {
+    class MonthViewBody extends framework.components.Box {
+        constructor(name: string);
+        getCells(): Array<framework.components.MonthViewCell>;
+    }
+}
+declare namespace framework.components {
+    class MonthViewCell extends framework.components.Box {
+        date: Date;
+        header: framework.components.Box;
+        body: framework.components.Box;
+        constructor(name: string, of: number);
+        setDate(date: Date): void;
+        isSameDate(dt: Date): boolean;
+        addCalEvent(uiCalEvent: framework.components.ViewEvent): void;
+        getDate(): Date;
+        removeCalEvent(uiCalEvent: framework.components.ViewEvent): void;
+    }
+    namespace MonthViewCell {
+        class MonthViewCell$0 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class MonthViewCell$1 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class MonthViewCell$2 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class MonthViewCell$3 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class MonthViewCell$4 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+    }
+}
+declare namespace framework.components {
+    class WeekViewBody extends framework.components.Box {
+        constructor(name: string);
+        getCells(): Array<framework.components.WeekViewDateCell>;
+        unholdEvent(uiCalEvt: framework.components.WeekViewEvent): void;
+    }
+}
+declare namespace framework.components {
+    class WeekViewDateCell extends framework.components.Box {
+        date: Date;
+        hour: number;
+        cellHr: framework.components.WeekViewCell;
+        cellHalfHr: framework.components.WeekViewCell;
+        constructor(date: Date, hr: number, days: number);
+        addCalEvent(uiCalEvt: framework.components.WeekViewEvent): void;
+        getCells(): Array<framework.components.WeekViewCell>;
+        removeCalEvent(uiCalEvt: framework.components.ViewEvent): void;
+        getDate(): Date;
+        getHour(): number;
+        holdHr(uiCalEvt: framework.components.WeekViewEvent): void;
+        holdHalfHr(uiCalEvt: framework.components.WeekViewEvent): void;
+        unhold(uiCalEvt: framework.components.WeekViewEvent): void;
+        getCellHr(): framework.components.WeekViewCell;
+        getCellHalfHr(): framework.components.WeekViewCell;
+    }
+}
+declare namespace framework.components {
+    class WeekViewCell extends framework.components.Col {
+        hour: number;
+        min: number;
+        date: Date;
+        holding: Array<framework.components.ViewEvent>;
+        constructor(hour: number, min: number, date: Date);
+        addCalEvent(uiCalEvt: framework.components.WeekViewEvent): void;
+        removeCalEvent(uiCalEvt: framework.components.ViewEvent): void;
+        getHour(): number;
+        getMin(): number;
+        getDate(): Date;
+        hold(uiCalEvt: framework.components.WeekViewEvent): void;
+        unhold(uiCalEvt: framework.components.ViewEvent): void;
+        isHolding(uiCalEvt: framework.components.ViewEvent): boolean;
+        getHolding(): Array<framework.components.ViewEvent>;
+    }
+    namespace WeekViewCell {
+        class WeekViewCell$0 implements framework.components.api.EventListener {
+            private hour;
+            private min;
+            private date;
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any, hour: any, min: any, date: any);
+        }
+        class WeekViewCell$1 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class WeekViewCell$2 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class WeekViewCell$3 implements framework.components.api.EventListener {
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any);
+        }
+        class WeekViewCell$4 implements framework.components.api.EventListener {
+            private date;
+            private hour;
+            private min;
+            __parent: any;
+            /**
+             *
+             * @param {*} source
+             * @param {Event} evt
+             */
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
+            constructor(__parent: any, date: any, hour: any, min: any);
+        }
+    }
+}
+declare namespace framework.components.input {
+    class JSAddressInput extends framework.components.HTMLTemplateContainer implements framework.components.api.InputField<Object> {
         address: Object;
-        country: input.JSSelect;
-        city: input.JSTextInput;
-        postalCode: input.JSTextInput;
-        state: input.JSTextInput;
-        street: input.JSTextInput;
+        country: framework.components.input.JSSelect;
+        city: framework.components.input.JSTextInput;
+        postalCode: framework.components.input.JSTextInput;
+        state: framework.components.input.JSTextInput;
+        street: framework.components.input.JSTextInput;
         constructor(name: string);
         getAddress(): Object;
         setAddress(address: Object): void;
@@ -1734,105 +2249,107 @@ declare namespace input {
          * @param {string} binding
          * @return {*}
          */
-        setBinding(binding: string): api.InputField<Object>;
+        setBinding(binding: string): framework.components.api.InputField<Object>;
         /**
          *
          * @param {boolean} b
          * @return {*}
          */
-        setRequired(b: boolean): api.InputField<Object>;
+        setRequired(b: boolean): framework.components.api.InputField<Object>;
     }
 }
-/**
- * Create a new instance of this component
- * @param {string} name The name of the component
- * @param {string} url The url where to submit uploaded file
- * @param {string} template
- * @class
- * @extends HTMLTemplateContainer
- * @author Rossaye Abdool Kureem
- */
-declare class JSUpload extends HTMLTemplateContainer implements api.EventListener, api.InputField<Object> {
-    label: JSContainer;
-    input: JSContainer;
-    uploader: FileUploader;
-    required: boolean;
-    constructor(name?: any, template?: any, url?: any);
+declare namespace framework.components {
     /**
-     * Manually opens native dialog box to select file to upload
+     * Create a new instance of this component
+     * @param {string} name The name of the component
+     * @param {string} url The url where to submit uploaded file
+     * @param {string} template
+     * @class
+     * @extends framework.components.HTMLTemplateContainer
+     * @author Rossaye Abdool Kureem
      */
-    triggerUpload(): void;
-    /**
-     *
-     * @return {Array}
-     */
-    advancedEventTypes(): string[];
-    /**
-     * Sets a label to this component
-     * @param {string} label The label of the component
-     */
-    setLabel(label: string): void;
-    /**
-     * Sets the accepts mimetypes for this component
-     * @param {string} accepts Mime types allowed to upload (e.g image/jpg, image/png, text/html etc)
-     */
-    setAccepts(accepts: string): void;
-    /**
-     *
-     * @param {*} source
-     * @param {Event} ev
-     */
-    performAction(source: api.Renderable, ev: Event): void;
-    /**
-     * Sets the server url where to submit file to uplaod
-     * @param {string} url Url where to submit file to upload
-     */
-    setUrl(url: string): void;
-    /**
-     * Synonymous to setUrl
-     * @param {string} url The url where to submit file to upload
-     */
-    setEndpoint(url: string): void;
-    /**
-     *
-     * @return {Object}
-     */
-    getValue(): Object;
-    setValue$jsweet_lang_Object(val: Object): void;
-    /**
-     *
-     * @param {Object} val
-     */
-    setValue(val?: any): any;
-    /**
-     *
-     */
-    validate(): void;
-    /**
-     *
-     * @return {string}
-     */
-    getBinding(): string;
-    /**
-     *
-     * @param {string} binding
-     * @return {*}
-     */
-    setBinding(binding: string): api.InputField<Object>;
-    /**
-     *
-     * @param {boolean} b
-     * @return {*}
-     */
-    setRequired(b: boolean): api.InputField<Object>;
-    getUploader(): FileUploader;
-    setUploader(uploader: FileUploader): void;
-    getLabel(): JSContainer;
-    getInput(): JSContainer;
-    isRequired(): boolean;
+    class JSUpload extends framework.components.HTMLTemplateContainer implements framework.components.api.EventListener, framework.components.api.InputField<Object> {
+        label: framework.components.JSContainer;
+        input: framework.components.JSContainer;
+        uploader: framework.components.FileUploader;
+        required: boolean;
+        constructor(name?: any, template?: any, url?: any);
+        /**
+         * Manually opens native dialog box to select file to upload
+         */
+        triggerUpload(): void;
+        /**
+         *
+         * @return {java.lang.String[]}
+         */
+        advancedEventTypes(): string[];
+        /**
+         * Sets a label to this component
+         * @param {string} label The label of the component
+         */
+        setLabel(label: string): void;
+        /**
+         * Sets the accepts mimetypes for this component
+         * @param {string} accepts Mime types allowed to upload (e.g image/jpg, image/png, text/html etc)
+         */
+        setAccepts(accepts: string): void;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} ev
+         */
+        performAction(source: framework.components.api.Renderable, ev: Event): void;
+        /**
+         * Sets the server url where to submit file to uplaod
+         * @param {string} url Url where to submit file to upload
+         */
+        setUrl(url: string): void;
+        /**
+         * Synonymous to setUrl
+         * @param {string} url The url where to submit file to upload
+         */
+        setEndpoint(url: string): void;
+        /**
+         *
+         * @return {Object}
+         */
+        getValue(): Object;
+        setValue$jsweet_lang_Object(val: Object): void;
+        /**
+         *
+         * @param {Object} val
+         */
+        setValue(val?: any): any;
+        /**
+         *
+         */
+        validate(): void;
+        /**
+         *
+         * @return {string}
+         */
+        getBinding(): string;
+        /**
+         *
+         * @param {string} binding
+         * @return {*}
+         */
+        setBinding(binding: string): framework.components.api.InputField<Object>;
+        /**
+         *
+         * @param {boolean} b
+         * @return {*}
+         */
+        setRequired(b: boolean): framework.components.api.InputField<Object>;
+        getUploader(): framework.components.FileUploader;
+        setUploader(uploader: framework.components.FileUploader): void;
+        getLabel(): framework.components.JSContainer;
+        getInput(): framework.components.JSContainer;
+        isRequired(): boolean;
+    }
 }
-declare namespace input {
-    class JSCheckBox extends input.AbstractJSInput<boolean> {
+declare namespace framework.components.input {
+    class JSCheckBox extends framework.components.input.AbstractJSInput<boolean> {
         constructor(name: string);
         /**
          *
@@ -1849,8 +2366,8 @@ declare namespace input {
         setChecked(b: boolean): void;
     }
 }
-declare namespace input {
-    class JSDateInput extends input.AbstractJSInput<Date> {
+declare namespace framework.components.input {
+    class JSDateInput extends framework.components.input.AbstractJSInput<Date> {
         constructor(name: string);
         setType(type: string): JSDateInput;
         /**
@@ -1868,20 +2385,20 @@ declare namespace input {
         setMax(max: Date): void;
     }
     namespace JSDateInput {
-        class JSDateInput$0 implements api.EventListener {
+        class JSDateInput$0 implements framework.components.api.EventListener {
             __parent: any;
             /**
              *
              * @param {*} source
              * @param {Event} evt
              */
-            performAction(source: api.Renderable, evt: Event): void;
+            performAction(source: framework.components.api.Renderable, evt: Event): void;
             constructor(__parent: any);
         }
     }
 }
-declare namespace input {
-    class JSNumberInput extends input.AbstractJSInput<number> {
+declare namespace framework.components.input {
+    class JSNumberInput extends framework.components.input.AbstractJSInput<number> {
         constructor(name: string);
         setType(type: string): JSNumberInput;
         setStep(step: number): void;
@@ -1901,8 +2418,8 @@ declare namespace input {
         setMax(max: number): void;
     }
 }
-declare namespace input {
-    class JSTextInput extends input.AbstractJSInput<string> implements api.Renderer<JSTextInput> {
+declare namespace framework.components.input {
+    class JSTextInput extends framework.components.input.AbstractJSInput<string> {
         constructor(name: string);
         setMaxLength(length: number): void;
         setType(type: string): JSTextInput;
@@ -1919,17 +2436,10 @@ declare namespace input {
         setValue(val?: any): any;
         getMask(): string;
         setMask(mask: string): void;
-        doRender$framework_components_input_JSTextInput$jsweet_dom_HTMLElement(c: JSTextInput, root: HTMLElement): void;
-        /**
-         *
-         * @param {input.JSTextInput} c
-         * @param {HTMLElement} root
-         */
-        doRender(c?: any, root?: any): any;
     }
 }
-declare namespace input {
-    class JSTimeInput extends input.AbstractJSInput<Date> {
+declare namespace framework.components.input {
+    class JSTimeInput extends framework.components.input.AbstractJSInput<Date> {
         savedDate: Date;
         constructor(name: string);
         /**
@@ -1945,14 +2455,14 @@ declare namespace input {
         setValue(val?: any): any;
     }
 }
-declare namespace input {
-    class RichTextEditor extends input.JSTextArea implements api.Renderer<RichTextEditor> {
+declare namespace framework.components.input {
+    class RichTextEditor extends framework.components.input.JSTextArea implements framework.components.api.Renderer<RichTextEditor> {
         editor: Object;
         constructor(name: string);
         doRender$framework_components_input_RichTextEditor$jsweet_dom_HTMLElement(c: RichTextEditor, root: HTMLElement): void;
         /**
          *
-         * @param {input.RichTextEditor} c
+         * @param {framework.components.input.RichTextEditor} c
          * @param {HTMLElement} root
          */
         doRender(c?: any, root?: any): any;
@@ -1963,8 +2473,8 @@ declare namespace input {
         getValue(): string;
     }
 }
-declare namespace input {
-    class JSRadio extends input.JSCheckBox {
+declare namespace framework.components.input {
+    class JSRadio extends framework.components.input.JSCheckBox {
         constructor(name: string);
     }
 }

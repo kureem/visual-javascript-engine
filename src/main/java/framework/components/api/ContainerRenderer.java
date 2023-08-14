@@ -4,6 +4,8 @@ import static jsweet.dom.Globals.console;
 import static jsweet.dom.Globals.document;
 //import static jsweet.util.StringTypes.style;
 
+import java.util.Iterator;
+
 import jsweet.dom.CSSStyleSheet;
 import jsweet.dom.Element;
 import jsweet.dom.HTMLElement;
@@ -17,16 +19,33 @@ import jsweet.lang.Array;
 import jsweet.lang.Globals;
 import jsweet.lang.Object;
 import jsweet.util.StringTypes;
-
+import static jsweet.lang.Globals.eval;
 public class ContainerRenderer implements Renderer<Renderable> {
 	
 	public  static double timeSpent =0;
 
-	
+	public static HTMLElement getElementById(String id) {
+		
+		
+		return document.getElementById(id);
+		/*HTMLElement result = null;
+		
+		String js = " var elems = document.getElementsByClassName(id);\n" + 
+				"                     if (elems.length > 0) {\n" + 
+				"                         result = elems[0];\n" + 
+				"                     }\n" + 
+				"                     else {\n" + 
+				"                         result = null;\n" + 
+				"                     }";
+		
+		eval(js);
+		
+		return result;*/
+	}
 	
 
 	public void doRender(Renderable c, HTMLElement root) {
-		HTMLElement jq = document.getElementById(c.getId());
+		HTMLElement jq = getElementById(c.getId());
 		
 		String tag = c.getTag();
 		boolean rendered = c.isRendered();
@@ -42,14 +61,15 @@ public class ContainerRenderer implements Renderer<Renderable> {
 			if (name != null && name.length() > 0)
 				njq.setAttribute("name", name);
 			njq.setAttribute("id", c.getId());
+			//njq.classList.add(c.getId());
 			njq.innerHTML = html;
-			NodeListOf<HTMLScriptElement> uiscripts =  njq.getElementsByTagName(StringTypes.script);
+			/*NodeListOf<HTMLScriptElement> uiscripts =  njq.getElementsByTagName(StringTypes.script);
 			Array<String> scripts = new Array<String>();
 			for(double i =0; i < uiscripts.length;i++) {
 				HTMLScriptElement elem = (HTMLScriptElement)uiscripts.$get(i);
 				if(elem.innerText != null && elem.innerText.trim().length() > 0)
 					scripts.push( elem.innerText);
-			}
+			}*/
 			renderAttributes(njq, c, false);
 			renderStyles(njq, c, false);
 
@@ -63,7 +83,7 @@ public class ContainerRenderer implements Renderer<Renderable> {
 			} else {
 
 				if (parent instanceof TemplateRenderable) {
-					Element elem = document.getElementById(parent.getId()).querySelector("[name=" + name +"]");
+					Element elem = getElementById(parent.getId()).querySelector("[name=" + name +"]");
 					elem.parentElement.replaceChild(njq, elem);
 					//$("#" + parent.getId() + " [name=" + name + "]").replaceWith(njq);
 				} else {
@@ -78,11 +98,11 @@ public class ContainerRenderer implements Renderer<Renderable> {
 					}
 
 					if (nextSib != null) {
-						Node p = document.getElementById(parent.getId());
-						p.insertBefore(njq, document.getElementById(nextSib.getId()));
+						Node p = getElementById(parent.getId());
+						p.insertBefore(njq, getElementById(nextSib.getId()));
 					} else {
 						try{
-							document.getElementById(parent.getId()).appendChild(njq);
+							getElementById(parent.getId()).appendChild(njq);
 						}catch(Exception e){
 							e.printStackTrace();
 						}
@@ -93,9 +113,9 @@ public class ContainerRenderer implements Renderer<Renderable> {
 			Renderable me = c;
 			Renderable component =me;
 			doNothing(component);
-			for(String scr : scripts) {
+		/*	for(String scr : scripts) {
 				Globals.eval(scr);
-			}
+			}*/
 		//	List l =null;
 			renderEvents(njq, c);
 			processCSSRules(c, njq);
@@ -174,6 +194,9 @@ public class ContainerRenderer implements Renderer<Renderable> {
 					//njq.setAttribute(key, c.getAttribute(key));
 					setAttribute(njq, key, attr);
 			}
+		}
+		if(!njq.classList.contains(c.getId())) {
+			njq.classList.add(c.getId());
 		}
 	}
 	
