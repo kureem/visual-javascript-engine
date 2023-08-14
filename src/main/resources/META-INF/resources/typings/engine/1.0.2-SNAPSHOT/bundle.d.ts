@@ -661,6 +661,31 @@ declare namespace api {
         getCode(): number;
     }
 }
+declare class CastaApplication {
+    ui: JSCastaContainer;
+    constructor(name: string);
+    init(name: string): void;
+}
+interface CastaContainer extends api.Renderable {
+    setId(id: string): any;
+    getChildById(id: string): CastaContainer;
+}
+declare class CastaUtil {
+    static setVal(val: Object, c: CastaContainer): void;
+    static getChildById(p: CastaContainer, id: string): CastaContainer;
+}
+declare namespace CastaUtil {
+    class CastaUtil$0 implements api.EventListener {
+        private js;
+        /**
+         *
+         * @param {*} source
+         * @param {Event} evt
+         */
+        performAction(source: api.Renderable, evt: Event): void;
+        constructor(js: any);
+    }
+}
 declare namespace table {
     class DefaulTableModel implements table.TableModel {
         data: Array<Object>;
@@ -1984,6 +2009,19 @@ declare namespace input {
         setBinding(binding: string): api.InputField<string>;
     }
 }
+declare class JSCastaContainer extends JSContainer implements CastaContainer {
+    id: string;
+    constructor();
+    setVal(val: Object): void;
+    getId(): string;
+    setId(id: string): void;
+    /**
+     *
+     * @param {string} id
+     * @return {*}
+     */
+    getChildById(id: string): CastaContainer;
+}
 declare namespace table {
     /**
      * Renders a table
@@ -2113,6 +2151,22 @@ declare namespace table {
         setModel(model: table.TableColumnModel): void;
         getColumns(): Array<table.TableColumn>;
     }
+}
+declare class JSCastaTemplateContainer extends HTMLTemplateContainer implements CastaContainer {
+    constructor();
+    id: string;
+    /**
+     *
+     * @param {string} id
+     */
+    setId(id: string): void;
+    getId(): string;
+    /**
+     *
+     * @param {string} id
+     * @return {*}
+     */
+    getChildById(id: string): CastaContainer;
 }
 declare namespace input {
     /**
