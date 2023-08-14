@@ -661,6 +661,7 @@ declare namespace api {
         getCode(): number;
     }
 }
+<<<<<<< HEAD
 declare class CastaApplication {
     ui: JSCastaContainer;
     constructor(name: string);
@@ -686,6 +687,8 @@ declare namespace CastaUtil {
         constructor(js: any);
     }
 }
+=======
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
 declare namespace table {
     class DefaulTableModel implements table.TableModel {
         data: Array<Object>;
@@ -2009,6 +2012,7 @@ declare namespace input {
         setBinding(binding: string): api.InputField<string>;
     }
 }
+<<<<<<< HEAD
 declare class JSCastaContainer extends JSContainer implements CastaContainer {
     id: string;
     constructor();
@@ -2022,6 +2026,8 @@ declare class JSCastaContainer extends JSContainer implements CastaContainer {
      */
     getChildById(id: string): CastaContainer;
 }
+=======
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
 declare namespace table {
     /**
      * Renders a table
@@ -2152,6 +2158,7 @@ declare namespace table {
         getColumns(): Array<table.TableColumn>;
     }
 }
+<<<<<<< HEAD
 declare class JSCastaTemplateContainer extends HTMLTemplateContainer implements CastaContainer {
     constructor();
     id: string;
@@ -2168,6 +2175,8 @@ declare class JSCastaTemplateContainer extends HTMLTemplateContainer implements 
      */
     getChildById(id: string): CastaContainer;
 }
+=======
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
 declare namespace input {
     /**
      * Creates a new instance of reset button with specified name and text

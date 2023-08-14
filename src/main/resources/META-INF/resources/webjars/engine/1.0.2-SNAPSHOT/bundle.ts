@@ -89,8 +89,13 @@ namespace api {
                 const me: api.Renderable = c;
                 const component: api.Renderable = me;
                 this.doNothing(component);
+<<<<<<< HEAD
                 for(let index121=0; index121 < scripts.length; index121++) {
                     let scr = scripts[index121];
+=======
+                for(let index186=0; index186 < scripts.length; index186++) {
+                    let scr = scripts[index186];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         eval(scr);
                     }
@@ -117,14 +122,24 @@ namespace api {
 
         renderEvents(njq: Element, c: api.Renderable) {
             const keys: string[] = Object.keys(c.getListeners());
+<<<<<<< HEAD
             for(let index122=0; index122 < keys.length; index122++) {
                 let key = keys[index122];
+=======
+            for(let index187=0; index187 < keys.length; index187++) {
+                let key = keys[index187];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     const listeners: Array<api.EventListener> = <Array<api.EventListener>>c.getListeners()[key];
                     njq.addEventListener(key, ((listeners) => {
                         return (evt) => {
+<<<<<<< HEAD
                             for(let index123=0; index123 < listeners.length; index123++) {
                                 let l = listeners[index123];
+=======
+                            for(let index188=0; index188 < listeners.length; index188++) {
+                                let l = listeners[index188];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                                 {
                                     l.performAction(c, evt);
                                 }
@@ -139,9 +154,15 @@ namespace api {
         renderAttributes(njq: Element, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
+<<<<<<< HEAD
                     let array125 = c.getChangedAttributes();
                     for(let index124=0; index124 < array125.length; index124++) {
                         let key = array125[index124];
+=======
+                    let array190 = c.getChangedAttributes();
+                    for(let index189=0; index189 < array190.length; index189++) {
+                        let key = array190[index189];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr == null){
@@ -154,9 +175,15 @@ namespace api {
                 }
             } else {
                 {
+<<<<<<< HEAD
                     let array127 = c.getAttributeNames();
                     for(let index126=0; index126 < array127.length; index126++) {
                         let key = array127[index126];
+=======
+                    let array192 = c.getAttributeNames();
+                    for(let index191=0; index191 < array192.length; index191++) {
+                        let key = array192[index191];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             const attr: string = c.getAttribute(key);
                             if (attr != null)ContainerRenderer.setAttribute(njq, key, attr);
@@ -180,9 +207,15 @@ namespace api {
         renderStyles(njq: Element, c: api.Renderable, changed: boolean) {
             if (changed){
                 {
+<<<<<<< HEAD
                     let array129 = c.getChangedStyles();
                     for(let index128=0; index128 < array129.length; index128++) {
                         let key = array129[index128];
+=======
+                    let array194 = c.getChangedStyles();
+                    for(let index193=0; index193 < array194.length; index193++) {
+                        let key = array194[index193];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             (<HTMLElement>njq).style.setProperty(key, c.getStyle(key));
                         }
@@ -190,9 +223,15 @@ namespace api {
                 }
             } else {
                 {
+<<<<<<< HEAD
                     let array131 = c.getStyleNames();
                     for(let index130=0; index130 < array131.length; index130++) {
                         let key = array131[index130];
+=======
+                    let array196 = c.getStyleNames();
+                    for(let index195=0; index195 < array196.length; index195++) {
+                        let key = array196[index195];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             (<HTMLElement>njq).style.setProperty(key, c.getStyle(key));
                         }
@@ -216,8 +255,13 @@ namespace api {
                 styleelem.type = "text/css";
                 nativeNode.appendChild(styleelem);
                 const sheet: CSSStyleSheet = <CSSStyleSheet>styleelem.sheet;
+<<<<<<< HEAD
                 for(let index132=0; index132 < rules.length; index132++) {
                     let rule = rules[index132];
+=======
+                for(let index197=0; index197 < rules.length; index197++) {
+                    let rule = rules[index197];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     sheet.insertRule(rule)
                 }
             }
@@ -1020,6 +1064,7 @@ namespace api {
 
 
 }
+<<<<<<< HEAD
 class CastaApplication {
     /*private*/ ui: JSCastaContainer;
 
@@ -1192,6 +1237,8 @@ namespace CastaUtil {
 }
 
 
+=======
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
 namespace table {
     export class DefaulTableModel implements table.TableModel {
         /*private*/ data: Array<Object>;
@@ -1331,8 +1378,13 @@ namespace table {
          * @return {number}
          */
         public getColumnIndex(columnIdentifier: any): number {
+<<<<<<< HEAD
             for(let index144=0; index144 < this.columns.length; index144++) {
                 let col = this.columns[index144];
+=======
+            for(let index198=0; index198 < this.columns.length; index198++) {
+                let col = this.columns[index198];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (col.identifier === columnIdentifier){
                         return (<number>this.columns.indexOf(col)|0);
@@ -1767,9 +1819,15 @@ namespace util {
         public static visit(designable: api.Renderable, visitor: ComponentUtil.ComponentVisitor) {
             visitor.doVisit(designable);
             {
+<<<<<<< HEAD
                 let array146 = designable.getChildren();
                 for(let index145=0; index145 < array146.length; index145++) {
                     let child = array146[index145];
+=======
+                let array200 = designable.getChildren();
+                for(let index199=0; index199 < array200.length; index199++) {
+                    let child = array200[index199];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         ComponentUtil.visit(child, visitor);
                     }
@@ -1780,8 +1838,13 @@ namespace util {
         public static getTags(type: string): Array<Object> {
             const html5tags: Array<Object> = <any>(window["html5tags"]);
             const result: Array<Object> = <any>(new Array<Object>());
+<<<<<<< HEAD
             for(let index147=0; index147 < html5tags.length; index147++) {
                 let html5tag = html5tags[index147];
+=======
+            for(let index201=0; index201 < html5tags.length; index201++) {
+                let html5tag = html5tags[index201];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     const stype: string = <string>html5tag["type"];
                     if (stype === type || type === "*"){
@@ -1818,8 +1881,13 @@ namespace util {
             }
             const parts: string[] = property.split(".");
             let tmp: Object = obj;
+<<<<<<< HEAD
             for(let index148=0; index148 < parts.length; index148++) {
                 let part = parts[index148];
+=======
+            for(let index202=0; index202 < parts.length; index202++) {
+                let part = parts[index202];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     tmp = PropertyUtil.getValue(tmp, part);
                 }
@@ -1880,8 +1948,13 @@ namespace util {
             const result: Object = <Object>new Object();
             if (/* contains */(hash.indexOf("?") != -1)){
                 const kvs: string[] = hash.split("?")[1].split("&");
+<<<<<<< HEAD
                 for(let index149=0; index149 < kvs.length; index149++) {
                     let kv = kvs[index149];
+=======
+                for(let index203=0; index203 < kvs.length; index203++) {
+                    let kv = kvs[index203];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         const akv: string[] = kv.split("=");
                         result[akv[0]] = akv[1];
@@ -1963,8 +2036,13 @@ class JSContainer implements api.Renderable {
     public fireListener(key: string, evt: Event) {
         const listeners: Array<api.EventListener> = <Array<api.EventListener>>this.getListeners()[key];
         if (listeners != null && listeners.length > 0){
+<<<<<<< HEAD
             for(let index150=0; index150 < listeners.length; index150++) {
                 let l = listeners[index150];
+=======
+            for(let index204=0; index204 < listeners.length; index204++) {
+                let l = listeners[index204];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     l.performAction(this, evt);
                 }
@@ -1992,9 +2070,15 @@ class JSContainer implements api.Renderable {
 
     public getChild(name: string): api.Renderable {
         {
+<<<<<<< HEAD
             let array152 = this.getChildren();
             for(let index151=0; index151 < array152.length; index151++) {
                 let child = array152[index151];
+=======
+            let array206 = this.getChildren();
+            for(let index205=0; index205 < array206.length; index205++) {
+                let child = array206[index205];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (child.getName() === name){
                         return child;
@@ -2180,14 +2264,24 @@ class JSContainer implements api.Renderable {
         const aStyles: string[] = styles.split(" ");
         const toAdds: string[] = styleClass.split(" ");
         let res: string = "";
+<<<<<<< HEAD
         for(let index153=0; index153 < toAdds.length; index153++) {
             let toAdd = toAdds[index153];
+=======
+        for(let index207=0; index207 < toAdds.length; index207++) {
+            let toAdd = toAdds[index207];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
             {
                 toAdd = toAdd.trim();
                 if (toAdd.length > 0){
                     let add: boolean = true;
+<<<<<<< HEAD
                     for(let index154=0; index154 < aStyles.length; index154++) {
                         let style = aStyles[index154];
+=======
+                    for(let index208=0; index208 < aStyles.length; index208++) {
+                        let style = aStyles[index208];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             style = style.trim();
                             if (style.length > 0){
@@ -2224,8 +2318,13 @@ class JSContainer implements api.Renderable {
             return false;
         }
         const aStyles: string[] = styles.split(" ");
+<<<<<<< HEAD
         for(let index155=0; index155 < aStyles.length; index155++) {
             let style = aStyles[index155];
+=======
+        for(let index209=0; index209 < aStyles.length; index209++) {
+            let style = aStyles[index209];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
             {
                 style = style.trim();
                 if (style !== ""){
@@ -2255,8 +2354,13 @@ class JSContainer implements api.Renderable {
     public removeClass(cls: string): JSContainer {
         if (cls != null && cls.trim() !== ""){
             const toremove: string[] = cls.split(" ");
+<<<<<<< HEAD
             for(let index156=0; index156 < toremove.length; index156++) {
                 let s = toremove[index156];
+=======
+            for(let index210=0; index210 < toremove.length; index210++) {
+                let s = toremove[index210];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     this.removeSingleClass(s);
                 }
@@ -2270,8 +2374,13 @@ class JSContainer implements api.Renderable {
         if (cl != null && cl.length > 0){
             const classes: string[] = cl.split(" ");
             let result: string = "";
+<<<<<<< HEAD
             for(let index157=0; index157 < classes.length; index157++) {
                 let scl = classes[index157];
+=======
+            for(let index211=0; index211 < classes.length; index211++) {
+                let scl = classes[index211];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (scl !== cls){
                         if (result === ""){
@@ -2352,9 +2461,15 @@ class JSContainer implements api.Renderable {
         let i: number = 0;
         let added: boolean = false;
         {
+<<<<<<< HEAD
             let array159 = this.getChildren();
             for(let index158=0; index158 < array159.length; index158++) {
                 let c = array159[index158];
+=======
+            let array213 = this.getChildren();
+            for(let index212=0; index212 < array213.length; index212++) {
+                let c = array213[index212];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (i === index){
                         children.push(child);
@@ -2604,9 +2719,15 @@ class JSContainer implements api.Renderable {
         if (!b){
             this.elem_ = null;
             {
+<<<<<<< HEAD
                 let array161 = this.getChildren();
                 for(let index160=0; index160 < array161.length; index160++) {
                     let child = array161[index160];
+=======
+                let array215 = this.getChildren();
+                for(let index214=0; index214 < array215.length; index214++) {
+                    let child = array215[index214];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         child.setRendered(b);
                     }
@@ -2682,14 +2803,20 @@ class JSContainer implements api.Renderable {
         if (!this.contains(renderers, JSContainer.defaultRenderer_$LI$())){
             const tmp: Array<api.Renderer<any>> = <any>(new Array<api.Renderer<any>>());
             tmp.push(JSContainer.defaultRenderer_$LI$());
+<<<<<<< HEAD
             for(let index162=0; index162 < renderers.length; index162++) {
                 let r = renderers[index162];
+=======
+            for(let index216=0; index216 < renderers.length; index216++) {
+                let r = renderers[index216];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     tmp.push(r);
                 }
             }
             renderers = tmp;
         }
+<<<<<<< HEAD
         for(let index163=0; index163 < renderers.length; index163++) {
             let renderer = renderers[index163];
             renderer.doRender(this, parent)
@@ -2698,6 +2825,16 @@ class JSContainer implements api.Renderable {
             let array165 = this.getChildren();
             for(let index164=0; index164 < array165.length; index164++) {
                 let child = array165[index164];
+=======
+        for(let index217=0; index217 < renderers.length; index217++) {
+            let renderer = renderers[index217];
+            renderer.doRender(this, parent)
+        }
+        {
+            let array219 = this.getChildren();
+            for(let index218=0; index218 < array219.length; index218++) {
+                let child = array219[index218];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     child['render$']();
                 }
@@ -2734,8 +2871,13 @@ class JSContainer implements api.Renderable {
         const previous: Object = <Object>this.d["data"];
         if (previous != null && previous instanceof <any>Array){
             const arData: Array<Object> = <Array<Object>>previous;
+<<<<<<< HEAD
             for(let index166=0; index166 < arData.length; index166++) {
                 let line = arData[index166];
+=======
+            for(let index220=0; index220 < arData.length; index220++) {
+                let line = arData[index220];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     const value: string = <string>line["value"];
                     this.setAttribute(value, null);
@@ -2744,9 +2886,15 @@ class JSContainer implements api.Renderable {
         } else {
             if (previous != null){
                 {
+<<<<<<< HEAD
                     let array168 = Object.keys(previous);
                     for(let index167=0; index167 < array168.length; index167++) {
                         let key = array168[index167];
+=======
+                    let array222 = Object.keys(previous);
+                    for(let index221=0; index221 < array222.length; index221++) {
+                        let key = array222[index221];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             this.setAttribute(key, null);
                         }
@@ -2758,8 +2906,13 @@ class JSContainer implements api.Renderable {
         if (data != null){
             if (data != null && data instanceof <any>Array){
                 const arData: Array<Object> = <Array<Object>>data;
+<<<<<<< HEAD
                 for(let index169=0; index169 < arData.length; index169++) {
                     let line = arData[index169];
+=======
+                for(let index223=0; index223 < arData.length; index223++) {
+                    let line = arData[index223];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         const text: string = <string>line["text"];
                         const value: string = <string>line["value"];
@@ -2768,9 +2921,15 @@ class JSContainer implements api.Renderable {
                 }
             } else {
                 {
+<<<<<<< HEAD
                     let array171 = Object.keys(data);
                     for(let index170=0; index170 < array171.length; index170++) {
                         let key = array171[index170];
+=======
+                    let array225 = Object.keys(data);
+                    for(let index224=0; index224 < array225.length; index224++) {
+                        let key = array225[index224];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             this.setAttribute(key, <string>(<Object>data)[key]);
                         }
@@ -2795,9 +2954,15 @@ class JSContainer implements api.Renderable {
         const clsss: string = parent.getAttribute("class");
         if (clsss != null){
             {
+<<<<<<< HEAD
                 let array173 = parent.getAttribute("class").split(" ");
                 for(let index172=0; index172 < array173.length; index172++) {
                     let s = array173[index172];
+=======
+                let array227 = parent.getAttribute("class").split(" ");
+                for(let index226=0; index226 < array227.length; index226++) {
+                    let s = array227[index226];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         if (s.trim() === cls)return <T><any>parent;
                     }
@@ -2960,8 +3125,13 @@ class CardLayout extends JSContainer {
      * @return {CardLayout} - this
      */
     public addItems(...items: CardLayoutItem[]): CardLayout {
+<<<<<<< HEAD
         for(let index174=0; index174 < items.length; index174++) {
             let item = items[index174];
+=======
+        for(let index228=0; index228 < items.length; index228++) {
+            let item = items[index228];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
             {
                 this.addItem(item);
             }
@@ -3003,9 +3173,15 @@ class CardLayout extends JSContainer {
     public getIndex(name: string): number {
         let index: number = 0;
         {
+<<<<<<< HEAD
             let array176 = this.getChildren();
             for(let index175=0; index175 < array176.length; index175++) {
                 let child = array176[index175];
+=======
+            let array230 = this.getChildren();
+            for(let index229=0; index229 < array230.length; index229++) {
+                let child = array230[index229];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (child.getName() === name){
                         return index;
@@ -3163,9 +3339,15 @@ class CardLayout extends JSContainer {
             return;
         }
         {
+<<<<<<< HEAD
             let array178 = this.getChildren();
             for(let index177=0; index177 < array178.length; index177++) {
                 let child = array178[index177];
+=======
+            let array232 = this.getChildren();
+            for(let index231=0; index231 < array232.length; index231++) {
+                let child = array232[index231];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (child.getName() === name){
                         const evt: CustomEvent = new CustomEvent("activate");
@@ -3207,9 +3389,15 @@ class CardLayout extends JSContainer {
     public refresh() {
         const def: string = this.getDefault();
         {
+<<<<<<< HEAD
             let array180 = this.getChildren();
             for(let index179=0; index179 < array180.length; index179++) {
                 let r = array180[index179];
+=======
+            let array234 = this.getChildren();
+            for(let index233=0; index233 < array234.length; index233++) {
+                let r = array234[index233];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (r.getName() === def){
                         r.setStyle("display", null);
@@ -3440,8 +3628,13 @@ class HTMLTemplateContainer extends JSContainer implements api.TemplateRenderabl
                 const tag: string = tm.tagName;
                 this.setTag(tag);
                 const attrs: NamedNodeMap = tm.attributes;
+<<<<<<< HEAD
                 for(let index181=0; index181 < attrs.length; index181++) {
                     let att = attrs[index181];
+=======
+                for(let index235=0; index235 < attrs.length; index235++) {
+                    let att = attrs[index235];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         this.setAttribute(att.name, att.value);
                     }
@@ -4200,8 +4393,13 @@ namespace input {
 
         public setOptions$java_lang_String(options: string): JSSelect {
             const opts: string[] = options.split("\n");
+<<<<<<< HEAD
             for(let index182=0; index182 < opts.length; index182++) {
                 let opt = opts[index182];
+=======
+            for(let index236=0; index236 < opts.length; index236++) {
+                let opt = opts[index236];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     this.addOption$java_lang_String$java_lang_String(opt, opt);
                 }
@@ -4320,8 +4518,13 @@ namespace input {
             if (ele != null){
                 if (ele.multiple){
                     const result: Array<string> = <any>(new Array<string>());
+<<<<<<< HEAD
                     for(let index183=0; index183 < ele.children.length; index183++) {
                         let e = ele.children[index183];
+=======
+                    for(let index237=0; index237 < ele.children.length; index237++) {
+                        let e = ele.children[index237];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             const opt: HTMLOptionElement = <HTMLOptionElement>e;
                             if (opt.selected)result.push(opt.value);
@@ -4334,9 +4537,15 @@ namespace input {
             } else {
                 const val: string = this.getAttribute("value");
                 {
+<<<<<<< HEAD
                     let array185 = this.getChildren();
                     for(let index184=0; index184 < array185.length; index184++) {
                         let opt = array185[index184];
+=======
+                    let array239 = this.getChildren();
+                    for(let index238=0; index238 < array239.length; index238++) {
+                        let opt = array239[index238];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             if (opt.getAttribute("value") === val){
                                 return (<input.JSOption><any>opt).getValue();
@@ -4373,6 +4582,7 @@ namespace input {
                 }
                 this.setAttribute("value", firstVal);
                 {
+<<<<<<< HEAD
                     let array187 = this.getChildren();
                     for(let index186=0; index186 < array187.length; index186++) {
                         let opt = array187[index186];
@@ -4380,6 +4590,15 @@ namespace input {
                             (<input.JSOption><any>opt).setSelected(false);
                             for(let index188=0; index188 < arrVal.length; index188++) {
                                 let val = arrVal[index188];
+=======
+                    let array241 = this.getChildren();
+                    for(let index240=0; index240 < array241.length; index240++) {
+                        let opt = array241[index240];
+                        {
+                            (<input.JSOption><any>opt).setSelected(false);
+                            for(let index242=0; index242 < arrVal.length; index242++) {
+                                let val = arrVal[index242];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                                 {
                                     if (opt.getAttribute("value") === val){
                                         (<input.JSOption><any>opt).setSelected(true);
@@ -4391,9 +4610,15 @@ namespace input {
                 }
             } else {
                 {
+<<<<<<< HEAD
                     let array190 = this.getChildren();
                     for(let index189=0; index189 < array190.length; index189++) {
                         let opt = array190[index189];
+=======
+                    let array244 = this.getChildren();
+                    for(let index243=0; index243 < array244.length; index243++) {
+                        let opt = array244[index243];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             (<input.JSOption><any>opt).setSelected(false);
                         }
@@ -4450,8 +4675,13 @@ namespace input {
         public setData(data_: Array<Object>) {
             this.clearChildren();
             this.setRendered(false);
+<<<<<<< HEAD
             for(let index191=0; index191 < data_.length; index191++) {
                 let o = data_[index191];
+=======
+            for(let index245=0; index245 < data_.length; index245++) {
+                let o = data_[index245];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                 {
                     if (o.hasOwnProperty("value")){
                         const value: string = <string>o["value"];
@@ -4475,9 +4705,15 @@ namespace input {
             const result: Array<Object> = <any>(new Array<Object>());
             if (this.isMultiple()){
                 {
+<<<<<<< HEAD
                     let array193 = <Array<string>>obj;
                     for(let index192=0; index192 < array193.length; index192++) {
                         let o = array193[index192];
+=======
+                    let array247 = <Array<string>>obj;
+                    for(let index246=0; index246 < array247.length; index246++) {
+                        let o = array247[index246];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             const item: Object = this.findItem(o);
                             if (item != null){
@@ -4503,8 +4739,13 @@ namespace input {
 
         public findItem(value: string): Object {
             if (this.data != null){
+<<<<<<< HEAD
                 for(let index194=0; index194 < this.data.length; index194++) {
                     let o = this.data[index194];
+=======
+                for(let index248=0; index248 < this.data.length; index248++) {
+                    let o = this.data[index248];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                     {
                         let val: string = <string>o["value"];
                         val = val + "";
@@ -4645,6 +4886,7 @@ namespace input {
 
 
 }
+<<<<<<< HEAD
 class JSCastaContainer extends JSContainer implements CastaContainer {
     /*private*/ id: string;
 
@@ -4679,6 +4921,8 @@ JSCastaContainer["__interfaces"] = ["framework.components.api.Renderable","frame
 
 
 
+=======
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
 namespace table {
     /**
      * Renders a table
@@ -4932,9 +5176,15 @@ namespace table {
             let stWidth: string = this.getStyle(name);
             if (stWidth != null && stWidth.length > 0){
                 {
+<<<<<<< HEAD
                     let array196 = /* Enum.values */function() { let result: api.Units[] = []; for(let val in api.Units) { if (!isNaN(<any>val)) { result.push(parseInt(val,10)); } } return result; }();
                     for(let index195=0; index195 < array196.length; index195++) {
                         let u = array196[index195];
+=======
+                    let array250 = /* Enum.values */function() { let result: api.Units[] = []; for(let val in api.Units) { if (!isNaN(<any>val)) { result.push(parseInt(val,10)); } } return result; }();
+                    for(let index249=0; index249 < array250.length; index249++) {
+                        let u = array250[index249];
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
                         {
                             stWidth = /* replace */stWidth.split(api.Units["_$wrappers"][u].getDisplay()).join("");
                         }
@@ -5062,6 +5312,7 @@ namespace table {
 
 
 }
+<<<<<<< HEAD
 class JSCastaTemplateContainer extends HTMLTemplateContainer implements CastaContainer {
     public constructor() {
         super("", "");
@@ -5096,6 +5347,8 @@ JSCastaTemplateContainer["__interfaces"] = ["framework.components.api.Renderable
 
 
 
+=======
+>>>>>>> 22406dddccff80f7ba3312f225059ce74aa76c42
 namespace input {
     /**
      * Creates a new instance of reset button with specified name and text
